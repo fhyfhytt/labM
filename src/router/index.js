@@ -9,6 +9,7 @@ import Layout from '@/layout'
 // import projectManageControl from './modules/projectManageControl'
 // import eventMonitoring from './modules/eventMonitoring'
 import manageControlRouter from './modules/manageControl'
+import deviceControlRouter from './modules/device'
 // import tunnelControlShowRouter from './modules/tunnelControlShow'
 // import environmentalMonitor from './modules/environmentMonitor'
 // import animation from '@/views/components-demo/animation'         //3d
@@ -112,6 +113,7 @@ export const constantRoutes = [
 export const asyncRoutes = [
 
   manageControlRouter,
+  deviceControlRouter,
   { path: '*', redirect: '/404', hidden: true }
 ]
 
