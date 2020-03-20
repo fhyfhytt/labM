@@ -1,0 +1,285 @@
+
+.saveMsg{
+    .el-input--medium .el-input__inner{
+            background: transparent;
+        border: 1px solid #50dcf5;
+        height: 30px;
+    }
+    .el-select .el-input.is-focus .el-input__inner{
+            border-color:#5B92FF;
+    }
+    padding:0 12px;
+        .borderBlock{
+            border:1px solid #5B92FF;
+            border-radius: 4px;
+        }
+    .saveTop{
+        .headerTop{
+                margin-bottom: 1px;
+                background: rgba(83,227,253,0.15);
+                width: 100%;
+                height: 34px;
+                line-height: 34px;
+                position: relative;
+                &>div{
+                    float: left;
+                    font-size: 14px;
+                    color: #fff;
+                    margin-left: 16px;
+                }
+                &>span{
+                    float: right;
+                    font-size: 12px;
+                        color: #fff;
+                    margin-right: 14px;
+                    &:hover{
+                        transform: scale(1.1)
+                    }
+                    cursor: pointer;
+                    &>span{
+                        margin-right: 6px;
+                        color: #fff;vertical-align: middle;
+                    }
+                }
+                &>p{
+                    position: absolute;
+                    height: 1px;
+                    width: 100%;
+                    bottom: -1px;
+                    left: 0;
+                    background: radial-gradient(#53e3fd 20%, transparent 80%);
+                    margin: 0;
+                }
+            }
+        .boardText{
+            width: 100%;
+            height: 132px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+        }
+        .textShow{
+            border:6px solid #bbb;
+            // display: inline-block;
+            margin: auto;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow:hidden;
+            white-space: nowrap;
+        }
+    }
+    .saveCenter{
+        margin-top: 8px;
+        display: flex;
+    .saveCenterL{
+        color:#5B92FF;
+        width: 260px;
+        .infoCont{
+            border-top:1px solid #5B92FF;
+            border-radius: 5px;
+            padding: 0;
+            height: 415px;
+            margin:22px auto 0;
+            overflow-y: auto;
+            width: 100%;
+            li{
+                // height: 34px;
+                line-height: 30px;
+                padding-left: 6px;
+                border-bottom:1px solid #5B92FF;
+                &>:last-child{
+                    border-bottom: none;
+                }
+            }
+        }
+        .searchInfo{
+                .el-input__inner{
+                    color:#fff;
+                }
+            text-align: center;
+            &>span{
+                display: inline-block;
+                width: 65px;
+                margin-top: 12px;
+            }
+            height: 30px;
+            line-height: 30px;
+            .el-select.el-select--medium{
+                width: 165px;
+            }
+            .el-select .el-input .el-select__caret{
+                line-height: 30px;
+            }
+        }
+        .infoCont::-webkit-scrollbar {
+            display: none;
+        }}
+    }
+    .saveCenterR{
+        width: 762px;
+        color:#5B92FF;
+        margin-left: 12px;
+        .saveCenterRt{
+            position: relative;
+            .checkImg{
+                padding:12px 10px;
+                .el-checkbox__inner{
+                    border-color: #5B92FF;
+                    background: transparent;
+                }
+                .el-checkbox__inner::after{
+                    border-color: #5B92FF;
+                }
+                .el-checkbox__label{
+                    color:#5B92FF;
+                }
+            }
+            /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+            .imgAll::-webkit-scrollbar
+            {
+                width: 2px;
+                height: 8px;
+                background-color: rgba(0,0,0,0.2)
+            }
+            /*定义滚动条轨道 内阴影+圆角*/
+            .imgAll::-webkit-scrollbar-track
+            {
+                -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+                border-radius: 3px;
+                background-color: rgba(0,0,0,0.2)
+            }
+            /*定义滑块 内阴影+圆角*/
+            .imgAll::-webkit-scrollbar-thumb
+            {
+                border-radius: 3px;
+                -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,.3);
+                background-color: #5B92FF;
+            }
+            .imgAll{
+                width: 500px;
+                margin-left: 10px;
+                overflow-x: auto;
+                height: 120px;
+                margin-bottom: 8px;
+                ul{
+                    margin:0;
+                    padding:10px;
+                    width: 4430px;
+                    li{
+                        float: left;
+                        width: 50px;
+                        text-align: center;
+                        height: 70px;
+                        margin:10px;
+                        div{
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            overflow: hidden;
+                            background: #fff;
+                            cursor: pointer;
+                            margin-bottom: 8px;
+                            img{
+                                width: 50px;
+                                height: 50px;
+                            }
+                        }
+                    }
+                }
+            }
+            .showImg{
+                position: absolute;
+                bottom:10px;
+                right:60px;
+                p{
+                    margin: 0 0 8px 0;
+                    width: 120px;
+                    height: 120px;
+                    background: rgba(0,0,0,0.2);
+                    img{
+                        width: 120px;
+                        height: 120px;
+                    }
+                }
+                span{
+                    font-size: 12px;
+                    color:#ffde59;
+                }
+            }
+        }
+        .saveCenterRb{
+            margin-top: 10px;
+            position: relative;
+            .editSave{
+                margin:10px;
+                .el-select.el-select--medium{
+                    width: 106px;
+                }
+                .el-select .el-input .el-select__caret{
+                    line-height: 30px;
+                }
+                .el-input__inner{
+                    color:#fff;
+                }
+            }
+            &>p{
+                margin-left: 10px;
+                span{
+                    &:first-child{
+                        color: #5B92FF;
+                    }
+                    &:last-child{
+                        color: #ffde59;
+                    }
+                }
+            }
+            .stander{
+                position: absolute;
+                top: 125px;
+                right: 50px;
+                height: 30px;
+                line-height: 30px;
+                span{
+                    &:last-child{
+                        color: #fff;
+                        width: 100px;
+                        display: inline-block;
+                        border: 1px solid #5B92FF;
+                        padding-left: 16px;
+                        margin-left: 10px;
+                        border-radius: 3px;
+                    }
+                }
+            }
+        }
+    }
+        .select-option{
+        margin-top: 6px!important;
+        background: transparent;border-color:#5B92FF;
+        color:#fff;
+        .el-select-dropdown__item.hover,.select-option .el-select-dropdown__item:hover{
+            background: #5B92FF;
+            color:#fff;
+        }
+        .el-select-dropdown__item.selected,.el-select-dropdown__empty{
+            color:#fff;
+        }
+        .el-select-dropdown__item{
+            color:#fff;
+        }
+        .popper__arrow::after{
+            border-bottom-color:#5B92FF!important;
+        }
+        .popper__arrow{
+            top:-7px!important;
+        }
+        .el-input__inner{
+            color:#fff;
+        }
+        .el-popper,.popper__arrow{
+            display: none!important;
+        }
+    }
+}

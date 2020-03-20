@@ -1,0 +1,95 @@
+.collapse{
+    margin: 1%;
+    background-size: 100% 100%;
+    border-radius: 5px;
+    border: 1px solid #50DCF5;
+    .title-icon {
+      margin: 10px;
+    }
+  }
+  .registion {
+    >>> .el-card__body {
+      padding: 0;
+    }
+    >>> .el-collapse {
+      border-bottom: 0;
+      border-top: 0;
+    }
+    >>> .el-collapse-item__wrap {
+      background: transparent;
+      border-bottom: 0;
+    }
+    >>> .el-collapse-item__header {
+      background: transparent;
+      border-bottom: 0;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color: #5B92FF;
+      opacity: 0.9;
+    }
+    >>> .el-textarea__inner {
+      background-color: transparent;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,0.7);
+      width: 543px;
+      &:focus {
+        border:1px solid rgba(80,220,245,1);
+      }
+    }
+    >>> .el-input--small .el-input__inner {
+      background-color: transparent;
+      font-family:'微软雅黑';
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,0.7);
+      width: 200px;
+      &:focus {
+        border:1px solid rgba(80,220,245,1);
+      }
+    }
+    >>> .el-input--small.is-focus .el-input__inner {
+      background-color: transparent;
+      font-family:'微软雅黑';
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,1);
+      width: 200px;
+    }
+    >>> .el-form-item__label {
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color: #5B92FF;
+      opacity: 0.9;
+    }
+    >>> input::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+    >>> textarea::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+    >>> .el-form-item .el-input__suffix {
+      left: 170px !important;
+    }
+  }
+
+  // 开单编号
+  .title-code {
+    position: absolute;
+    right: 100px;
+  }
+  // 表格滚动条显示
+  .table-div {
+    >>> .el-table--scrollable-y .el-table__body-wrapper::-webkit-scrollbar{
+      display: block;
+    }
+  }
+  .scroll-right {
+    >>> .el-table__fixed-right {
+      right: 0 !important;
+    }
+    >>> .el-table__fixed-right-patch {
+      width: 0px !important;
+    }
+  }

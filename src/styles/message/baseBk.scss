@@ -1,0 +1,255 @@
+.all{
+    font-size: 12px;
+    width: 100%;
+    padding: 18px 16px 0;//无滚动条,
+}
+.blockMsg {
+    padding:  0 24px 10px;
+    border-radius: 4px;
+    min-height: 100px;
+    border:1px solid #5B92FF;
+    background: rgba(0,54,77,.3);
+    background-image: radial-gradient(rgba(1,34,49,0.5), rgba(2,160,219,0.2));
+}
+.eventTime{
+  width: 100%;
+  label{
+    margin-right: 20px!important;
+    margin-top: 20px;
+  }
+  .el-radio-button__inner{
+    padding: 9px 15px;
+    font-size: 12px;
+  }
+  .timePe{
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    .block{
+      display: inline-block;
+      .el-date-editor.el-input, .el-date-editor.el-input__inner{
+        width: 150px;
+      }
+    }
+    .toGo{
+      display: inline-block;
+      font-size: 12px;
+      margin:0 12px;
+      color: #5B92FF;
+    }
+  }
+}
+.deviceAdd{
+    .el-dialog{
+        width: 800px;
+        height: 530px;
+    }
+    .bkb{
+        height: 1px;
+        width: 90%;
+        margin: -1px auto 0;
+        background: radial-gradient(#53e3fd 20%, transparent 80%);
+    }
+    
+    .search{
+        width: 186px;
+        margin:20px 0px 10px 0px;
+    }
+    .next{
+        margin: 20px auto;
+        text-align: center;
+        display: flex;
+    }
+    .addShow{
+        border-radius: 5px;
+        border: 1px solid #5B92FF;
+        thead th:not(:last-child){
+            border-bottom: 1px solid #5B92FF
+        }
+    }
+}
+//tab自用
+
+.el-tabs.el-tabs--top{
+    margin-top: -10px;
+}
+.el-tab-pane{
+    padding:0 20px;
+}
+.el-tabs__nav-wrap{
+    padding-left: 20px;
+    margin-top: 10px;
+}
+.el-tabs__item{
+    font-size: 12px!important;
+    &:hover{
+        color:#5B92FF;
+    }
+}
+.el-tabs__nav-wrap::after{
+    background-color:rgba(83,227,253,.4)!important;
+}
+.el-tabs__item{
+    color:#fff;
+}
+.el-tabs__item.is-active{
+    color:#5B92FF;
+}
+.el-tabs__active-bar{
+    background-color:#5B92FF!important;
+}
+.el-badge__content{
+    padding: 0 4px;
+    line-height: 14px;
+}
+.deviceAdd .el-dialog__title{
+    color: #5B92FF;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 34px
+  }
+  .deviceAdd .el-dialog__close.el-icon.el-icon-close{
+    font-size: 18px;
+    color: #5B92FF;
+    font-weight: bold;
+  }.deviceAdd .alert-button  {
+    background: #39aac6;
+    color: #ffffff;
+  }.deviceAdd .el-form-item__label{
+    color: #09ABB9;
+  }
+  .deviceAdd .el-dialog__headerbtn {
+    width: 24px;
+    border-radius: 15px;
+    height: 24px;
+    line-height: 0;
+    position: absolute;
+    padding: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 25px;
+  }
+  .deviceAdd .time-div .el-input--small .el-input__inner {
+        height: 36px;
+        line-height: 36px;
+        background: transparent;
+        border: 1px solid #2b98ba;
+    }
+    .deviceAdd.el-dialog__wrapper .el-dialog{
+        color: #09ABB9;
+        background: transparent;
+        border:1px solid #5B92FF;
+        border-radius: 4px;
+        background-image:none!important;
+        margin-top: 205px!important;
+        /* background: linear-gradient(to bottom, rgba(1,34,49,0.5) 0%, rgba(2,160,219,0.15) 100%) */
+        background-image: url(/static/img/bgTwo.a178d248.png)!important;
+        background-size: 100% 100%;
+    }
+    .deviceAdd.el-dialog__wrapper .el-dialog__header{
+        text-align: left;
+        margin:0 auto;
+        font-size: 14px;
+        padding:0 0 0 16px;
+        background: linear-gradient(to bottom, rgba(83,227,253,1) 0%, rgba(83,227,253,0.0) 100%);
+        color:#5B92FF;
+        width: 100%;
+        height: 34px;
+        line-height: 34px;
+        position: relative;
+    }
+    .deviceAdd.el-dialog__wrapper .el-dialog__body{
+        // padding:0;
+    }
+
+.changeDevice{
+    .el-dialog__body{
+        // padding:0 20px!important;
+    }
+    .addShow{
+        margin-top: 20px
+    }
+}
+//table列表加线框等
+.msgBom{
+    .btn-all{
+      padding:0
+    }
+    margin-top: 10px;
+    // height: 682px;
+    .tableShow{
+      margin-top: 12px;
+    }
+    .button-tool{
+      float: left;
+    }
+    .el-table .cell{
+        height: 43px;
+        line-height: 43px;
+        border-bottom:1px solid rgba(80,220,245,0.39);
+      }
+    .el-table th>.cell{
+      border: none
+    }
+    .btn{
+      width: 100%;
+        // cursor: pointer;
+        margin-top: 14px;
+        &>span{
+            font-size: 14px;
+            border-radius: 3px;
+            display: inline-block;
+            padding: 0 14px;
+            height: 34px;
+            background: transparent;
+            border:1px solid #50dcf5;
+            text-align: center;
+            line-height: 34px;
+            color:#5B92FF;
+            margin-right: 16px;
+        }
+
+      .sendAllBtn{
+        float: right;
+        right: 0;
+        .sends{
+          margin-left: 20px
+        }
+      }
+    }
+    // thead tr th:nth-child(3) .cell{
+    //   text-align: left;
+    //   margin-left: 10px
+    // }
+    .tableContent{
+      padding:0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      text-align: left;
+      .board{
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      .momoLeft{
+        margin-left:6px;
+      }
+      .redBoard{
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: red;
+        border-radius: 50%;
+        position: absolute;
+        top: 18px;
+        right: 1px;
+        cursor: pointer;
+      }
+    }
+    .tabSure{
+      text-align: center;
+      margin-top: 30px;
+    }
+  }

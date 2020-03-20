@@ -1,0 +1,34 @@
+const getters = {
+  sidebar: state => state.app.sidebar,
+  language: state => state.app.language,
+  size: state => state.app.size, // 全局字体大小
+  device: state => state.app.device,
+  visitedViews: state => state.tagsView.visitedViews, // 浏览过的页
+  cachedViews: state => state.tagsView.cachedViews, // 保存下来的页
+  token: state => state.user.token,
+  avatar: state => state.user.avatar, // 头像
+  name: state => state.user.name, // 用户名
+  userId: state => state.user.userId,
+  introduction: state => state.user.introduction, // 对用户的描述
+  roles: state => state.user.roles,
+  permission_routes: state => state.permission.routes, // 路由权限表
+  errorLogs: state => state.errorLog.logs,
+  shortCuts: state => state.dashord.shortcuts,
+  treeShow: state => state.user.treeShow, // 隧道树
+  treeData: state => state.user.treeData, // 隧道树的数据
+  conForm: state => state.projectManage.conForm, // 施工管理查询数据
+  divideForm: state => state.projectManage.divideForm, // 封道管理查询数据
+  trafficForm: state => state.projectManage.trafficForm, // 交通管制管理查询数据
+  spoilForm: state => state.projectManage.spoilForm, // 抛洒物管理查询数据
+  conRegistion: state => state.projectManage.conRegistion, // 施工开单信息
+  divideRegistion: state => state.projectManage.divideRegistion, // 封道开单信息
+  trafficRegistion: state => state.projectManage.trafficRegistion, // 交通管制开单信息
+  spoilRegistion: state => state.projectManage.spoilRegistion, // 抛洒物开单信息
+  conDetail: state => state.projectManage.conDetail, // 施工详情页新建信息
+  divideDetail: state => state.projectManage.divideDetail, // 封道详情页新建信息
+  trafficDetail: state => state.projectManage.trafficDetail, // 交通管制详情页新建信息
+  spoilDetail: state => state.projectManage.spoilDetail, // 抛洒物详情页新建信息
+  superman: state => state.user.superman, // 超级管理员
+  rolesIds: state => state.user.rolesIds// 角色ID
+}
+export default getters

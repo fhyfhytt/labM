@@ -1,0 +1,406 @@
+.collapse{
+    margin: 1%;
+
+    background-size: 100% 100%;
+    border-radius: 5px;
+    border: 1px solid #50DCF5;
+    .title-icon {
+      margin: 10px;
+    }
+  }
+  .registion {
+    >>> .el-card__body {
+      padding: 0;
+    }
+    >>> .el-collapse {
+      border-bottom: 0;
+      border-top: 0;
+    }
+    >>> .el-collapse-item__wrap {
+      background: transparent;
+      border-bottom: 0;
+    }
+    >>> .el-collapse-item__header {
+      background: transparent;
+      border-bottom: 0;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color: #5B92FF;
+      opacity: 0.9;
+    }
+    >>> .el-textarea__inner {
+      background-color: transparent;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,0.7);
+      width: 543px;
+      &:focus {
+        border:1px solid rgba(80,220,245,1);
+      }
+    }
+    >>> .el-input--small .el-input__inner {
+      background-color: transparent;
+      font-family:'微软雅黑';
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,0.7);
+      width: 200px;
+      &:focus {
+        border:1px solid rgba(80,220,245,1);
+      }
+    }
+    >>> .el-input--small.is-focus .el-input__inner {
+      background-color: transparent;
+      font-family:'微软雅黑';
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,1);
+      width: 200px;
+    }
+    >>> .el-form-item__label {
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color: #5B92FF;
+      opacity: 0.9;
+    }
+    >>> input::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+    >>> textarea::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+    >>> .el-form-item .el-input__suffix {
+      left: 170px !important;
+    }
+    // 右侧抽屉内的时间轴
+    >>> .el-drawer.rtl {
+      width: 15% !important;
+      background:rgba(79,144,174,0.75);
+      box-shadow:0px 3px 37px 9px rgba(0, 0, 0, 0.36);
+    }
+    >>> .el-timeline-item__tail {
+      border-left: 2px solid #5B92FF;
+    }
+    >>> .el-timeline-item__node {
+      border: 1px solid rgba(0,238,238,1);
+      background: rgba(0,238,238,1);
+    }
+    >>> .el-timeline-item__timestamp {
+      color: rgba(0,238,238,1);
+      font-size: 14px;;
+    }
+    >>> .el-drawer__close-btn {
+      color: rgba(255,255,255,1);
+    }
+    >>> .el-timeline-item {
+      padding-bottom: 30px;
+    }
+    >>> .el-timeline-item__content {
+      width: 90%;
+      .el-card {
+        background-color: rgba(0, 0, 0, 0.4);
+        border: none;
+        .el-card__body {
+          padding-left: 10px;
+          padding-top: 5px;
+        }
+        p {
+          font-size: 12px;
+          &:first-child {
+            color: rgba(255,255,255,1);
+          }
+          &:last-child {
+            color: rgba(255,255,255,0.4);
+            margin: -10px 0 5px 0;
+          }
+        }
+      }
+    }
+  }
+  // 附件上传  tab页签样式
+  .uploadfile{
+    >>> .el-tabs__active-bar {
+      background-color: #5B92FF;
+    }
+    >>> .el-tabs__item {
+      padding: 0 20px;
+      height: 40px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      line-height: 32px;
+      display: inline-block;
+      list-style: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+      position: relative;
+      &.is-active {
+        color: #5B92FF;
+      }
+    }
+    >>> .el-tabs__nav-wrap {
+      overflow: hidden;
+      margin-bottom: -1px;
+      position: relative;
+      padding-left: 15px;
+      &::after {
+        height: 1px;
+        background-color: rgba(83,227,253,0.5);;
+      }
+    }
+    >>> .el-tabs__content {
+      padding: 10px 0 0 15px;
+    }
+    >>> .el-collapse-item__content {
+      padding-bottom: 25px;
+      font-size: 14px;
+      color: #fff;
+      line-height: 24px;
+    }
+    .icon-size {
+      font-size: 22px;
+      position: relative;
+      left: 14px;
+      top: 13px;
+      color: #5B92FF;
+    }
+    .upload-div {
+      display: inline-block;
+      background-color: rgba(0,0,0,0.1);
+      width: 50px;
+      height: 50px;
+      border-radius: 4px;
+      border: 1px dashed #50dcf5;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+    .file-upload-div {
+      width: 90px;
+      display: inline-block;
+      .file-div {
+        display: inline-block;
+        position: relative;
+        left: 15px;
+        margin-right: 10px;
+        background-color: rgba(0,0,0,0.1);
+        width: 50px;
+        height: 50px;
+        border-radius: 4px;
+      }
+      .title-span {
+        font-size: 12px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 80px;
+        cursor: pointer;
+        &:hover {
+          color: #50DCF5;
+        }
+      }
+    }
+    .close-span {
+      position: absolute;
+      left: 37px;
+      top: -3px;
+      font-size: 10px;
+      color: #5B92FF;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.1);
+        color: #ffffff;
+      }
+    }
+  }
+  // 详情页顶部按钮固定
+  .top-button-div {
+    position: fixed;
+    top: 12%;
+    width: 100%;
+    padding-left: 20px;
+    padding-top: 15px;
+    height: 7%;
+    z-index: 5;
+    background-image: url('/img/bj150.jpg');
+    background-size: 100% 100%;
+    .el-button--small {
+      border: 1px solid rgba(80,220,245,1);
+      background: linear-gradient(0deg,rgba(80,220,245,0) 1%,rgba(80,220,245,0.39) 100%);
+      color: #5B92FF;
+      border-radius: 4px;
+      &:hover {
+          background: linear-gradient(0deg,rgba(80,220,245,0) 1%,rgba(80,220,245,0.99) 100%);
+      }
+      &:active {
+        border: 1px solid #50dcf5;
+        outline: none;
+      }
+      //增加图标情况 z
+      height: 32px;
+      & >>> .iconfont{
+        font-size: 14px;
+        margin-right: 4px;
+      }
+    }
+  }
+  // 详情页上方进度条区域
+  .progress-div {
+    margin-top: 60px;
+    margin-bottom: -18px;
+    display: flex;
+    div.collapse.show {
+      height: 110px;
+      &:first-child {
+        width: 50%;
+        span.icon-span {
+          position: absolute;
+          top: 150px;
+          width: 25px;
+          height: 25px;
+          background: linear-gradient(0deg,rgba(23,62,152,1),rgba(64,186,231,1));
+          border-radius: 30px;
+          z-index: 4;
+          &.icon-start {
+            left: 3%;
+          }
+          &.icon-end {
+            left: 47%;
+            background: linear-gradient(to bottom, #7ba6c1 0%, #eff5f7 100%);
+            color: rgba(0,0,0,0.35);
+          }
+          & i {
+            color: #fff;
+            position: relative;
+            left: 4px;
+            top: -1px;
+          }
+        }
+        .el-progress {
+          width: 88%;
+          margin: 30px 0 0 6%;
+        }
+        .time-div {
+          color: #fff;
+          font-size: 12px;
+          display: inline-block;
+          margin-top: 20px;
+          p {
+            margin-bottom: 0;
+            &:last-child {
+              margin-left: 20%;
+            }
+          }
+          &.time-start {
+            margin-left: 2%;
+          }
+          &:last-child {
+            margin-left: 67%;
+          }
+        }
+      }
+      &:nth-child(2) {
+        display: flex;
+        width: 28%;
+        .span-time {
+          color: #0ee;
+          font-size: 14px;
+          margin: 25px 0 0 5%;
+          .iconfont {
+            font-size: 14px;
+          }
+          span {
+            color: #fff;
+            margin-left: 5%;
+          }
+        }
+        .time-number {
+          background: rgba(0,0,0,0.2);
+          width: 50px;
+          height: 50px;
+          border-radius: 10px;
+          margin: 30px 0 0 3%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 28px;
+          color: #fff;
+        }
+        .middle-number {
+          color: #fff;
+          margin: 55px 0px 0 3%;
+        }
+      }
+      &:last-child {
+        display: flex;
+        width: 18%;
+        .icon-xiaoxi {
+          width: 80px;
+          height: 80px;
+          background:rgba(0,0,0,0.2);
+          margin: 15px 0 0 4%;
+          border-radius: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .iconfont {
+            font-size: 60px;
+            color: #5B92FF;
+          }
+        }
+        .span-xiaoxi {
+          margin: 25px 0 0 5%;
+          color: #0ee;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  // 详情页右上角印章区域
+  .icon-yinzhang {
+    position: fixed;
+    right: 20px;
+    top: 110px;
+    z-index: 10;
+    .iconfont {
+      font-size: 100px;
+    }
+  }
+  // 处理中
+  .iconyinzhang-chulizhong {
+    color: #32ad69;
+  }
+  // 申请验收
+  .iconyinzhang-shenqingyanshou {
+    color: #F76262;
+  }
+  // 通过验收
+  .iconyinzhang-tongguoyanshou {
+    color: #1296db;
+  }
+  // 挂起
+  .iconyinzhang-guaqi {
+    color: #F76262;
+  }
+  // 结束
+  .iconyinzhang-yijieshu {
+    color: #a3a3a3;
+  }
+  // 结案
+  .iconyinzhang-yijiean {
+    color: #a3a3a3;
+  }
+
+  // 如果是新建页，则添加此类
+  .detail-margin {
+    margin-top: 4%;
+  }
+
+  // 按钮禁用状态
+  .button-disabled {
+    background: linear-gradient(0deg,rgba(80,220,245,0.99) 1%,rgba(80,220,245,0) 100%);
+    opacity: 0.3;
+    color: rgba(0,238,238,1) !important;
+  }

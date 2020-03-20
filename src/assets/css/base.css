@@ -1,0 +1,191 @@
+.tunnelTree.el-dialog__wrapper .el-dialog{
+    color: #09ABB9;
+    background: transparent;
+    background-image:url('../tunnelTree/baseAlert_small.png');
+    background-size: 100% 100%  ;
+  }
+  .tunnelTree.el-dialog__wrapper .el-dialog__header{
+    text-align: center;
+    padding: 0px 20px 10px;
+    line-height: 26px;
+  }
+  .tunnelTree.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn {
+    border: 2px solid #3397ab;
+    width: 24px;
+    border-radius: 15px;
+    height: 24px;
+    line-height: 0;
+  }
+  .tunnelTree .el-dialog__title{
+    color: #06b8c4;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 44px;
+  }
+  .tunnelTree .el-form-item__label{
+    color: #09ABB9;
+  }
+  .tunnelTree .el-dialog__close.el-icon.el-icon-close{
+    font-size: 20px;
+    color: #3397ab;
+    font-weight: bold;
+  }
+  .tunnelTree .alert-button {
+    background: #39aac6;
+    color: #ffffff;
+  }
+  .tunnelTree .alert-button:hover {
+    opacity: 0.7;
+  }
+  .tunnelTree .el-dialog__headerbtn {
+    position: absolute;
+    top: 10px;
+    right: -13px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 25px;
+}
+.tunnelTree .time-div .el-input--small .el-input__inner {
+  height: 36px;
+  line-height: 36px;
+  background: transparent;
+  border: 1px solid #2b98ba;
+}
+
+.boardInfo.el-dialog__wrapper .el-dialog__header,.manageInfo.el-dialog__wrapper .el-dialog__header,
+.typeInfoRemove.el-dialog__wrapper .el-dialog__header,.typeInfoAdd.el-dialog__wrapper .el-dialog__header{
+  text-align: center;
+  padding: 0px 20px 10px;
+  line-height: 26px;
+}
+.boardInfo.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn,.manageInfo.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn,
+.typeInfoRemove.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn,.typeInfoAdd.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn {
+  border: 2px solid #3397ab;
+  width: 24px;
+  border-radius: 15px;
+  height: 24px;
+  line-height: 0;
+}
+.boardInfo .el-dialog__title,.manageInfo .el-dialog__title,.typeInfoRemove .el-dialog__title,.typeInfoAdd .el-dialog__title{
+  color: #06b8c4;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 44px;
+}
+.boardInfo .el-form-item__label,.manageInfo .el-form-item__label,.typeInfoRemove .el-form-item__label,.typeInfoAdd .el-form-item__label{
+  color: #09ABB9;
+}
+.boardInfo .el-dialog__close.el-icon.el-icon-close,.manageInfo .el-dialog__close.el-icon.el-icon-close,
+.typeInfoRemove .el-dialog__close.el-icon.el-icon-close,.typeInfoAdd .el-dialog__close.el-icon.el-icon-close{
+  font-size: 20px;
+  color: #3397ab;
+  font-weight: bold;
+}
+.boardInfo .alert-button,.manageInfo .alert-button ,.typeInfoRemove .alert-button ,.typeInfoAdd .alert-button  {
+  background: #39aac6;
+  color: #ffffff;
+}
+.boardInfo .el-dialog__headerbtn,.manageInfo .el-dialog__headerbtn,.typeInfoRemove .el-dialog__headerbtn,.typeInfoAdd .el-dialog__headerbtn {
+  position: absolute;
+  top: 10px;
+  right: -13px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 25px;
+}
+.boardInfo .time-div .el-input--small .el-input__inner,.manageInfo .time-div .el-input--small .el-input__inner,
+.typeInfoRemove .time-div .el-input--small .el-input__inner,.typeInfoAdd .time-div .el-input--small .el-input__inner {
+height: 36px;
+line-height: 36px;
+background: transparent;
+border: 1px solid #2b98ba;
+}
+.boardInfo.el-dialog__wrapper .el-dialog{
+      color: #09ABB9;
+      background: transparent;
+      height: 880px;
+      background-image:url('../tunnelTree/board.png')!important;
+      margin-top: 50px!important;
+      background-size: 100% 100%;
+  }
+  .boardInfo.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn{
+      width: 27px;
+      height: 27px;
+      top: 4px;
+      right: 0px;
+  }
+  .boardInfo.el-dialog__wrapper .el-dialog__body{
+    padding: 0 ;
+    margin-top: -16px;
+  }
+  .boardInfo .el-dialog__title{
+    color: #5B92FF;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 44px;
+  }
+  .manageInfo.el-dialog__wrapper .el-dialog{
+    color: #09ABB9;
+    border:1px solid #5B92FF;
+    border-radius: 4px;
+    width: 850px;
+    height: 700px;
+    background: transparent;
+    margin-top: 135px!important;
+    background-image:url('../img/bgTwo.png')!important;
+    background-size: 100% 100%;
+  }
+  .typeInfoRemove.el-dialog__wrapper .el-dialog{
+    color: #09ABB9;
+    border:1px solid #5B92FF;
+    border-radius: 4px;
+    width: 550px;
+    height: 300px;
+    background: transparent;
+    margin-top: 250px!important;
+    background-image: url(/static/img/bgTwo.a178d248.png)!important;
+    background-size: 100% 100%;
+  }
+  
+  .typeInfoAdd.el-dialog__wrapper .el-dialog{
+    color: #09ABB9;
+    background: transparent;
+    border:1px solid #5B92FF;
+    border-radius: 4px;
+    width: 350px;
+    height: 200px;
+    background-image:none!important;
+    margin-top: 350px!important;
+    /* background: linear-gradient(to bottom, rgba(1,34,49,0.5) 0%, rgba(2,160,219,0.15) 100%) */
+    background-image: url(/static/img/bgTwo.a178d248.png)!important;
+    background-size: 100% 100%;
+  }
+  .manageInfo.el-dialog__wrapper .el-dialog__header,.typeInfoRemove.el-dialog__wrapper .el-dialog__header,.typeInfoAdd.el-dialog__wrapper .el-dialog__header{
+    text-align: left;
+    margin:0 auto;
+    color:#5B92FF;
+    font-size: 14px;
+    padding:0 0 0 16px;
+    background: rgba(83,227,253,0.15);
+    width: 100%;
+    height: 34px;
+    line-height: 34px;
+    position: relative;
+  }
+  .manageInfo .el-dialog__title,.typeInfoRemove .el-dialog__title,.typeInfoAdd .el-dialog__title{
+    line-height: 34px
+  }
+  .manageInfo.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn,.typeInfoRemove.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn,.typeInfoAdd.el-dialog__wrapper .el-dialog__header .el-dialog__headerbtn{
+    border:none;
+    top: 5px;
+    right: 5px;
+  }
+  .manageInfo.el-dialog__wrapper .el-dialog__body,.typeInfoRemove.el-dialog__wrapper .el-dialog__body,.typeInfoAdd.el-dialog__wrapper .el-dialog__body{
+    padding:0;
+  }

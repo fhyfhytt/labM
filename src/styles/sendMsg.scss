@@ -1,0 +1,303 @@
+.sendMsg{
+    .actives{
+        color: #5B92FF;
+        background: #fff;
+    }
+    color:#292929;
+    .selectInfo{
+        display: inline-block;
+        vertical-align: top;
+        width: 230px;
+        margin: 0 12px;
+        i{
+            cursor: pointer;
+        }
+        .infoCont{
+            border:1px solid #5B92FF;
+            border-radius: 5px;
+            padding: 0;
+            height: 590px;
+            margin:22px 0 0;
+            overflow-y: auto;
+            li{
+                // height: 34px;
+                line-height: 30px;
+                padding-left: 6px;
+                border-bottom:1px solid #5B92FF;
+                &>:last-child{
+                    border-bottom: none;
+                }
+            }
+        }
+
+        .infoCont::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    .sendRight{
+        display: inline-block;
+        vertical-align: top;
+        width:792px;
+        .borderBlock{
+            border:1px solid #5B92FF;
+            border-radius: 4px;
+        }
+        .sendTop{
+            .boardTexts{
+                width: 100%;
+                height: 132px;
+                display: flex;
+            }
+            .textShow{
+                border:6px solid #bbb;
+                display: inline-block;
+                margin: auto;
+                background: #000;
+                overflow: hidden;
+                .xh{
+                    overflow: hidden;
+                }
+                .nameShow{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+        .sendCenter{
+            margin-top:8px;
+            .headerTop{
+                margin-bottom: 1px;
+                background: rgba(83,227,253,0.15);
+                width: 100%;
+                height: 34px;
+                line-height: 34px;
+                position: relative;
+                &>div{
+                    float: left;
+                    font-size: 14px;
+                    color: #fff;
+                    margin-left: 16px;
+                }
+                &>span{
+                    float: right;
+                    font-size: 12px;
+                        color: #5B92FF;
+                    margin-right: 14px;
+                    cursor: pointer;
+                    &:hover{
+                        transform: scale(1.1)
+                    }
+                    &>span{
+                        margin-right: 6px;
+                        color: #5B92FF;vertical-align: middle;
+                    }
+                }
+                &>p{
+                    position: absolute;
+                    height: 1px;
+                    width: 100%;
+                    bottom: -1px;
+                    left: 0;
+                    background: radial-gradient(#53e3fd 20%, transparent 80%);
+                    margin: 0;
+                }
+            }
+        }
+        .sendBom{
+            margin-top: 8px;
+            display: flex;
+            .sendBomL{
+                li{
+                    &:nth-child(2){
+                        margin-top: 8px;
+                    }
+                    margin-bottom: 8px;
+                    span{
+                        &:first-child{
+                        width:105px;
+                        margin-left: 3px;
+                        text-align: right;
+                        display: inline-block;}
+                    }
+                    .el-input--medium .el-input__inner{
+                        width: 115px;
+                    }
+                    .el-select.el-select--medium{
+                        margin: 0 24px 0 6px;
+                    }
+                }
+                .userGp{
+                    .el-input{
+                        width: 115px;
+                        margin-left: 6px;
+                    }
+                    .iconfont{
+                        cursor: pointer;
+                        &:hover{
+                            transform: scale(1.1)
+                        }
+                    }
+                }
+                p{
+                    font-size: 12px;
+                    color: #ffde59;
+                    padding-left: 30px;
+                }
+                .btn{
+                    cursor: pointer;
+                    text-align: center;
+                    span{
+                        border-radius: 3px;
+                        display: inline-block;
+                        width: 96px;
+                        height: 30px;
+                        background: rgb(37, 165, 192);
+                        border:1px solid rgb(37, 165, 192);
+                        text-align: center!important;
+                        line-height: 30px;
+                        color:#fff;
+                        margin:0 6px;
+                        &:hover{
+                            opacity: 0.7;
+                        }
+                    }
+                }
+            }
+            .sendBomR{
+                width: 524px;
+                margin-left: 8px;
+            }
+        }
+            .el-table{
+            /* 表格字体颜色 */
+            color:white;
+            background-color: transparent;
+            /* 表格边框颜色 */
+            /* border: 0.5px solid #758a99; */
+            height: 608px;
+            }
+            /* 表格内背景颜色 */
+            .el-table th, .el-table tr,.el-table td{
+            border: 0;
+            background-color: transparent;
+            // padding: 0 4px;
+            text-align: center;
+            }
+            /* 双数行背景颜色 */
+            .el-table--striped .el-table__body tr.el-table__row--striped td {
+            // background-color:#fff;
+            // background-color: rgba(148, 144, 144, 0.3)
+            }
+            /* 使表格背景透明 */
+            .el-table th, .el-table tr {
+                background-color: transparent;
+            }
+            /* 删除表格下横线 */
+            .el-table::before {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 0px;
+            }
+            /* 表格表头字体颜色 */
+            .el-table thead {
+            color: white;
+            font-weight: 500;
+            background-color: transparent;
+            }
+            .el-table th:hover, .el-table tr:hover,.el-table--enable-row-hover .el-table__body tr:hover>td {
+                background-color: transparent;
+            }
+            .el-table .cell{
+                padding: 0 4px;
+                white-space: nowrap;
+                font-size: 12px;
+                height: 36px;
+                line-height: 36px;
+                .iconchakan{
+                    color: #5B92FF;
+                }
+            }
+            .el-table--medium td{
+                padding: 9px 0;
+            }
+            .el-table--medium th{
+                padding: 0;
+                background: rgba(0,0,0,0.2);
+                color:#5B92FF;
+                &:hover{
+                    background: rgba(0,0,0,0.2);
+                }
+            }
+            .el-table--medium td{
+                padding: 0;
+            }
+            .el-checkbox__inner::after{
+                border-color: #5B92FF;
+            }
+            .el-checkbox__inner{
+                border-color: #5B92FF;
+                background: transparent;
+            }
+            .el-table--scrollable-y .el-table__body-wrapper::-webkit-scrollbar{
+                display: none;
+            }
+    }
+
+        .el-form-item__label{
+            color:#5B92FF;
+            font-size: 12px;
+        }
+        .el-form-item--medium .el-form-item__label,.el-input--medium .el-input__inner,.el-input--medium .el-input__icon{
+            line-height: 30px;
+        }
+        .el-select .el-input.is-focus .el-input__inner{
+            border-color:#5B92FF;
+        }
+        .el-input--medium .el-input__inner{
+            background: transparent;
+            border:1px solid #5B92FF;
+            height: 30px;
+        }
+        .el-form-item--medium .el-form-item__content{
+            line-height: 30px;
+        }
+        .el-select-dropdown{
+            background: transparent;
+        }
+        .el-input__inner{
+            color:#fff;
+        }
+        .el-form-item{
+            margin-bottom: 12px;
+        }
+}
+.select-option{
+    margin-top: 6px!important;
+    background: #4E90AD;
+    border-color:transparent;
+    color:#fff;
+    .el-select-dropdown__item.hover,.select-option .el-select-dropdown__item:hover{
+        background: rgba(1,51,74,0.15);
+        color:#fff;
+    }
+    .el-select-dropdown__item.selected,.el-select-dropdown__empty{
+        color:#fff;
+    }
+    .el-select-dropdown__item{
+        color:#fff;
+    }
+    .popper__arrow::after{
+        border-bottom-color:#5B92FF!important;
+    }
+    .popper__arrow{
+        top:-7px!important;
+    }
+    .el-input__inner{
+        color:#fff;
+    }
+    .el-popper,.popper__arrow{
+        display: none!important;
+    }
+}

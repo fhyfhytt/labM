@@ -1,0 +1,94 @@
+.sendContent {
+  background: #fff;
+  margin: 16px 0;
+  padding: 20px 100px;
+  overflow-y: auto !important;
+  max-height: calc(100vh - 140px);
+  /*样式改变代码-----------------------------------------------------*/
+  /* 滚动条整体部分 */
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: transparent;
+  }
+
+  /* 滚动条中能上下移动的小块 */
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 5px;
+  }
+  /* scroll轨道背景 */
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: transparent;
+  }
+  .el-select {
+    width: 100%;
+  }
+
+  // .vue-treeselect__control-arrow-container::before {
+  //   content: "";
+  // }
+  .el-icon-loading {
+    font-size:70px;
+  }
+  .mgItem {
+    .el-input {
+      // width:calc(100% - 140px)
+    }
+  }
+  .quillWrapper {
+    .ql-toolbar.ql-snow {
+      border-radius: 8px 8px 0 0;
+    }
+    .ql-container.ql-snow {
+      border-radius: 0 0 8px 8px;
+    }
+    .ql-picker-label.ql-active::before {
+      position: absolute;
+    }
+    .ql-snow .ql-picker.ql-header .ql-picker-label::before {
+      position: absolute;
+    }
+    .ql-picker-label {
+      svg:not(:root) {
+        vertical-align: top;
+      }
+    }
+  }
+  .el-upload-list {
+    position: relative;
+    top: -100px;
+    left: 160px;
+  }
+  .upload-img {
+    .el-icon-close {
+      display: none;
+    }
+    .avatar:hover .el-icon-close {
+      display: inline-block;
+      color: red;
+    }
+  }
+  .el-icon-document {
+    color: #fdd561;
+  }
+  .el-upload__tip2 {
+    font-size: 12px;
+    color: #606266;
+
+    white-space: nowrap;
+
+    color: red;
+    cursor: pointer;
+  }
+  .el-upload-dragger {
+    width: 260px;
+    min-height: 130px;
+    max-height: 260px;
+    height: auto;
+    .el-icon-upload {
+      margin: 20px 0;
+    }
+  }
+
+}

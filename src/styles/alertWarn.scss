@@ -1,0 +1,39 @@
+.box-card{
+    height: 260px;
+    font-size: 12px;
+    position: absolute;
+    background: #4E90AD;
+    color: #fff;
+    border-color: #5B92FF;
+    .el-card__header{
+        border-color: #5B92FF;
+        padding: 6px 0 6px 6px;
+        span{
+            font-size: 14px;
+        }
+    }
+    .el-card__body{
+        padding: 6px 0;
+    }
+    .iconq-guanbi{
+        cursor: pointer;
+        float: right;
+        margin-right: 10px;
+    }
+    .dataList{
+        height: 190px;
+        overflow: auto;
+    }
+    .countShow{
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        span{
+            color: red;
+            margin: 0 6px;
+        }
+    }
+}
+.box-card .dataList::-webkit-scrollbar{
+    display: none
+}

@@ -1,0 +1,88 @@
+.dialgAddform1{
+
+  .addtop{
+     padding-top:18px;
+  }
+  .el-input__inner {
+   // cursor: pointer;
+   height: 34px;
+   width: 100%;
+  }
+  .el-form-item__label{
+    color:#292929 !important;
+  }
+  //input框间隔
+  .el-form-item {
+   margin-bottom: 22px;
+   .el-input{
+     font-size: 12px;
+     // input{
+       // padding-left: 10px;
+     // }
+   }
+ }
+ .el-form-item__error{
+  top: 100%;
+ }
+ .el-form-item.is-success .el-input__inner{
+   border-color: #5B92FF;
+ }
+  .dialog-footer{
+    text-align: right;
+    margin-top: 10px;
+  }
+  input::-webkit-input-placeholder {
+     opacity: 0.5;
+  }
+   textarea::-webkit-input-placeholder {
+     opacity: 0.5;
+   }
+   .el-textarea.el-input--medium .el-textarea__inner {
+     height: 80px;
+     font-size: 12px;
+   }
+}
+.dialgEditform1{
+
+  .edittop{
+    padding-top:18px;
+  }
+  .el-input__inner {
+    // cursor: pointer;
+    height: 34px;
+    width: 100%;
+  }
+  //input框间隔
+ .el-form-item {
+    margin-bottom: 22px;
+   .el-input{
+      font-size: 12px;
+      // input{
+        // padding-left: 10px;
+      // }
+    }
+ }
+ .el-form-item__label{
+   color:#5B92FF !important;
+ }
+ .el-form-item.is-success .el-input__inner{
+  border-color: #5B92FF;
+}
+ .el-form-item__error{
+  top: 100%;
+ }
+ .dialog-footer{
+   text-align: center;
+   margin-top: 10px;
+ }
+ input::-webkit-input-placeholder {
+    opacity: 0.5;
+ }
+ textarea::-webkit-input-placeholder {
+  opacity: 0.5;
+ }
+ .el-textarea.el-input--medium .el-textarea__inner {
+    height: 80px;
+    font-size: 12px;
+ }
+}
