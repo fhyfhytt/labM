@@ -34,8 +34,8 @@
           <el-col>
             <div class="right-page-title">
               <span style="margin-left:40px;margin-right:60px;"><span style="padding-right:10px;">编号:</span>{{ selectedCode }}</span>
-              <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">名称:</span>{{ selectedName }}</span>
-              <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">启用状态:</span>{{ selectedState }}</span>
+              <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">区域编号:</span>{{ selectedName }}</span>
+              <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">区域名称:</span>{{ selectedState }}</span>
               <span><span style="padding-right:10px;">描述:</span>{{ selectedDescription }}</span>
             </div>
           </el-col>
@@ -54,7 +54,7 @@
 
 <script>
 
-import { classifyTree, queryClass } from '@/api/classify.js'
+import { classifyTree, queryClass } from '@/api/area.js'
 import { setTreeData } from '@/utils/utils.js'
 import tableManageParent from './components/tab/table.vue'
 
@@ -63,8 +63,8 @@ export default {
   components: { tableManageParent },
   data() {
     return {
-      selectedState: '', // 分类状态
-      selectedName: '', // 分类名称
+      selectedState: '', // 组织状态
+      selectedName: '', // 组织名称
       selectedDescription: '', // 描述
       selectedCode: '',
       orgtype: '', // 区分是否是最后一级
@@ -111,7 +111,7 @@ export default {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id
               this.selectedName = this.treedata[0].name
-              this.selectedState = this.treedata[0].status === '1' ? '启用' : '不启用'
+              this.selectedState = this.treedata[0].status
               this.selectedDescription = this.treedata[0].description
               this.selectedCode = this.treedata[0].code
             }
