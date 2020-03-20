@@ -47,18 +47,18 @@ const deviceControlRouter = {
       // ,
       // roles: ['SparesManagement']
     },
-    name: 'SparesManage',
-    redirect: '/deviceManagement/SparesManagement/SparesManage',
+    name: 'SparesManagement',
+    redirect: '/deviceManagement/SparesManagement/SparesCheck',
     children: [{
       path: 'sparesManage',
-      component: () => import('@/views/deviceManagement/SparesManagement/SparesManage/view.vue'),
+      component: () => import('@/views/deviceManagement/SparesManagement/SparesCheck/view.vue'),
       meta: {
-        title: '备件管理',
+        title: '备件审核',
         icon: 'icon111'
         // ,
-        // roles: ['sparesManage']
+        // roles: ['sparesCheck']
       },
-      name: 'sparesManage'
+      name: 'SparesCheck'
     }]
   }
   ]
