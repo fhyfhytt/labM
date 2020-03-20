@@ -23,10 +23,12 @@
         <el-row>
           <el-col>
             <div class="right-page-title">
-              <el-form ref="form1" :model="formRegion" size="small" label-width="110px" :inline="true">
+              <!-- :model="formRegion" -->
+              <el-form ref="form1" size="small" label-width="110px" :inline="true">
                 <el-row>
                   <el-form-item label="数据域名称：">
-                    <el-input v-model="formRegion.name" style="background:transparent;width:150px;" placeholder="请输入数据域名称" />
+                    <!-- v-model="formRegion.name" -->
+                    <el-input style="background:transparent;width:150px;" placeholder="请输入数据域名称" />
                   </el-form-item>
                   <el-form-item>
                     <el-button v-permission="'regionSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
