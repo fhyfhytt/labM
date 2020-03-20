@@ -131,7 +131,7 @@ export default {
             height: 36px;
             line-height: 36px;
             .iconchakan{
-                color: #5B92FF;
+                color: #379EFC;
             }
         }
          .el-table--medium td{

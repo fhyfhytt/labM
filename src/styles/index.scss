@@ -259,12 +259,46 @@ aside {
           flex:1
         }
       }
+      .button-tool-left{
+        .el-button{
+          background: #379EFC;
+          color: #fff;
+          border: none;
+          letter-spacing: 5px;
+          &:hover{
+            outline: none;
+            background: #61B4FF;
+            border-color:#61B4FF;
+          }
+          &:active{
+            outline: none;
+            background: #2675BD;
+            border-color:#2675BD;
+          }
+        }
+      }
+      .button-tool-right{
+        // .el-button{
+
+        //   &:hover{
+        //     outline: none;
+        //     background: #61B4FF;
+        //     border-color:#61B4FF;
+        //   }
+        //   &:active{
+        //     outline: none;
+        //     background: #2675BD;
+        //     border-color:#2675BD;
+        //   }
+        // }
+
+      }
       .scope-caozuo {
         margin-left: 12px;
         margin-right: 8px;
         font-size: 19px;
         cursor: pointer;
-        color:#5B92FF;
+        color:#379EFC;
         &:hover{
           color:#B3CCFF
         }

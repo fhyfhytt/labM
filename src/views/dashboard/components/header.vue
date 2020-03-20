@@ -56,13 +56,13 @@ export default {
         &>div{
             float: left;
             font-size: 14px;
-            color: #5B92FF;
+            color: #379EFC;
             margin-left: 16px;
             .topIcon{
                 display: inline-block;
                 width: 3px;
                 height: 16px;
-                background: #5B92FF;
+                background: #379EFC;
                 position: relative;
                 top: 3px;
                 margin-right: 6px;

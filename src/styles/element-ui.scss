@@ -56,7 +56,7 @@
   margin-right: 10px;
   border-radius: 4px !important;
   &:hover{
-    border-color: #5B92FF !important;
+    border-color: #379EFC !important;
   }
 }
 // to fixed https://github.com/ElemeFE/element/issues/2461
@@ -67,23 +67,25 @@
   margin: 0 auto;
   @media screen and(min-width: 1900px) {
     width: 33%;
-    margin-top: 15hv !important;
+    margin-top: 10vh !important;
   }
   @media screen and(min-width: 1600px) and(max-width: 1900px) {
     width: 40%;
-    margin-top: 10hv !important;
+    margin-top: 5vh !important;
   }
   @media screen and(min-width: 1400px) and(max-width: 1600px) {
     width: 40%;
-    margin-top:5hv !important;
+    margin-top:5vh !important;
   }
   @media screen and(min-width: 1100px) and(max-width: 1400px) {
     width: 50%;
-    margin-top: 0 !important;
+    margin-top: 5vh !important;
   }
 
 }
-
+.baseMove{
+  margin-top:15vh !important
+}
 // refine element ui upload
 .upload-container {
   .el-upload {

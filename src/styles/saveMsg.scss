@@ -3,14 +3,14 @@
     .el-input--medium .el-input__inner{
             background: transparent;
         border: 1px solid #50dcf5;
-        height: 30px;
+        height: 32px;
     }
     .el-select .el-input.is-focus .el-input__inner{
-            border-color:#5B92FF;
+            border-color:#379EFC;
     }
     padding:0 12px;
         .borderBlock{
-            border:1px solid #5B92FF;
+            border:1px solid #379EFC;
             border-radius: 4px;
         }
     .saveTop{
@@ -74,10 +74,10 @@
         margin-top: 8px;
         display: flex;
     .saveCenterL{
-        color:#5B92FF;
+        color:#379EFC;
         width: 260px;
         .infoCont{
-            border-top:1px solid #5B92FF;
+            border-top:1px solid #379EFC;
             border-radius: 5px;
             padding: 0;
             height: 415px;
@@ -88,7 +88,7 @@
                 // height: 34px;
                 line-height: 30px;
                 padding-left: 6px;
-                border-bottom:1px solid #5B92FF;
+                border-bottom:1px solid #379EFC;
                 &>:last-child{
                     border-bottom: none;
                 }
@@ -119,21 +119,21 @@
     }
     .saveCenterR{
         width: 762px;
-        color:#5B92FF;
+        color:#379EFC;
         margin-left: 12px;
         .saveCenterRt{
             position: relative;
             .checkImg{
                 padding:12px 10px;
                 .el-checkbox__inner{
-                    border-color: #5B92FF;
+                    border-color: #379EFC;
                     background: transparent;
                 }
                 .el-checkbox__inner::after{
-                    border-color: #5B92FF;
+                    border-color: #379EFC;
                 }
                 .el-checkbox__label{
-                    color:#5B92FF;
+                    color:#379EFC;
                 }
             }
             /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
@@ -155,7 +155,7 @@
             {
                 border-radius: 3px;
                 -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,.3);
-                background-color: #5B92FF;
+                background-color: #379EFC;
             }
             .imgAll{
                 width: 500px;
@@ -228,7 +228,7 @@
                 margin-left: 10px;
                 span{
                     &:first-child{
-                        color: #5B92FF;
+                        color: #379EFC;
                     }
                     &:last-child{
                         color: #ffde59;
@@ -246,7 +246,7 @@
                         color: #fff;
                         width: 100px;
                         display: inline-block;
-                        border: 1px solid #5B92FF;
+                        border: 1px solid #379EFC;
                         padding-left: 16px;
                         margin-left: 10px;
                         border-radius: 3px;
@@ -257,10 +257,10 @@
     }
         .select-option{
         margin-top: 6px!important;
-        background: transparent;border-color:#5B92FF;
+        background: transparent;border-color:#379EFC;
         color:#fff;
         .el-select-dropdown__item.hover,.select-option .el-select-dropdown__item:hover{
-            background: #5B92FF;
+            background: #379EFC;
             color:#fff;
         }
         .el-select-dropdown__item.selected,.el-select-dropdown__empty{
@@ -270,7 +270,7 @@
             color:#fff;
         }
         .popper__arrow::after{
-            border-bottom-color:#5B92FF!important;
+            border-bottom-color:#379EFC!important;
         }
         .popper__arrow{
             top:-7px!important;

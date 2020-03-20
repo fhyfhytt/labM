@@ -823,11 +823,11 @@ export default {
     }
   }
   >>> .el-step__head.is-success {
-    color: #5b92ff;
-    border-color: #5b92ff;
+    color: #379EFC;
+    border-color: #379EFC;
   }
   >>> .el-step__title.is-success {
-    color: #5b92ff;
+    color: #379EFC;
   }
   >>> .el-step__icon.is-text {
     color: #292929;
@@ -836,7 +836,7 @@ export default {
     font-size: 14px;
     font-weight: 900;
     .el-icon-check {
-      color: #5b92ff;
+      color: #379EFC;
       font-weight: bold;
       font-size: 24px;
     }
@@ -854,7 +854,7 @@ export default {
   color: #fff;
   padding: 0px 15px;
   font-size: 12px;
-  background: #5b92ff;
+  background: #379EFC;
   outline: none;
   &:hover {
     background: rgba(113, 160, 255, 1);
@@ -863,7 +863,7 @@ export default {
     background: #4b7bdb;
   }
   &:visited {
-    background: #5b92ff;
+    background: #379EFC;
   }
 
   >>> i{

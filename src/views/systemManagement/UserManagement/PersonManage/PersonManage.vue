@@ -36,8 +36,12 @@
 
       <div class="page-table-content">
         <div class="button-tool">
-          <el-button v-permission="'personAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-          <el-button v-permission="'personDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleEditAll">批量删除</el-button>
+          <div class="button-tool-left fl" />
+          <div class="button-tool-right fr">
+            <el-button v-permission="'personAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+            <el-button v-permission="'personDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleEditAll">批量删除</el-button>
+          </div>
+
         </div>
         <el-table v-loading="loading" :data="tableData" style="width: 100%" height="568" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
@@ -89,7 +93,6 @@
 import { getUserList, rsPassword, deleteSysUser } from '@/api/userManagement.js'
 import addMoudel from './addMoudel.vue'
 import editMoudel from './editMoudel.vue'
-// import removeDialog from '@/views/baseComponents/baseRemove'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 export default {
   components: { addMoudel, editMoudel, confirmDialog },
@@ -297,11 +300,11 @@ export default {
 </script>
 <style lang="scss">
 // .typeInfoAdd .el-dialog__title{
-//         color:#5B92FF
+//         color:#379EFC
 //       }
 .UserManage {
   .typeInfoAdd .el-dialog__title {
-    color: #5b92ff;
+    color: #379EFC;
   }
   .UserManage-title {
     margin: 1%;
@@ -347,7 +350,7 @@ export default {
     //  .el-table .cell{
     //     height: 43px;
     //     line-height: 43px;
-    //     border-bottom:1px solid #5B92FF
+    //     border-bottom:1px solid #379EFC
     //   }
     //   .el-table th>.cell{
     //     border: none
@@ -361,7 +364,7 @@ export default {
   .el-table .cell {
     height: 43px;
     line-height: 43px;
-    border-bottom: 1px solid #5b92ff;
+    border-bottom: 1px solid #379EFC;
   }
   .el-table th > .cell {
     border: none;

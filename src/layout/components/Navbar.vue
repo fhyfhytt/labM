@@ -146,9 +146,6 @@ export default {
     float: left;
   }
 
-  base-remove {
-    width: 30%;
-  }
   .errLog-container {
     display: inline-block;
     vertical-align: top;

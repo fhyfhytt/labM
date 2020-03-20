@@ -39,9 +39,14 @@
           <div class="right-page-table">
             <div class="page-table-content">
               <div class="button-tool">
-                <el-button v-permission="'regionAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-                <el-button v-permission="'regionDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
+                <div class="button-tool-left fl" />
+                <div class="button-tool-right fr">
+                  <el-button v-permission="'regionAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+                  <el-button v-permission="'regionDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
+                </div>
+
               </div>
+
               <el-table ref="roleInfo" v-loading="loading" :data="tableData" height="568" @row-click="selectRow" @selection-change="handleSelectRow">
                 <el-table-column type="selection" width="60" />
                 <el-table-column type="index" label="序号" />
@@ -392,7 +397,7 @@ export default {
       border-radius: 10px;
       color: #01E6E9;
       background:transparent;
-      border:1px solid #5B92FF;
+      border:1px solid #379EFC;
       background-image: url(/static/img/bgTwo.a178d248.png)!important;
       background-size: 100% 100%;
       overflow: hidden;
@@ -413,7 +418,7 @@ export default {
         }
         .el-checkbox__inner{
           top: 3px;
-          border:1px solid #5B92FF;
+          border:1px solid #379EFC;
           background:transparent
         }
         .el-tree-node__label{
@@ -480,7 +485,7 @@ export default {
     width: 0 !important
   }
       .el-table{
-        border: 1px solid #5B92FF;
+        border: 1px solid #379EFC;
         border-radius: 4px;
         overflow-y: auto;
         .cell{
@@ -505,12 +510,12 @@ export default {
         font-size: 14px;
         padding:0 0 0 16px;
         background: linear-gradient(to bottom, rgba(83,227,253,1) 0%, rgba(83,227,253,0.0) 100%);
-        color:#5B92FF;
+        color:#379EFC;
         width: 100%;
         height: 34px;
         line-height: 34px;
         .el-dialog__title{
-          color: #5B92FF;
+          color: #379EFC;
           font-size: 14px;
           font-weight: bold;
           line-height: 34px;
@@ -519,28 +524,28 @@ export default {
       .el-dialog__body{
         // padding:0 20px;
         font-size: 14px;
-        color:#5B92FF
+        color:#379EFC
       }
       .el-tabs__item{
         color: #ffffff;
         &.is-active{
-         color: #5B92FF
+         color: #379EFC
         }
       }
       .el-tabs__nav-wrap::after{
         background: rgba(83,227,253,0.4) !important
       }
       .el-tabs__active-bar{
-        background: #5B92FF
+        background: #379EFC
       }
       .el-tabs__item:hover{
-        color: #5B92FF
+        color: #379EFC
       }
       .el-dialog__headerbtn{
         outline: none;
 
         i{
-          color: #5B92FF;
+          color: #379EFC;
           font-size: 18px;
           font-weight: bold;
         }
@@ -556,7 +561,7 @@ export default {
         .el-table .cell{
           height: 43px;
           line-height: 43px;
-          border-bottom:1px solid #5B92FF
+          border-bottom:1px solid #379EFC
         }
         .el-table th>.cell{
           border: none
@@ -577,7 +582,7 @@ export default {
           border-bottom: 0;
           font-family: Microsoft YaHei;
           font-weight: 400;
-          color: #5B92FF;
+          color: #379EFC;
           opacity: 0.9;
         }
         .el-textarea__inner {
@@ -591,7 +596,7 @@ export default {
           }
         }
         >>> .el-form-item__label{
-          color: #5B92FF
+          color: #379EFC
         }
       >>> .el-input--small .el-input__inner {
           background-color: transparent;
@@ -613,7 +618,7 @@ export default {
         .el-form-item__label {
           font-family: Microsoft YaHei;
           font-weight: 400;
-          color: #5B92FF;
+          color: #379EFC;
           opacity: 0.9;
         }
         input::-webkit-input-placeholder {
@@ -629,7 +634,7 @@ export default {
        border-radius: 5px;
       //  padding:0 20px;
        border: 1px solid #50DCF5;
-       .button-tool{
+       >>>.button-tool{
          padding-top:1%;
        }
        .scope-caozuo{
@@ -649,7 +654,7 @@ export default {
     }
     .childrenlog{
       .dialog-content{
-        color: #5B92FF;
+        color: #379EFC;
         font-size: 16px;
         // margin-top: 60px;
         padding-top: 20px;

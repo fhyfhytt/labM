@@ -253,13 +253,13 @@ export default {
         margin-right: 8px;
       }
       &.active {
-        background: #5b92ff;
+        background: #379EFC;
         color: #fff;
         // border-color: #0099ff;
         .el-icon-close:hover {
           border-radius: 50%;
           background: #fff;
-          color: #5b92ff;
+          color: #379EFC;
         }
       }
       &:hover {

@@ -157,10 +157,10 @@ export default {
             })
             .catch((response) => {
               this.loading = false
-              if (response.msg) {
+              if (response instanceof Object && response.msg !== undefined) {
                 this.$message.error(response.msg)
               } else {
-                this.$message.error(response)
+                this.$message.error(response + '')
               }
             })
         } else {

@@ -73,7 +73,7 @@ export default {
 
 .fixed-header + .app-main {
   padding-top: 47px;
-  background: #f1f2f3;
+  background: #f1f2f6;
   @media screen and(min-width: 1900px) {
     height: calc(100% - 64px);
   }
@@ -92,7 +92,7 @@ export default {
 .hasTagsView {
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
-    background: #f1f2f3;
+    background: #f1f2f6;
     @media screen and(min-width: 1900px) {
       min-height: calc(100% - 64px);
     }

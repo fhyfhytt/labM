@@ -43,7 +43,7 @@
     </div>
     <!--确认删除弹框-->
     <el-dialog append-to-body title="删除" :visible.sync="moveShow" class="baseMove">
-      <removeDialog @sureMsg="sureMsg" @confireMsg="confireMsg" />
+      <baseConfirm @sureMsg="sureMsg" @confireMsg="confireMsg" />
     </el-dialog>
     <!--新增界面-->
     <el-dialog v-if="SonaddFormVisible" v-model="SonaddFormVisible" append-to-body title="新建字典子项" :close-on-click-modal="false" :visible.sync="SonaddFormVisible" class="deviceAdd newLookadd" width="550px">
@@ -59,11 +59,11 @@
 <script>
 // import { groupEdit } from '@/api/manage.js'
 import { dictConnSelect, dictConnDel } from '@/api/Dictionarys.js'
-import removeDialog from '@/views/baseComponents/baseRemove'
+import baseConfirm from '@/views/baseComponents/baseConfirm'
 import SonAddMoudel from './SonAddMoudel.vue'
 import SoneditMoudel from './SoneditMoudel.vue'
 export default {
-  components: { removeDialog, SonAddMoudel, SoneditMoudel },
+  components: { baseConfirm, SonAddMoudel, SoneditMoudel },
   props: {
     dictId: {
       type: String,
@@ -162,6 +162,10 @@ export default {
       this.ids = row.id
       this.moveShow = true
     },
+    // 取消删除
+    confireMsg(flag) {
+      this.moveShow = flag
+    },
     // 确认删除字典子表
     sureMsg(flag) {
       this.moveShow = flag
@@ -180,10 +184,7 @@ export default {
         this.$message.error(response.message)
       })
     },
-    // 取消删除
-    confireMsg(flag) {
-      this.moveShow = flag
-    },
+
     // 选择字典子表要删除的项
     handleSelectionChange(val) {
       this.multipleDel = val
@@ -224,7 +225,7 @@ export default {
         font-weight:400;
         border:1px solid #D8DCE6;
         &:focus {
-          border:1px solid #5B92FF;
+          border:1px solid #379EFC;
         }
       }
        .el-input--small.is-focus .el-input__inner {
@@ -250,9 +251,9 @@ export default {
        }
        .el-table{
             border-radius: 5px;
-            border: 1px solid #5B92FF;
+            border: 1px solid #379EFC;
             .cell{
-                border-bottom:1px solid #5B92FF
+                border-bottom:1px solid #379EFC
             }
             .el-table th>.cell{
                 border: none

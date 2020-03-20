@@ -169,7 +169,7 @@ export default {
     }, selectUserInfoRow(row) {
       console.log(row)
       this.addForm.person = row.name
-      this.addForm.personMobile = row.personMobile
+      this.addForm.personMobile = row.mobile
       this.addForm.personId = row.id
       this.addUserVisible = false
     }, handleUserSizeChange(val) {

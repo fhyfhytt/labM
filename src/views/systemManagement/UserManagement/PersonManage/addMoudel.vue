@@ -45,7 +45,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="所属组织:" prop="deptId">
-                  <treeselect v-model="addForm.deptId" :append-to-body="true" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
+                  <treeselect v-model="addForm.deptId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -87,7 +87,7 @@
                   <el-input v-model="addForm.password" autocomplete="off" placeholder="修改用户可不用填写密码" />
                 </el-form-item>
                 <el-form-item label="所属班组:" prop="groupId">
-                  <treeselect v-model="addForm.groupId" :append-to-body="true" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
+                  <treeselect v-model="addForm.groupId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -354,6 +354,7 @@ export default {
           this.$message.error(res.msg)
         }
       })
+
       getOrgTreeNew().then(res => {
         if (res.code === 0) {
           this.$nextTick(() => {
@@ -714,14 +715,45 @@ export default {
   width: 100%;
 }
 .UserManage-add {
-    >>>.vue-treeselect__control {
-    height: 30px;
-  }
+  //树形选择框
 
-  >>>.vue-treeselect--focused {
+  .vue-treeselect {
+    line-height: 30px;
+    // height: 30px;
+  }
+  >>> .vue-treeselect__control {
+    height: 30px;
+    line-height: 30px;
+  }
+  >>> .vue-treeselect__placeholder,
+  .vue-treeselect__single-value {
+    line-height: 30px;
+  }
+  >>> .vue-treeselect--focused {
     .vue-treeselect__control {
-      border-color: #5b92ff;
+      border-color: #379efc;
       box-shadow: none;
+    }
+  }
+  .vue-treeselect__multi-value-item {
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 100;
+    color: #292929;
+  }
+  >>> .vue-treeselect__menu-container {
+    .vue-treeselect__menu {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      color: #909399;
+      font-weight: 100;
+    }
+    .vue-treeselect__option--highlight {
+      .vue-treeselect__label{
+        font-weight: 900;
+      }
+
+      background: rgba(244, 247, 250, 1);
     }
   }
 
@@ -744,11 +776,11 @@ export default {
     }
   }
   >>> .el-step__head.is-success {
-    color: #5b92ff;
-    border-color: #5b92ff;
+    color: #379efc;
+    border-color: #379efc;
   }
   >>> .el-step__title.is-success {
-    color: #5b92ff;
+    color: #379efc;
   }
   >>> .el-step__icon.is-text {
     color: #292929;
@@ -757,7 +789,7 @@ export default {
     font-size: 14px;
     font-weight: 900;
     .el-icon-check {
-      color: #5b92ff;
+      color: #379efc;
       font-weight: bold;
       font-size: 24px;
     }
@@ -803,7 +835,7 @@ export default {
     }
   }
   >>> .avatar-uploader .el-upload:hover {
-    border-color: #5b92ff;
+    border-color: #379efc;
   }
 
   .avatar-uploader-icon {

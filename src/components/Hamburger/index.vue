@@ -36,7 +36,7 @@ export default {
   height: 20px;
 }
 .icontubiao1{
-  color:#5b92ff;
+  color:#379EFC;
 }
 .iconfont{
   font-weight: 100

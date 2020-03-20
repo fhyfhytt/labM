@@ -62,16 +62,16 @@ export default {
     }
   }
   .sureRemove {
-    font-size:24px;
-    font-family:"PingFangSC-Medium,PingFang SC";
-    font-weight:900;
-    color:rgba(41,41,41,1);
-    line-height:21px;
+    font-size: 16px;
+    font-family: 'PingFangSC-Medium,PingFang SC';
+    font-weight: 100;
+    color: rgba(41, 41, 41, 1);
+    line-height: 21px;
     text-align: center;
-    margin: 38px;
-    i{
-      margin-right:16px;
-      vertical-align: top;
+    margin: 20px 30px 50px;
+    i {
+      margin-right: 16px;
+      vertical-align: -4px;
     }
   }
 }
@@ -79,19 +79,20 @@ export default {
   .goOut {
     width: 100%;
     text-align: right;
-    margin:20px 0 0 0;
+    margin: 20px 0 0 0;
   }
-  .btn {
-    width: 65px;
+  .btn-cancle {
     letter-spacing: 5px;
+    padding: 9px 21px;
   }
-  .btn-sure{
-    background:#5b92ff;
-    border-radius:4px;
-    font-size:14px;
-
+  .btn-sure {
+    background: #379efc;
+    border-radius: 4px;
+    font-size: 14px;
+    // height: 32px;
+    padding: 8px 24px;
   }
-  .btn-sure:hover{
+  .btn-sure:hover {
     opacity: 0.8;
   }
 }

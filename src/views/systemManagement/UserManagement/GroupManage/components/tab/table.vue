@@ -1,8 +1,12 @@
 <template>
   <div class="page-table-content">
     <div v-show="show" class="button-tool">
-      <el-button v-permission="'orgAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-      <el-button v-permission="'orgDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      <div class="button-tool-left fl" />
+      <div class="button-tool-right fr">
+        <el-button v-permission="'orgAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+        <el-button v-permission="'orgDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      </div>
+
     </div>
     <el-table :data="tableDate" height="605" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
@@ -24,7 +28,7 @@
     </div>
     <!--确认删除-->
     <el-dialog title="删除" :loading.sync="removeLoading" :visible.sync="moveShow" class="baseMove">
-      <confirmDialog title="是否确认删除？" @sureMsg="sureMsg" @confireMsg="confireMsg" />
+      <baseConfirm title="是否确认删除？" @sureMsg="sureMsg" @confireMsg="confireMsg" />
     </el-dialog>
     <!--新增界面-->
     <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="新建班组" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
@@ -41,10 +45,9 @@
 import { conDeleteNew } from '@/api/userManagement.js'
 import addMoudel from './addMoudel.vue'
 import editMoudel from './editMoudel.vue'
-// import removeDialog from '@/views/baseComponents/baseRemove'
-import confirmDialog from '@/views/baseComponents/baseConfirm'
+import baseConfirm from '@/views/baseComponents/baseConfirm'
 export default {
-  components: { addMoudel, editMoudel, confirmDialog },
+  components: { addMoudel, editMoudel, baseConfirm },
   props: {
     tableDate: {
       type: Array,

@@ -104,7 +104,7 @@ export default {
         margin-right: 8px;
         font-size: 19px;
         cursor: pointer;
-        color:#5B92FF;
+        color:#379EFC;
         &:hover{
           color:#B3CCFF
         }

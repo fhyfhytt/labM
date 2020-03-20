@@ -17,8 +17,12 @@
     <div class="page-table">
       <div class="page-table-content">
         <div class="button-tool">
-          <el-button v-permission="'dictionaryAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-          <el-button v-permission="'dictDeleteMore'" icon="iconfont iconxingzhuang1" size="small" @click="handleSelectDel">批量删除</el-button>
+          <div class="button-tool-left fl" />
+          <div class="button-tool-right fr">
+            <el-button v-permission="'dictionaryAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+            <el-button v-permission="'dictDeleteMore'" icon="iconfont iconxingzhuang1" size="small" @click="handleSelectDel">批量删除</el-button>
+          </div>
+
         </div>
         <el-table ref="multipleDel" v-loading="loading" :data="tableData" style="width: 100%" empty-text="无数据" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
@@ -63,7 +67,7 @@
       </el-dialog>
       <!--确认删除弹框-->
       <el-dialog title="删除" :visible.sync="moveShow" class="baseMove">
-        <removeDialog @sureMsg="sureMsg" @confireMsg="confireMsg" />
+        <baseConfirm @sureMsg="sureMsg" @confireMsg="confireMsg" />
       </el-dialog>
     </div>
   </div>
@@ -74,9 +78,9 @@ import { dictConnSelect, dictConnDel } from '@/api/Dictionarys.js'
 import AddMoudel from './AddMoudel.vue'
 import EditMoudel from './EditMoudel.vue'
 import LookMoudel from './LookMoudel.vue'
-import removeDialog from '@/views/baseComponents/baseRemove'
+import baseConfirm from '@/views/baseComponents/baseConfirm'
 export default {
-  components: { AddMoudel, EditMoudel, LookMoudel, removeDialog },
+  components: { AddMoudel, EditMoudel, LookMoudel, baseConfirm },
   data() {
     return {
       formDiction: { name: '' },

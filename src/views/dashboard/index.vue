@@ -100,7 +100,7 @@ export default {
     .grid-content {
       border-radius: 4px;
       min-height: 106px;
-      border:1px solid #5B92FF;
+      border:1px solid #379EFC;
       background: rgba(0,54,77,.3);
       background-image: radial-gradient(rgba(1,34,49,0.5), rgba(2,160,219,0.2));
     }

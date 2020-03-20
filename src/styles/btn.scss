@@ -40,29 +40,30 @@
 .yellow-btn {
   @include colorBtn($yellow);
 }
-//vuetreeselect
-.vue-treeselect {
-  line-height: 30px;
-  // height: 30px;
-}
+
 .vue-treeselect__x-container{
   position: relative;
   right:-16px;
 }
+.vue-treeselect__label{
+  font-weight: 100;
+}
+.vue-treeselect__option--selected{
+  .vue-treeselect__label{
+    font-weight: 900;
+  }
+}
+// .vue-treeselect__multi-value-item{
+//   background: #F1F2F6;
+// }
 .vue-treeselect__control {
   height: 30px;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 vue-treeselect__control {
   height: 30px;
 }
-.vue-treeselect--focused {
-  .vue-treeselect__control {
-    border-color: #5b92ff;
-    box-shadow: none;
-  }
-  
-}
+
 
 .vue-treeselect__control-arrow{
   display: none;
@@ -106,15 +107,7 @@ vue-treeselect__control {
     bottom: 0;
   }
 }
-//树形选择框
-.vue-treeselect__menu-container{
-  top:5px;
-  font-size: 14px;
-  font-weight: 400;
-}
-.vue-treeselect__portal-target{
-  z-index: 2005 !important;
-}
+
 
 .custom-button {
   display: inline-block;
@@ -135,14 +128,13 @@ vue-treeselect__control {
   
 }
 .button-cancel {
-  padding: 8px 25px;
+  padding: 8px 19px;
   cursor: pointer;
   text-align: center;
   letter-spacing: 5px;
   background: #fff;
   border-radius: 4px;
-  color: #5b92ff;
-  font-size: 12px;
+  font-size: 14px;
   outline: none;
   // min-width: 101px;
 }
@@ -283,12 +275,12 @@ vue-treeselect__control {
 
   .el-select-dropdown__item.hover,
   .select-option .el-select-dropdown__item:hover {
-    background: #5b92ff;
-    color:#fff;
+    background:rgba(244,247,250,1);
+    color:#379EFC;
   }
 
   .popper__arrow::after {
-    border-bottom-color: #5b92ff !important;
+    border-bottom-color: #379EFC !important;
   }
   .popper__arrow {
     top: -7px !important;
@@ -300,7 +292,7 @@ vue-treeselect__control {
   }
 }
 .el-select:hover .el-input__inner {
-  border-color: #5b92ff;
+  border-color: #379EFC;
 }
 
 
@@ -311,7 +303,7 @@ vue-treeselect__control {
 
 //弹出框
 .el-dialog__wrapper .el-dialog {
-  // border: 1px solid #5b92ff;
+  // border: 1px solid #379EFC;
   box-shadow: 0px 2px 21px 0px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
 
@@ -319,8 +311,7 @@ vue-treeselect__control {
   .el-dialog__header {
     text-align: left;
     margin: 0 auto;
-
-    background-color: #5b92ff;
+    background-color: #fff;
     font-size: 14px;
     padding: 0 0 0 16px;
     width: 100%;
@@ -333,7 +324,7 @@ vue-treeselect__control {
       top: 18px !important;
       right:21px !important;
       .el-dialog__close{
-      color:#fff;
+      color:#909399;
       }
     }
     .el-dialog__title {
@@ -355,8 +346,8 @@ vue-treeselect__control {
 //input 框
 .el-input--medium .el-input__inner {
   color: #292929;
-  height: 30px;
-  line-height: 30px;
+  height: 32px;
+  line-height: 32px;
 }
 .el-input--medium .el-input__inner::-webkit-input-placeholder,
 .el-textarea__inner::-webkit-input-placeholder {
@@ -389,7 +380,7 @@ vue-treeselect__control {
       border-color: #c7cbd6;
     }
     &:focus {
-      border-color: #5b92ff !important;
+      border-color: #379EFC !important;
       color: #292929;
     }
     &:visited {
@@ -417,15 +408,15 @@ vue-treeselect__control {
   .el-checkbox__input .el-checkbox__inner,
   .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
     background: transparent;
-    border-color: #5b92ff;
+    border-color: #379EFC;
     color: #fff;
     &::after {
-      border-color: #5b92ff;
+      border-color: #379EFC;
     }
   }
 
   .el-checkbox__inner:focus {
-    border-color: #5b92ff;
+    border-color: #379EFC;
   }
   .el-checkbox__label {
     color: #fff !important;
@@ -436,12 +427,12 @@ vue-treeselect__control {
 // 单选按钮
 .radioButton {
   .el-radio__input .el-radio__inner {
-    border: 1px solid #5b92ff;
+    border: 1px solid #379EFC;
     background-color: transparent;
     &::after {
       width: 6px;
       height: 6px;
-      background-color: #5b92ff;
+      background-color: #379EFC;
     }
   }
   .el-radio__label {
@@ -473,10 +464,10 @@ vue-treeselect__control {
     }
     .el-checkbox__inner {
       background: transparent;
-      border-color: #5b92ff;
+      border-color: #379EFC;
     }
     .el-checkbox__inner::after {
-      border-color: #5b92ff;
+      border-color: #379EFC;
     }
     .el-tree-node__expand-icon.expanded {
       transform: rotate(0deg);
@@ -497,7 +488,7 @@ vue-treeselect__control {
   }
   .custom-tree-node {
     .iconfont {
-      color: #5b92ff;
+      color: #379EFC;
       position: relative;
       top: 1px;
       margin-right: 6px;
@@ -516,60 +507,52 @@ vue-treeselect__control {
 .button-tool {
   padding: 1% 0;
   height: 64px;
-  text-align: right;
-  .el-button--small {
-    background: #fff;
-    color: #595959;
-    font-size: 14px;
-    border-radius: 4px;
-    border: 1px solid #dddfe6;
-    outline: none;
-    &:hover {
-      border-color: rgba(91, 146, 255, 0.5);
-      color: #5b92ff;
-    }
-    //增加图标情况 z
+  .el-button {
     height: 32px;
-    & > .iconfont {
+    text-align: justify;
+    font-size: 14px;
+    line-height: 32px;
+    padding: 0 15px;
+    i{
+      margin-right:4px;
+      vertical-align: top;
       font-size: 14px;
-      margin-right: 4px;
     }
-    &:active {
-      border-color: #4b7bdb;
-      color: #4b7bdb;
-      outline: none;
-    }
-    &:visited {
-      border-color: #dddfe6;
-      color: #595959;
+    span{
+      // vertical-align: top;
+      line-height: 32px;
     }
   }
   .el-button + .el-button {
     margin-left: 5px;
   }
-}
+ 
+  }
+
+
 //提交查询发布等按钮
 .button-sub {
   padding: 9px 25px;
   // min-width: 101px;
   cursor: pointer;
   text-align: center;
-
-  background: #5b92ff;
+  background: #379EFC;
   border-radius: 4px;
   color: #fff !important;
   font-size: 14px;
   outline: none;
   border: none;
+  &:focus{
+    background: #379EFC;
+  }
   &:hover {
     background: rgba(113, 160, 255, 1);
   }
   &:active {
     background: #4b7bdb;
   }
-  &:focus{
-    background: #5b92ff;
-  }
+
+
 
 }
 .el-button.is-disabled {

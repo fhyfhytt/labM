@@ -200,7 +200,7 @@ export default {
     color:#fff!important;
   }
   .el-tabs__active-bar{
-    background-color:#5B92FF!important;
+    background-color:#379EFC!important;
   }
   .el-badge__content{
     padding: 0 4px;
