@@ -43,7 +43,7 @@ export default {
             color:#fff;
         }
         .el-pager li.active{
-            color: #5B92FF;
+            color: #379EFC;
         }
         .el-pagination .btn-prev, .el-pagination .btn-next{
             background: transparent;

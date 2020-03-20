@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="confirm">{{ title }}</div>
+    <div class="confirm"><i class="el-icon-warning" style="color:#FFAA00;font-size:25px;margin-right:10px;" />{{ title }}</div>
     <div class="sureBtn">
-      <el-button size="small" class="button-sub" @click="sureRemove">确认</el-button>
       <el-button size="small" class="button-cancel" @click="closeRemove">取消</el-button>
+      <el-button size="small" class="button-sub" @click="sureRemove">确认</el-button>
+
     </div>
   </div>
 </template>
@@ -50,7 +51,7 @@ export default {
     background: radial-gradient(#53e3fd 20%, transparent 80%);
   }
   .el-dialog__header {
-    background: #5b92ff;
+    background: #379efc;
   }
   .el-select.el-select--medium,
   .el-form-item--medium .el-form-item__content {
@@ -60,7 +61,7 @@ export default {
   .el-input.is-disabled .el-input__inner {
     background: transparent !important;
     // color: #fff!important;
-    border-color: #5b92ff !important;
+    border-color: #379efc !important;
   }
   .el-form-item.el-form-item--medium {
     margin: 30px 0 30px 60px;
@@ -70,7 +71,11 @@ export default {
     font-size: 16px;
     color: #292929;
     text-align: center;
-    margin: 38px;
+    margin: 20px 30px 50px;
+    i {
+      margin-right: 16px;
+      vertical-align: -4px;
+    }
   }
   .sureBtn {
     text-align: right;
@@ -78,7 +83,7 @@ export default {
   .el-dialog__headerbtn .el-dialog__close {
     color: #fff;
     &:hover {
-      color: #5b92ff;
+      color: #379efc;
     }
   }
   .el-dialog__headerbtn {

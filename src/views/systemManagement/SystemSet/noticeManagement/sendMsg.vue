@@ -23,7 +23,6 @@
               v-model="ruleForm.organ"
               :limit="limit"
               :limit-text="limitText"
-              :append-to-body="true"
               :multiple="true"
               :value-consists-of="valueConsistsOf"
               :no-results-text="noResultsText"

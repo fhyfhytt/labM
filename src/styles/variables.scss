@@ -9,7 +9,24 @@ $green: #30B08F;
 $tiffany: #4AB7BD;
 $yellow:#FEC171;
 $panGreen: #30B08F;
+%scrollbar{
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: transparent;
+  }
+  
+  /* 滚动条中能上下移动的小块 */
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 5px;
+  }
+  /* scroll轨道背景 */
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: transparent;
+  }
 
+}
 // sidebar
 $menuText:rgba(255,255,255,0.5);
 $menuActiveText:#fff;

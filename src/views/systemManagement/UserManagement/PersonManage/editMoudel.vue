@@ -45,7 +45,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="所属组织:" prop="deptId">
-                  <treeselect v-model="editForm.deptId" :append-to-body="true" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
+                  <treeselect v-model="editForm.deptId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -84,7 +84,7 @@
                   <el-input v-model="editForm.password" autocomplete="off" placeholder="需要修改密码请填写" />
                 </el-form-item>
                 <el-form-item label="所属班组:" prop="group">
-                  <treeselect v-model="editForm.groupId" :append-to-body="true" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
+                  <treeselect v-model="editForm.groupId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -339,6 +339,11 @@ export default {
       if (newvalue !== '') {
         this.$refs.editForm.clearValidate('deptId')
       }
+    },
+    organTree: function(newvalue, oldvalue) {
+      this.organTree = newvalue
+    }, groupTree: function(newvalue, oldvalue) {
+      this.groupTree = newvalue
     }
   },
 
@@ -352,7 +357,7 @@ export default {
         this.avatardisabled = false
         this.tip = true
       } else {
-      // this.avatardisabled = false 调试用
+        // this.avatardisabled = false 调试用
         this.avatar.id = this.row.avatar
         this.avatar.appendixPath = this.row.avatarAddress
       }
@@ -370,24 +375,24 @@ export default {
   methods: {
     init() {
       var _this = this
-      getOrgTreeNew().then(res => {
-        if (res.code === 0) {
-          _this.$nextTick(() => {
+      if (_this.organTree.length === 0) {
+        getOrgTreeNew().then(res => {
+          if (res.code === 0) {
             _this.organTree = setTreeData(res.data)
-          })
-        } else {
-          _this.$message.error(res.msg)
-        }
-      })
-      getOrgTreeNew().then(res => {
-        if (res.code === 0) {
-          _this.$nextTick(() => {
+          } else {
+            _this.$message.error(res.msg)
+          }
+        })
+      }
+      if (_this.groupTree.length === 0) {
+        getOrgTreeNew().then(res => {
+          if (res.code === 0) {
             _this.groupTree = setTreeData(res.data)
-          })
-        } else {
-          _this.$message.error(res.msg)
-        }
-      })
+          } else {
+            _this.$message.error(res.msg)
+          }
+        })
+      }
     },
     // 根据用户ID查询所拥有的角色信息接口函数---下一步调用
     getRole() {
@@ -546,7 +551,6 @@ export default {
     // 新增里面的新增 点击x关闭新增角色弹框
     RoleAddteoClose(done) {
       this.formRoletwoAdd.name = ''
-
       done()
     },
     // 新增里面的新增 确认添加的角色信息
@@ -605,7 +609,7 @@ export default {
     },
     AddTwoRegionOK() {
       if (this.multipleTwoRegion.length === 0) {
-        this.$message.error('请选择要添加的数据域信息')
+        this.$message.error('请选择一个数据域')
       } else {
         if (this.tableDataRegion.length === 0) {
           this.tableDataRegion = [...this.multipleTwoRegion]
@@ -814,14 +818,36 @@ export default {
     line-height: 30px;
     // height: 30px;
   }
-  >>>.vue-treeselect__control {
+  >>> .vue-treeselect__control {
     height: 30px;
+    line-height: 30px;
   }
-
-  >>>.vue-treeselect--focused {
+  >>> .vue-treeselect__placeholder,
+  .vue-treeselect__single-value {
+    line-height: 30px;
+  }
+  >>> .vue-treeselect--focused {
     .vue-treeselect__control {
-      border-color: #5b92ff;
+      border-color: #379efc;
       box-shadow: none;
+    }
+  }
+  .vue-treeselect__multi-value-item {
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 100;
+    color: #292929;
+  }
+  >>> .vue-treeselect__menu-container {
+    .vue-treeselect__menu {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      .vue-treeselect__option--highlight {
+        .vue-treeselect__label {
+          font-weight: 900;
+        }
+        background: rgba(244, 247, 250, 1);
+      }
     }
   }
 
@@ -843,11 +869,11 @@ export default {
     }
   }
   >>> .el-step__head.is-success {
-    color: #5b92ff;
-    border-color: #5b92ff;
+    color: #379efc;
+    border-color: #379efc;
   }
   >>> .el-step__title.is-success {
-    color: #5b92ff;
+    color: #379efc;
   }
   >>> .el-step__icon.is-text {
     color: #292929;
@@ -856,7 +882,7 @@ export default {
     font-size: 14px;
     font-weight: 900;
     .el-icon-check {
-      color: #5b92ff;
+      color: #379efc;
       font-weight: bold;
       font-size: 24px;
     }
@@ -902,7 +928,7 @@ export default {
     }
   }
   >>> .avatar-uploader .el-upload:hover {
-    border-color: #5b92ff;
+    border-color: #379efc;
   }
 
   .avatar-uploader-icon {

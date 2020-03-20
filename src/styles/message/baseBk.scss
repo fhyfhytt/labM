@@ -7,7 +7,7 @@
     padding:  0 24px 10px;
     border-radius: 4px;
     min-height: 100px;
-    border:1px solid #5B92FF;
+    border:1px solid #379EFC;
     background: rgba(0,54,77,.3);
     background-image: radial-gradient(rgba(1,34,49,0.5), rgba(2,160,219,0.2));
 }
@@ -35,7 +35,7 @@
       display: inline-block;
       font-size: 12px;
       margin:0 12px;
-      color: #5B92FF;
+      color: #379EFC;
     }
   }
 }
@@ -62,9 +62,9 @@
     }
     .addShow{
         border-radius: 5px;
-        border: 1px solid #5B92FF;
+        border: 1px solid #379EFC;
         thead th:not(:last-child){
-            border-bottom: 1px solid #5B92FF
+            border-bottom: 1px solid #379EFC
         }
     }
 }
@@ -83,7 +83,7 @@
 .el-tabs__item{
     font-size: 12px!important;
     &:hover{
-        color:#5B92FF;
+        color:#379EFC;
     }
 }
 .el-tabs__nav-wrap::after{
@@ -93,24 +93,24 @@
     color:#fff;
 }
 .el-tabs__item.is-active{
-    color:#5B92FF;
+    color:#379EFC;
 }
 .el-tabs__active-bar{
-    background-color:#5B92FF!important;
+    background-color:#379EFC!important;
 }
 .el-badge__content{
     padding: 0 4px;
     line-height: 14px;
 }
 .deviceAdd .el-dialog__title{
-    color: #5B92FF;
+    color: #379EFC;
     font-size: 14px;
     font-weight: bold;
     line-height: 34px
   }
   .deviceAdd .el-dialog__close.el-icon.el-icon-close{
     font-size: 18px;
-    color: #5B92FF;
+    color: #379EFC;
     font-weight: bold;
   }.deviceAdd .alert-button  {
     background: #39aac6;
@@ -132,15 +132,15 @@
     font-size: 25px;
   }
   .deviceAdd .time-div .el-input--small .el-input__inner {
-        height: 36px;
-        line-height: 36px;
+        height: 30px;
+        line-height: 30px;
         background: transparent;
         border: 1px solid #2b98ba;
     }
     .deviceAdd.el-dialog__wrapper .el-dialog{
         color: #09ABB9;
         background: transparent;
-        border:1px solid #5B92FF;
+        border:1px solid #379EFC;
         border-radius: 4px;
         background-image:none!important;
         margin-top: 205px!important;
@@ -154,7 +154,7 @@
         font-size: 14px;
         padding:0 0 0 16px;
         background: linear-gradient(to bottom, rgba(83,227,253,1) 0%, rgba(83,227,253,0.0) 100%);
-        color:#5B92FF;
+        color:#379EFC;
         width: 100%;
         height: 34px;
         line-height: 34px;
@@ -207,7 +207,7 @@
             border:1px solid #50dcf5;
             text-align: center;
             line-height: 34px;
-            color:#5B92FF;
+            color:#379EFC;
             margin-right: 16px;
         }
 

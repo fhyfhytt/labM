@@ -209,7 +209,7 @@ export default {
         .leftBt{
           width: 168px;
           height: 100px;
-          border: 1px solid #5B92FF;
+          border: 1px solid #379EFC;
           background: #12506b;
           position: absolute;
           left: 0;
@@ -218,7 +218,7 @@ export default {
             margin: 3px 0;
             span{
               vertical-align: middle;
-              color: #5B92FF;
+              color: #379EFC;
             }
             &>:first-child{
               display: inline-block;

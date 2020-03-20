@@ -105,7 +105,7 @@
       </div>
 
       <el-dialog title="删除" :visible.sync="moveShow" class="baseMove">
-        <removeDialog @sureMsg="sureMsg" @confireMsg="confireMsg" />
+        <baseConfirm @sureMsg="sureMsg" @confireMsg="confireMsg" />
       </el-dialog>
     </div>
   </div>
@@ -113,11 +113,11 @@
 <script>
 import { getTime } from '@/utils/time'
 import { getAllList, checkStatus, remove, allReads, sendCg } from '@/api/message'
-import removeDialog from '@/views/baseComponents/baseRemove'
+import baseConfirm from '@/views/baseComponents/baseConfirm'
 import common from '@/utils/common'
 export default {
   name: 'MessageList',
-  components: { removeDialog },
+  components: { baseConfirm },
   data() {
     return {
       startMsgTime: '',
@@ -403,23 +403,7 @@ export default {
     .page-table{
       .button-tool{
         overflow: hidden;
-        .button-tool-left{
-          .el-button{
-            background: #5B92FF;
-            color: #fff;
-            border: none;
-            &:hover{
-              outline: none;
-              background: #71a0ff;
-              border-color:#71a0ff;
-            }
-            &:active{
-              outline: none;
-              background: #1682e6;
-              border-color:#1682e6;
-            }
-          }
-        }
+
       }
     }
   }

@@ -2,10 +2,10 @@
     .el-input--medium .el-input__inner{
         background: transparent;
         border: 1px solid #50dcf5;
-        height: 30px;
+        height: 32px;
     }
     .el-select .el-input.is-focus .el-input__inner,.el-select:hover .el-input__inner{
-            border-color:#5B92FF;
+            border-color:#379EFC;
     }
     .el-select .el-input .el-select__caret{
         line-height: 30px;
@@ -25,7 +25,7 @@
         }
         &>span{
             margin-top: 12px;
-            color: #5B92FF;
+            color: #379EFC;
             margin-left: 12px;
         }
         height: 32px;
@@ -58,7 +58,7 @@
         .clearList{
             float: right;
             margin-left: 24px;
-            color: #5B92FF;
+            color: #379EFC;
             cursor: pointer;
             .iconfont{
                 margin-right: 5px
@@ -66,7 +66,7 @@
         }
         .titleType{
             font-size: 16px;
-            color: #5B92FF;
+            color: #379EFC;
         }
     }
     .typeTop,.typeBom{
@@ -74,14 +74,14 @@
     }
     .fgx{
         margin: 16px 5% 34px;
-        border-bottom:1px dashed #5B92FF;
+        border-bottom:1px dashed #379EFC;
     }
     .select-option{
         margin-top: 6px!important;
-        background: transparent;border-color:#5B92FF;
+        background: transparent;border-color:#379EFC;
         color:#fff;
         .el-select-dropdown__item:hover,.select-option .el-select-dropdown__item:hover{
-            background: #5B92FF;
+            background: #379EFC;
             color:#fff;
         }
         .el-select-dropdown__item.selected,.el-select-dropdown__empty{
@@ -91,7 +91,7 @@
             color:#fff;
         }
         .popper__arrow::after{
-            border-bottom-color:#5B92FF!important;
+            border-bottom-color:#379EFC!important;
         }
         .popper__arrow{
             top:-7px!important;
@@ -118,7 +118,7 @@
     background-color: transparent;
     // padding: 0 4px;
     text-align: center;
-    border-bottom: 1px solid #5B92FF
+    border-bottom: 1px solid #379EFC
     }
     /* 双数行背景颜色 */
     .el-table--striped .el-table__body tr.el-table__row--striped td {
@@ -152,7 +152,7 @@
         height: 36px;
         line-height: 36px;
         .iconchakan{
-            color: #5B92FF;
+            color: #379EFC;
         }
     }
     .el-table--medium td{
@@ -161,7 +161,7 @@
     .el-table--medium th{
         padding: 0;
         background: rgba(0,0,0,0.2);
-        color:#5B92FF;
+        color:#379EFC;
         &:hover{
             background: rgba(0,0,0,0.2);
         }
@@ -170,16 +170,16 @@
         padding: 0;
     }
     .el-checkbox__inner::after{
-        border-color: #5B92FF;
+        border-color: #379EFC;
     }
     .el-checkbox__inner{
-        border-color: #5B92FF;
+        border-color: #379EFC;
         background: transparent;
     }
 
     .el-checkbox__input.is-checked .el-checkbox__inner,.el-checkbox__inner{
         background: transparent!important;
-        border-color: #5B92FF!important;
+        border-color: #379EFC!important;
     } 
 }
 .typeInfoRemove{
@@ -189,7 +189,7 @@
     .el-input__inner,.el-input.is-disabled .el-input__inner{
         background: transparent!important;
         color: #292929!important;
-        border-color: #5B92FF!important;
+        border-color: #379EFC!important;
     }
     .btn{
         cursor: pointer;
@@ -218,7 +218,7 @@
     .el-input__inner,.el-input.is-disabled .el-input__inner{
         background: transparent!important;
         color: #fff!important;
-        border-color: #5B92FF!important;
+        border-color: #379EFC!important;
     }
     .btn{
         cursor: pointer;

@@ -1,8 +1,12 @@
 <template>
   <div class="page-table-content">
     <div class="button-tool">
-      <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-      <el-button v-permission="'houseDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      <div class="button-tool-left fl" />
+      <div class="button-tool-right fr">
+        <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+        <el-button v-permission="'houseDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      </div>
+
       <!-- <el-button-group style="float:right;margin-right:10px;">
         <el-button icon="iconfont iconshuaxin" size="small" style="margin-right:0px" title="刷新" @click="handleRes(val)" />
         <el-button icon="iconfont iconmoban" size="small" title="切换" @click="handleQiHuan" />
@@ -44,18 +48,10 @@
       </el-row>
     </div> -->
     <div class="numListJup margin-jump">
-      <el-pagination
-        :page-size="pageSize"
-        layout="total,sizes,prev, pager, next, jumper"
-        :total="totalNum"
-        :pager-count="5"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <el-pagination :page-size="pageSize" layout="total,sizes,prev, pager, next, jumper" :total="totalNum" :pager-count="5" :current-page.sync="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
     <el-dialog v-loading="loading" title="删除" :visible.sync="moveShow" class="baseMove">
-      <removeDialog @sureMsg="sureMsg" @confireMsg="confireMsg" />
+      <baseConfirm @sureMsg="sureMsg" @confireMsg="confireMsg" />
     </el-dialog>
     <!--新增界面-->
     <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="新建库房" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
@@ -73,9 +69,9 @@
 import { deleteHouse } from '@/api/house.js'
 import addMoudel from './addMoudel.vue'
 import editMoudel from './editMoudel.vue'
-import removeDialog from '@/views/baseComponents/baseRemove'
+import baseConfirm from '@/views/baseComponents/baseConfirm'
 export default {
-  components: { addMoudel, editMoudel, removeDialog },
+  components: { addMoudel, editMoudel, baseConfirm },
   props: {
     tableDate: {
       type: Array,
@@ -217,5 +213,4 @@ export default {
 </script>
 
 <style lang="scss">
-
 </style>

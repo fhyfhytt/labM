@@ -142,7 +142,10 @@ padding: 0 10px !important;
       .el-menu-item{
         @extend %padding;
         margin:2px  0 2px 10px;
-      
+        &:focus{
+          @extend %hover;
+          color:$subMenuActiveText !important;
+        }
         &:hover{
           @extend %hover;
           color:$subMenuActiveText !important;
@@ -151,14 +154,15 @@ padding: 0 10px !important;
           @extend %hover;
           color:$subMenuActiveText !important;
         }
-        &:focus{
-          @extend %hover;
-          color:$subMenuActiveText !important;
-        }
+   
       }
       .el-submenu__title{
         @extend %padding;
         margin:2px  0 2px 10px;
+        &:focus{
+          @extend %hover;
+          color:$subMenuActiveText !important;
+        }
         &:hover{
           @extend %hover;
           color:$subMenuActiveText !important;
@@ -167,10 +171,7 @@ padding: 0 10px !important;
           @extend %hover;
           color:$subMenuActiveText !important;
         }
-        &:focus{
-          @extend %hover;
-          color:$subMenuActiveText !important;
-        }
+  
       }
  
       .nest-menu{

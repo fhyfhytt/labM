@@ -25,7 +25,7 @@
       border-bottom: 0;
       font-family: '微软雅黑';
       font-weight: 400;
-      color: #5B92FF;
+      color: #379EFC;
       opacity: 0.9;
     }
     >>> .el-textarea__inner {
@@ -61,7 +61,7 @@
     >>> .el-form-item__label {
       font-family: '微软雅黑';
       font-weight: 400;
-      color: #5B92FF;
+      color: #379EFC;
       opacity: 0.9;
     }
     >>> input::-webkit-input-placeholder {
@@ -80,7 +80,7 @@
       box-shadow:0px 3px 37px 9px rgba(0, 0, 0, 0.36);
     }
     >>> .el-timeline-item__tail {
-      border-left: 2px solid #5B92FF;
+      border-left: 2px solid #379EFC;
     }
     >>> .el-timeline-item__node {
       border: 1px solid rgba(0,238,238,1);
@@ -121,7 +121,7 @@
   // 附件上传  tab页签样式
   .uploadfile{
     >>> .el-tabs__active-bar {
-      background-color: #5B92FF;
+      background-color: #379EFC;
     }
     >>> .el-tabs__item {
       padding: 0 20px;
@@ -136,7 +136,7 @@
       color: #fff;
       position: relative;
       &.is-active {
-        color: #5B92FF;
+        color: #379EFC;
       }
     }
     >>> .el-tabs__nav-wrap {
@@ -163,7 +163,7 @@
       position: relative;
       left: 14px;
       top: 13px;
-      color: #5B92FF;
+      color: #379EFC;
     }
     .upload-div {
       display: inline-block;
@@ -207,7 +207,7 @@
       left: 37px;
       top: -3px;
       font-size: 10px;
-      color: #5B92FF;
+      color: #379EFC;
       cursor: pointer;
       &:hover {
         transform: scale(1.1);
@@ -229,7 +229,7 @@
     .el-button--small {
       border: 1px solid rgba(80,220,245,1);
       background: linear-gradient(0deg,rgba(80,220,245,0) 1%,rgba(80,220,245,0.39) 100%);
-      color: #5B92FF;
+      color: #379EFC;
       border-radius: 4px;
       &:hover {
           background: linear-gradient(0deg,rgba(80,220,245,0) 1%,rgba(80,220,245,0.99) 100%);
@@ -347,7 +347,7 @@
           align-items: center;
           .iconfont {
             font-size: 60px;
-            color: #5B92FF;
+            color: #379EFC;
           }
         }
         .span-xiaoxi {

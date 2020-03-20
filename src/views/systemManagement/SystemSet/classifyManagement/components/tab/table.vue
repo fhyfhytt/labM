@@ -1,8 +1,11 @@
 <template>
   <div class="page-table-content">
     <div v-show="show" class="button-tool">
-      <el-button v-permission="'classFactionAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-      <el-button v-permission="'classifactionDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      <div class="button-tool-left fl" />
+      <div class="button-tool-right fr">
+        <el-button v-permission="'classFactionAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+        <el-button v-permission="'classifactionDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      </div>
       <!-- <el-button-group style="float:right;margin-right:10px;">
         <el-button icon="iconfont iconshuaxin" size="small" style="margin-right:0px" title="刷新" @click="handleRes(val)" />
         <el-button icon="iconfont iconmoban" size="small" title="切换" @click="handleQiHuan" />
@@ -47,7 +50,7 @@
       />
     </div>
     <el-dialog title="删除" :loading.sync="removeLoading" :visible.sync="moveShow" class="baseMove">
-      <removeDialog @sureMsg="sureMsg" @confireMsg="confireMsg" />
+      <baseConfirm @sureMsg="sureMsg" @confireMsg="confireMsg" />
     </el-dialog>
     <!--新增界面-->
     <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="新建分类" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
@@ -64,9 +67,9 @@
 import { delClass } from '@/api/classify.js'
 import addMoudel from './addMoudel.vue'
 import editMoudel from './editMoudel.vue'
-import removeDialog from '@/views/baseComponents/baseRemove'
+import baseConfirm from '@/views/baseComponents/baseConfirm'
 export default {
-  components: { addMoudel, editMoudel, removeDialog },
+  components: { addMoudel, editMoudel, baseConfirm },
   props: {
     tableDate: {
       type: Array,

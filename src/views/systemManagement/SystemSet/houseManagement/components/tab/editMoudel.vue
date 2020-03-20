@@ -179,7 +179,7 @@ export default {
       })
     }, selectUserInfoRow(row) {
       this.editForm.person = row.name
-      this.editForm.personMobile = row.personMobile
+      this.editForm.personMobile = row.mobile
       this.editForm.personId = row.id
       this.addUserVisible = false
     }, handleUserSizeChange(val) {

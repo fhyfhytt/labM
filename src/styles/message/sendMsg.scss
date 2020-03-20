@@ -21,6 +21,62 @@
     border-radius: 5px;
     background-color: transparent;
   }
+  .vue-treeselect {
+    line-height: 30px;
+
+    // height: 30px;
+  }
+  >>> .vue-treeselect__control {
+    height: 30px;
+    line-height: 30px;
+    &:focus {
+      border: 1px solid rgba(55, 158, 252, 1);
+    }
+  }
+
+  >>> .vue-treeselect__placeholder,
+  .vue-treeselect__single-value {
+    line-height: 14px;
+  }
+  >>> .vue-treeselect--focused {
+    .vue-treeselect__control {
+      border-color: #379efc;
+      box-shadow: none;
+    }
+  }
+  .vue-treeselect__multi-value-item {
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 100;
+    color: #292929;
+  }
+  >>> .vue-treeselect__menu-container {
+    .vue-treeselect__menu {
+      margin-top: 10px;
+      margin-bottom: 0px;
+      color: #909399;
+    }
+    .vue-treeselect__option--highlight {
+      background: rgba(244, 247, 250, 1);
+    }
+  }
+  .vue-treeselect__multi-value-item {
+    font-size: 10px;
+    line-height: 24px;
+    font-weight: 100;
+    color: #292929;
+  }
+  .vue-treeselect__limit-tip {
+    line-height: 24px;
+  }
+  >>> .vue-treeselect:not(.vue-treeselect--disabled):not(.vue-treeselect--focused)
+    .vue-treeselect__control:hover {
+    border: 1px solid rgba(55, 158, 252, 1);
+  }
+
+  .vue-treeselect__control-arrow {
+    display: none;
+  }
   .el-select {
     width: 100%;
   }
@@ -29,7 +85,7 @@
   //   content: "";
   // }
   .el-icon-loading {
-    font-size:70px;
+    font-size: 70px;
   }
   .mgItem {
     .el-input {
@@ -90,5 +146,4 @@
       margin: 20px 0;
     }
   }
-
 }
