@@ -65,7 +65,7 @@
                     :data="avatarData"
                     :accept="'image/*'"
                   >
-                    <img v-if="addForm.avatar" :src="avatar.appendixPath" class="avatar">
+                    <img v-if="addForm.avatar" :src="avatar.url" class="avatar">
                     <i v-else :class="iconclass" />
                     <div v-if="!tip" class="mask"><i class="iconfont iconxingzhuang1" @click.native="deleteAvatar" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
@@ -330,7 +330,8 @@ export default {
       iconclass: 'el-icon-plus avatar-uploader-icon',
       avatar: {
         id: '',
-        appendixPath: ''
+        appendixPath: '',
+        url: ''
       }
     }
   },
@@ -640,6 +641,7 @@ export default {
         this.$refs.addForm.clearValidate('avatar')
         this.addForm.avatar = res.data.id
         this.avatar.id = res.data.id
+        this.avatar.url = window.URL.createObjectURL(file.raw)
         this.avatar.appendixPath = res.data.appendixPath
       } else if (res.code === 10003) {
         this.$message.error(res.msg)

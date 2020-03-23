@@ -357,7 +357,7 @@ export default {
         this.iconclass = 'el-icon-upload'
         this.ruleForm.appendixImgId = res.data.id
         this.tip = false
-        this.imgurl = res.data.appendixPath
+        this.imgurl = window.URL.createObjectURL(file.row)
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
         this.$store.store.state.user.token = null

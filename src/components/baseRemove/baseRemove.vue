@@ -76,6 +76,12 @@ export default {
   }
 }
 .outGoing {
+   .el-dialog .el-dialog__header{
+    background: #fff !important;
+      .el-dialog__close{
+      color:#909399 !important;
+      }
+ }
   .goOut {
     width: 100%;
     text-align: right;

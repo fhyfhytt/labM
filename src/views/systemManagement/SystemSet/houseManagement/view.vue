@@ -89,15 +89,18 @@ export default {
       tableDate: [],
       totalNum: 0,
       currentPage: 1,
+      treeloading: true,
       param: {
         pageSize: 10,
         pageNumber: 1,
         sortColumn: 'create_time',
         sortOrder: 'desc'
       },
+      treedata: [],
       expandedkeys: [],
       input: '',
-      tableloading: true
+      tableloading: true,
+      treeId: ''
       // selectData: {} // 点击tree树获取整个节点对象
       // isDel: true // 最初默认标识可以删除
     }
@@ -138,7 +141,8 @@ export default {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id
             }
-            this.param.parentId = this.treeId
+            this.param.areaId = this.treeId
+            console.log(this.treeId)
             this.currentNodekey = this.treeId
             this.expandedkeys.push(this.treeId)
             this.$nextTick(() => {
@@ -192,7 +196,7 @@ export default {
       this.param.pageSize = 10
       this.param.pageNumber = 1
       this.selectedName = data.name
-      this.param.id = data.id
+      this.param.areaId = data.id
       this.selectedCode = data.code
       this.selectedState = data.status === '1' ? '启用' : '不启用'
       // this.selectedDescription = data.description
