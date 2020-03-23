@@ -914,16 +914,17 @@ export default {
     color: #292929;
   }
   >>> .avatar-uploader {
-    text-align: center;
+    // text-align: center;
     .el-upload {
       border: 1px dashed #d9d9d9;
-      border-radius: 6px;
+      border-radius: 50%;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       .el-upload-dragger {
         width: auto;
         height: auto;
+        border: none;
       }
     }
     .el-upload__tip {
