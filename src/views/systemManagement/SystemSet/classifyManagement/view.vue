@@ -63,8 +63,8 @@ export default {
   components: { tableManageParent },
   data() {
     return {
-      selectedState: '', // 分类状态
-      selectedName: '', // 分类名称
+      selectedState: '', // 组织状态
+      selectedName: '', // 组织名称
       selectedDescription: '', // 描述
       selectedCode: '',
       orgtype: '', // 区分是否是最后一级

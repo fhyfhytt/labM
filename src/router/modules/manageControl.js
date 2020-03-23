@@ -33,13 +33,13 @@ const manageControlRouter = {
       name: 'OrganManage'
     },
     {
-      path: 'customerManage',
+      path: 'customManage',
       component: () =>
         import(
-          '@/views/systemManagement/UserManagement/customerManage/view.vue'
+          '@/views/systemManagement/UserManagement/customManage/view.vue'
         ),
-      meta: { title: '客户管理', icon: 'icon111', roles: ['customerManage'] },
-      name: 'customerManage'
+      meta: { title: '客户管理', icon: 'icon111', roles: ['customManage'] },
+      name: 'customManage'
     },
     {
       path: 'roleManage',
@@ -53,14 +53,6 @@ const manageControlRouter = {
         roles: ['RoleManage']
       },
       name: 'RoleManage'
-    }, {
-      path: 'areaManage',
-      component: () =>
-        import(
-          '@/views/systemManagement/UserManagement/areaManage/view.vue'
-        ),
-      meta: { title: '区域管理', icon: 'icon111', roles: ['areaManage'] },
-      name: 'areaManage'
     },
     {
       path: 'groupManage',

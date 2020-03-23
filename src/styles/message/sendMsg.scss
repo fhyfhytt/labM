@@ -4,6 +4,30 @@
   padding: 20px 100px;
   overflow-y: auto !important;
   max-height: calc(100vh - 140px);
+  .upload-img{
+    float:left;
+    &:hover{
+      .mask{
+        display: flex;
+      }
+    }
+  }
+  .mask{
+    position: absolute;
+    background:rgba(0,0,0,0.4);
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    i{
+      color:#fff;
+      font-size: 40px;
+      vertical-align: middle;
+    }
+  }
   /*样式改变代码-----------------------------------------------------*/
   /* 滚动条整体部分 */
   &::-webkit-scrollbar {
