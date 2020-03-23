@@ -66,8 +66,9 @@
                   >
                     <img v-if="editForm.avatar" :src="avatar.appendixPath" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon" />
+                    <div v-if="!tip" class="mask"><i class="iconfont iconxingzhuang1" @click="deleteAvatar" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
-                    <div v-if="!tip" slot="tip" class="el-upload__tip2" @click="deleteAvatar">删除</div>
+                    <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2">删除</div> -->
                   </el-upload>
                 </el-form-item>
                 <el-form-item label="生日:" prop="birthday" class="birdate">
@@ -814,6 +815,25 @@ export default {
   padding: 0 60px;
 }
 .UserManage-edit {
+  .avatar-uploader:hover .mask{
+    display: flex;
+  }
+  .mask{
+    position: absolute;
+    background:rgba(0,0,0,0.4);
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    i{
+      color:#fff;
+      font-size: 40px;
+      vertical-align: middle;
+    }
+  }
   .vue-treeselect {
     line-height: 30px;
     // height: 30px;

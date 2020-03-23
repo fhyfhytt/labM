@@ -159,7 +159,8 @@ export default {
     handleNodeClick(data) {
       console.log(data)
       this.param.parentId = data.id
-
+      this.param.pageSize = 10
+      this.param.pageNumber = 1
       this.selectedCode = data.code
       this.selectedName = data.name
       this.selectedDescription = data.description

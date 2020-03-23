@@ -214,6 +214,8 @@ export default {
     // 点击tree树,重新渲染列表
     handleNodeClick(data) {
       this.param.regionId = data.id
+      this.param.pageSize = 10
+      this.param.pageNumber = 1
       // this.currentNodekey = data.id
       this.treeId = data.id
       this.getTableData()

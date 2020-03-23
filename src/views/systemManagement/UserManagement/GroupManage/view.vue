@@ -158,7 +158,8 @@ export default {
     // 点击tree树
     handleNodeClick(data) {
       this.param.parentId = data.id
-
+      this.param.pageSize = 10
+      this.param.pageNumber = 1
       this.selectedCode = data.code
       this.selectedName = data.name
       this.selectedDescription = data.description

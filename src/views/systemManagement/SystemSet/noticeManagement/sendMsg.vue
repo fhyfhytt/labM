@@ -68,10 +68,11 @@
               :data="imgData"
               :accept="'image/*'"
             >
+              <div v-if="!tip" class="mask" @click.stop="hindleRemove"><i class="iconfont iconxingzhuang1" /></div>
               <i v-if="!imgurl" :class="iconclass" />
               <div v-if="!imgurl" class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-              <img v-if="imgurl" width="100%" :src="imgurl" class="avatar" alt="" @click.native="false">
-              <div v-if="!tip" slot="tip" class="el-upload__tip2" @click="hindleRemove">点击删除</div>
+              <img v-if="imgurl" width="100%" :src="imgurl" class="avatar" alt="">
+              <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2" @click="hindleRemove">点击删除</div> -->
               <div v-if="tip" slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
           </el-form-item>
@@ -351,7 +352,7 @@ export default {
     // 图片成功回调
     handleImgSuccess(res, file) {
       if (res.code === 0) {
-        this.disabled = false
+        this.disabled = true
         this.$message.success('上传成功')
         this.iconclass = 'el-icon-upload'
         this.ruleForm.appendixImgId = res.data.id
