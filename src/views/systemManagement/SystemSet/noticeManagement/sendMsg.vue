@@ -113,7 +113,7 @@
 </template>
 <script>
 import { getOrgTreeNew } from '@/api/userManagement'
-import { setTreeData } from '@/utils/utils'
+import { setTreeData, url2obj } from '@/utils/utils'
 import { removeFJ, addMsg, getContent } from '@/api/message'
 import { VueEditor } from 'vue2-editor/dist/vue2-editor.core.js'
 import common from '@/utils/common'
@@ -138,10 +138,10 @@ export default {
           { required: true, message: '请输入标题', trigger: 'blur' }
         ],
         typeL: [
-          { required: true, message: '请选择通知类型', trigger: 'blur' }
+          { required: true, message: '请选择通知类型', trigger: ['blur'] }
         ],
         typeS: [
-          { required: true, message: '请选择系统类型', trigger: 'blur' }
+          { required: true, message: '请选择系统类型', trigger: ['blur'] }
         ],
         sendPeople: [
           { required: true, message: '请输入发布人', trigger: 'blur' }
@@ -259,6 +259,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.bigloading = true
+
           const param = {
             'state': state,
             'typeLDict': this.ruleForm.typeL,
@@ -273,7 +274,6 @@ export default {
             'appendixImgId': this.ruleForm.appendixImgId,
             'organ': this.ruleForm.organ
           }
-          console.log(param)
           if (state === 0) {
             param.msId = this.msId
           }
@@ -325,6 +325,7 @@ export default {
         this.ruleForm.startMsgTime = msgSys.publishTime
         this.ruleForm.endMsgTime = msgSys.invalidTime
         this.content = msgSys.memo
+        this.msId = msgSys.msId
         this.ruleForm.organ = res.data.organ
         this.ruleForm.typeL = { code: msgSys.typeL }
         this.ruleForm.typeS = { code: msgSys.typeS }
@@ -333,9 +334,10 @@ export default {
           var appendixNameArr = msgSys.appendixName.split(',')
           var appendixPathArr = msgSys.appendixPath.split(',')
           var fileList = appendixIdArr.map((item, index) => {
-            this.ruleForm.appendixIdName.push({ name: appendixNameArr[index], path: appendixPathArr[index], id: item })
+            this.ruleForm.appendixIdName.push({ name: appendixNameArr[index], path: url2obj(appendixPathArr[index]).path, id: item })
             return { id: item, name: appendixNameArr[index], url: appendixPathArr[index] }
           })
+          console.log(fileList)
           this.fileList = fileList
         }
         if (msgSys.appendixImgId !== '') {
@@ -357,7 +359,7 @@ export default {
         this.iconclass = 'el-icon-upload'
         this.ruleForm.appendixImgId = res.data.id
         this.tip = false
-        this.imgurl = window.URL.createObjectURL(file.row)
+        this.imgurl = URL.createObjectURL(file.raw)
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
         this.$store.store.state.user.token = null
@@ -455,6 +457,7 @@ export default {
       }
       common.closeCurrentTab(vistedRouer, this.$route)
     }, handleError(e) {
+      console.log(e)
       const img = e.srcElement
       this.$message.error('上传失败')
       img.onerror = null
@@ -484,7 +487,6 @@ export default {
     }, onRemoveTxt(file, fileList) {
       removeFJ({ id: file.response.data.id, appendixPath: file.response.data.appendixPath }).then(res => {
         if (res.success) {
-          this.$message.success('删除成功')
           this.ruleForm.appendixIdName = fileList.map(item => {
             return { name: item.response.data.appendixName, path: item.response.data.appendixPath, id: item.response.data.id }
           })

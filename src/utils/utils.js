@@ -75,3 +75,14 @@ export function tree2Array(treeObj, rootid) {
   }
   return out
 }
+export function url2obj(url) {
+  var urlobj = {}
+  var urlArr = url.split(':')
+  urlobj.http = urlArr[0]
+  urlobj.ip = urlArr[1].replace('//', '')
+  var pathA = urlArr[2].split('/')
+  var port = pathA.shift()
+  urlobj.port = port
+  urlobj.path = '/' + pathA.join('/')
+  return urlobj
+}

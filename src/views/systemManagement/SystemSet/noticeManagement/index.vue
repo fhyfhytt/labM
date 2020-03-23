@@ -239,7 +239,7 @@ export default {
       const ids = this.removeRd.map(res => {
         return res.ms_id
       })
-      remove(ids.join(',')).then(res => {
+      remove(ids.join(','), 0).then(res => {
         this.getListData('', true)
       }).catch(res => {
         this.$message.error(res.msg)

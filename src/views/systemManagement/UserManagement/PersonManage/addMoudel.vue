@@ -67,7 +67,7 @@
                   >
                     <img v-if="addForm.avatar" :src="avatar.url" class="avatar">
                     <i v-else :class="iconclass" />
-                    <div v-if="!tip" class="mask"><i class="iconfont iconxingzhuang1" @click.native="deleteAvatar" /></div>
+                    <div v-if="!tip" class="mask" @click.stop="deleteAvatar"><i class="iconfont iconxingzhuang1" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
                     <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2" @click="deleteAvatar"></div> -->
                   </el-upload>

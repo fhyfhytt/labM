@@ -72,7 +72,7 @@
     <div class="childrenlog">
       <!--新增界面-->
       <el-dialog v-if="addFormVisible" v-model="addFormVisible" class="userAdd" title="新建用户" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" width="900px">
-        <addMoudel @clickAdd="clickAdd" @closeAdd="closeAdd" />
+        <addMoudel ref="personAdd" @clickAdd="clickAdd" @closeAdd="closeAdd" />
       </el-dialog>
       <!--取消新增界面-->
       <el-dialog title="提示" :visible.sync="CloseAddFormVisible" class="baseMove">
@@ -80,7 +80,7 @@
       </el-dialog>
       <!--编辑界面-->
       <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="修改用户" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleEditClose" class="userEdit" width="900px">
-        <editMoudel :row="row" @clickAdd="clickAdd" @closeEdit="closeEdit" />
+        <editMoudel ref="personAdd" :row="row" @clickAdd="clickAdd" @closeEdit="closeEdit" />
       </el-dialog>
       <!--确认删除弹框-->
       <el-dialog title="删除" :visible.sync="moveShow" class="baseMove">
@@ -186,6 +186,9 @@ export default {
     },
     // 取消新增---xx按钮 弹出新增界面是否关闭页面
     handleClose(done) {
+      if (this.$refs.personAdd.avatar.id !== '') {
+        this.$refs.personAdd.deleteAvatar()
+      }
       this.CloseAddFormVisible = true
     },
     // 关闭新增页面  是 否
@@ -209,6 +212,7 @@ export default {
     },
     // 点击x取消编辑界面
     handleEditClose(done) {
+      // this.$refs.personEdit.deleteAvatar()
       done()
       this.getUsers()
     },
