@@ -142,7 +142,6 @@ export default {
               this.treeId = this.treedata[0].id// 当前的Id
             }
             this.param.areaId = this.treeId
-            console.log(this.treeId)
             this.currentNodekey = this.treeId
             this.expandedkeys.push(this.treeId)
             this.$nextTick(() => {

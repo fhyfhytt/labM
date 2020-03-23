@@ -97,7 +97,6 @@ export default {
       // console.log(e, v)
     },
     leavetab(activeName, oldActiveName) {
-      console.log(activeName)
     }
   }
 }
