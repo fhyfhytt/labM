@@ -68,7 +68,7 @@
               :data="imgData"
               :accept="'image/*'"
             >
-              <div v-if="!tip" class="mask"><i class="iconfont iconxingzhuang1" @click="hindleRemove" /></div>
+              <div v-if="!tip" class="mask" @click.stop="hindleRemove"><i class="iconfont iconxingzhuang1" /></div>
               <i v-if="!imgurl" :class="iconclass" />
               <div v-if="!imgurl" class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
               <img v-if="imgurl" width="100%" :src="imgurl" class="avatar" alt="">
