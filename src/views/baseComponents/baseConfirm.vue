@@ -36,15 +36,10 @@ export default {
   }
 }
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
 // @import "~@/styles/btn.scss";
 .baseMove {
-   .el-dialog .el-dialog__header{
-    background: #fff !important;
-      .el-dialog__close{
-      color:#909399 !important;
-      }
- }
+
   .el-dialog__title {
     color: #fff;
     font-size: 16px;
