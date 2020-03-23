@@ -4,24 +4,40 @@
     <el-form ref="editForm" :model="editForm" label-width="120px" :rules="editFormRules" class="formAdd">
       <el-row class="edittop">
         <el-col :span="12">
-          <el-form-item label="组织编号:" prop="code">
-            <el-input v-model="editForm.code" placeholder="请输入组织编号" disabled />
+          <el-form-item label="物资编码:" prop="code">
+            <el-input v-model="editForm.code" disabled />
           </el-form-item>
-          <el-form-item label="组织类型:" prop="type">
+          <el-form-item label="设备名称:" prop="name">
+            <el-input v-model="editForm.name" placeholder="请输入设备名称" />
+          </el-form-item>
+          <el-form-item label="设备厂商:" prop="type">
             <el-select v-model="editForm.type" popper-class="select-option" placeholder="-请选择-">
               <el-option v-for="item in selectDataTrue" :key="item.value" :label="item.name" :value="item.value" />
             </el-select>
           </el-form-item>
+          <el-form-item label="采购价:" prop="name">
+            <el-input v-model="editForm.name" placeholder="请输入组织名称" />
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="组织名称:" prop="name">
-            <el-input v-model="editForm.name" placeholder="请输入组织名称" />
+          <el-form-item label="操作编码:" prop="code">
+            <el-input v-model="editForm.code" disabled placeholder="请输入操作编码号" />
+          </el-form-item>
+          <el-form-item label="设备型号:" prop="type">
+            <el-select v-model="editForm.type" popper-class="select-option" placeholder="-请选择-">
+              <el-option v-for="item in selectDataTrue" :key="item.value" :label="item.name" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="资产分类:" prop="type">
+            <el-select v-model="editForm.type" popper-class="select-option" placeholder="-请选择-" disabled>
+              <el-option v-for="item in selectDataTrue" :key="item.value" :label="item.name" :value="item.value" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="描述:" prop="description">
+          <el-form-item label="备注:" prop="description">
             <el-input v-model="editForm.description" type="textarea" placeholder="请输入备注" />
           </el-form-item>
         </el-col>
@@ -82,7 +98,6 @@ export default {
             if (response.success === true) {
               this.$message.success('修改成功')
               this.$emit('handleGetTree1')
-              // this.handeleditFormVisible()
               this.$emit('handeleditFormVisible', this.editFormVisible)
             } else {
               this.$message.error(response.msg)
@@ -91,17 +106,10 @@ export default {
             this.$message.error(response.message)
           })
         } else {
-          // console.log('error submit!!')
           return false
         }
       })
     }
-    // 清空数据
-    // clearDate() {
-    //   console.log('11', this.editForm)
-    //   this.editForm = {}
-    //   console.log('22', this.editForm)
-    // }
 
   }
 }

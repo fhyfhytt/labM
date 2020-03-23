@@ -26,9 +26,9 @@
               <!-- :model="formRegion" -->
               <el-form ref="form1" size="small" label-width="110px" :inline="true">
                 <el-row>
-                  <el-form-item label="数据域名称：">
+                  <el-form-item label="关键字：">
                     <!-- v-model="formRegion.name" -->
-                    <el-input style="background:transparent;width:150px;" placeholder="请输入数据域名称" />
+                    <el-input style="background:transparent;width:150px;" placeholder="请输入编号或名称" />
                   </el-form-item>
                   <el-form-item>
                     <el-button v-permission="'regionSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
@@ -51,10 +51,11 @@
 </template>
 
 <script>
-import {
-  getOrgTreeNew,
-  getListSelectNew
-} from '@/api/userManagement.js'
+import { classifyTree, queryClass } from '@/api/classify.js'
+// import {
+//   getOrgTreeNew,
+//   getListSelectNew
+// } from '@/api/userManagement.js'
 import { setTreeData } from '@/utils/utils.js'
 import tableManageParent from './components/tab/table.vue'
 export default {
@@ -64,12 +65,7 @@ export default {
   },
   data() {
     return {
-      selectedCode: '', // 组织编号
-      selectedName: '', // 组织名称
-      selectedDescription: '', // 描述
-      // selectedCodeShow: false, // 组织编号是否显示
       tableManageParent: true, // 组织管理下父级管理中心是否显示
-      // orgtype: '', // 区分是否是最后一级
       treedata: [], // tree树
       currentNodekey: '', // 默认高亮修改
       expandedkeys: [], // 默认高亮修改
@@ -89,8 +85,6 @@ export default {
         pageSize: 10,
         pageNumber: 1
       },
-      // selectData: {} // 点击tree树获取整个节点对象
-      // isDel: true // 最初默认标识可以删除
       treeloading: true,
       tableloading: true
     }
@@ -105,16 +99,13 @@ export default {
       if (value) {
         this.treeloading = value.loading
       }
-      getOrgTreeNew().then(response => {
+      classifyTree().then(response => {
         this.treeloading = false
         if (response.code === 0) {
           this.treedata = setTreeData(response.data)
           if (response.data.length > 0) {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id
-              this.selectedCode = this.treedata[0].code
-              this.selectedName = this.treedata[0].name
-              this.selectedDescription = this.treedata[0].description
             }
             this.param.parentId = this.treeId
             this.currentNodekey = this.treeId
@@ -132,9 +123,10 @@ export default {
         this.$message.error(response.message)
       })
     },
+
     // 点击tree树获取table表格的数据
     getTableData() {
-      getListSelectNew(this.param)
+      queryClass(this.param)
         .then(response => {
           this.tableloading = false
           if (response.code === 0) {
@@ -152,9 +144,6 @@ export default {
           this.$message.error(response.msg)
         })
     },
-    // handleGetTree() {
-    //   this.getTreeData()
-    // },
     // 分页掉接口
     handleGetTableData(value) {
       if (value) {
@@ -166,14 +155,13 @@ export default {
     },
     // 点击tree树
     handleNodeClick(data) {
-      console.log(data)
       this.param.parentId = data.id
-
-      this.selectedCode = data.code
-      this.selectedName = data.name
-      this.selectedDescription = data.description
       this.treeId = data.id
-
+      this.getTableData()
+    },
+    // 点击查询，重新渲染数据域列表
+    searchData() {
+      this.pageNumber = 1
       this.getTableData()
     }
   }

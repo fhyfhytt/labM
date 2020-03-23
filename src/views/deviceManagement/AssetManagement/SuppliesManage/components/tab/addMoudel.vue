@@ -4,24 +4,40 @@
     <el-form ref="addForm" :model="addForm" label-width="120px" :rules="addFormRules" class="formAdd" style="margin-left:-10px;">
       <el-row class="addtop">
         <el-col :span="12">
-          <el-form-item label="组织编号:" prop="code">
-            <el-input v-model="addForm.code" placeholder="请输入组织编号" />
+          <el-form-item label="物资编码:" prop="code">
+            <el-input v-model="addForm.code" disabled />
           </el-form-item>
-          <el-form-item label="组织类型:" prop="type">
+          <el-form-item label="设备名称:" prop="name">
+            <el-input v-model="addForm.name" placeholder="请输入设备名称" />
+          </el-form-item>
+          <el-form-item label="设备厂商:" prop="type">
             <el-select v-model="addForm.type" popper-class="select-option" placeholder="-请选择-">
               <el-option v-for="item in selectDataTrue" :key="item.value" :label="item.name" :value="item.value" />
             </el-select>
           </el-form-item>
+          <el-form-item label="采购价:" prop="name">
+            <el-input v-model="addForm.name" placeholder="请输入采购价" />
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="组织名称:" prop="name">
-            <el-input v-model="addForm.name" placeholder="请输入组织名称" />
+          <el-form-item label="操作编码:" prop="code">
+            <el-input v-model="addForm.code" placeholder="请输入操作编码号" />
+          </el-form-item>
+          <el-form-item label="设备型号:" prop="type">
+            <el-select v-model="addForm.type" popper-class="select-option" placeholder="-请选择-">
+              <el-option v-for="item in selectDataTrue" :key="item.value" :label="item.name" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="资产分类:" prop="type">
+            <el-select v-model="addForm.type" popper-class="select-option" placeholder="-请选择-" disabled>
+              <el-option v-for="item in selectDataTrue" :key="item.value" :label="item.name" :value="item.value" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="描述:" prop="description">
+          <el-form-item label="备注:" prop="description">
             <el-input v-model="addForm.description" type="textarea" placeholder="请输入备注" />
           </el-form-item>
         </el-col>

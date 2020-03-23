@@ -2,35 +2,19 @@
   <div v-loading="loading" class="dialgAddform1">
     <el-form ref="addForm" :model="addForm" label-width="120px" :rules="addFormRules" class="formAdd">
       <el-row class="addtop">
-        <el-col :span="12">
-
-          <el-form-item label="库房编号:" prop="code">
-            <el-input v-model="addForm.code" autocomplete="off" placeholder="请输入库房编号" />
-          </el-form-item>
-
-          <el-form-item label="库房类型" prop="type">
-
-            <el-select v-model="addForm.type" value-key="code" popper-class="select-option" placeholder="-请选择库房类型-">
-              <el-option v-for="item in selecthouseType" :key="item.code" :label="item.name" :value="item.code" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="库房管理员" prop="person">
-            <el-input v-model="addForm.person" autocomplete="off" placeholder="-点击选择管理员-" readonly @click.native="addNewUser" />
-          </el-form-item>
+        <el-col :span="24" style="border-bottom: 2px solid #1890ff;color:#1890ff;margin-bottom:20px;">
+          <h3>审核备注</h3>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="库房名称" prop="name">
-            <el-input v-model="addForm.name" autocomplete="off" placeholder="请输入库房名称" />
-          </el-form-item>
-          <el-form-item label="库房状态" prop="state">
-            <el-select v-model="addForm.state" value-key="code" popper-class="select-option" placeholder="-请选择库房状态-">
+        <el-col :span="24">
+          <el-form-item label="审核状态" prop="state">
+            <el-select v-model="addForm.state" value-key="code" popper-class="select-option" placeholder="-请选择-">
               <el-option v-for="item in selecthouseState" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
+            <!-- <el-select popper-class="select-option" placeholder="-请选择-">
+              <el-option label="审核通过" value="1" />
+              <el-option label="审核未通过" value="0" />
+            </el-select> -->
           </el-form-item>
-          <el-form-item label="管理员电话" prop="personMobile">
-            <el-input v-model="addForm.personMobile" autocomplete="off" readonly />
-          </el-form-item>
-
         </el-col>
       </el-row>
       <el-row>
@@ -44,37 +28,12 @@
     <div class="dialog-footer">
       <el-button size="medium " class="button-cancel" @click="handeladdFormVisible">取消</el-button>
       <el-button size="medium " class="button-sub" @click.native="submitForm('addForm')">确定</el-button>
-
     </div>
-    <el-dialog title="选择人员" append-to-body :visible.sync="addUserVisible" width="45%" class="addHouseUserDialog">
-      <div>
-        <el-row style="margin-bottom:10px">
-          关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入姓名或ID" style="width:200px;margin:0px 10px" />
-          <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
-        <!-- <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button> -->
-        </el-row>
-        <el-table ref="userInfoTable" v-loading="userloading" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
-          <el-table-column prop="name" label="用户名" />
-          <el-table-column prop="mobile" label="手机" />
-          <el-table-column prop="email" label="邮箱" />
-        </el-table>
-        <div class="numListJup " style="padding-right:70px">
-          <el-pagination :page-size="userPageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="userTotalCount" :current-page.sync="selectUserPage" @size-change="handleUserSizeChange" @current-change="handleSelectUserChange" />
-        <!-- <div class="sendAllBtn">
-            <span>跳转</span>
-          </div> -->
-        </div>
-      </div>
-    </el-dialog>
   </div>
 
 </template>
 
 <script>
-// import { managementCenterEdit } from '@/api/manage.js'
 import { searchRoleUsers } from '@/api/roleManage'
 import { dictUpdate } from '@/api/house.js'
 import common from '@/utils/common'
@@ -82,14 +41,10 @@ export default {
   data() {
     return {
       // 新增界面数据  state: '',
-      addForm: { code: '', name: '', person: '', state: '', type: '', memo: '', personId: '' },
+      addForm: { state: '', memo: '', personId: '' },
       addFormVisible: false,
       addFormRules: {
-        code: [{ required: true, message: '请输入库房编号', trigger: 'blur' }],
-        name: [{ required: true, message: '请输入库房名称', trigger: 'blur' }],
-        person: [{ required: true, message: '请选择库房管理员', trigger: 'change' }],
-        state: [{ required: true, message: '请选择库房状态', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择库房类型', trigger: 'blur' }]
+        state: [{ required: true, message: '请选择库房状态', trigger: 'blur' }]
       },
       selecthouseType: [],
       selecthouseState: [],
@@ -166,7 +121,8 @@ export default {
           return false
         }
       })
-    }, selectUserInfoRow(row) {
+    },
+    selectUserInfoRow(row) {
       console.log(row)
       this.addForm.person = row.name
       this.addForm.personMobile = row.personMobile

@@ -1,16 +1,21 @@
 <template>
   <div class="page-table-content">
     <div v-show="show" class="button-tool">
-      <el-button v-permission="'orgAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-      <el-button v-permission="'orgDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      <div class="button-tool-right fr">
+        <el-button v-permission="'orgAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+        <el-button v-permission="'orgDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      </div>
     </div>
     <el-table :data="tableDate" height="605" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="序号" width="55" />
-      <el-table-column prop="code" label="组织编号" width="" />
-      <el-table-column prop="name" label="组织名称" width="" />
-      <el-table-column prop="type" :formatter="typeformatter" label="组织类型" />
-      <el-table-column prop="description" label="描述" />
+      <el-table-column prop="code" label="物资编码" width="" />
+      <el-table-column prop="code" label="操作编码" width="" />
+      <el-table-column prop="name" label="物资名称" width="" />
+      <el-table-column prop="status" :formatter="typeformatter" label="设备型号" />
+      <el-table-column prop="name" label="设备厂商" width="" />
+      <el-table-column prop="name" label="物资分类" width="" />
+      <el-table-column prop="name" label="物资价格" width="" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
           <i v-permission="'orgEdit'" class="iconfont iconbianji1 scope-caozuo" title="编辑" @click="handleEdit(scope.$index, scope.row)" />
@@ -27,11 +32,11 @@
       <confirmDialog title="是否确认删除？" @sureMsg="sureMsg" @confireMsg="confireMsg" />
     </el-dialog>
     <!--新增界面-->
-    <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="新建组织" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
+    <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="物资新增" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
       <addMoudel :tree-id="id" @handleGetTree1="handleGetTree1" @handeladdFormVisible="handeladdFormVisible" />
     </el-dialog>
     <!--编辑界面-->
-    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="修改组织" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" class="deviceAdd addmanage">
+    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="物资修改" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" class="deviceAdd addmanage">
       <editMoudel ref="childrenEdit" :tree-id="id" :row="row" @handleGetTree1="handleGetTree1" @handeleditFormVisible="handeleditFormVisible" />
     </el-dialog>
   </div>
@@ -91,17 +96,8 @@ export default {
   mounted() {
   },
   methods: {
-    // 新建数据域未保存提示
-    // saveShowConfirm() {
-    //   this.saveShow = false
-    //   this.addFormVisible = false
-    // },
-    // saveShowCancel() {
-    //   this.saveShow = false
-    // },
     // 重新刷新页面
     handleGetTree1() {
-      // this.$emit('handleGetTree')
       this.$emit('refresh', { loading: true })
     },
     // 选择table数据  删除的项
