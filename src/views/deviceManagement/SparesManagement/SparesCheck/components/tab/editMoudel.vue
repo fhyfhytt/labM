@@ -1,38 +1,61 @@
 <template>
   <div v-loading="loading" class="dialgEditform1">
     <el-form ref="editForm" :model="editForm" label-width="120px" :rules="addFormRules" class="formAdd">
+      <h3 class="title">基本信息</h3>
       <el-row class="addtop">
-        <el-col :span="12">
-
-          <el-form-item label="库房编号:" prop="code">
-            <el-input v-model="editForm.code" autocomplete="off" placeholder="请输入库房编号" />
+        <el-col :span="8">
+          <el-form-item label="资产编码:" prop="code">
+            <el-input v-model="editForm.code" autocomplete="off" placeholder="" />
           </el-form-item>
-
-          <el-form-item label="库房类型" prop="type">
-            <el-select v-model="editForm.type" value-key="name" popper-class="select-option" placeholder="-请选择库房类型-">
-              <el-option v-for="item in selecthouseType" :key="item.code" :label="item.name" :value="item" />
-            </el-select>
+          <el-form-item label="设备厂商:" prop="person">
+            <el-input v-model="editForm.person" autocomplete="off" placeholder="" readonly @click.native="addNewUser" />
           </el-form-item>
-
-          <el-form-item label="库房管理员" prop="person">
-            <el-input v-model="editForm.person" autocomplete="off" placeholder="-点击选择管理员-" readonly @click.native="addNewUser" />
+          <el-form-item label="资产分类:" prop="person">
+            <el-input v-model="editForm.person" autocomplete="off" placeholder="" readonly @click.native="addNewUser" />
+          </el-form-item>
+          <el-form-item label="维保日期:" prop="person">
+            <el-input v-model="editForm.person" autocomplete="off" placeholder="" readonly @click.native="addNewUser" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="库房名称" prop="name">
-            <el-input v-model="editForm.name" autocomplete="off" placeholder="请输入库房名称" />
+        <el-col :span="8">
+          <el-form-item label="资产名称:" prop="name">
+            <el-input v-model="editForm.name" autocomplete="off" placeholder="" />
           </el-form-item>
-          <el-form-item label="库房状态" prop="state">
-            <el-select v-model="editForm.state" value-key="name" popper-class="select-option" placeholder="-请选择库房状态-">
-              <el-option v-for="item in selecthouseState" :key="item.code" :label="item.name" :value="item" />
-            </el-select>
+          <el-form-item label="设备型号:" prop="name">
+            <el-input v-model="editForm.name" autocomplete="off" placeholder="" />
           </el-form-item>
-          <el-form-item label="管理员电话" prop="personMobile">
+          <el-form-item label="数量:" prop="personMobile">
+            <el-input v-model="editForm.personMobile" autocomplete="off" readonly />
+          </el-form-item>
+          <el-form-item label="维保状态:" prop="personMobile">
+            <el-input v-model="editForm.personMobile" autocomplete="off" readonly />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="资产状态:" prop="person">
+            <el-input v-model="editForm.person" autocomplete="off" placeholder="" readonly />
+          </el-form-item>
+          <el-form-item label="所属库房:" prop="personMobile">
+            <el-input v-model="editForm.personMobile" autocomplete="off" readonly />
+          </el-form-item>
+          <!-- @click.native="addNewUser" -->
+          <el-form-item label="采购价:" prop="person">
+            <el-input v-model="editForm.person" autocomplete="off" placeholder="" readonly />
+          </el-form-item>
+          <el-form-item label="分布位置:" prop="personMobile">
             <el-input v-model="editForm.personMobile" autocomplete="off" readonly />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
+        <h3 class="title" style="">审核备注</h3>
+        <el-col :span="24">
+          <el-form-item label="审核状态:" prop="state">
+            <el-select v-model="editForm.state" value-key="name" popper-class="select-option" placeholder="-请选择-">
+              <el-option v-for="item in selecthouseState" :key="item.code" :label="item.name" :value="item" />
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="24">
           <el-form-item label="备注:" prop="memo">
             <el-input v-model="editForm.memo" type="textarea" placeholder="请输入备注" />
@@ -44,35 +67,12 @@
       <el-button size="medium " class="button-cancel" @click="handeleditFormVisible('editForm')">取消</el-button>
       <el-button size="medium " class="button-sub" @click.native="submitForm('editForm')">确定</el-button>
     </div>
-    <el-dialog title="选择人员" append-to-body :visible.sync="addUserVisible" :before-close="handleAddNewUser" width="45%" class="addHouseUserDialog">
-      <div>
-        <el-row style="margin-bottom:10px">
-          关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入姓名或ID" style="width:200px;margin:0px 10px" />
-          <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
-        <!-- <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button> -->
-        </el-row>
-        <el-table ref="userInfoTable" v-loading="userloading" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
-          <el-table-column prop="name" label="用户名" />
-          <el-table-column prop="mobile" label="手机" />
-          <el-table-column prop="email" label="邮箱" />
-        </el-table>
-        <div class="numListJup " style="padding-right:70px">
-          <el-pagination :page-size="userPageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="userTotalCount" :current-page.sync="selectUserPage" @size-change="handleUserSizeChange" @current-change="handleSelectUserChange" />
-        <!-- <div class="sendAllBtn">
-            <span>跳转</span>
-          </div> -->
-        </div>
-      </div>
-    </el-dialog>
   </div>
 
 </template>
 
 <script>
-import { searchRoleUsers } from '@/api/roleManage'
+// import { searchRoleUsers } from '@/api/roleManage'
 import { dictUpdate } from '@/api/house.js'
 import common from '@/utils/common'
 export default {
@@ -98,11 +98,11 @@ export default {
       selecthouseState: [],
       loading: false,
       addUserVisible: false,
-      userloading: true,
-      userUnselectedInfo: [],
-      userTotalCount: 0, // 未选择人数页数
-      userPageSize: 10, // 选择人员每页个数
-      selectUserPage: 1, // 为选择人员页数
+      // userloading: true,
+      // userUnselectedInfo: [],
+      // userTotalCount: 0, // 未选择人数页数
+      // userPageSize: 10, // 选择人员每页个数
+      // selectUserPage: 1, // 为选择人员页数
       primaryKey: '' // 查询参数
     }
   },
@@ -182,45 +182,65 @@ export default {
       this.editForm.personMobile = row.personMobile
       this.editForm.personId = row.id
       this.addUserVisible = false
-    }, handleUserSizeChange(val) {
+    },
+    handleUserSizeChange(val) {
       this.userPageSize = val
       this.handleGetUnselectRoleUsers()
-    }, // 未添加人员信息列表
-    handleSelectUserChange() {
-      this.handleGetUnselectRoleUsers()
-    }, // 获取未选择的人员
-    handleGetUnselectRoleUsers(data) {
-      searchRoleUsers({ pageSize: this.userPageSize, pageNumber: this.selectUserPage, name: data }).then(res => {
-        this.userloading = false
-        if (res.success === true) {
-          this.userUnselectedInfo = res.data.rows
-          this.userTotalCount = res.data.totalCount
-        } else {
-          this.$message.error(res.msg)
-        }
-      }).catch(e => {
-        this.userloading = false
-        this.$message.error(e.msg)
-      })
-    // 清空新增数据
-    // clearDate() {
-    //   this.editForm = {}
-    // }
-    }, // 添加新成员
-    addNewUser() {
-      this.editForm.person = ''
-      this.editForm.personMobile = ''
-      this.addUserVisible = true
-      this.handleGetUnselectRoleUsers()
-    }, // 查询要新添加的用户
-    searchNewUsers() {
-      this.selectUserPage = 1
-      this.handleGetUnselectRoleUsers(this.primaryKey)
     }
+    //, // 未添加人员信息列表
+    // handleSelectUserChange() {
+    //   this.handleGetUnselectRoleUsers()
+    // }, // 获取未选择的人员
+    // handleGetUnselectRoleUsers(data) {
+    //   searchRoleUsers({ pageSize: this.userPageSize, pageNumber: this.selectUserPage, name: data }).then(res => {
+    //     this.userloading = false
+    //     if (res.success === true) {
+    //       this.userUnselectedInfo = res.data.rows
+    //       this.userTotalCount = res.data.totalCount
+    //     } else {
+    //       this.$message.error(res.msg)
+    //     }
+    //   }).catch(e => {
+    //     this.userloading = false
+    //     this.$message.error(e.msg)
+    //   })
+    // },
+    // // 添加新成员
+    // addNewUser() {
+    //   this.editForm.person = ''
+    //   this.editForm.personMobile = ''
+    //   this.addUserVisible = true
+    //   this.handleGetUnselectRoleUsers()
+    // }, // 查询要新添加的用户
+    // searchNewUsers() {
+    //   this.selectUserPage = 1
+    //   this.handleGetUnselectRoleUsers(this.primaryKey)
+    // }
   }
 }
 </script>
 
 <style lang="scss">
 @import '~@/styles/modul.scss';
+</style>
+<style lang="scss" scoped>
+  .dialgEditform1 .addtop {
+    // .el-input__inner {
+    //   border: none!important;
+    // }
+    .el-form-item {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #c7cbd6;
+    }
+  }
+  /deep/.addtop .el-input__inner {
+    border: none!important;
+  }
+  // .dialgEditform1 .addtop .el-form-item {
+  //   margin-bottom: 10px;
+  //   border-bottom: 1px solid #c7cbd6;
+  // }
+  .dialgEditform1 .title {
+    border-bottom: 2px solid #c7cbd6;color:#1890ff;height:30px;
+  }
 </style>
