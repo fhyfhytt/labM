@@ -65,7 +65,8 @@
                     :data="avatarData"
                   >
                     <img v-if="editForm.avatar" :src="avatar.url" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon" />
+                    <img v-else :src="header" class="avatar" alt="">
+                    <div v-if="tip" class="mask"><i :class="iconcass" /></div>
                     <div v-if="!tip" class="mask" @click.stop="deleteAvatar"><i class="iconfont iconxingzhuang1" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
                     <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2">删除</div> -->
@@ -235,6 +236,7 @@ import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData } from '@/utils/utils'
 import common from '@/utils/common'
 import { selectRoleByUserId, selectRegionByUserId, getRegionList, getRoleList, editUserAll } from '@/api/userManagement.js'
+import header from '@/assets/img/header.png'
 export default {
   props: {
     row: {
@@ -271,6 +273,7 @@ export default {
       disabled: true, // tabs是否禁用
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
+      header: header,
       editForm: { name: '', userCode: '', avatar: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', groupId: [], deptId: [] },
       editFormRules: {
         name: [{ validator: validatePass2, trigger: 'change', required: true }],
@@ -328,7 +331,7 @@ export default {
       headers: {
         'Authorization': this.$store.state.user.token
       },
-      iconclass: 'el-icon-plus avatar-uploader-icon',
+      iconclass: 'iconfont iconbianzu2 avatar-uploader-icon',
       avatar: {
         id: '',
         url: '',
@@ -770,6 +773,7 @@ export default {
           this.$message.success(res.msg)
           this.avatardisabled = false
           this.editForm.avatar = ''
+          this.avatar.id = ''
           this.tip = true
         } else {
           throw res
@@ -962,6 +966,7 @@ export default {
     height: 135px;
     line-height: 135px;
     text-align: center;
+    display: block;
   }
   .avatar {
     width: 135px;

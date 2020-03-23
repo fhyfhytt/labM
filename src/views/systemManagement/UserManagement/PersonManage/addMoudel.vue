@@ -66,7 +66,8 @@
                     :accept="'image/*'"
                   >
                     <img v-if="addForm.avatar" :src="avatar.url" class="avatar">
-                    <i v-else :class="iconclass" />
+                    <img v-else :src="header" class="avatar" alt="">
+                    <div v-if="tip" class="mask"><i :class="iconclass" /></div>
                     <div v-if="!tip" class="mask" @click.stop="deleteAvatar"><i class="iconfont iconxingzhuang1" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
                     <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2" @click="deleteAvatar"></div> -->
@@ -240,6 +241,7 @@ import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData } from '@/utils/utils'
 import common from '@/utils/common'
 import { saveUserAll, userIsRepeat, getRoleList, getRegionList } from '@/api/userManagement.js'
+import header from '@/assets/img/header.png'
 export default {
   data() {
     var validatePass1 = (rule, value, callback) => {
@@ -270,6 +272,7 @@ export default {
       disabled: true, // tabs是否禁用
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
+      header: header,
       loading: false,
       addForm: { name: '', userCode: '', avatar: '', avatarId: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', deptId: null },
       addFormRules: {
@@ -327,7 +330,7 @@ export default {
       headers: {
         'Authorization': this.$store.state.user.token
       },
-      iconclass: 'el-icon-plus avatar-uploader-icon',
+      iconclass: 'iconfont iconbianzu2 avatar-uploader-icon',
       avatar: {
         id: '',
         appendixPath: '',
@@ -671,6 +674,7 @@ export default {
           this.$message.success('删除成功')
           this.avatardisabled = false
           this.addForm.avatar = ''
+          this.avatar.id = ''
           this.tip = true
         } else {
           throw res
@@ -719,21 +723,21 @@ export default {
 }
 .UserManage-add {
   //树形选择框
-  .avatar-uploader:hover .mask{
+  .avatar-uploader:hover .mask {
     display: flex;
   }
-  .mask{
+  .mask {
     position: absolute;
-    background:rgba(0,0,0,0.4);
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
+    background: rgba(0, 0, 0, 0.4);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: none;
     flex-direction: column;
     justify-content: center;
-    i{
-      color:#fff;
+    i {
+      color: #fff;
       font-size: 40px;
       vertical-align: middle;
     }
@@ -770,7 +774,7 @@ export default {
       font-weight: 100;
     }
     .vue-treeselect__option--highlight {
-      .vue-treeselect__label{
+      .vue-treeselect__label {
         font-weight: 900;
       }
 
@@ -822,14 +826,14 @@ export default {
     // text-align: center;
     .el-upload {
       border: 1px dashed #d9d9d9;
-      border-radius:50%;
+      border-radius: 50%;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       .el-upload-dragger {
-        width: auto;
-        height: auto;
-        border:none
+        width: 135px;
+        height: 135px;
+        border: none;
       }
     }
     .el-upload__tip {
@@ -863,10 +867,11 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 135px;
-    height: 135px;
+    width: 100%;
+    height: 100%;
     line-height: 135px;
     text-align: center;
+    display: block;
   }
   .avatar {
     width: 135px;
