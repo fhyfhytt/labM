@@ -132,6 +132,7 @@ export default {
     getDiction() {
       this.pageNumber = 1
       this.pageSize = 10
+      this.currentPage = 1
       this.getStartDiction()
     },
     // 字典删除

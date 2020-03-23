@@ -152,6 +152,7 @@ export default {
       }
       this.pageNumber = 1
       this.pageSize = 10
+      this.currentPage = 1
       this.getListData(param)
     },
     sendMsg() {
