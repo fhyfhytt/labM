@@ -369,7 +369,8 @@ padding: 0 10px !important;
     }
   }
   &>.el-menu {
-    background: linear-gradient(180deg, #2d64eb 0%, #635df5 100%);
+    
+    @extend %hover;
     .svg-icon {
       margin-right: 16px;
     }
