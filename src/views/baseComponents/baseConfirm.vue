@@ -51,9 +51,7 @@ export default {
     margin: -1px auto 0;
     background: radial-gradient(#53e3fd 20%, transparent 80%);
   }
-  .el-dialog__header {
-    background: #379efc;
-  }
+
   .el-select.el-select--medium,
   .el-form-item--medium .el-form-item__content {
     width: 150px;
