@@ -15,10 +15,8 @@
     <el-table v-loading="loading" :data="tableDate" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="编号" />
-      <el-table-column prop="code" label="分类编号" />
-      <el-table-column prop="name" label="分类名称" />
-      <el-table-column prop="status" :formatter="formatter" label="分类启用状态" />
-      <el-table-column prop="description" label="分类描述" />
+      <el-table-column prop="code" label="区域编号" />
+      <el-table-column prop="name" label="区域名称" />
 
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
@@ -64,7 +62,7 @@
 </template>
 
 <script>
-import { delClass } from '@/api/classify.js'
+import { delArea } from '@/api/area.js'
 import addMoudel from './addMoudel.vue'
 import editMoudel from './editMoudel.vue'
 import baseConfirm from '@/views/baseComponents/baseConfirm'
@@ -157,7 +155,7 @@ export default {
       const param = { ids: this.delTableById.join(',') }
       var that = this
       this.removeLoading = true
-      delClass(param).then(response => {
+      delArea(param).then(response => {
         that.removeLoading = false
         that.moveShow = flag
         if (response.success === true) {

@@ -352,7 +352,7 @@ export default {
     // 图片成功回调
     handleImgSuccess(res, file) {
       if (res.code === 0) {
-        this.disabled = false
+        this.disabled = true
         this.$message.success('上传成功')
         this.iconclass = 'el-icon-upload'
         this.ruleForm.appendixImgId = res.data.id

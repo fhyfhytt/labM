@@ -1,36 +1,74 @@
 <template>
   <div class="pageRow">
-
-    <div class="page-title">
-      <el-form ref="form1" :model="formhouse" size="small" label-width="110px">
+    <el-row>
+      <el-col :xl="{span:3}" :lg="{span:5}">
+        <div class="tree-div">
+          <div class="inline-div">
+            <el-tree
+              ref="tree"
+              v-loading="treeloading"
+              :data="treedata"
+              node-key="id"
+              default-expand-all
+              :props="defaultProps"
+              :highlight-current="true"
+              :expand-on-click-node="false"
+              @node-click="handleNodeClick"
+            >
+              <span slot-scope="{ node, data }" class="custom-tree-node">
+                <span v-if="data.children">
+                  <i class="iconfont iconzuzhi" />{{ data.name }}
+                </span>
+                <span v-else style="paddingLeft:16px;">
+                  <i class="iconfont iconbumen" />{{ data.name }}
+                </span>
+              </span>
+            </el-tree>
+          </div>
+        </div>
+      </el-col>
+      <el-col :xl="{span:21}" :lg="{span:19}" class="right-page">
         <el-row>
-          <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item label="库房名称">
-              <el-input v-model="formhouse.name" placeholder="请输入内容" />
-            </el-form-item>
-          </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item label="库房类型">
-              <el-select v-model="formhouse.type" value-key="code" clearable placeholder="-请选择-">
-                <el-option v-for="item in houseClass" :key="item.code" :label="item.name" :value="item" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchHouse">查询</el-button>
+          <el-col>
+            <div class="right-page-title">
+              <el-form ref="form1" :model="formhouse" size="small" label-width="110px" class="searchform">
+                <el-row>
+                  <el-col :xl="{span:5}" :lg="{span:6}">
+                    <el-form-item label="库房名称">
+                      <el-input v-model="formhouse.name" placeholder="请输入内容" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xl="{span:5}" :lg="{span:6}">
+                    <el-form-item label="库房类型">
+                      <el-select v-model="formhouse.type" value-key="code" clearable placeholder="-请选择-">
+                        <el-option v-for="item in houseClass" :key="item.code" :label="item.name" :value="item" />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xl="{span:5}" :lg="{span:6}">
+                    <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchHouse">查询</el-button>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </div>
           </el-col>
         </el-row>
-      </el-form>
-    </div>
-
-    <div class="page-table">
-      <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
-    </div>
+        <el-row>
+          <el-col>
+            <div class="right-page-table">
+              <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
+            </div>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
 
   </div>
 </template>
 
 <script>
+import { setTreeData } from '@/utils/utils.js'
+import { areaTree } from '@/api/area.js'
 import { queryHouseList } from '@/api/house.js'
 import common from '@/utils/common'
 import tableManageParent from './components/tab/table.vue'
@@ -57,6 +95,7 @@ export default {
         sortColumn: 'create_time',
         sortOrder: 'desc'
       },
+      expandedkeys: [],
       input: '',
       tableloading: true
       // selectData: {} // 点击tree树获取整个节点对象
@@ -82,10 +121,39 @@ export default {
     })
   },
   mounted() {
-    this.getTableData()
+    // 获取tree树
+    this.getTreeData()
+    // this.getTableData()
   },
   methods: {
-    //
+    getTreeData(value) {
+      if (value) {
+        this.treeloading = value.loading
+      }
+      areaTree().then(response => {
+        this.treeloading = false
+        if (response.code === 0) {
+          this.treedata = setTreeData(response.data)
+          if (response.data.length > 0) {
+            if (this.treeId === '') {
+              this.treeId = this.treedata[0].id// 当前的Id
+            }
+            this.param.parentId = this.treeId
+            this.currentNodekey = this.treeId
+            this.expandedkeys.push(this.treeId)
+            this.$nextTick(() => {
+              this.$refs.tree.setCurrentKey(this.currentNodekey)
+            })
+            this.getTableData()
+          }
+        } else {
+          this.$message.error(response.msg)
+        }
+      }).catch(response => {
+        this.loading = false
+        this.$message.error(response.message)
+      })
+    },
     // 点击tree树获取table表格的数据
     getTableData() {
       this.tableloading = true
@@ -119,6 +187,18 @@ export default {
         this.currentPage = value.currentPage
       }
       this.getTableData()
+    }, // 点击tree树
+    handleNodeClick(data) {
+      this.param.pageSize = 10
+      this.param.pageNumber = 1
+      this.selectedName = data.name
+      this.param.id = data.id
+      this.selectedCode = data.code
+      this.selectedState = data.status === '1' ? '启用' : '不启用'
+      // this.selectedDescription = data.description
+      this.treeId = data.id
+      this.tableloading = true
+      this.getTableData()
     }
   }
 }
@@ -127,6 +207,8 @@ export default {
 <style lang="scss">
 @import '~@/styles/mixin.scss';
 @import '~@/styles/variables.scss';
-
+.searchform{
+  width:100%
+}
 </style>
 

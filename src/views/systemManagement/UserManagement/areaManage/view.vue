@@ -36,7 +36,7 @@
               <span style="margin-left:40px;margin-right:60px;"><span style="padding-right:10px;">编号:</span>{{ selectedCode }}</span>
               <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">区域编号:</span>{{ selectedName }}</span>
               <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">区域名称:</span>{{ selectedState }}</span>
-              <span><span style="padding-right:10px;">描述:</span>{{ selectedDescription }}</span>
+              <!-- <span><span style="padding-right:10px;">描述:</span>{{ selectedDescription }}</span> -->
             </div>
           </el-col>
         </el-row>
@@ -54,7 +54,7 @@
 
 <script>
 
-import { classifyTree, queryClass } from '@/api/area.js'
+import { areaTree, queryArea } from '@/api/area.js'
 import { setTreeData } from '@/utils/utils.js'
 import tableManageParent from './components/tab/table.vue'
 
@@ -85,7 +85,9 @@ export default {
       totalNum: 0,
       param: {
         pageSize: 10,
-        pageNumber: 1
+        pageNumber: 1,
+        sortColumn: 'create_time',
+        sortOrder: 'desc'
       },
       treeloading: true,
       tableloading: true
@@ -103,7 +105,7 @@ export default {
       if (value) {
         this.treeloading = value.loading
       }
-      classifyTree().then(response => {
+      areaTree().then(response => {
         this.treeloading = false
         if (response.code === 0) {
           this.treedata = setTreeData(response.data)
@@ -112,7 +114,7 @@ export default {
               this.treeId = this.treedata[0].id// 当前的Id
               this.selectedName = this.treedata[0].name
               this.selectedState = this.treedata[0].status
-              this.selectedDescription = this.treedata[0].description
+              // this.selectedDescription = this.treedata[0].description
               this.selectedCode = this.treedata[0].code
             }
             this.param.parentId = this.treeId
@@ -133,10 +135,10 @@ export default {
     },
     // 点击tree树获取table表格的数据
     getTableData() {
-      queryClass(this.param).then(response => {
+      queryArea(this.param).then(response => {
         this.tableloading = false
         if (response.code === 0) {
-          this.tableData = response.data.cfList
+          this.tableData = response.data.list
           this.totalNum = Number(response.data.count)
         } else {
           this.$message.error(response.msg)
@@ -159,11 +161,13 @@ export default {
     },
     // 点击tree树
     handleNodeClick(data) {
+      this.param.pageSize = 10
+      this.param.pageNumber = 1
       this.selectedName = data.name
-      this.param.parentId = data.id
+      this.param.id = data.id
       this.selectedCode = data.code
       this.selectedState = data.status === '1' ? '启用' : '不启用'
-      this.selectedDescription = data.description
+      // this.selectedDescription = data.description
       this.treeId = data.id
       this.tableloading = true
       this.getTableData()

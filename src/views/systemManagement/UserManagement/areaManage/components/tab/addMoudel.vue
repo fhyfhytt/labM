@@ -8,11 +8,11 @@
             <el-input v-model="addForm.code" autocomplete="off" placeholder="请输入编号" />
           </el-form-item>
 
-          <el-form-item label="启用状态:" prop="status">
+          <!-- <el-form-item label="启用状态:" prop="status">
             <el-select v-model="addForm.status" popper-class="select-option" placeholder="-请选择-">
               <el-option v-for="item in selectDataTrue" :key="item.value" :label="item.name" :value="item.value" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
         </el-col>
         <el-col :span="12">
           <el-form-item label="名称" prop="name">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { editClass } from '@/api/classify.js'
+import { editArea } from '@/api/area.js'
 export default {
   props: {
     treeId: {
@@ -72,7 +72,7 @@ export default {
         if (valid) {
           that.loading = true
           const param = this.addForm
-          editClass(param).then(response => {
+          editArea(param).then(response => {
             that.loading = false
             if (response.success === true) {
               this.$message.success('新增成功')
