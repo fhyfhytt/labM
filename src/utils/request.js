@@ -43,10 +43,9 @@ service.interceptors.response.use(
     if (res.code === undefined || res.code !== 0) {
       // const resJson = JSON.parse(res)
       if (res.code === 10003) { // 过期处理
-        store.state.user.token = null
-        store.dispatch('tagsView/delAllVisitedViews', '')
-        store.dispatch('user/logout')
-        location.reload()
+        // store.state.user.token = null
+        // store.dispatch('tagsView/delAllVisitedViews', '')
+        // store.dispatch('user/logout')
       } else if (res.code === 10010 || res.code === 10017) {
         Message({
           message: res.msg,
