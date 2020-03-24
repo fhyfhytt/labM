@@ -151,7 +151,7 @@ const manageControlRouter = {
       meta: {
         title: '通知管理',
         icon: 'icon111',
-        roles: ['noticeManagement']
+        roles: ['NoticeManage']
       },
       name: 'NoticeManage'
     },
