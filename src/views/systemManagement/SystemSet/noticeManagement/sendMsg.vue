@@ -502,7 +502,7 @@ export default {
 
 }
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
 .el-loading-mask{
   height: 100vh;
 }
