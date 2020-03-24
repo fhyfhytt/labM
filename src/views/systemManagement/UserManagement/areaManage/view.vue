@@ -1,6 +1,7 @@
 <template>
   <div class="pageRow">
     <el-row>
+      <!--树结构-->
       <el-col :xl="{span:3}" :lg="{span:5}">
         <div class="tree-div">
           <div class="inline-div">
@@ -27,105 +28,79 @@
           </div>
         </div>
       </el-col>
+      <!--表格-->
       <el-col :xl="{span:21}" :lg="{span:19}" class="right-page">
         <el-row>
           <el-col>
             <div class="right-page-title">
-              <el-form ref="form1" :model="formhouse" size="small" label-width="110px" class="searchform">
-                <el-row>
-                  <el-col :xl="{span:5}" :lg="{span:6}">
-                    <el-form-item label="库房名称">
-                      <el-input v-model="formhouse.name" placeholder="请输入内容" />
-                    </el-form-item>
-                  </el-col>
-                  <el-col :xl="{span:5}" :lg="{span:6}">
-                    <el-form-item label="库房类型">
-                      <el-select v-model="formhouse.type" value-key="code" clearable placeholder="-请选择-">
-                        <el-option v-for="item in houseClass" :key="item.code" :label="item.name" :value="item" />
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :xl="{span:5}" :lg="{span:6}">
-                    <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchHouse">查询</el-button>
-                  </el-col>
-                </el-row>
-              </el-form>
+              <span style="margin-left:40px;margin-right:60px;"><span style="padding-right:10px;">编号:</span>{{ selectedCode }}</span>
+              <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">区域编号:</span>{{ selectedName }}</span>
+              <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">区域名称:</span>{{ selectedState }}</span>
+              <!-- <span><span style="padding-right:10px;">描述:</span>{{ selectedDescription }}</span> -->
             </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col>
             <div class="right-page-table">
-              <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
+              <tableManageParent :show="show" :table-loading="tableloading" :table-date="tableData" :tree-id="treeId" :total-num="totalNum" @refresh="getTreeData" @handleGetTableData="handleGetTableData" />
             </div>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-
   </div>
 </template>
 
 <script>
+
+import { areaTree, queryArea } from '@/api/area.js'
 import { setTreeData } from '@/utils/utils.js'
-import { areaTree } from '@/api/area.js'
-import { queryHouseList } from '@/api/house.js'
-import common from '@/utils/common'
 import tableManageParent from './components/tab/table.vue'
+
 export default {
   name: '',
-  components: {
-    tableManageParent
-  },
+  components: { tableManageParent },
   data() {
     return {
-      formhouse: { name: '', type: '' },
-
+      selectedState: '', // 组织状态
+      selectedName: '', // 组织名称
+      selectedDescription: '', // 描述
+      selectedCode: '',
+      orgtype: '', // 区分是否是最后一级
+      treedata: [], // tree树
+      currentNodekey: '', // 默认高亮修改
+      expandedkeys: [], // 默认高亮修改
+      id: '', // 获取tree树的id
+      selectTree: {}, // 获取点击tree树的的整个对象数据
+      type: '', // 点击tree传参type
       defaultProps: {
         children: 'children',
         label: 'name'
       },
-      houseClass: [],
-      tableDate: [],
+      tableData: [],
+      // treeName3: '', // 三四级的上级管理中心是一个管理中心
+      treeId: '', // 父ID
+      show: true,
       totalNum: 0,
-      currentPage: 1,
       param: {
         pageSize: 10,
         pageNumber: 1,
         sortColumn: 'create_time',
         sortOrder: 'desc'
       },
-      expandedkeys: [],
-      input: '',
+      treeloading: true,
       tableloading: true
       // selectData: {} // 点击tree树获取整个节点对象
       // isDel: true // 最初默认标识可以删除
     }
   },
-
-  created() {
-    common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
-        this.$nextTick(() => {
-          this.houseClass = res.data
-        })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
-      }
-    }).catch(res => {
-      this.$message.error(res.message)
-    })
-  },
   mounted() {
     // 获取tree树
     this.getTreeData()
-    // this.getTableData()
   },
   methods: {
+    // 获取tree树数据
     getTreeData(value) {
       if (value) {
         this.treeloading = value.loading
@@ -137,6 +112,10 @@ export default {
           if (response.data.length > 0) {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id
+              this.selectedName = this.treedata[0].name
+              this.selectedState = this.treedata[0].status
+              // this.selectedDescription = this.treedata[0].description
+              this.selectedCode = this.treedata[0].code
             }
             this.param.parentId = this.treeId
             this.currentNodekey = this.treeId
@@ -156,38 +135,31 @@ export default {
     },
     // 点击tree树获取table表格的数据
     getTableData() {
-      this.tableloading = true
-      queryHouseList(this.param)
-        .then(response => {
-          this.tableloading = false
-          if (response.code === 0) {
-            this.tableDate = response.data.list instanceof Array ? response.data.list : []
-            this.totalNum = Number(response.data.totalNum)
-          } else {
-            this.$message.error(response.msg)
-          }
-        })
-        .catch(response => {
-          this.tableloading = false
+      queryArea(this.param).then(response => {
+        this.tableloading = false
+        if (response.code === 0) {
+          this.tableData = response.data.list
+          this.totalNum = Number(response.data.count)
+        } else {
           this.$message.error(response.msg)
-        })
+        }
+      }).catch(response => {
+        this.tableData = []
+        this.totalNum = 0
+        this.$message.error(response.message)
+      })
     },
-    searchHouse() {
-      this.param.pageNumber = 1
-      this.param.pageSize = 10
-      this.currentPage = 1
-      this.param = Object.assign(this.param, this.formhouse)
-      this.getTableData()
-    },
+
     // 分页掉接口
     handleGetTableData(value) {
       if (value) {
+        this.tableloading = value.loading
         this.param.pageSize = value.pageSize
         this.param.pageNumber = value.pageNumber
-        this.currentPage = value.currentPage
       }
       this.getTableData()
-    }, // 点击tree树
+    },
+    // 点击tree树
     handleNodeClick(data) {
       this.param.pageSize = 10
       this.param.pageNumber = 1
@@ -200,15 +172,15 @@ export default {
       this.tableloading = true
       this.getTableData()
     }
+
   }
 }
+
 </script>
 
 <style lang="scss">
-@import '~@/styles/mixin.scss';
-@import '~@/styles/variables.scss';
-.searchform{
-  width:100%
-}
+  @import "~@/styles/mixin.scss";
+  @import "~@/styles/variables.scss";
+
 </style>
 

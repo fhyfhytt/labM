@@ -77,24 +77,28 @@ export default {
         'appendixName': this.fileList[e].name,
         'appendixPath': this.fileList[e].url
       }
-      fetch(this.GLOBAL.BASE_URL + '/common/downloadFile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.$store.state.user.token
-        },
-        body: JSON.stringify(param)
-      })
-        .then(res => res.blob())
-        .then(data => {
-          const blobUrl = window.URL.createObjectURL(data)
-          this.download(blobUrl, e)
-        })
+      // fetch(this.GLOBAL.BASE_URL + '/common/downloadFile', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': this.$store.state.user.token
+      //   },
+      //   body: JSON.stringify(param)
+      // })
+      //   .then(res =>{
+
+      //   })
+      // .then(data => {
+      //   // const blobUrl = window.URL.createObjectURL(data)
+      //   // this.download(blobUrl, e)
+      // })
+      this.download(param.appendixPath, e)
     },
     download(blobUrl, index) {
       const a = document.getElementById('downFile')
       var fileName = this.fileList[index].name
-      var extendName = fileName.substring(fileName.lastIndexOf('.')).toLowerCase()
+      var extendName = fileName
+      // .substring(fileName.lastIndexOf('.')).toLowerCase()
       a.download = extendName
       a.href = blobUrl
       a.click()
