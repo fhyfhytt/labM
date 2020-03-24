@@ -32,6 +32,12 @@
               :normalizer="normalizer"
             />
           </el-form-item>
+          <el-form-item label="是否为个人消息 :" prop="isPerson" class="mgItem">
+            <el-switch
+              v-model="ruleForm.isPerson"
+              active-color="#379EFC"
+              inactive-color="#C0C4CC"
+            /></el-form-item>
         </el-col>
         <el-col :xl="{span:8,push:8}" :lg="{span:12}">
           <el-form-item label="生效时间 : " prop="endMsgTime" class="mgItem">
@@ -45,9 +51,14 @@
               <el-option v-for="(item,index) in typeSs" :key="index" :label="item.name" :value="item" />
             </el-select>
           </el-form-item>
+          <el-form-item label="发布平台 :" prop="pubWay" class="mgItem">
+            <el-radio v-model="ruleForm.pubWay" label="0">PC</el-radio>
+            <el-radio v-model="ruleForm.pubWay" label="1">APP</el-radio>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
+
         <el-form-item label="通知内容 : ">
           <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" />
         </el-form-item>
@@ -131,7 +142,9 @@ export default {
         sendPeople: this.$store.getters.name, // 发布人
         startMsgTime: '',
         endMsgTime: '',
-        appendixIdName: [] // 文件对象
+        appendixIdName: [], // 文件对象
+        isPerson: false,
+        pubWay: '0'
       },
       rules: {
         topic: [

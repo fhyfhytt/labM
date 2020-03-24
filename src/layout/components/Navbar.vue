@@ -13,10 +13,28 @@
     <div class="right-menu">
       <div class="right-menu-item">
         <el-popover placement="bottom" width="400" trigger="click">
-          <el-tabs v-model="activeName" @before-leave="leavetab" @tab-click="handleClick">
+          <el-tabs v-model="activeName" class="msgcenter" @before-leave="leavetab" @tab-click="handleClick">
             <!-- stretch 可以拉伸tab填充宽度 -->
-            <el-tab-pane label="消息中心" name="first" style="max-height:300px">消息中心</el-tab-pane>
-            <el-tab-pane label="消息公告" name="second" style="max-height:300px">消息公告</el-tab-pane>
+            <el-tab-pane label="消息中心" name="first">
+              <ul style="max-height:300px">
+                <li v-for="(item,index) in messageCenter" :key="index">
+                  <div class="minilabel">最新</div>
+                  <div class="title">title</div>
+                  <div class="time">time</div>
+                </li>
+              </ul>
+              <div class="msgfooter"><span @click="goto(0)">查看更多<i class="iconfont" /></span></div>
+            </el-tab-pane>
+            <el-tab-pane label="消息公告" name="second">
+              <ul style="max-height:300px">
+                <li v-for="(item,index) in messageCenter" :key="index">
+                  <div class="minilabel">最新</div>
+                  <div class="title">title</div>
+                  <div class="time">time</div>
+                </li>
+              </ul>
+              <div class="msgfooter"><span @click="goto(1)">查看更多<i class="iconfont" /></span></div>
+            </el-tab-pane>
           </el-tabs>
           <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="true?&quot;point&quot;:&quot;&quot;" />
         </el-popover>
@@ -30,7 +48,7 @@
             <router-link to="/resetPassword">
               <el-dropdown-item>密码修改</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
+            <a href="javascript:void(0)">
               <el-dropdown-item>帮助中心</el-dropdown-item>
             </a>
             <el-dropdown-item @click.native="logout">
@@ -52,6 +70,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
+import {} from '../../assets/img/header.png'
 // getShort
 export default {
   components: {
@@ -71,7 +90,8 @@ export default {
       greshow: false,
       pointNum: 0,
       activeName: 'first',
-      defaultAvater: defaultAvater
+      defaultAvater: defaultAvater,
+      messageCenter: [{}, {}, {}, {}, {}, {}]
     }
   },
   computed: {
@@ -97,6 +117,12 @@ export default {
       // console.log(e, v)
     },
     leavetab(activeName, oldActiveName) {
+    }, goto(e) {
+      if (e) {
+        this.$router.push({ path: '/systemManagement/userManagement/messageManagement' })
+      } else {
+        this.$router.push({ path: '/systemManagement/SystemSet/noticeManagement' })
+      }
     }
   }
 }
@@ -355,6 +381,61 @@ export default {
     & > .iconfont {
       font-size: 22px;
       margin: 0 6px 0 10px;
+    }
+  }
+}
+</style>
+<style lang="scss" >
+.msgcenter {
+  >>> el-tab-pane {
+    &::-webkit-scrollbar {
+      width: 5px;
+      background-color: transparent;
+    }
+    /* 滚动条中能上下移动的小块 */
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 5px;
+    }
+    /* scroll轨道背景 */
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background-color: transparent;
+    }
+  }
+  ul {
+    padding: 0 30px;
+    li {
+      display: flex;
+      flex-wrap: nowrap;
+      margin-bottom: 16px;
+      .minilabel {
+        width: 35px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        background: #ff4b2b;
+        border-radius: 4px;
+        color: #fff;
+        flex-shrink: 0;
+        margin-right:15px;
+      }
+      .title{
+        flex:1;
+        color:#292929;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .time{
+        margin-left:30px;
+      }
+    }
+  }
+  .msgfooter{
+    text-align: right;
+    span{
+      cursor: pointer;
     }
   }
 }
