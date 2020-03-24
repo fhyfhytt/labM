@@ -10,10 +10,8 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item label="备件分类：">
-              <el-select v-model="formhouse.type" value-key="code" clearable placeholder="-请选择-">
-                <el-option v-for="item in houseClass" :key="item.code" :label="item.name" :value="item" />
-              </el-select>
+            <el-form-item label="备件分类：" @click.native="handleAdd">
+              <el-input placeholder="请选择备件分类" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
@@ -33,7 +31,10 @@
     <div class="page-table">
       <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
     </div>
-
+    <!--备件分类界面-->
+    <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="物资新增" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
+      <sparesType :tree-id="id" @handeladdFormVisible="handeladdFormVisible" />
+    </el-dialog>
   </div>
 </template>
 
@@ -41,10 +42,12 @@
 import { queryHouseList } from '@/api/house.js'
 import common from '@/utils/common'
 import tableManageParent from './components/tab/table.vue'
+import sparesType from './components/tab/sparesType.vue'
 export default {
   name: '',
   components: {
-    tableManageParent
+    tableManageParent,
+    sparesType
   },
   data() {
     return {
@@ -65,9 +68,10 @@ export default {
         sortOrder: 'desc'
       },
       input: '',
-      tableloading: true
+      tableloading: true,
       // selectData: {} // 点击tree树获取整个节点对象
       // isDel: true // 最初默认标识可以删除
+      addFormVisible: false
     }
   },
 
@@ -126,6 +130,18 @@ export default {
         this.currentPage = value.currentPage
       }
       this.getTableData()
+    },
+    // // 重新刷新页面
+    // handleGetTree1() {
+    //   this.$emit('refresh', { loading: true })
+    // },
+    // 新增
+    handleAdd() {
+      this.addFormVisible = true
+    },
+    // 取消新增
+    handeladdFormVisible(addFormVisible) {
+      this.addFormVisible = false
     }
   }
 }

@@ -9,13 +9,13 @@
     <el-table :data="tableDate" height="605" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="序号" width="55" />
-      <el-table-column prop="code" label="物资编码" width="" />
+      <el-table-column prop="assetNo" label="物资编码" width="" />
       <el-table-column prop="code" label="操作编码" width="" />
-      <el-table-column prop="name" label="物资名称" width="" />
-      <el-table-column prop="status" :formatter="typeformatter" label="设备型号" />
-      <el-table-column prop="name" label="设备厂商" width="" />
-      <el-table-column prop="name" label="物资分类" width="" />
-      <el-table-column prop="name" label="物资价格" width="" />
+      <el-table-column prop="assetName" label="物资名称" width="" />
+      <el-table-column prop="unitType" label="设备型号" />
+      <el-table-column prop="factory" label="设备厂商" width="" />
+      <el-table-column prop="itemType" label="物资分类" width="" />
+      <el-table-column prop="price" label="物资价格" width="" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
           <i v-permission="'orgEdit'" class="iconfont iconbianji1 scope-caozuo" title="编辑" @click="handleEdit(scope.$index, scope.row)" />
@@ -33,20 +33,19 @@
     </el-dialog>
     <!--新增界面-->
     <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="物资新增" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
-      <addMoudel :tree-id="id" @handleGetTree1="handleGetTree1" @handeladdFormVisible="handeladdFormVisible" />
+      <addMoudel :tree-id="id" :supplies-type="suppliesType" @handleGetTree1="handleGetTree1" @handeladdFormVisible="handeladdFormVisible" />
     </el-dialog>
     <!--编辑界面-->
     <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="物资修改" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" class="deviceAdd addmanage">
-      <editMoudel ref="childrenEdit" :tree-id="id" :row="row" @handleGetTree1="handleGetTree1" @handeleditFormVisible="handeleditFormVisible" />
+      <editMoudel ref="childrenEdit" :supplies-type="suppliesType" :tree-id="id" :row="row" @handleGetTree1="handleGetTree1" @handeleditFormVisible="handeleditFormVisible" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { conDeleteNew } from '@/api/userManagement.js'
+import { suppliesDelete } from '@/api/deviceManage.js'
 import addMoudel from './addMoudel.vue'
 import editMoudel from './editMoudel.vue'
-// import removeDialog from '@/views/baseComponents/baseRemove'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 export default {
   components: { addMoudel, editMoudel, confirmDialog },
@@ -64,7 +63,11 @@ export default {
       type: String,
       default: ''
     },
-    tableLoading: Boolean
+    tableLoading: Boolean,
+    suppliesType: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -91,9 +94,10 @@ export default {
     },
     tableLoading: function() {
       this.loading = this.tableLoading
+    },
+    suppliesType: function() {
+
     }
-  },
-  mounted() {
   },
   methods: {
     // 重新刷新页面
@@ -127,17 +131,15 @@ export default {
     },
     // 删除
     handleDel(index, row) {
-      // this.delTableById.push(row.id)
       this.delTableById = [row.id]
       this.moveShow = true
     },
     // 确认删除
     sureMsg(flag) {
-      // const param = { tableName: 'sys_manage_center', columnName: 'id', values: this.delTableById }
       const param = { ids: this.delTableById.join(',') }
       var that = this
       this.removeLoading = true
-      conDeleteNew(param).then(response => {
+      suppliesDelete(param).then(response => {
         that.removeLoading = false
         that.moveShow = flag
         if (response.success === true) {
@@ -156,9 +158,7 @@ export default {
     },
     // 编辑
     handleEdit(index, row) {
-      // console.log(index, row)
       this.row = row
-      // console.log('this', row)
       this.editFormVisible = true
     },
     // 取消编辑
@@ -166,12 +166,8 @@ export default {
       this.editFormVisible = false
     },
     handleClose(done) {
-      // if (this.$refs.childrenEdit) {
-      //   this.$refs.childrenEdit.handeleditFormVisible()
-      // }
       done()
       this.handleGetTree1()
-      // this.$refs.childrenEdit.clearDate()
     },
     // 分页
     handleSizeChange(val) {
@@ -184,7 +180,7 @@ export default {
       this.pageNumber = val
       this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNumber: this.pageNumber })
     },
-    handleJumper(currentPage) { },
+    handleJumper(currentPage) { }
     // // 刷新
     // handleRes(val) {
     //   // this.handleSizeChange(val)
@@ -193,13 +189,6 @@ export default {
     // handleQiHuan() {},
     // // 下载
     // handleDownload() {}
-    // // 组织类型数据转换
-    typeformatter(row, column) {
-      const type = row.type
-      if (type === '9cbf144f21044b1e8510f9e607addcbc') {
-        return '业务'
-      } else if (type === '8baa547b59504e8cb25424446222ab8d') { return '管理' }
-    }
   }
 }
 </script>

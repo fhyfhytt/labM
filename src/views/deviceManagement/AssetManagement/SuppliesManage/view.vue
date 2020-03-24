@@ -23,12 +23,10 @@
         <el-row>
           <el-col>
             <div class="right-page-title">
-              <!-- :model="formRegion" -->
-              <el-form ref="form1" size="small" label-width="110px" :inline="true">
+              <el-form ref="form1" :model="formSupplies" size="small" label-width="110px" :inline="true">
                 <el-row>
                   <el-form-item label="关键字：">
-                    <!-- v-model="formRegion.name" -->
-                    <el-input style="background:transparent;width:150px;" placeholder="请输入编号或名称" />
+                    <el-input v-model="formSupplies.assetName" style="background:transparent;width:150px;" placeholder="请输入物资名称" />
                   </el-form-item>
                   <el-form-item>
                     <el-button v-permission="'regionSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
@@ -41,7 +39,7 @@
         <el-row>
           <el-col :span="24">
             <div class="right-page-table">
-              <tableManageParent :show="show" :table-loading="tableloading" :table-date="tableData" :tree-id="treeId" :total-num="totalNum" @refresh="getTreeData" @handleGetTableData="handleGetTableData" />
+              <tableManageParent :show="show" :table-loading="tableloading" :supplies-type="suppliesType" :table-date="tableData" :tree-id="treeId" :total-num="totalNum" @refresh="getTreeData" @handleGetTableData="handleGetTableData" />
             </div>
           </el-col>
         </el-row>
@@ -51,11 +49,8 @@
 </template>
 
 <script>
-import { classifyTree, queryClass } from '@/api/classify.js'
-// import {
-//   getOrgTreeNew,
-//   getListSelectNew
-// } from '@/api/userManagement.js'
+import { classifyTree } from '@/api/classify.js'
+import { getSupplies } from '@/api/deviceManage.js'
 import { setTreeData } from '@/utils/utils.js'
 import tableManageParent from './components/tab/table.vue'
 export default {
@@ -77,16 +72,21 @@ export default {
         label: 'name'
       },
       tableData: [],
-      treeName: '', // 上级管理中心名称
-      treeId: '', // 上级管理中心id
+      treeName: '', // 上级节点名称
+      treeId: '', // 上级节点id
       show: true,
       totalNum: 0,
       param: {
         pageSize: 10,
-        pageNumber: 1
+        pageNum: 1
       },
       treeloading: true,
-      tableloading: true
+      tableloading: true,
+      formSupplies: {
+        assetName: '' // 关键字
+      },
+      itemType: '', // 物资分类id
+      suppliesType: '' // 物资分类名称
     }
   },
   mounted() {
@@ -107,13 +107,14 @@ export default {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id
             }
-            this.param.parentId = this.treeId
             this.currentNodekey = this.treeId
             this.expandedkeys.push(this.treeId)
             this.$nextTick(() => {
               this.$refs.tree.setCurrentKey(this.currentNodekey)
             })
+            this.param.itemType = this.treeId
             this.getTableData()
+            this.suppliesType = this.treedata[0].name
           }
         } else {
           this.$message.error(response.msg)
@@ -126,11 +127,11 @@ export default {
 
     // 点击tree树获取table表格的数据
     getTableData() {
-      queryClass(this.param)
+      getSupplies(this.param)
         .then(response => {
           this.tableloading = false
           if (response.code === 0) {
-            this.tableData = response.data.cfList
+            this.tableData = response.data.assetList
             this.totalNum = Number(response.data.count)
           } else {
             this.tableData = []
@@ -149,19 +150,21 @@ export default {
       if (value) {
         this.tableloading = value.loading
         this.pageSize = value.pageSize
-        this.pageNumber = value.pageNumber
+        this.pageNum = value.pageNumber
         this.getTableData()
       }
     },
     // 点击tree树
     handleNodeClick(data) {
-      this.param.parentId = data.id
+      this.param.itemType = data.id
       this.treeId = data.id
+      this.suppliesType = data.name
       this.getTableData()
     },
     // 点击查询，重新渲染数据域列表
     searchData() {
-      this.pageNumber = 1
+      this.currentPage = 1
+      this.param = this.formSupplies
       this.getTableData()
     }
   }
