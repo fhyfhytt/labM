@@ -43,7 +43,11 @@ service.interceptors.response.use(
     if (res.code === undefined || res.code !== 0) {
       // const resJson = JSON.parse(res)
       if (res.code === 10003) { // 过期处理
-        this.$message.error(res.msg)
+        Message({
+          message: res.msg,
+          type: 'error',
+          duration: 3 * 1000
+        })
         store.state.user.token = null
         store.dispatch('tagsView/delAllVisitedViews', '')
         store.dispatch('user/logout')
