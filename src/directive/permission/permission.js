@@ -2,7 +2,6 @@ import store from '@/store'
 function hasPermission(roles, key) {
   if (roles !== undefined || roles.length > 0) {
     if (key) {
-      console.log(roles.includes(key))
       return roles.includes(key)
     } else {
       return false
@@ -15,7 +14,6 @@ export default {
   inserted(el, binding, vnode) {
     const { value } = binding
     const roles = store.getters && store.getters.roles
-
     const superman = store.getters && store.getters.superman
     if (superman !== '1') {
       if (value && typeof value === 'string' && value !== '' && value !== null) {

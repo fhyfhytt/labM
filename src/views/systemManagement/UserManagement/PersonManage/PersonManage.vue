@@ -142,8 +142,6 @@ export default {
         if (response.success === true) {
           this.tableData = response.data.rows
           this.totalCount = Number(response.data.totalCount)
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.loading = false

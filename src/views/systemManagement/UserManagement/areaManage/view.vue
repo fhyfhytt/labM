@@ -125,8 +125,6 @@ export default {
             })
             this.getTableData()
           }
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.loading = false
