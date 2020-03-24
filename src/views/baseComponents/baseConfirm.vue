@@ -79,12 +79,7 @@ export default {
   .sureBtn {
     text-align: right;
   }
-  .el-dialog__headerbtn .el-dialog__close {
-    color: #fff;
-    &:hover {
-      color: #379efc;
-    }
-  }
+
   .el-dialog__headerbtn {
     &:active {
       outline: none;

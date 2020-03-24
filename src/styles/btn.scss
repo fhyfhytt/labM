@@ -609,3 +609,12 @@ vue-treeselect__control {
 .el-form-item--medium .el-form-item__label{
   line-height: 30px;
 }
+.baseMove{
+  margin-top:15vh !important;
+  .el-dialog .el-dialog__header {
+    background-color: #fff ;
+    .el-dialog__close {
+      color: #909399 !important ;
+    }
+  }
+}

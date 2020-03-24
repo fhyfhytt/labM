@@ -100,8 +100,7 @@ const manageControlRouter = {
       component: () => import('@/views/systemManagement/UserManagement/messageManagement/index.vue'),
       meta: {
         title: '消息管理',
-        icon: 'icon111',
-        roles: ['messageManagement']
+        icon: 'icon111'
       },
       name: 'messageManagement'
     }
@@ -154,7 +153,7 @@ const manageControlRouter = {
         icon: 'icon111',
         roles: ['noticeManagement']
       },
-      name: 'noticeManagement'
+      name: 'NoticeManage'
     },
     {
       path: 'sendnotice',
@@ -165,7 +164,7 @@ const manageControlRouter = {
         title: '通知新增',
         icon: 'iconxiaoxiguanli',
         noCache: false,
-        roles: ['sendnotice']
+        roles: ['sendNotice']
       }
     },
     {
