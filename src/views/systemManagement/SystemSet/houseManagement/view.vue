@@ -108,16 +108,10 @@ export default {
 
   created() {
     common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
+      if (res.code === 0) {
         this.$nextTick(() => {
           this.houseClass = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.message)
@@ -149,8 +143,6 @@ export default {
             })
             this.getTableData()
           }
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.loading = false

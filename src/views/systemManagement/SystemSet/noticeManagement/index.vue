@@ -102,16 +102,10 @@ export default {
   },
   created() {
     common.getDictNameList({ dictName: '消息类型', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
+      if (res.code === 0) {
         this.$nextTick(() => {
           this.btns = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)

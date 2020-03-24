@@ -140,8 +140,6 @@ export default {
         if (response.code === 0) {
           this.tableData = response.data.list
           this.totalNum = Number(response.data.count)
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.tableData = []

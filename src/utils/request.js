@@ -53,7 +53,7 @@ service.interceptors.response.use(
           type: 'warning',
           duration: 3 * 1000
         })
-        return Promise.reject(res)
+        return res
       } else {
         return Promise.resolve(res)
       }

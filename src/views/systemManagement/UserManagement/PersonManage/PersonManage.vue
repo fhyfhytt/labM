@@ -265,8 +265,6 @@ export default {
         if (response.success === true) {
           this.$message.success('删除成功')
           this.getUsers()
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.message)

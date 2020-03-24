@@ -170,11 +170,9 @@ export default {
       }
       getRoleList(param).then(response => {
         this.loading = false
-        if (response.success === true) {
+        if (response.code === 0) {
           this.tableData = response.data.rows || []
           this.totalCount = Number(response.data.totalCount)
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(e => {
         this.loading = false
