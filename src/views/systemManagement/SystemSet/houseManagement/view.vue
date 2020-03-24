@@ -158,8 +158,6 @@ export default {
           if (response.code === 0) {
             this.tableDate = response.data.list instanceof Array ? response.data.list : []
             this.totalNum = Number(response.data.totalNum)
-          } else {
-            this.$message.error(response.msg)
           }
         })
         .catch(response => {

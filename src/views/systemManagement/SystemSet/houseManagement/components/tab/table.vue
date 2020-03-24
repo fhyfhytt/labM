@@ -6,27 +6,13 @@
         <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
         <el-button v-permission="'houseDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
       </div>
-
-      <!-- <el-button-group style="float:right;margin-right:10px;">
-        <el-button icon="iconfont iconshuaxin" size="small" style="margin-right:0px" title="刷新" @click="handleRes(val)" />
-        <el-button icon="iconfont iconmoban" size="small" title="切换" @click="handleQiHuan" />
-        <el-button icon="iconfont iconxiazai" size="small" title="Export data" @click="handleDownload" />
-      </el-button-group> -->
     </div>
     <el-table v-loading="tableload" :data="tableDate" empty-text="无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="序号" width="55" />
       <el-table-column prop="code" label="库房编号" width="110" />
       <el-table-column prop="name" label="库房名称" width="140" />
-      <!-- <el-table-column prop="state" label="状态">
-        <template slot-scope="scope">
-          <div slot="reference">
-            <img v-if="scope.row.state===''" src="../../../../../../assets/img/systemManagement/false.png" alt="">
-            <img v-if="scope.row.state==='1'" src="../../../../../../assets/img/systemManagement/true.png" alt="">
-            <img v-if="scope.row.state==='0'" src="../../../../../../assets/img/systemManagement/false.png" alt="">
-          </div>
-        </template>
-      </el-table-column> -->
+
       <el-table-column prop="type" label="库房类型" />
       <el-table-column prop="state" label="库房状态" />
       <el-table-column prop="person" label="库房管理员" />
@@ -37,16 +23,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <div style="height:605px;color:#fff">
-      <el-row>
-        <el-col :span="12">
-          <div>管理中心编号:</div><div>管理中心名称:</div>
-        </el-col>
-        <el-col :span="12">
-          <div>{{ tableDate.code }}</div>
-        </el-col>
-      </el-row>
-    </div> -->
     <div class="numListJup margin-jump">
       <el-pagination :page-size="pageSize" layout="total,sizes,prev, pager, next, jumper" :total="totalNum" :pager-count="5" :current-page.sync="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
@@ -144,8 +120,7 @@ export default {
     },
     // 删除
     handleDel(index, row) {
-      // console.log('shanchu', row.id)
-      this.delTableById.push(row.id)
+      this.delTableById = [row.id]
       this.moveShow = true
     },
     // 确认删除
@@ -158,8 +133,12 @@ export default {
       const param = { warehouseIds: this.delTableById.join(',') }
       deleteHouse(param).then(response => {
         this.loading = false
-        if (response.success === true) {
-          this.$message.success('删除成功')
+        if (response.code === 0) {
+          if (response.data === '') {
+            this.$message.success('删除成功')
+          } else {
+            this.$message.confirm('库房名称为' + response.data + '未删除成功')
+          }
           this.handleGetTree1()
         } else {
           this.$message.error(response.msg)
