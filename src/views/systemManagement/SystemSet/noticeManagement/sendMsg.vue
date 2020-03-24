@@ -228,12 +228,6 @@ export default {
         this.$nextTick(() => {
           this.typeLs = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -243,12 +237,6 @@ export default {
         this.$nextTick(() => {
           this.typeSs = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
