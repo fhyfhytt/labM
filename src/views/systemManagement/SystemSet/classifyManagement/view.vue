@@ -123,8 +123,6 @@ export default {
             })
             this.getTableData()
           }
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.loading = false
@@ -138,8 +136,6 @@ export default {
         if (response.code === 0) {
           this.tableData = response.data.cfList
           this.totalNum = Number(response.data.count)
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.tableData = []

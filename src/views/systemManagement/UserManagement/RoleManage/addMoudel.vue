@@ -10,7 +10,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="基本信息" name="0" :disabled="pane1" style="height:490px">
         <el-row style="margin-top:50px;">
-          <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
+          <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="true" class="addtop">
             <el-col :span="12">
               <el-form-item label="角色名称：" prop="name">
                 <el-input v-model="baseInfo.name" placeholder="请输入角色名称" />
@@ -108,16 +108,16 @@
 
 <script>
 import { saveRole, getRolePermission, getRoleUsers, searchRoleUsers, saveAddRole, searchRoleName } from '@/api/roleManage'
-import { tree2Array } from '@/utils/utils'
+import { tree2Array, setTreeData, checked } from '@/utils/utils'
 export default {
   name: 'AddRolePage',
   data() {
     return {
       activeName: '0',
-      baseInfo: { name: '', status: '', description: '' }, // 基本信息
+      baseInfo: { name: '', status: '1', description: '' }, // 基本信息
       baseInfoRule: {
         name: [{ required: true, message: '请输入角色名', trigger: ['blur'] }],
-        status: [{ required: true, message: '请选择状态', trigger: ['blur'] }]
+        status: [{ required: true, message: '请选择状态', trigger: ['blur', 'change'] }]
       },
       defaultProps: {
         label: 'name',
@@ -166,22 +166,28 @@ export default {
       this.toData = []
       this.roleData = []// 初始化权限
       this.$refs.treeTransfer.clearChecked()
-      this.baseInfo = {}
+      this.baseInfo = { status: '1' }
     },
     async getRoleMenuFirst() {
       await getRolePermission({ roleId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.fromData = res.data
-          this.roleData = res.data.filter(item => {
+          var newArr = []
+          res.data.filter(item => {
             return item.checked === '1'
           }).map(item => {
             return item.id
+          }).forEach(item => {
+            console.log(item)
+            checked(item, setTreeData(res.data), newArr)
           })
+          this.roleData = newArr
         } else {
           this.$message.error(res.msg)
         }
       }).catch(e => {
-        this.$message.error(e.msg)
+        console.log(e)
+        this.$message.error(e.msg || e)
       })
     },
     addEditRoleDialog(data) {
@@ -199,7 +205,6 @@ export default {
         // 根据角色获取人员
         this.handleGetRoleUsers()
       } else {
-        console.log(1)
         // this.baseInfo = {}
         this.userInfo = []
         this.$emit('reset-save-flag', true)
@@ -458,7 +463,7 @@ export default {
     add(fromData, toData, obj) {
       // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
       // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
-      this.ids = obj.keys
+      this.ids = obj.keys.concat(obj.harfKeys)
     },
     // 监听穿梭框组件移除
     remove(fromData, toData, obj) {

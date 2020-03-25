@@ -12,7 +12,13 @@
     }
   }
 }
-
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
 .blue-btn {
   @include colorBtn($blue);
 }
@@ -311,7 +317,7 @@ vue-treeselect__control {
   .el-dialog__header {
     text-align: left;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: #379EFC;
     font-size: 14px;
     padding: 0 0 0 16px;
     width: 100%;
@@ -324,7 +330,7 @@ vue-treeselect__control {
       top: 18px !important;
       right:21px !important;
       .el-dialog__close{
-      color:#909399;
+      color:#fff;
       }
     }
     .el-dialog__title {
@@ -399,7 +405,14 @@ vue-treeselect__control {
     }
   }
 }
-.el-date-editor.el-input, .el-date-editor.el-input__inner{
+.el-date-editor.el-input{
+  width:100%;
+
+} 
+.el-input--medium .el-input__icon{
+  line-height: 32px;
+}
+.el-date-editor.el-input__inner{
   width:100%
 }
 
@@ -608,4 +621,13 @@ vue-treeselect__control {
 }
 .el-form-item--medium .el-form-item__label{
   line-height: 30px;
+}
+.baseMove{
+  margin-top:15vh !important;
+  .el-dialog .el-dialog__header {
+    background-color: #fff ;
+    .el-dialog__close {
+      color: #909399 !important ;
+    }
+  }
 }

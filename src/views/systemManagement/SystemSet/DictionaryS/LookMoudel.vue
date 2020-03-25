@@ -211,7 +211,7 @@ export default {
       margin-left:-4px;
       margin-bottom: -4px;
       .el-input__inner {
-          height: 34px;
+          height: 32px;
           width: 166px;
         }
         .el-form-item__label{

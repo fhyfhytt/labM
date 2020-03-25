@@ -34,7 +34,7 @@ Vue.use(Print)
 import * as filters from './filters' // global filters
 import * as socketApi from './api/websoket' // 引入全局的websoket
 Vue.prototype.socketApi = socketApi
-Vue.prototype.GLOBAL = global_
+Vue.prototype.GLOBAL = global_// 全局数据
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

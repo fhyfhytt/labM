@@ -30,7 +30,7 @@ const mutations = {
     state.avatar = avatar
   },
   SET_ROLES: (state, roles) => {
-    state.roles.roles
+    state.roles = roles
   },
   SET_TREESHOW: (state, treeShow) => {
     state.treeShow = treeShow

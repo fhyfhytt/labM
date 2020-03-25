@@ -64,9 +64,10 @@
                     :drag="true"
                     :data="avatarData"
                   >
-                    <img v-if="editForm.avatar" :src="avatar.appendixPath" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon" />
-                    <div v-if="!tip" class="mask"><i class="iconfont iconxingzhuang1" @click="deleteAvatar" /></div>
+                    <img v-if="editForm.avatar" :src="avatar.url" class="avatar">
+                    <img v-else :src="header" class="avatar" alt="">
+                    <div v-if="tip" class="mask"><i :class="iconcass" /></div>
+                    <div v-if="!tip" class="mask" @click.stop="deleteAvatar"><i class="iconfont iconxingzhuang1" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
                     <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2">删除</div> -->
                   </el-upload>
@@ -235,6 +236,7 @@ import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData } from '@/utils/utils'
 import common from '@/utils/common'
 import { selectRoleByUserId, selectRegionByUserId, getRegionList, getRoleList, editUserAll } from '@/api/userManagement.js'
+import header from '@/assets/img/header.png'
 export default {
   props: {
     row: {
@@ -262,7 +264,7 @@ export default {
       } else if (pattern.test(value)) {
         callback(new Error('账号不含除-符号以外的符号'))
       } else if (!myreg.test(value)) {
-        callback(new Error('4-16位字母或数字,首位必须为字母'))
+        callback(new Error('账号以字母开头的4-16位字母或数字组成'))
       } else {
         callback()
       }
@@ -271,11 +273,12 @@ export default {
       disabled: true, // tabs是否禁用
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
+      header: header,
       editForm: { name: '', userCode: '', avatar: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', groupId: [], deptId: [] },
       editFormRules: {
         name: [{ validator: validatePass2, trigger: 'change', required: true }],
         userCode: [{ required: true, message: '请输入工号', trigger: 'change' }],
-        birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
+        birthday: [{ required: true, message: '请选择生日', trigger: ['blur', 'change'] }],
         mobile: [{ required: true, validator: validatePass1, trigger: 'change' }],
         email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
@@ -328,9 +331,10 @@ export default {
       headers: {
         'Authorization': this.$store.state.user.token
       },
-      iconclass: 'el-icon-plus avatar-uploader-icon',
+      iconclass: 'iconfont iconbianzu2 avatar-uploader-icon',
       avatar: {
         id: '',
+        url: '',
         appendixPath: ''
       }
     }
@@ -360,6 +364,7 @@ export default {
       } else {
         // this.avatardisabled = false 调试用
         this.avatar.id = this.row.avatar
+        this.avatar.url = this.row.avatarAddress
         this.avatar.appendixPath = this.row.avatarAddress
       }
       if (this.editForm.deptId === '') {
@@ -730,6 +735,7 @@ export default {
         this.$refs.editForm.clearValidate('avatar')
         this.editForm.avatar = res.data.id
         this.avatar.id = res.data.id
+        this.avatar.url = window.URL.createObjectURL(file.raw)
         this.avatar.appendixPath = res.data.appendixPath
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
@@ -767,6 +773,7 @@ export default {
           this.$message.success(res.msg)
           this.avatardisabled = false
           this.editForm.avatar = ''
+          this.avatar.id = ''
           this.tip = true
         } else {
           throw res
@@ -815,21 +822,21 @@ export default {
   padding: 0 60px;
 }
 .UserManage-edit {
-  .avatar-uploader:hover .mask{
+  .avatar-uploader:hover .mask {
     display: flex;
   }
-  .mask{
+  .mask {
     position: absolute;
-    background:rgba(0,0,0,0.4);
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
+    background: rgba(0, 0, 0, 0.4);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: none;
     flex-direction: column;
     justify-content: center;
-    i{
-      color:#fff;
+    i {
+      color: #fff;
       font-size: 40px;
       vertical-align: middle;
     }
@@ -867,6 +874,21 @@ export default {
           font-weight: 900;
         }
         background: rgba(244, 247, 250, 1);
+      }
+      &::-webkit-scrollbar {
+        width: 5px;
+        background-color: transparent;
+      }
+
+      /* 滚动条中能上下移动的小块 */
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 5px;
+      }
+      /* scroll轨道背景 */
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background-color: transparent;
       }
     }
   }
@@ -911,16 +933,17 @@ export default {
     color: #292929;
   }
   >>> .avatar-uploader {
-    text-align: center;
+    // text-align: center;
     .el-upload {
       border: 1px dashed #d9d9d9;
-      border-radius: 6px;
+      border-radius: 50%;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       .el-upload-dragger {
         width: auto;
         height: auto;
+        border: none;
       }
     }
     .el-upload__tip {
@@ -958,6 +981,7 @@ export default {
     height: 135px;
     line-height: 135px;
     text-align: center;
+    display: block;
   }
   .avatar {
     width: 135px;

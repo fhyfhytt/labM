@@ -121,8 +121,6 @@ export default {
         if (response.success === true) {
           this.tableData = response.data.sysDicts
           this.totalCount = Number(response.data.totalCount)
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.message)
@@ -132,6 +130,7 @@ export default {
     getDiction() {
       this.pageNumber = 1
       this.pageSize = 10
+      this.currentPage = 1
       this.getStartDiction()
     },
     // 字典删除

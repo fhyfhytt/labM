@@ -2,7 +2,7 @@ import store from '@/store'
 function hasPermission(roles, key) {
   if (roles !== undefined || roles.length > 0) {
     if (key) {
-      return roles.some(role => { role.includes(key) })
+      return roles.includes(key)
     } else {
       return false
     }
@@ -13,7 +13,7 @@ function hasPermission(roles, key) {
 export default {
   inserted(el, binding, vnode) {
     const { value } = binding
-    const roles = store.getters && store.getters.rolesIds
+    const roles = store.getters && store.getters.roles
     const superman = store.getters && store.getters.superman
     if (superman !== '1') {
       if (value && typeof value === 'string' && value !== '' && value !== null) {

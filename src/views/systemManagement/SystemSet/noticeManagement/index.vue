@@ -35,6 +35,7 @@
           <el-table-column label="序号" width="120" prop="id">
             <template slot-scope="scope">{{ scope.$index + 1 }}</template>
           </el-table-column>
+          <el-table-column label="标题" width="120" prop="topic" />
           <el-table-column prop="memo" label="内容">
             <!-- show-overflow-tooltip -->
             <template slot-scope="scope">
@@ -102,16 +103,11 @@ export default {
   },
   created() {
     common.getDictNameList({ dictName: '消息类型', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
+      if (res.code === 0) {
         this.$nextTick(() => {
+          res.data.unshift({ code: '', name: '全部' })
           this.btns = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -152,6 +148,7 @@ export default {
       }
       this.pageNumber = 1
       this.pageSize = 10
+      this.currentPage = 1
       this.getListData(param)
     },
     sendMsg() {
@@ -162,18 +159,20 @@ export default {
           message: '请选择至少一条数据'
         })
       }
-      this.removeRd.forEach(element => {
+      this.removeRd.map(element => {
         if (element.state === '1') {
-          this.$message.error('消息已发布，请重新选择！')
+          var that = this
+          setTimeout(function() {
+            that.$message.error('消息已发布，请重新选择！')
+          }, 100)
           flag = true
-          return
         }
       })
       if (flag) {
         return
       }
       const ids = this.removeRd.map(res => {
-        return res.ms_id
+        return res.msId
       })
       sendCg(ids.join(',')).then(res => {
         if (res.success) {
@@ -237,9 +236,9 @@ export default {
     sureMsg(flag) {
       this.moveShow = flag
       const ids = this.removeRd.map(res => {
-        return res.ms_id
+        return res.msId
       })
-      remove(ids.join(',')).then(res => {
+      remove(ids.join(','), 0).then(res => {
         this.getListData('', true)
       }).catch(res => {
         this.$message.error(res.msg)
@@ -324,7 +323,7 @@ export default {
   .page-table {
     .button-tool {
       overflow: hidden;
-      >>>.el-button .iconfabu1 {
+      >>> .el-button .iconfabu1 {
         font-size: 13px;
       }
     }

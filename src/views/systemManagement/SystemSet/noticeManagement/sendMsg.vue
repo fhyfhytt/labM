@@ -32,6 +32,14 @@
               :normalizer="normalizer"
             />
           </el-form-item>
+          <el-form-item label="是否为个人消息 :" prop="isPerson" class="mgItem">
+            <el-switch
+              v-model="ruleForm.isPerson"
+              active-color="#379EFC"
+              inactive-color="#C0C4CC"
+              active-value="1"
+              inactive-value="0"
+            /></el-form-item>
         </el-col>
         <el-col :xl="{span:8,push:8}" :lg="{span:12}">
           <el-form-item label="生效时间 : " prop="endMsgTime" class="mgItem">
@@ -45,9 +53,14 @@
               <el-option v-for="(item,index) in typeSs" :key="index" :label="item.name" :value="item" />
             </el-select>
           </el-form-item>
+          <el-form-item label="发布平台 :" prop="pubWay" class="mgItem">
+            <el-radio v-model="ruleForm.pubWay" label="0">PC</el-radio>
+            <el-radio v-model="ruleForm.pubWay" label="1">APP</el-radio>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
+
         <el-form-item label="通知内容 : ">
           <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" />
         </el-form-item>
@@ -113,7 +126,7 @@
 </template>
 <script>
 import { getOrgTreeNew } from '@/api/userManagement'
-import { setTreeData } from '@/utils/utils'
+import { setTreeData, url2obj } from '@/utils/utils'
 import { removeFJ, addMsg, getContent } from '@/api/message'
 import { VueEditor } from 'vue2-editor/dist/vue2-editor.core.js'
 import common from '@/utils/common'
@@ -131,17 +144,19 @@ export default {
         sendPeople: this.$store.getters.name, // 发布人
         startMsgTime: '',
         endMsgTime: '',
-        appendixIdName: [] // 文件对象
+        appendixIdName: [], // 文件对象
+        isPerson: false,
+        pubWay: '0'
       },
       rules: {
         topic: [
-          { required: true, message: '请输入标题', trigger: 'blur' }
+          { required: true, message: '请输入标题', trigger: ['blur', 'change'] }
         ],
         typeL: [
-          { required: true, message: '请选择通知类型', trigger: 'blur' }
+          { required: true, message: '请选择通知类型', trigger: ['blur', 'change'] }
         ],
         typeS: [
-          { required: true, message: '请选择系统类型', trigger: 'blur' }
+          { required: true, message: '请选择系统类型', trigger: ['blur', 'change'] }
         ],
         sendPeople: [
           { required: true, message: '请输入发布人', trigger: 'blur' }
@@ -200,6 +215,13 @@ export default {
 
     }
   },
+  watch: {
+    'ruleForm.organ': function(newvalue, oldvalue) {
+      if (newvalue !== '') {
+        this.$refs.ruleForm.clearValidate('organ')
+      }
+    }
+  },
   created() {
     getOrgTreeNew().then(res => {
       if (res.code === 0) {
@@ -215,12 +237,6 @@ export default {
         this.$nextTick(() => {
           this.typeLs = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -230,12 +246,6 @@ export default {
         this.$nextTick(() => {
           this.typeSs = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -259,6 +269,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.bigloading = true
+
           const param = {
             'state': state,
             'typeLDict': this.ruleForm.typeL,
@@ -269,11 +280,11 @@ export default {
             'invalidTime': this.ruleForm.endMsgTime,
             'publishTime': this.ruleForm.startMsgTime,
             'pubWay': '0',
+            'isPerson': this.ruleForm.isPerson,
             'appendixIdName': this.ruleForm.appendixIdName,
             'appendixImgId': this.ruleForm.appendixImgId,
             'organ': this.ruleForm.organ
           }
-          console.log(param)
           if (state === 0) {
             param.msId = this.msId
           }
@@ -300,10 +311,14 @@ export default {
               this.ruleForm.appendixIdName = ''
               this.appendixId = ''
               this.content = ''
+              this.ruleForm.isPerson = false
               this.ruleForm.organ = null
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
+              this.$nextTick(() => {
+                this.$refs.ruleForm.clearValidate()
+              })
             }
           }).catch(res => {
             this.bigloading = false
@@ -325,6 +340,7 @@ export default {
         this.ruleForm.startMsgTime = msgSys.publishTime
         this.ruleForm.endMsgTime = msgSys.invalidTime
         this.content = msgSys.memo
+        this.msId = msgSys.msId
         this.ruleForm.organ = res.data.organ
         this.ruleForm.typeL = { code: msgSys.typeL }
         this.ruleForm.typeS = { code: msgSys.typeS }
@@ -333,9 +349,10 @@ export default {
           var appendixNameArr = msgSys.appendixName.split(',')
           var appendixPathArr = msgSys.appendixPath.split(',')
           var fileList = appendixIdArr.map((item, index) => {
-            this.ruleForm.appendixIdName.push({ name: appendixNameArr[index], path: appendixPathArr[index], id: item })
+            this.ruleForm.appendixIdName.push({ name: appendixNameArr[index], path: url2obj(appendixPathArr[index]).path, id: item })
             return { id: item, name: appendixNameArr[index], url: appendixPathArr[index] }
           })
+          console.log(fileList)
           this.fileList = fileList
         }
         if (msgSys.appendixImgId !== '') {
@@ -357,7 +374,7 @@ export default {
         this.iconclass = 'el-icon-upload'
         this.ruleForm.appendixImgId = res.data.id
         this.tip = false
-        this.imgurl = res.data.appendixPath
+        this.imgurl = URL.createObjectURL(file.raw)
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
         this.$store.store.state.user.token = null
@@ -455,6 +472,7 @@ export default {
       }
       common.closeCurrentTab(vistedRouer, this.$route)
     }, handleError(e) {
+      console.log(e)
       const img = e.srcElement
       this.$message.error('上传失败')
       img.onerror = null
@@ -484,7 +502,6 @@ export default {
     }, onRemoveTxt(file, fileList) {
       removeFJ({ id: file.response.data.id, appendixPath: file.response.data.appendixPath }).then(res => {
         if (res.success) {
-          this.$message.success('删除成功')
           this.ruleForm.appendixIdName = fileList.map(item => {
             return { name: item.response.data.appendixName, path: item.response.data.appendixPath, id: item.response.data.id }
           })
@@ -499,7 +516,7 @@ export default {
 
 }
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
 .el-loading-mask{
   height: 100vh;
 }
