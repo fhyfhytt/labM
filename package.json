@@ -66,6 +66,7 @@
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
     "popper.js": "^1.16.0",
+    "qrcodejs2": "0.0.2",
     "screenfull": "4.2.0",
     "showdown": "^1.9.1",
     "sortablejs": "1.8.4",
