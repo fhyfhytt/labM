@@ -58,7 +58,7 @@
         </el-row>
         <div style="position:absolute;bottom:0;right:0">
           <el-button v-if="!addFlag" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(0)">上一步</el-button>
-          <el-button v-preventReClick="1000" class="button-sub" @click="addUserInfo">下一步</el-button>
+          <el-button v-preventReClick="1000" class="button-sub" @click="orgNotNull">下一步</el-button>
         </div>
       </el-tab-pane>
       <!-- 第三步，人员选择 -->
@@ -515,16 +515,22 @@ export default {
     // 保存或修改数据域组织信息--第二步
     // 组织不能为空
     orgNotNull() {
-      if (this.ids.length === 0) {
+      if (this.roleData.length === 0) {
         this.$message.error('组织不能为空！')
-        return false
+        return
       } else {
         this.addUserInfo()
       }
     },
     addUserInfo() {
       if (this.addFlag === false) {
-        var deptIdList = this.ids
+        // var deptIdList = this.ids
+        var deptIdList = []
+        if (this.ids.length === 0) {
+          deptIdList = this.roleData
+        } else {
+          deptIdList = this.ids
+        }
         editRegion({ flag: '1', sysRegion: { id: this.baseInfo.id }, deptIdList }).then(res => {
           if (res.success === true) {
             this.activeName = '2'
@@ -535,7 +541,7 @@ export default {
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
           } else {
-            this.$message.error('组织不能为空！')
+            this.$message.error('组织不能为空222！')
           }
         }).catch(e => {
 
@@ -696,6 +702,7 @@ export default {
       }
       this.userInfo = this.userInfo.concat(userIdList)
       this.addUserVisible = false
+      this.primaryKey = ''
     },
     // 查询要新添加的用户
     searchNewUsers() {

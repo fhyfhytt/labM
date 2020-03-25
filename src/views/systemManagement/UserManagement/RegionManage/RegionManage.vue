@@ -196,9 +196,8 @@ export default {
         .then(response => {
           this.loading = false
           if (response.code === 0) {
-            // .filter(item => item.parentId === this.treeId)
             this.tableData = response.data.filter(item => item.parentId === this.treeId)
-            this.totalCount = Number(response.data.length)
+            this.totalCount = Number(this.tableData.length)
           } else {
             this.tableData = []
             this.totalCount = 0
@@ -261,7 +260,6 @@ export default {
       getRegionList(param).then(response => {
         this.loading = false
         if (response.success === true) {
-          // .filter(item => item.parentId === this.currentNodekey)
           this.tableData = response.data.rows || []
           this.totalCount = Number(response.data.totalCount)
         } else {
