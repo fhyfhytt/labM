@@ -172,6 +172,7 @@ export default {
       limitText: count => `以及 ${count} 个组织部门`,
       limit: 3,
       tip: true,
+      msId: '',
       iconclass: 'el-icon-upload',
       noResultsText: '无数据',
       valueConsistsOf: 'ALL',
@@ -268,7 +269,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.bigloading = true
-
           const param = {
             'state': state,
             'typeLDict': this.ruleForm.typeL,
@@ -284,9 +284,7 @@ export default {
             'appendixImgId': this.ruleForm.appendixImgId,
             'organ': this.ruleForm.organ
           }
-          if (state === 0) {
-            param.msId = this.msId
-          }
+          param.msId = this.msId
           addMsg(param).then(res => {
             this.bigloading = false
             if (res.success) {
@@ -314,6 +312,7 @@ export default {
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
+              this.$refs.ruleForm.clearValidate('organ')
             }
           }).catch(res => {
             this.bigloading = false
@@ -343,12 +342,11 @@ export default {
           var appendixIdArr = msgSys.appendixId.split(',')
           var appendixNameArr = msgSys.appendixName.split(',')
           var appendixPathArr = msgSys.appendixPath.split(',')
-          var fileList = appendixIdArr.map((item, index) => {
+          appendixIdArr.map((item, index) => {
             this.ruleForm.appendixIdName.push({ name: appendixNameArr[index], path: url2obj(appendixPathArr[index]).path, id: item })
+            this.fileList.push({ name: appendixNameArr[index], path: appendixPathArr[index].path, id: item })
             return { id: item, name: appendixNameArr[index], url: appendixPathArr[index] }
           })
-          console.log(fileList)
-          this.fileList = fileList
         }
         if (msgSys.appendixImgId !== '') {
           this.tip = false
@@ -381,7 +379,7 @@ export default {
     },
     handlefileSuccess(res, file, fileList) {
       if (res.code === 0) {
-        this.ruleForm.appendixIdName.push({ name: res.data.appendixName, path: res.data.appendixPath, id: res.data.id })
+        this.ruleForm.appendixIdName.push({ name: res.data.appendixName, path: url2obj(res.data.appendixPath), id: res.data.id })
         this.$message.success('上传成功')
       } else if (res.code === 10003) {
         this.$message.error(res.msg)

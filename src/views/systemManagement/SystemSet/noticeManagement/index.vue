@@ -35,7 +35,6 @@
           <el-table-column label="序号" width="120" prop="id">
             <template slot-scope="scope">{{ scope.$index + 1 }}</template>
           </el-table-column>
-          <el-table-column label="标题" width="120" prop="topic" />
           <el-table-column prop="memo" label="内容">
             <!-- show-overflow-tooltip -->
             <template slot-scope="scope">
@@ -103,9 +102,8 @@ export default {
   },
   created() {
     common.getDictNameList({ dictName: '消息类型', dictNameIsLike: 0 }).then(res => {
-      if (res.code === 0) {
+      if (res.success === true) {
         this.$nextTick(() => {
-          res.data.unshift({ code: '', name: '全部' })
           this.btns = res.data
         })
       }
@@ -124,6 +122,8 @@ export default {
       const param = {
         'state': [0, 1, 2]
       }
+      this.pageNumber = 1
+      this.pageSize = 10
       this.getListData(param)
     },
     searchMsg() {
@@ -141,6 +141,9 @@ export default {
         })
         return
       }
+
+      this.pageNumber = 1
+      this.pageSize = 10
       const param = {
         'state': [0, 1, 2],
         'startDate': getTime(this.startMsgTime),
@@ -159,13 +162,11 @@ export default {
           message: '请选择至少一条数据'
         })
       }
-      this.removeRd.map(element => {
+      this.removeRd.forEach(element => {
         if (element.state === '1') {
-          var that = this
-          setTimeout(function() {
-            that.$message.error('消息已发布，请重新选择！')
-          }, 100)
+          this.$message.error('消息已发布，请重新选择！')
           flag = true
+          return
         }
       })
       if (flag) {
@@ -239,6 +240,11 @@ export default {
         return res.msId
       })
       remove(ids.join(','), 0).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.msg)
+        } else {
+          this.$message.errorr(res.msg)
+        }
         this.getListData('', true)
       }).catch(res => {
         this.$message.error(res.msg)
@@ -290,7 +296,6 @@ export default {
     },
     changeStatus(id) {
       checkStatus(id).then(res => {
-
       }).catch(res => {
         this.$message.error(res.msg)
       })
@@ -323,7 +328,7 @@ export default {
   .page-table {
     .button-tool {
       overflow: hidden;
-      >>> .el-button .iconfabu1 {
+      >>>.el-button .iconfabu1 {
         font-size: 13px;
       }
     }
