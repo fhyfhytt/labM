@@ -61,8 +61,8 @@ const EditorOptions = {
     // compression config,default resize image by localResizeIMG (https://github.com/think2011/localResizeIMG)
     // set null to disable compression
     compress: {
-      width: 300,
-      height: 300,
+      width: 500,
+      height: 500,
       quality: 80
     },
     // 响应数据处理,最终返回图片链接
