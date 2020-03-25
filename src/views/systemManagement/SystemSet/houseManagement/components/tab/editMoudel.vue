@@ -199,7 +199,7 @@ export default {
       // this.editForm.person = ''
       // this.editForm.personMobile = ''
       this.addUserVisible = true
-      this.handleGetUnselectRoleUsers()
+      this.handleGetUnselectRoleUsers(this.editForm.person)
     }, // 查询要新添加的用户
     searchNewUsers() {
       this.selectUserPage = 1
