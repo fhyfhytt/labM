@@ -40,29 +40,33 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    if (res.code === undefined || res.code !== 0) {
+    if (res.code !== undefined) {
       // const resJson = JSON.parse(res)
-      if (res.code === 10003) { // 过期处理
-        Message({
-          message: res.msg,
-          type: 'error',
-          duration: 3 * 1000
-        })
-        store.state.user.token = null
-        store.dispatch('tagsView/delAllVisitedViews', '')
-        store.dispatch('user/logout')
-      } else if (res.code === 10010 || res.code === 10017) {
-        Message({
-          message: res.msg,
-          type: 'warning',
-          duration: 3 * 1000
-        })
-        return res
-      } else {
+      if (res.code === 0) {
         return Promise.resolve(res)
+      } else {
+        if (res.code === 10003) { // 过期处理
+          Message({
+            message: res.msg,
+            type: 'error',
+            duration: 3 * 1000
+          })
+          store.state.user.token = null
+          store.dispatch('tagsView/delAllVisitedViews', '')
+          store.dispatch('user/logout')
+        } else if (res.code === 10010 || res.code === 10017) {
+          Message({
+            message: res.msg,
+            type: 'warning',
+            duration: 3 * 1000
+          })
+          return res
+        } else {
+          return Promise.reject(res)
+        }
       }
     } else {
-      return Promise.resolve(res)
+      return Promise.reject(res)
     }
   },
   error => {
