@@ -312,7 +312,7 @@ export default {
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
-              this.$refs.ruleForm.clearValidate('organ')
+              this.$refs.ruleForm.clearValidate()
             }
           }).catch(res => {
             this.bigloading = false
