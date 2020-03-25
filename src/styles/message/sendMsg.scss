@@ -134,25 +134,7 @@
       // width:calc(100% - 140px)
     }
   }
-  .quillWrapper {
-    .ql-toolbar.ql-snow {
-      border-radius: 8px 8px 0 0;
-    }
-    .ql-container.ql-snow {
-      border-radius: 0 0 8px 8px;
-    }
-    .ql-picker-label.ql-active::before {
-      position: absolute;
-    }
-    .ql-snow .ql-picker.ql-header .ql-picker-label::before {
-      position: absolute;
-    }
-    .ql-picker-label {
-      svg:not(:root) {
-        vertical-align: top;
-      }
-    }
-  }
+
   .el-upload-list {
     position: relative;
     top: -100px;

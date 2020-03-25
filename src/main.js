@@ -7,6 +7,9 @@ import Element from 'element-ui'
 // import ElTabPaneExt from 'el-tab-pane-ext'
 import './styles/element-variables.scss'
 import 'element-ui/lib/theme-chalk/display.css'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
 import jq from 'jquery' // 引用jq
 Vue.prototype.$ = jq
 import 'font-awesome/css/font-awesome.css'

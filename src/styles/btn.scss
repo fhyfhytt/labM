@@ -374,7 +374,31 @@ vue-treeselect__control {
 .el-textarea__inner:-ms-input-placeholder {
   color: #b1b1b1;
 }
-
+.quill-editor {
+  .ql-toolbar.ql-snow {
+    border-radius: 8px 8px 0 0;
+  }
+  .ql-container.ql-snow {
+    border-radius: 0 0 8px 8px;
+  }
+  .ql-picker-label.ql-active::before {
+    position: absolute;
+  }
+  .ql-snow .ql-picker.ql-header .ql-picker-label::before {
+    position: absolute;
+  }
+  .ql-snow .ql-picker.ql-size .ql-picker-label::before{
+    position: absolute;
+  }
+  .ql-snow .ql-picker.ql-font .ql-picker-label::before{
+    position: absolute;
+  }
+  .ql-picker-label {
+    svg:not(:root) {
+      vertical-align: top;
+    }
+  }
+}
 //编辑器
 .el-textarea.el-input--medium {
   margin: 0px;
@@ -394,6 +418,7 @@ vue-treeselect__control {
     }
   }
 }
+
 //时间控件
 .el-date-picker{
   .el-date-picker__header{

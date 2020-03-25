@@ -60,7 +60,12 @@
       <el-row>
 
         <el-form-item label="通知内容 : ">
-          <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" />
+          <quill-editor
+            ref="myTextEditor"
+            v-model="content"
+            :config="customToolbar"
+          />
+          <!-- <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" /> -->
         </el-form-item>
       </el-row>
       <el-row>
@@ -126,11 +131,13 @@
 import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData, url2obj } from '@/utils/utils'
 import { removeFJ, addMsg, getContent } from '@/api/message'
-import { VueEditor } from 'vue2-editor/dist/vue2-editor.core.js'
+
+import { quillEditor } from 'vue-quill-editor'
+// import Quill from 'quill'
 import common from '@/utils/common'
 export default {
   name: 'SendMsg',
-  components: { VueEditor },
+  components: { quillEditor },
   data() {
     return {
       ruleForm: {
@@ -201,16 +208,7 @@ export default {
       organTree: [], // 组织数据
       content: '', // 编辑器内容
       customToolbar: [
-        [{ 'header': [false, 1, 2, 3, 4, 5, 6] }],
-        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-        [{ 'align': ['', 'center', 'right', 'justify'] }],
-        ['blockquote'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }], // superscript/subscript
-        [{ 'indent': '-1' }, { 'indent': '+1' }], // outdent/indent
-        [{ 'color': [] }, { 'background': [] }], // dropdown with defaults from theme
-        ['link', 'image'],
-        ['clean']
+
       ]
 
     }
