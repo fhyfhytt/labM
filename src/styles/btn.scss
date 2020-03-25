@@ -409,6 +409,10 @@ vue-treeselect__control {
   width:100%;
 
 } 
+.vue-treeselect--multi .vue-treeselect__input{
+  padding-top:0;
+  margin-top:-3px
+}
 .el-input--medium .el-input__icon{
   line-height: 32px;
 }

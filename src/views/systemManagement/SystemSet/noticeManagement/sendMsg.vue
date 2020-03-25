@@ -37,8 +37,6 @@
               v-model="ruleForm.isPerson"
               active-color="#379EFC"
               inactive-color="#C0C4CC"
-              active-value="1"
-              inactive-value="0"
             /></el-form-item>
         </el-col>
         <el-col :xl="{span:8,push:8}" :lg="{span:12}">
@@ -150,7 +148,7 @@ export default {
       },
       rules: {
         topic: [
-          { required: true, message: '请输入标题', trigger: ['blur', 'change'] }
+          { required: true, message: '请输入标题', trigger: 'blur' }
         ],
         typeL: [
           { required: true, message: '请选择通知类型', trigger: ['blur', 'change'] }
@@ -168,7 +166,7 @@ export default {
           { type: 'string', required: true, message: '请选择结束时间', trigger: 'blur' }
         ],
         organ: [
-          { required: true, message: '请选择组织', trigger: 'blur' }
+          { required: true, message: '请选择组织', trigger: ['blur', 'change'] }
         ]
       },
       limitText: count => `以及 ${count} 个组织部门`,
@@ -187,6 +185,7 @@ export default {
         type: 1,
         attCode: 600
       },
+
       fileData: {
         type: [0, 2],
         attCode: 100
@@ -311,14 +310,10 @@ export default {
               this.ruleForm.appendixIdName = ''
               this.appendixId = ''
               this.content = ''
-              this.ruleForm.isPerson = false
               this.ruleForm.organ = null
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
-              this.$nextTick(() => {
-                this.$refs.ruleForm.clearValidate()
-              })
             }
           }).catch(res => {
             this.bigloading = false
@@ -408,31 +403,46 @@ export default {
       this.iconclass = 'el-icon-loading'
       return isImage && isLt2M
     }, beforeFileUpload(file) {
-      var fileName = file.name
-      const mimeTypes = {
-        '.pdf': 'application/pdf',
-        '.txt': 'text/plain',
-        '.wav': 'audio/x-wav',
-        '.wma': 'audio/x-ms-wma',
-        '.wmv': 'video/x-ms-wmv',
-        '.xml': 'text/xml',
-        '.avi ': 'video/x-msvideo',
-        '.xls': 'application/vnd.ms-excel',
-        '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      }
-
-      var extendName = fileName.substring(fileName.lastIndexOf('.')).toLowerCase()
-      var isFile = mimeTypes[extendName] === file.type
-      if (!isFile) {
-        this.$message.error('上传文件类型不符合要求!')
-      }
-
-      const isLt2M = file.size / 1024 / 1024 < 50
-      if (!isLt2M) {
-        this.$message.error('上传文件大小不能超过50MB!')
-      }
-      return isFile && isLt2M
+      return new Promise((resolve, reject) => {
+        var sameFileName = false
+        this.ruleForm.appendixIdName.forEach((item, index) => {
+          if (item.name === file.name) {
+            sameFileName = true
+          }
+        })
+        console.log(sameFileName)
+        if (sameFileName) {
+          return reject(false)
+        }
+        var fileName = file.name
+        this.autoUpload = true
+        const mimeTypes = {
+          '.pdf': 'application/pdf',
+          '.txt': 'text/plain',
+          '.wav': 'audio/x-wav',
+          '.wma': 'audio/x-ms-wma',
+          '.wmv': 'video/x-ms-wmv',
+          '.xml': 'text/xml',
+          '.avi ': 'video/x-msvideo',
+          '.xls': 'application/vnd.ms-excel',
+          '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        }
+        var extendName = fileName.substring(fileName.lastIndexOf('.')).toLowerCase()
+        var isFile = mimeTypes[extendName] === file.type
+        if (!isFile) {
+          this.$message.error('上传文件类型不符合要求!')
+        }
+        const isLt2M = file.size / 1024 / 1024 < 50
+        if (!isLt2M) {
+          this.$message.error('上传文件大小不能超过50MB!')
+        }
+        if (isFile && isLt2M) {
+          return resolve(true)
+        } else {
+          return reject(false)
+        }
+      })
     }, closeTab() {
       const vistedRouer = this.$store.state.tagsView.visitedViews
       if (this.appendixId) {
@@ -500,6 +510,9 @@ export default {
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
     }, onRemoveTxt(file, fileList) {
+      if (file.response === undefined && fileList.length > 0) {
+        return this.$message.warning('文件名称重复')
+      }
       removeFJ({ id: file.response.data.id, appendixPath: file.response.data.appendixPath }).then(res => {
         if (res.success) {
           this.ruleForm.appendixIdName = fileList.map(item => {
@@ -511,10 +524,10 @@ export default {
         this.$message.error(res.msg)
       })
     }
-
   }
 
 }
+
 </script>
 <style lang='scss' scoped>
 .el-loading-mask{

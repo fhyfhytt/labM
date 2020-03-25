@@ -205,7 +205,7 @@ export default {
         // 根据角色获取人员
         this.handleGetRoleUsers()
       } else {
-        // this.baseInfo = {}
+        // this.baseInfo = { status: '1' }
         this.userInfo = []
         this.$emit('reset-save-flag', true)
         this.addFlag = true
