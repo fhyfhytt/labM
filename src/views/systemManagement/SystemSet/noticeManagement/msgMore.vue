@@ -136,7 +136,7 @@ export default {
   font-size: 14px;
   font-family: '微软雅黑';
   color: #292929;
-  margin: 16px 16px;
+  margin: 16px 0;
   border-radius: 8px;
   // height: 765px;
   .topic {
