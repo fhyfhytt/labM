@@ -5,7 +5,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="子项名称：" prop="name">
-            <el-input v-model="addForm.name" placeholder="请输入字典名称" />
+            <el-input v-model="addForm.name" placeholder="请输入字典子项名称" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -17,7 +17,7 @@
       <el-row>
         <el-col :span="24">
           <el-form-item label="描述：" prop="description">
-            <el-input v-model="addForm.description" type="textarea" placeholder="请输入字典描述" />
+            <el-input v-model="addForm.description" type="textarea" placeholder="请输入字典子项描述" />
           </el-form-item>
         </el-col>
       </el-row>

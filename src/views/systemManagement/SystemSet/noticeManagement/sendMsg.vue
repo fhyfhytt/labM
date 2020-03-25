@@ -37,6 +37,8 @@
               v-model="ruleForm.isPerson"
               active-color="#379EFC"
               inactive-color="#C0C4CC"
+              active-value="1"
+              inactive-value="0"
             /></el-form-item>
         </el-col>
         <el-col :xl="{span:8,push:8}" :lg="{span:12}">
@@ -148,7 +150,7 @@ export default {
       },
       rules: {
         topic: [
-          { required: true, message: '请输入标题', trigger: 'blur' }
+          { required: true, message: '请输入标题', trigger: ['blur', 'change'] }
         ],
         typeL: [
           { required: true, message: '请选择通知类型', trigger: ['blur', 'change'] }
@@ -278,6 +280,7 @@ export default {
             'invalidTime': this.ruleForm.endMsgTime,
             'publishTime': this.ruleForm.startMsgTime,
             'pubWay': '0',
+            'isPerson': this.ruleForm.isPerson,
             'appendixIdName': this.ruleForm.appendixIdName,
             'appendixImgId': this.ruleForm.appendixImgId,
             'organ': this.ruleForm.organ
@@ -308,10 +311,14 @@ export default {
               this.ruleForm.appendixIdName = ''
               this.appendixId = ''
               this.content = ''
+              this.ruleForm.isPerson = false
               this.ruleForm.organ = null
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
+              this.$nextTick(() => {
+                this.$refs.ruleForm.clearValidate()
+              })
             }
           }).catch(res => {
             this.bigloading = false

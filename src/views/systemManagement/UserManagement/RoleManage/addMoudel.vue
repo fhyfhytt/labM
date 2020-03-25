@@ -181,7 +181,6 @@ export default {
             console.log(item)
             checked(item, setTreeData(res.data), newArr)
           })
-          console.log(newArr)
           this.roleData = newArr
         } else {
           this.$message.error(res.msg)

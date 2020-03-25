@@ -122,7 +122,7 @@ export function getCheckedKeys(data, keys, key) {
     }
   }
 }
-
+// 去除半选状态
 export function checked(id, data, newArr) {
   data.forEach(item => {
     if (item.id === id) {
