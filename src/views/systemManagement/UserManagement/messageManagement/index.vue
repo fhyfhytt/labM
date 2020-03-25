@@ -152,6 +152,7 @@ export default {
     common.getDictNameList({ dictName: '消息类型', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
+          res.data.unshift({ code: '', name: '全部' })
           this.btns = res.data
         })
       }
