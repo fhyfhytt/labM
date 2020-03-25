@@ -86,3 +86,54 @@ export function url2obj(url) {
   urlobj.path = '/' + pathA.join('/')
   return urlobj
 }
+// 去掉半选状态
+export function getCheckedKeys(data, keys, key) {
+  var res = []
+  recursion(data, false)
+  return res
+  // arr -> 树形总数据
+  // keys -> getCheckedKeys获取到的选中key值
+  // isChild -> 用来判断是否是子节点
+  function recursion(arr, isChild) {
+    var aCheck = []
+    for (var i = 0; i < arr.length; i++) {
+      var obj = arr[i]
+      aCheck[i] = false
+
+      if (obj.children) {
+        aCheck[i] = recursion(obj.children, true) ? true : aCheck[i]
+        if (aCheck[i]) {
+          res.push(obj[key])
+        }
+      }
+
+      for (var j = 0; j < keys.length; j++) {
+        if (obj[key] === keys[j]) {
+          aCheck[i] = true
+          if (res.indexOf(obj[key]) === -1) {
+            res.push(obj[key])
+          }
+          break
+        }
+      }
+    }
+    if (isChild) {
+      return aCheck.indexOf(true) !== -1
+    }
+  }
+}
+
+export function checked(id, data, newArr) {
+  data.forEach(item => {
+    if (item.id === id) {
+      if (!item.children || item.children.length === 0) {
+        newArr.push(item.id)
+      }
+    } else {
+      if (item.children && item.children.length !== 0) {
+        checked(id, item.children, newArr)
+      }
+    }
+  })
+}
+
