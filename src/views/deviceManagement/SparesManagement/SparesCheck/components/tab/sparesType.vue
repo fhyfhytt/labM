@@ -1,26 +1,32 @@
 <template>
-  <div class="tree-div">
-    <!--  @node-click="handleNodeClick" -->
-    <el-tree
-      ref="tree"
-      v-loading="treeloading"
-      show-checkbox
-      :data="treedata"
-      node-key="id"
-      default-expand-all
-      :props="defaultProps"
-      :highlight-current="true"
-      :expand-on-click-node="false"
-    >
-      <span slot-scope="{ node, data }" class="custom-tree-node span-ellipsis">
-        <span v-if="data.children" :title="data.name">
-          <i class="iconfont iconzuzhi" />{{ data.name }}
+  <div class="dialgAddform1">
+    <p class="bkb" />
+    <div class="tree-div">
+      <el-tree
+        ref="tree"
+        v-loading="treeloading"
+        show-checkbox
+        :data="treedata"
+        node-key="id"
+        default-expand-all
+        :props="defaultProps"
+        :highlight-current="true"
+        :expand-on-click-node="false"
+      >
+        <span slot-scope="{ node, data }" class="custom-tree-node span-ellipsis">
+          <span v-if="data.children" :title="data.name">
+            <i class="iconfont iconzuzhi" />{{ data.name }}
+          </span>
+          <span v-else style="paddingLeft:16px;" :title="data.name">
+            <i class="iconfont iconbumen" />{{ data.name }}
+          </span>
         </span>
-        <span v-else style="paddingLeft:16px;" :title="data.name">
-          <i class="iconfont iconbumen" />{{ data.name }}
-        </span>
-      </span>
-    </el-tree>
+      </el-tree>
+    </div>
+    <div class="dialog-footer">
+      <el-button size="medium " class="button-sub" @click="getCheckedNodes">确定</el-button>
+      <el-button size="medium " class="button-cancel" @click="handelsparesTypeVisible">取消</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -42,7 +48,9 @@ export default {
       tableData: [],
       treeName: '', // 上级节点名称
       treeId: '', // 上级节点id
-      treeloading: true
+      treeloading: true,
+      allCheckedData: [], // 所有选中节点数据
+      sparesTypeVisible: false // 关闭备件分类页面
     }
   },
   mounted() {
@@ -52,9 +60,6 @@ export default {
   methods: {
     // 获取tree树数据
     getTreeData(value) {
-      if (value) {
-        this.treeloading = value.loading
-      }
       classifyTree().then(response => {
         this.treeloading = false
         if (response.code === 0) {
@@ -68,9 +73,6 @@ export default {
             this.$nextTick(() => {
               this.$refs.tree.setCurrentKey(this.currentNodekey)
             })
-            this.param.itemType = this.treeId
-            this.getTableData()
-            this.suppliesType = this.treedata[0].name
           }
         } else {
           this.$message.error(response.msg)
@@ -79,6 +81,17 @@ export default {
         this.loading = false
         this.$message.error(response.message)
       })
+    },
+    // 赋值备件分类input框
+    getCheckedNodes() {
+      this.allCheckedData = this.$refs.tree.getCheckedNodes() // 获取所有选中节点数据
+      this.$emit('getData', this.allCheckedData)
+      this.$emit('handelsparesTypeVisible')
+    },
+    // 取消，关闭弹框
+    handelsparesTypeVisible(sparesTypeVisible) {
+      this.$emit('handelsparesTypeVisible', this.sparesTypeVisible)
+      this.addForm = {}
     }
   }
 }

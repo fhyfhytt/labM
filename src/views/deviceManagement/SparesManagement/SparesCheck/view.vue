@@ -32,8 +32,8 @@
       <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
     </div>
     <!--备件分类界面-->
-    <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="物资新增" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
-      <sparesType :tree-id="id" @handeladdFormVisible="handeladdFormVisible" />
+    <el-dialog v-if="sparesTypeVisible" v-model="sparesTypeVisible" title="备件分类" :close-on-click-modal="false" :visible.sync="sparesTypeVisible" class="deviceAdd addmanage">
+      <sparesType ref="sparesType" :tree-id="id" @getData="getData" @handelsparesTypeVisible="handelsparesTypeVisible" />
     </el-dialog>
   </div>
 </template>
@@ -52,7 +52,6 @@ export default {
   data() {
     return {
       formhouse: { name: '', type: '' },
-
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -71,7 +70,9 @@ export default {
       tableloading: true,
       // selectData: {} // 点击tree树获取整个节点对象
       // isDel: true // 最初默认标识可以删除
-      addFormVisible: false
+      sparesTypeVisible: false, // 备件分类页面是否显示
+      id: '',
+      typeData: []
     }
   },
 
@@ -131,17 +132,18 @@ export default {
       }
       this.getTableData()
     },
-    // // 重新刷新页面
-    // handleGetTree1() {
-    //   this.$emit('refresh', { loading: true })
-    // },
-    // 新增
+    // 打开弹框
     handleAdd() {
-      this.addFormVisible = true
+      this.sparesTypeVisible = true
     },
-    // 取消新增
-    handeladdFormVisible(addFormVisible) {
-      this.addFormVisible = false
+    // 取消，关闭弹框
+    handelsparesTypeVisible(sparesTypeVisible) {
+      this.sparesTypeVisible = false
+    },
+    // 点击查询备件列表数据
+    getData(msg) {
+      this.typeData = msg
+      console.log(this.typeData)
     }
   }
 }
@@ -152,4 +154,8 @@ export default {
 @import '~@/styles/variables.scss';
 
 </style>
-
+<style lang="scss" scoped>
+  /deep/.deviceAdd .el-dialog {
+    width: 350px!important;
+  }
+</style>
