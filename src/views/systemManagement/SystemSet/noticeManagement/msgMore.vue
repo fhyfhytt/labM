@@ -1,7 +1,7 @@
 <template>
   <div class="msgMore">
     <h3 class="topic">{{ allList.topic }}</h3>
-    <p class="nameTime"><span>发布人：{{ allList.publishPer }}</span><span>时间：{{ time }}</span></p>
+    <p class="nameTime"><span>发布人：{{ allList.updatePer }}</span><span>时间：{{ time }}</span></p>
     <div class="msgContent" v-html="allList.memo" />
     <div v-if="true" class="msgFj">
       <div class="fj">附件：</div>

@@ -323,7 +323,7 @@ export default {
       getContent(id).then(res => {
         var msgSys = res.data.msgSys
         this.ruleForm.topic = msgSys.topic
-        this.ruleForm.sendPeople = msgSys.publishPer
+        this.ruleForm.sendPeople = msgSys.createPer
         this.ruleForm.startMsgTime = msgSys.publishTime
         this.ruleForm.endMsgTime = msgSys.invalidTime
         this.content = msgSys.memo

@@ -166,7 +166,10 @@ export default {
       }
       this.removeRd.forEach(element => {
         if (element.state === '1') {
-          this.$message.error('消息已发布，请重新选择！')
+          setTimeout(() => {
+            this.$message.error('消息已发布，请重新选择！')
+          }, 0)
+
           flag = true
           return
         }
