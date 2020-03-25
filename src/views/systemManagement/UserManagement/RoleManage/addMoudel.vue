@@ -178,7 +178,6 @@ export default {
           }).map(item => {
             return item.id
           }).forEach(item => {
-            console.log(item)
             checked(item, setTreeData(res.data), newArr)
           })
           this.roleData = newArr
