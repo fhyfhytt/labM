@@ -60,7 +60,7 @@
       <el-row>
 
         <el-form-item label="通知内容 : ">
-          <vue-html5-editor :content="content" :height="500" :z-index="1000" :auto-height="true" :show-module-name="false" />
+          <vue-html5-editor :content="content" :height="500" :z-index="1000" :auto-height="true" :show-module-name="false" @change="updateData" />
           <!-- <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" /> -->
         </el-form-item>
       </el-row>
@@ -498,7 +498,8 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
-    }, onRemoveTxt(file, fileList) {
+    },
+    onRemoveTxt(file, fileList) {
       if (file.response === undefined && fileList.length > 0) {
         return this.$message.warning('文件名称重复')
       }
@@ -512,6 +513,8 @@ export default {
       }).catch(res => {
         this.$message.error(res.msg)
       })
+    }, updateData(e) {
+      this.content = e
     }
   }
 
