@@ -58,7 +58,7 @@
         </el-row>
         <div style="position:absolute;bottom:0;right:0">
           <el-button v-if="!addFlag" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(0)">上一步</el-button>
-          <el-button v-preventReClick="1000" class="button-sub" @click="orgNotNull">下一步</el-button>
+          <el-button v-preventReClick="1000" class="button-sub" @click="addUserInfo">下一步</el-button>
         </div>
       </el-tab-pane>
       <!-- 第三步，人员选择 -->
@@ -227,12 +227,9 @@
 
 <script>
 import { addRegion, editRegion, getDeptByRegionId, searchRegion, getUserByRegionId, getUserList, getClassifyByRegionId, getHouseByRegionId } from '@/api/userManagement.js'
-// import addClassMoudel from './addClassMoudel.vue'
-// import addHouseMoudel from './addHouseMoudel.vue'
 import { tree2Array } from '@/utils/utils'
 export default {
   name: 'AddRolePage',
-  // components: { addClassMoudel, addHouseMoudel },
   props: {
     treeId: {
       type: String,
@@ -293,11 +290,6 @@ export default {
       houseTitle: ['全部库房', '已选库房']
     }
   },
-  // watch: {
-  //   regionId: function() {
-  //     this.baseInfo.id = this.regionId
-  //   }
-  // },
   methods: {
     handleClick(tab) {
     },
@@ -387,14 +379,10 @@ export default {
         this.handleGetRoleUsers()
         // 根据数据获取库房
         this.getHouseMenu()
-        // this.$refs.addHouseMoudel.getHouseMenu()
         // 根据数据获取分类
         this.getClassifyMenu()
-        // this.$refs.addClassMoudel.getClassifyMenu()
       } else {
         this.baseInfo = {}
-        // this.roleMenuTree = []
-        // this.roleBtnTree = []
         this.userInfo = []
         this.$emit('reset-save-flag', true)
         this.addFlag = true
@@ -402,12 +390,6 @@ export default {
         this.pane3 = true
         this.pane4 = true
         this.pane5 = true
-        // this.toData = []
-        // this.roleData = []
-        // this.classToData = []
-        // this.classRoleData = []
-        // this.houseToData = []
-        // this.houseRoleData = []
       }
     },
     // 行点击获取行信息
@@ -513,15 +495,6 @@ export default {
       }
     },
     // 保存或修改数据域组织信息--第二步
-    // 组织不能为空
-    orgNotNull() {
-      if (this.roleData.length === 0) {
-        this.$message.error('组织不能为空！')
-        return
-      } else {
-        this.addUserInfo()
-      }
-    },
     addUserInfo() {
       if (this.addFlag === false) {
         // var deptIdList = this.ids
@@ -541,14 +514,19 @@ export default {
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
           } else {
-            this.$message.error('组织不能为空222！')
+            this.$message.error(res.msg)
           }
         }).catch(e => {
-
+          this.$message.error(e.msg)
         })
       } else {
-        this.activeName = '2'
-        this.active = 2
+        if (this.ids.length === 0) {
+          this.$message.error('组织不能为空！')
+          return
+        } else {
+          this.activeName = '2'
+          this.active = 2
+        }
       }
     },
     //  保存或修改数据域用户信息--第三步
@@ -567,8 +545,6 @@ export default {
             this.$message.success('保存成功')
             this.$emit('getTableData')
             this.getHouseMenu()
-            // this.regionId = this.baseInfo.id
-            // this.$refs.addHouseMoudel.getHouseMenu()
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
           } else {
@@ -580,13 +556,11 @@ export default {
         this.active = 3
         // 根据数据获取库房
         this.getHouseMenu()
-        // this.$refs.addHouseMoudel.getHouseMenu()
       }
     },
     //  保存或修改数据域库房信息--第四步
     addClassifyInfo() {
       if (this.addFlag === false) {
-        // const houseIds = this.$refs.addHouseMoudel.getHouseIds()
         var warehouseIdList = this.houseIds
         editRegion({ flag: '3', sysRegion: { id: this.baseInfo.id }, warehouseIdList }).then(res => {
           if (res.success === true) {
@@ -595,7 +569,6 @@ export default {
             this.$message.success('保存成功')
             this.$emit('getTableData')
             this.getClassifyMenu()
-            // this.$ref.addClassMoudel.getClassifyMenu()
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
           } else {
@@ -607,7 +580,6 @@ export default {
         this.active = 4
         // 根据数据获取分类
         this.getClassifyMenu()
-        // this.$refs.addClassMoudel.getClassifyMenu()
       }
     },
 
