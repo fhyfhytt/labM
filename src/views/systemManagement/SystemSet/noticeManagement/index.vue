@@ -35,13 +35,14 @@
           <el-table-column label="序号" width="120" prop="id">
             <template slot-scope="scope">{{ scope.$index + 1 }}</template>
           </el-table-column>
+          <el-table-column label="标题" width="200" prop="topic" />
           <el-table-column prop="memo" label="内容">
             <!-- show-overflow-tooltip -->
             <template slot-scope="scope">
               <div v-if="scope.row.ifRead==='0'?true:false" class="tableContent">
-                <span class="board" :title="scope.row.topic+memoReplace(scope.row.memo)">{{ scope.row.topic }}<span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
+                <span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
               </div>
-              <div v-else class="tableContent"><span class="board" :title="scope.row.topic+memoReplace(scope.row.memo)">{{ scope.row.topic }}<span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
+              <div v-else class="tableContent"><span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
             </template>
           </el-table-column>
           <el-table-column prop="state" label="状态" width="120" :formatter="stateFormatter" />
@@ -329,10 +330,17 @@ export default {
   .page-table {
     .button-tool {
       overflow: hidden;
-      >>>.el-button .iconfabu1 {
+      >>> .el-button .iconfabu1 {
         font-size: 13px;
       }
     }
+  }
+
+  .momoLeft {
+    text-overflow: ellipsis;
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
   }
 }
 </style>

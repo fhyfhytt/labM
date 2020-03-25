@@ -300,6 +300,9 @@ vue-treeselect__control {
 .el-select:hover .el-input__inner {
   border-color: #379EFC;
 }
+.el-select>.el-input{
+  height: 32px;
+}
 
 
 //不跳转分页

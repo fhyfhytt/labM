@@ -11,21 +11,11 @@
       </el-row>
       <el-row>
         <div class="inb">
-          <el-date-picker
-            v-model="startMsgTime"
-            type="date"
-            placeholder="选择开始日期时间"
-            prefix-icon="iconfont iconrili"
-          />
+          <el-date-picker v-model="startMsgTime" type="date" placeholder="选择开始日期时间" prefix-icon="iconfont iconrili" />
         </div>
         <span class="toGo">至</span>
         <div class="inb" style="margin-right:24px;">
-          <el-date-picker
-            v-model="endMsgTime"
-            type="date"
-            placeholder="选择结束日期时间"
-            prefix-icon="iconfont iconrili"
-          />
+          <el-date-picker v-model="endMsgTime" type="date" placeholder="选择结束日期时间" prefix-icon="iconfont iconrili" />
         </div>
         <el-button size="small" class="button-sub searchs" @click="searchMsg">查询</el-button>
       </el-row>
@@ -41,63 +31,28 @@
           </div>
 
         </div>
-        <el-table
-          ref="multipleTable"
-          v-loading="loading"
-          :data="tableData"
-          class="tableShow"
-          @selection-change="handleSelectionChange"
-          @cell-click="clickOneTable"
-        >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            label="序号"
-            width="120"
-            prop="id"
-          >
+        <el-table ref="multipleTable" v-loading="loading" :data="tableData" class="tableShow" @selection-change="handleSelectionChange" @cell-click="clickOneTable">
+          <el-table-column type="selection" width="55" />
+          <el-table-column label="序号" width="120" prop="id">
+
             <template slot-scope="scope">{{ scope.$index + 1 }}</template>
           </el-table-column>
-          <el-table-column
-            prop="memo"
-            label="内容"
-          >
+          <el-table-column label="标题" width="200" prop="topic" />
+          <el-table-column prop="memo" label="内容">
             <!-- show-overflow-tooltip -->
             <template slot-scope="scope">
               <div v-if="scope.row.ifRead==='0'?true:false" class="tableContent">
-                <span class="board" :title="scope.row.topic+memoReplace(scope.row.memo)">{{ scope.row.topic }}<span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
+                <span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
               </div>
-              <div v-else class="tableContent"><span class="board" :title="scope.row.topic+memoReplace(scope.row.memo)">{{ scope.row.topic }}<span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
+              <div v-else class="tableContent"><span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="isRead"
-            label="状态"
-            width="120"
-            :formatter="stateFormatter"
-          />
-          <el-table-column
-            prop="publishTime"
-            label="时间"
-            width="150"
-            sort-by="publishTime"
-            :sortable="true"
-          />
+          <el-table-column prop="isRead" label="状态" width="120" :formatter="stateFormatter" />
+          <el-table-column prop="publishTime" label="时间" width="150" sort-by="publishTime" :sortable="true" />
         </el-table>
         <div v-if="totalNum" class="numListJup">
-          <el-pagination
-            :page-size="pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total,sizes,prev, pager, next, jumper"
-            :total="totalNum"
-            :pager-count="5"
-            :current-page.sync="currentPage"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
-        <!-- <div class="sendAllBtn">
+          <el-pagination :page-size="pageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="totalNum" :pager-count="5" :current-page.sync="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+          <!-- <div class="sendAllBtn">
           <span>跳转</span>
         </div> -->
         </div>
@@ -386,26 +341,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  // @import "~@/styles/btn.scss";
+// @import "~@/styles/btn.scss";
 
-  .pageRow{
-    >>>  .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+.pageRow {
+  >>> .el-radio-button__orig-radio:checked + .el-radio-button__inner {
     box-shadow: none;
   }
-    .page-title{
-      flex-direction: column ;
-      justify-content: center;
-      .el-row{
-        width:100%;
-        padding: 10px 30px;
-      }
-    }
-    .page-table{
-      .button-tool{
-        overflow: hidden;
-
-      }
+  .page-title {
+    flex-direction: column;
+    justify-content: center;
+    .el-row {
+      width: 100%;
+      padding: 10px 30px;
     }
   }
+  .page-table {
+    .button-tool {
+      overflow: hidden;
+    }
+    .momoLeft {
+      text-overflow: ellipsis;
+      width: 100%;
+      display: inline-block;
+      overflow: hidden;
+    }
+  }
+}
 </style>
 

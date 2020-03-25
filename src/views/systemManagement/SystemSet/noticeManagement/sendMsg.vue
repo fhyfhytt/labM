@@ -303,7 +303,9 @@ export default {
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
-              this.$refs.ruleForm.clearValidate()
+              this.$nextTick(() => {
+                this.$refs.ruleForm.clearValidate()
+              })
             }
           }).catch(res => {
             this.bigloading = false
@@ -370,7 +372,7 @@ export default {
     },
     handlefileSuccess(res, file, fileList) {
       if (res.code === 0) {
-        this.ruleForm.appendixIdName.push({ name: res.data.appendixName, path: url2obj(res.data.appendixPath), id: res.data.id })
+        this.ruleForm.appendixIdName.push({ name: res.data.appendixName, path: res.data.appendixPath, id: res.data.id })
         this.$message.success('上传成功')
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
