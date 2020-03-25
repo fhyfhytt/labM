@@ -4,26 +4,26 @@
   padding: 20px 100px;
   overflow-y: auto !important;
   max-height: calc(100vh - 140px);
-  .upload-img{
-    float:left;
-    &:hover{
-      .mask{
+  .upload-img {
+    float: left;
+    &:hover {
+      .mask {
         display: flex;
       }
     }
   }
-  .mask{
+  .mask {
     position: absolute;
-    background:rgba(0,0,0,0.4);
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
+    background: rgba(0, 0, 0, 0.4);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: none;
     flex-direction: column;
     justify-content: center;
-    i{
-      color:#fff;
+    i {
+      color: #fff;
       font-size: 40px;
       vertical-align: middle;
     }
@@ -79,6 +79,22 @@
       margin-top: 10px;
       margin-bottom: 0px;
       color: #909399;
+      /* 滚动条整体部分 */
+      &::-webkit-scrollbar {
+        width: 5px;
+        background-color: transparent;
+      }
+
+      /* 滚动条中能上下移动的小块 */
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 5px;
+      }
+      /* scroll轨道背景 */
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background-color: transparent;
+      }
     }
     .vue-treeselect__option--highlight {
       background: rgba(244, 247, 250, 1);

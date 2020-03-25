@@ -51,7 +51,7 @@ export default {
       editFormRules: {
         code: [{ required: true, message: '请输入组织编号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入组织名称', trigger: 'blur' }],
-        type: [{ required: true, message: '请输入组织类型', trigger: 'blur' }]
+        type: [{ required: true, message: '请选择组织类型', trigger: ['blur', 'change'] }]
       },
       selectDataTrue: [{ name: '业务', value: '9cbf144f21044b1e8510f9e607addcbc' }, { name: '管理', value: '8baa547b59504e8cb25424446222ab8d' }],
       editFormVisible: false

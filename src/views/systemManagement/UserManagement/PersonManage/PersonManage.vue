@@ -80,7 +80,7 @@
       </el-dialog>
       <!--编辑界面-->
       <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="修改用户" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleEditClose" class="userEdit" width="900px">
-        <editMoudel ref="personAdd" :row="row" @clickAdd="clickAdd" @closeEdit="closeEdit" />
+        <editMoudel ref="personEdit" :row="row" @clickAdd="clickAdd" @closeEdit="closeEdit" />
       </el-dialog>
       <!--确认删除弹框-->
       <el-dialog title="删除" :visible.sync="moveShow" class="baseMove">
@@ -315,7 +315,7 @@ export default {
     padding-top: 1.5%;
     .el-input__inner {
       // cursor: pointer;
-      height: 34px;
+      height: 32px;
       width: 166px;
     }
     .el-input {

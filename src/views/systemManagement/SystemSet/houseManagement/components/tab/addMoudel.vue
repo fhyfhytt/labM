@@ -88,8 +88,8 @@ export default {
         code: [{ required: true, message: '请输入库房编号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入库房名称', trigger: 'blur' }],
         person: [{ required: true, message: '请选择库房管理员', trigger: 'change' }],
-        state: [{ required: true, message: '请选择库房状态', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择库房类型', trigger: 'blur' }]
+        state: [{ required: true, message: '请选择库房状态', trigger: ['blur', 'change'] }],
+        type: [{ required: true, message: '请选择库房类型', trigger: ['blur', 'change'] }]
       },
       selecthouseType: [],
       selecthouseState: [],

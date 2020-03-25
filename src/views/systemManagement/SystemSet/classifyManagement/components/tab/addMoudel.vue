@@ -54,7 +54,7 @@ export default {
       addFormRules: {
         code: [{ required: true, message: '请输入编号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        status: [{ required: true, message: '请输入状态', trigger: 'blur' }]
+        status: [{ required: true, message: '请输入状态', trigger: ['blur', 'change'] }]
       },
       selectDataTrue: [{ name: '启用', value: 1 }, { name: '未启用', value: 0 }]
     }

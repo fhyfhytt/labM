@@ -282,7 +282,7 @@ export default {
         mobile: [{ required: true, validator: validatePass1, trigger: 'change' }],
         email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-        sex: [{ required: true, message: '请选择性别', trigger: 'blur' }],
+        sex: [{ required: true, message: '请选择性别', trigger: ['blur', 'change'] }],
         available: [{ required: true, message: '请选择账号状态', trigger: ['blur', 'change'] }],
         active: [{ required: true, message: '请选择在职状态', trigger: ['blur', 'change'] }],
         avatar: [{ required: true, message: '请上传头像', trigger: ['change'] }],
@@ -772,6 +772,21 @@ export default {
       margin-bottom: 0px;
       color: #909399;
       font-weight: 100;
+            &::-webkit-scrollbar {
+        width: 5px;
+        background-color: transparent;
+      }
+
+      /* 滚动条中能上下移动的小块 */
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 5px;
+      }
+      /* scroll轨道背景 */
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background-color: transparent;
+      }
     }
     .vue-treeselect__option--highlight {
       .vue-treeselect__label {

@@ -91,8 +91,8 @@ export default {
         code: [{ required: true, message: '请输入库房编号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入库房名称', trigger: 'blur' }],
         person: [{ required: true, message: '请选择库房管理员', trigger: 'change' }],
-        state: [{ required: true, message: '请选择库房状态', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择库房类型', trigger: 'blur' }]
+        state: [{ required: true, message: '请选择库房状态', trigger: ['blur', 'change'] }],
+        type: [{ required: true, message: '请选择库房类型', trigger: ['blur', 'change'] }]
       },
       selecthouseType: [],
       selecthouseState: [],
@@ -196,8 +196,8 @@ export default {
     // }
     }, // 添加新成员
     addNewUser() {
-      this.editForm.person = ''
-      this.editForm.personMobile = ''
+      // this.editForm.person = ''
+      // this.editForm.personMobile = ''
       this.addUserVisible = true
       this.handleGetUnselectRoleUsers()
     }, // 查询要新添加的用户

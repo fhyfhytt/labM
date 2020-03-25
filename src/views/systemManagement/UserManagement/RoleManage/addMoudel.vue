@@ -10,7 +10,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="基本信息" name="0" :disabled="pane1" style="height:490px">
         <el-row style="margin-top:50px;">
-          <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
+          <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="true" class="addtop">
             <el-col :span="12">
               <el-form-item label="角色名称：" prop="name">
                 <el-input v-model="baseInfo.name" placeholder="请输入角色名称" />
@@ -117,7 +117,7 @@ export default {
       baseInfo: { name: '', status: '', description: '' }, // 基本信息
       baseInfoRule: {
         name: [{ required: true, message: '请输入角色名', trigger: ['blur'] }],
-        status: [{ required: true, message: '请选择状态', trigger: ['blur'] }]
+        status: [{ required: true, message: '请选择状态', trigger: ['blur', 'change'] }]
       },
       defaultProps: {
         label: 'name',
@@ -199,7 +199,6 @@ export default {
         // 根据角色获取人员
         this.handleGetRoleUsers()
       } else {
-        console.log(1)
         // this.baseInfo = {}
         this.userInfo = []
         this.$emit('reset-save-flag', true)

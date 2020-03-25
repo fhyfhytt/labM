@@ -151,10 +151,10 @@ export default {
           { required: true, message: '请输入标题', trigger: 'blur' }
         ],
         typeL: [
-          { required: true, message: '请选择通知类型', trigger: ['blur'] }
+          { required: true, message: '请选择通知类型', trigger: ['blur', 'change'] }
         ],
         typeS: [
-          { required: true, message: '请选择系统类型', trigger: ['blur'] }
+          { required: true, message: '请选择系统类型', trigger: ['blur', 'change'] }
         ],
         sendPeople: [
           { required: true, message: '请输入发布人', trigger: 'blur' }
@@ -211,6 +211,13 @@ export default {
         ['clean']
       ]
 
+    }
+  },
+  watch: {
+    'ruleForm.organ': function(newvalue, oldvalue) {
+      if (newvalue !== '') {
+        this.$refs.ruleForm.clearValidate('organ')
+      }
     }
   },
   created() {

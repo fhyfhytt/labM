@@ -278,7 +278,7 @@ export default {
       editFormRules: {
         name: [{ validator: validatePass2, trigger: 'change', required: true }],
         userCode: [{ required: true, message: '请输入工号', trigger: 'change' }],
-        birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
+        birthday: [{ required: true, message: '请选择生日', trigger: ['blur', 'change'] }],
         mobile: [{ required: true, validator: validatePass1, trigger: 'change' }],
         email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
@@ -822,21 +822,21 @@ export default {
   padding: 0 60px;
 }
 .UserManage-edit {
-  .avatar-uploader:hover .mask{
+  .avatar-uploader:hover .mask {
     display: flex;
   }
-  .mask{
+  .mask {
     position: absolute;
-    background:rgba(0,0,0,0.4);
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
+    background: rgba(0, 0, 0, 0.4);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: none;
     flex-direction: column;
     justify-content: center;
-    i{
-      color:#fff;
+    i {
+      color: #fff;
       font-size: 40px;
       vertical-align: middle;
     }
@@ -874,6 +874,21 @@ export default {
           font-weight: 900;
         }
         background: rgba(244, 247, 250, 1);
+      }
+      &::-webkit-scrollbar {
+        width: 5px;
+        background-color: transparent;
+      }
+
+      /* 滚动条中能上下移动的小块 */
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 5px;
+      }
+      /* scroll轨道背景 */
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background-color: transparent;
       }
     }
   }

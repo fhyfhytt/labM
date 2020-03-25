@@ -52,7 +52,7 @@ export default {
       editFormRules: {
         code: [{ required: true, message: '请输入分类编号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
-        status: [{ required: true, message: '请输入分类状态', trigger: 'blur' }]
+        status: [{ required: true, message: '请选择分类状态', trigger: ['blur', 'change'] }]
       },
       loading: false,
       editFormVisible: false,
