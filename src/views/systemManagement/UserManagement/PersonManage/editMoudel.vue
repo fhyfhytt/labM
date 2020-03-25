@@ -45,7 +45,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="所属组织:" prop="deptId">
-                  <treeselect v-model="editForm.deptId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
+                  <treeselect v-model="editForm.deptId" :open-direction="'top'" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -86,7 +86,7 @@
                   <el-input v-model="editForm.password" autocomplete="off" placeholder="需要修改密码请填写" />
                 </el-form-item>
                 <el-form-item label="所属班组:" prop="group">
-                  <treeselect v-model="editForm.groupId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
+                  <treeselect v-model="editForm.groupId" :open-direction="'top'" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
             </el-row>

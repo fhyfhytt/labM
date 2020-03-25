@@ -45,7 +45,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="所属组织:" prop="deptId">
-                  <treeselect v-model="addForm.deptId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
+                  <treeselect v-model="addForm.deptId" :open-direction="'top'" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -89,7 +89,7 @@
                   <el-input v-model="addForm.password" autocomplete="off" placeholder="修改用户可不用填写密码" />
                 </el-form-item>
                 <el-form-item label="所属班组:" prop="groupId">
-                  <treeselect v-model="addForm.groupId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
+                  <treeselect v-model="addForm.groupId" :open-direction="'top'" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -102,7 +102,6 @@
             </el-row>
           </el-form>
           <div class="dialog-footer">
-
             <el-button v-preventReClick="1000" size="small" class="button-sub" @click.native="submitUserForm('addForm')">下一步</el-button>
           </div>
         </div>
