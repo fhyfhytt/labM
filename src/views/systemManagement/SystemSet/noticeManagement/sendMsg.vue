@@ -60,11 +60,7 @@
       <el-row>
 
         <el-form-item label="通知内容 : ">
-          <quill-editor
-            ref="myTextEditor"
-            v-model="content"
-            :config="customToolbar"
-          />
+          <vue-html5-editor :content="content" :height="500" :z-index="1000" :auto-height="true" :show-module-name="false" />
           <!-- <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" /> -->
         </el-form-item>
       </el-row>
@@ -131,13 +127,10 @@
 import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData, url2obj } from '@/utils/utils'
 import { removeFJ, addMsg, getContent } from '@/api/message'
-
-import { quillEditor } from 'vue-quill-editor'
 // import Quill from 'quill'
 import common from '@/utils/common'
 export default {
   name: 'SendMsg',
-  components: { quillEditor },
   data() {
     return {
       ruleForm: {
