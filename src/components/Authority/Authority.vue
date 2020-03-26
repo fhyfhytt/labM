@@ -17,7 +17,6 @@ export default {
   methods: {
     sureClick() {
       this.sureDioag = false
-      this.$store.dispatch('tagsView/delAllVisitedViews', '')
       this.$store.dispatch('user/logout')
       this.$router.push(`/login`)
     },

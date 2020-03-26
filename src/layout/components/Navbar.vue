@@ -51,7 +51,7 @@
             <a href="javascript:void(0)">
               <el-dropdown-item>帮助中心</el-dropdown-item>
             </a>
-            <el-dropdown-item @click.native="logout">
+            <el-dropdown-item @click.native="logoutR">
               <span style="display:block;">切换账号</span>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -112,6 +112,11 @@ export default {
     },
     logout() {
       this.$refs.baseRemoved.sureDioag = true
+    },
+    logoutR() {
+      this.$store.dispatch('tagsView/delAllViews', '')
+      this.$store.dispatch('user/logout')
+      this.$router.push('/login')
     },
     handleClick(e, v) {
       // console.log(e, v)

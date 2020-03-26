@@ -365,8 +365,6 @@ export default {
         this.imgurl = URL.createObjectURL(file.raw)
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
-        this.$store.store.state.user.token = null
-        this.$store.dispatch('tagsView/delAllVisitedViews', '')
         this.$store.dispatch('user/logout')
       } else {
         this.$message.error(res.msg)
@@ -382,8 +380,6 @@ export default {
         this.$message.success('上传成功')
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
-        this.$store.store.state.user.token = null
-        this.$store.dispatch('tagsView/delAllVisitedViews', '')
         this.$store.dispatch('user/logout')
       } else {
         this.$message.error(res.msg)

@@ -739,8 +739,6 @@ export default {
         this.avatar.appendixPath = res.data.appendixPath
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
-        this.$store.store.state.user.token = null
-        this.$store.dispatch('tagsView/delAllVisitedViews', '')
         this.$store.dispatch('user/logout')
       } else {
         this.$message.error(res.msg)
