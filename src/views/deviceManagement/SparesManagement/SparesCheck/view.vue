@@ -4,6 +4,7 @@
     <div class="page-title">
       <el-form ref="form1" :model="formSpare" size="small" label-width="110px">
         <el-row>
+          <input v-model="formSpare.assetItemType" hidden>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件名称：">
               <el-input v-model="formSpare.assetName" placeholder="请输入备件名称" />
@@ -12,7 +13,6 @@
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件分类：" @click.native="handleAdd">
               <el-input v-model="typeNames" :title="typeNames" placeholder="请选择备件分类" />
-              <el-input v-model="formSpare.assetItemType" hidden />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      formSpare: { assetName: '', assetItemType: {}, dataFrom: '' },
+      formSpare: { assetName: '', assetItemType: '', dataFrom: '' },
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -76,20 +76,18 @@ export default {
       totalNum: 0,
       currentPage: 1,
       param: {
-        pageSize: 10,
-        pageNum: 1
-        // sortColumn: 'create_time',
-        // sortOrder: 'desc'
+        assetItemType: '',
+        checkStatus: '0',
+        houseIds: [],
+        pageNum: 1,
+        pageSize: 10
       },
       input: '',
       tableloading: true,
-      // selectData: {} // 点击tree树获取整个节点对象
-      // isDel: true // 最初默认标识可以删除
       sparesTypeVisible: false, // 备件分类页面是否显示
       id: '',
       typeData: [], // 备件分类数据
       typeNames: '', // 备件分类名称
-      typeIds: '',
       dataFrom: [] // 来源
     }
   },
@@ -118,6 +116,7 @@ export default {
     // 查询备件数据
     getTableData() {
       this.tableloading = true
+      console.log(this.param)
       getSparesList(this.param)
         .then(response => {
           this.tableloading = false
@@ -134,7 +133,7 @@ export default {
         })
     },
     searchSpares() {
-      this.param.pageNumber = 1
+      this.param.pageNum = 1
       this.param.pageSize = 10
       this.currentPage = 1
       this.param = Object.assign(this.param, this.formSpare)
@@ -144,7 +143,7 @@ export default {
     handleGetTableData(value) {
       if (value) {
         this.param.pageSize = value.pageSize
-        this.param.pageNumber = value.pageNumber
+        this.param.pageNum = value.pageNum
         this.currentPage = value.currentPage
       }
       this.getTableData()
@@ -163,10 +162,10 @@ export default {
       this.typeNames = this.typeData.map(item => {
         return item.name
       }).join(',')
-      this.typeIds = this.typeData.map(item => {
+      this.formSpare.assetItemType = this.typeData.map(item => {
         return item.id
       }).join(',')
-      console.log('this.typeIds:', this.typeIds)
+      console.log('this.formSpare.assetItemType:', this.formSpare.assetItemType)
     }
   }
 }

@@ -6,8 +6,8 @@
           <h3>审核备注</h3>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="审核状态" prop="state">
-            <el-select v-model="batchForm.state" value-key="code" popper-class="select-option" placeholder="-请选择-">
+          <el-form-item label="审核状态" prop="checkStatus">
+            <el-select v-model="batchForm.checkStatus" value-key="code" popper-class="select-option" placeholder="-请选择-">
               <el-option v-for="item in selecthouseState" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
             <!-- <el-select popper-class="select-option" placeholder="-请选择-">
@@ -34,13 +34,11 @@
 </template>
 
 <script>
-// import { searchRoleUsers } from '@/api/roleManage'
-import { dictUpdate } from '@/api/house.js'
-import common from '@/utils/common'
+import { sparesCheck } from '@/api/deviceManage.js'
+// import common from '@/utils/common'
 export default {
   data() {
     return {
-      // 批量审核界面数据  state: '',
       batchForm: { state: '', memo: '', personId: '' },
       batchAuditVisible: false,
       batchFormRules: {
@@ -49,47 +47,41 @@ export default {
       selecthouseType: [],
       selecthouseState: [],
       loading: false,
-      // addUserVisible: false,
-      // userloading: true,
-      // userUnselectedInfo: [],
-      // userTotalCount: 0, // 未选择人数页数
-      // userPageSize: 10, // 选择人员每页个数
-      // selectUserPage: 1, // 为选择人员页数
       primaryKey: '' // 查询参数
     }
   },
 
   created() {
-    common.getDictNameList({ dictName: '库房状态', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
-        this.$nextTick(() => {
-          this.selecthouseState = res.data
-        })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
-      }
-    }).catch(res => {
-      this.$message.error(res.msg)
-    })
-    common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
-        this.$nextTick(() => {
-          this.selecthouseType = res.data
-        })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
-      }
-    }).catch(res => {
-      this.$message.error(res.msg)
-    })
+    // common.getDictNameList({ dictName: '库房状态', dictNameIsLike: 0 }).then(res => {
+    //   if (res.success === true) {
+    //     this.$nextTick(() => {
+    //       this.selecthouseState = res.data
+    //     })
+    //   } else {
+    //     if (res.data !== '') {
+    //       this.$message.error(res.data)
+    //     } else {
+    //       this.$message.error(res.msg)
+    //     }
+    //   }
+    // }).catch(res => {
+    //   this.$message.error(res.msg)
+    // })
+    // common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
+    //   if (res.success === true) {
+    //     this.$nextTick(() => {
+    //       this.selecthouseType = res.data
+    //     })
+    //   } else {
+    //     if (res.data !== '') {
+    //       this.$message.error(res.data)
+    //     } else {
+    //       this.$message.error(res.msg)
+    //     }
+    //   }
+    // }).catch(res => {
+    //   this.$message.error(res.msg)
+    // })
   },
   methods: {
     // 取消批量审核
@@ -103,7 +95,7 @@ export default {
         if (valid) {
           this.loading = true
           const param = this.batchForm
-          dictUpdate(param).then(response => {
+          sparesCheck(param).then(response => {
             this.loading = false
             if (response.success === true) {
               this.$message.success('批量审核成功')
@@ -117,7 +109,6 @@ export default {
             this.$message.error(response.msg)
           })
         } else {
-          // console.log('error submit!!')
           return false
         }
       })

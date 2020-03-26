@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" class="dialgEditform1">
-    <el-form ref="AuditForm" :model="AuditForm" label-width="80px" class="formAdd">
+    <el-form ref="AuditForm" :model="AuditForm" :rules="batchFormRules" label-width="80px" class="formAdd">
       <h3 class="title">基本信息</h3>
       <el-row class="addtop">
         <el-col :span="8">
@@ -16,7 +16,6 @@
           <el-form-item label="维保状态:" prop="maintranStatusS">
             <el-input v-model="AuditForm.maintranStatusS" autocomplete="off" readonly />
           </el-form-item>
-
         </el-col>
         <el-col :span="8">
           <el-form-item label="资产名称:" prop="assetName">
@@ -52,7 +51,9 @@
         <el-col :span="24">
           <el-form-item label="审核状态:">
             <el-select v-model="AuditForm.checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-">
-              <el-option v-for="item in selectAuditState" :key="item.checkStatus" :label="item.checkStatusS" :value="item.checkStatusS" />
+              <el-option label="审核通过" value="1" />
+              <el-option label="审核未通过" value="0" />
+              <!-- <el-option v-for="item in selectAuditState" :key="item.checkStatus" :label="item.checkStatusS" :value="item.checkStatus" /> -->
             </el-select>
           </el-form-item>
         </el-col>
@@ -72,7 +73,7 @@
 </template>
 
 <script>
-import { dictUpdate } from '@/api/house.js'
+import { sparesCheck } from '@/api/deviceManage.js'
 // import common from '@/utils/common'
 export default {
   props: {
@@ -83,22 +84,14 @@ export default {
   },
   data() {
     return {
-      AuditForm: { assetInfo: '', itemType: '', dataFrom: '', house: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
+      AuditForm: { id: '', assetInfo: '', itemType: '', dataFrom: '', checkStatus: '', house: '', checkNote: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
       singleAuditVisible: false,
-      // dataFrom: [],
-      selectAuditState: [
-        {
-          checkStatus: 0,
-          checkStatusS: '审核未通过'
-        },
-        {
-          checkStatus: 1,
-          checkStatusS: '审核通过'
-        }
-      ], // 审核状态
       loading: false,
       addUserVisible: false,
-      primaryKey: '' // 查询参数
+      batchFormRules: {
+        checkStatus: [{ required: true, message: '请选择状态', trigger: 'blur' }]
+      }
+      // primaryKey: '' // 查询参数
     }
   },
 
@@ -135,10 +128,11 @@ export default {
     // })
   },
   mounted() {
+    console.log(this.row)
     this.AuditForm = Object.assign({}, this.row)
-    this.AuditForm.personMobile = this.AuditForm.personMobile
-    this.AuditForm.type = { name: this.row.type }// 传入对象
-    this.AuditForm.state = { name: this.row.state }// 传入对象
+    // this.AuditForm.personMobile = this.AuditForm.personMobile
+    // this.AuditForm.type = { name: this.row.type }// 传入对象
+    // this.AuditForm.state = { name: this.row.state }// 传入对象
   },
   methods: {
     // 取消新增
@@ -148,13 +142,19 @@ export default {
     },
     // 提交新增
     submitForm(formName) {
+      console.log(this.AuditForm.checkStatus)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          const param = Object.assign({}, this.AuditForm)
-          param.type = this.AuditForm.type.code
-          param.state = this.AuditForm.state.code
-          dictUpdate(param).then(response => {
+          // const param = Object.assign({}, this.AuditForm)
+          // param.type = this.AuditForm.type.code
+          // param.state = this.AuditForm.state.code
+          const param = {}
+          param.checkStatus = this.AuditForm.checkStatus
+          param.checkNote = this.AuditForm.checkNote
+          param.id = this.AuditForm.id
+
+          sparesCheck(param).then(response => {
             this.loading = false
             if (response.success === true) {
               this.$message.success('修改成功')
@@ -171,13 +171,13 @@ export default {
           return false
         }
       })
-    },
-    selectUserInfoRow(row) {
-      this.AuditForm.person = row.name
-      this.AuditForm.personMobile = row.personMobile
-      this.AuditForm.personId = row.id
-      this.addUserVisible = false
     }
+    // selectUserInfoRow(row) {
+    //   // this.AuditForm.person = row.name
+    //   // this.AuditForm.personMobile = row.personMobile
+    //   this.AuditForm.id = row.id
+    //   this.addUserVisible = false
+    // }
   }
 }
 </script>

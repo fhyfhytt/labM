@@ -92,9 +92,9 @@ export default {
       treeloading: true,
       param: {
         pageSize: 10,
-        pageNumber: 1,
-        sortColumn: 'create_time',
-        sortOrder: 'desc'
+        pageNumber: 1
+        // sortColumn: 'create_time',
+        // sortOrder: 'desc'
       },
       treedata: [],
       expandedkeys: [],
