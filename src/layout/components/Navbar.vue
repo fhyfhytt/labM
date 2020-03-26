@@ -12,28 +12,26 @@
 
     <div class="right-menu">
       <div class="right-menu-item">
-        <el-popover placement="bottom" width="400" trigger="click">
+        <el-popover placement="bottom" width="400" trigger="hover">
           <el-tabs v-model="activeName" class="msgcenter" @before-leave="leavetab" @tab-click="handleClick">
             <!-- stretch 可以拉伸tab填充宽度 -->
-            <el-tab-pane label="消息中心" name="first">
-              <ul style="max-height:300px">
-                <li v-for="(item,index) in messageCenter" :key="index">
+            <el-tab-pane label="消息中心" name="first" style="max-height:300px;overflow-y:auto">
+              <ul>
+                <li v-for="(item,index) in messageCenter" :key="index" @click="MsgClickTo(index)">
                   <div class="minilabel">最新</div>
-                  <div class="title">title</div>
-                  <div class="time">time</div>
+                  <div class="title">{{ item.topic }}</div>
+                  <div>{{ item.publishTime }}</div>
                 </li>
               </ul>
-              <div class="msgfooter"><span @click="goto(0)">查看更多<i class="iconfont" /></span></div>
             </el-tab-pane>
-            <el-tab-pane label="消息公告" name="second">
-              <ul style="max-height:300px">
-                <li v-for="(item,index) in messageCenter" :key="index">
+            <el-tab-pane label="消息公告" name="second" style="max-height:300px;overflow-y:auto">
+              <ul>
+                <li v-for="(item,index) in sysCenter" :key="index" @click="NoticeClickTo(index)">
                   <div class="minilabel">最新</div>
-                  <div class="title">title</div>
-                  <div class="time">time</div>
+                  <div class="title">{{ item.topic }}</div>
+                  <div>{{ item.publishTime }}</div>
                 </li>
               </ul>
-              <div class="msgfooter"><span @click="goto(1)">查看更多<i class="iconfont" /></span></div>
             </el-tab-pane>
           </el-tabs>
           <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="true?&quot;point&quot;:&quot;&quot;" />
@@ -70,7 +68,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
-import {} from '../../assets/img/header.png'
+import { getAllList } from '@/api/message'
 // getShort
 export default {
   components: {
@@ -91,7 +89,8 @@ export default {
       pointNum: 0,
       activeName: 'first',
       defaultAvater: defaultAvater,
-      messageCenter: [{}, {}, {}, {}, {}, {}]
+      messageCenter: [],
+      sysCenter: []
     }
   },
   computed: {
@@ -101,12 +100,47 @@ export default {
       'device'
     ])
   },
+  created() {
+    this.getmessage()
+  },
   mounted() {
     if (this.avatar !== '') {
       this.defaultAvater = this.avatar
     }
   },
   methods: {
+    async getmessage() {
+      var that = this
+      const param1 = {
+        state: [1],
+        pageSize: 10,
+        pageNumber: 1,
+        isPerson: 0,
+        sortColumn: 'publish_time'
+      }
+      const param2 = {
+        state: [1],
+        pageSize: 10,
+        pageNumber: 1,
+        isPerson: 1,
+        sortColumn: 'publish_time'
+      }
+      await getAllList(param1).then(res => {
+        that.$nextTick(() => {
+          that.messageCenter = res.data.list
+          console.log(that.messageCenter)
+        })
+      }).catch(res => {
+        that.$message.error(res.msg)
+      })
+      await getAllList(param2).then(res => {
+        that.$nextTick(() => {
+          that.sysCenter = res.data.list
+        })
+      }).catch(res => {
+        that.$message.error(res.msg)
+      })
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -121,13 +155,16 @@ export default {
     handleClick(e, v) {
       // console.log(e, v)
     },
+    MsgClickTo(e) {
+      const query = { id: this.sysCenter[e].msId }
+      this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
+    },
+    NoticeClickTo(e) {
+      const query = { id: this.sysCenter[e].msId }
+      this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
+    },
     leavetab(activeName, oldActiveName) {
-    }, goto(e) {
-      if (e) {
-        this.$router.push({ path: '/systemManagement/userManagement/messageManagement' })
-      } else {
-        this.$router.push({ path: '/systemManagement/SystemSet/noticeManagement' })
-      }
+      console.log(activeName)
     }
   }
 }
@@ -392,7 +429,7 @@ export default {
 </style>
 <style lang="scss" >
 .msgcenter {
-  >>> el-tab-pane {
+  .el-tab-pane {
     &::-webkit-scrollbar {
       width: 5px;
       background-color: transparent;
@@ -409,7 +446,7 @@ export default {
     }
   }
   ul {
-    padding: 0 30px;
+    padding: 0 10px;
     li {
       display: flex;
       flex-wrap: nowrap;
@@ -423,25 +460,26 @@ export default {
         border-radius: 4px;
         color: #fff;
         flex-shrink: 0;
-        margin-right:15px;
+        margin-right: 15px;
       }
-      .title{
-        flex:1;
-        color:#292929;
+      .title {
+        flex: 1;
+        color: #292929;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
       }
-      .time{
-        margin-left:30px;
+      .time {
+        margin-left: 30px;
       }
     }
   }
-  .msgfooter{
+  .msgfooter {
     text-align: right;
-    span{
+    span {
       cursor: pointer;
     }
   }
 }
 </style>
+

@@ -70,7 +70,7 @@
         <el-table ref="userTable" :data="userInfo" tooltip-effect="dark" height="380" style="width: 100%;height:300px" @row-click="selectUserRow" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
+          <el-table-column prop="userCode" label="工号" />
           <el-table-column prop="name" label="用户名" />
         </el-table>
         <div style="text-align:right;margin-top:40px;">
@@ -90,7 +90,7 @@
         <el-table ref="userInfoTable" v-loading="userloading" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow" @selection-change="handleUnSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
+          <el-table-column prop="userCode" label="工号" />
           <el-table-column prop="name" label="用户名" />
           <el-table-column prop="mobile" label="手机" />
           <el-table-column prop="email" label="邮箱" />
