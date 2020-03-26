@@ -29,3 +29,13 @@ export function suppliesDelete(param) {
     data: param
   })
 }
+
+// 备件审核 备件查询接口
+export function getSparesList(param) {
+  return request({
+    url: '/warehouseAssetC/queryByWarehouseAsset',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: param
+  })
+}

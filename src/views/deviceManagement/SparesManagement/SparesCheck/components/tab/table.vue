@@ -3,19 +3,17 @@
     <div class="button-tool">
       <div class="button-tool-right fr">
         <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">批量审核</el-button>
-        <!-- <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-      <el-button v-permission="'houseDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button> -->
       </div>
     </div>
     <!-- @selection-change="handleSelectionChange" -->
     <el-table v-loading="tableload" :data="tableDate" empty-text="无数据">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="编号" width="55" />
-      <el-table-column prop="code" label="备件编码" width="110" />
-      <el-table-column prop="name" label="备件名称" width="140" />
-      <el-table-column prop="type" label="备件分类" />
-      <el-table-column prop="state" label="来源" />
-      <el-table-column prop="person" label="新建时间" />
+      <el-table-column prop="assetInfo.assetNo" label="备件编码" width="" />
+      <el-table-column prop="assetInfo.assetName" label="备件名称" width="" />
+      <el-table-column prop="assetInfo.itemType" label="备件分类" />
+      <el-table-column prop="dataFromS" label="来源" />
+      <el-table-column prop="createTime" label="新建时间" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
           <i v-permission="'houseEdit'" class="iconfont iconbianji1 scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
@@ -33,23 +31,22 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <!--新增界面-->
-    <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="新建库房" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
-      <addMoudel @handleGetTree1="handleGetTree1" @handeladdFormVisible="handeladdFormVisible" />
+    <!--批量审核界面-->
+    <el-dialog v-if="batchAuditVisible" v-model="batchAuditVisible" title="批量审核" :close-on-click-modal="false" :visible.sync="batchAuditVisible" class="deviceAdd addmanage">
+      <batchAuditMoudel @handleGetTree1="handleGetTree1" @handelbatchAuditVisible="handelbatchAuditVisible" />
     </el-dialog>
     <!--审核界面-->
-    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="修改库房" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" class="deviceAdd addmanage">
-      <editMoudel ref="childrenEdit" :row="row" @handleGetTree1="handleGetTree1" @handeleditFormVisible="handeleditFormVisible" />
+    <el-dialog v-if="singleAuditVisible" v-model="singleAuditVisible" title="资产审核" :close-on-click-modal="false" :visible.sync="singleAuditVisible" :before-close="handleClose" class="deviceAdd addmanage">
+      <singleAuditMoudel ref="childrenEdit" :row="row" @handleGetTree1="handleGetTree1" @handelsingleAuditVisible="handelsingleAuditVisible" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-// import { deleteHouse } from '@/api/house.js'
-import addMoudel from './addMoudel.vue'
-import editMoudel from './editMoudel.vue'
+import batchAuditMoudel from './batchAuditMoudel.vue'
+import singleAuditMoudel from './singleAuditMoudel.vue'
 export default {
-  components: { addMoudel, editMoudel },
+  components: { batchAuditMoudel, singleAuditMoudel },
   props: {
     tableDate: {
       type: Array,
@@ -70,12 +67,10 @@ export default {
       pageSize: 10,
       pageNumber: 1,
       total: 0,
-      addFormVisible: false, // 批量审核界面是否显示
-      editFormVisible: false, // 审核界面是否显示
+      batchAuditVisible: false, // 批量审核界面是否显示
+      singleAuditVisible: false, // 审核界面是否显示
       row: {}, // 编辑初始化内容
       multipleSelection: [], // 选择的table数据的对象组成的数组
-      // delTableById: [], // 删除数据传参的id数组
-      // moveShow: false, // //确认删除弹框是否显示
       loading: false,
       tableload: true,
       sonShow: false
@@ -96,25 +91,25 @@ export default {
     },
     // 批量审核
     // handleSelectEdit() {
-    //   this.addFormVisible = true
+    //   this.batchAuditVisible = true
     // },
     // 新增
     handleAdd() {
-      this.addFormVisible = true
+      this.batchAuditVisible = true
     },
     // 取消新增
-    handeladdFormVisible(addFormVisible) {
-      this.addFormVisible = false
+    handelbatchAuditVisible(batchAuditVisible) {
+      this.batchAuditVisible = false
     },
 
     // 编辑
     handleEdit(index, row) {
       this.row = row
-      this.editFormVisible = true
+      this.singleAuditVisible = true
     },
     // 取消编辑
-    handeleditFormVisible(editFormVisible) {
-      this.editFormVisible = false
+    handelsingleAuditVisible(singleAuditVisible) {
+      this.singleAuditVisible = false
     },
     handleClose(done) {
       done()
@@ -132,7 +127,17 @@ export default {
     },
     handleJumper(currentPage) {
     }
-
+    // 来源转换
+    // dataFromformatter(row, column) {
+    //   const dataFrom = row.dataFrom
+    //   if (dataFrom === '1') {
+    //     return '新增'
+    //   } else if (dataFrom === '2') {
+    //     return '编辑'
+    //   } else if (dataFrom === '0') {
+    //     return '删除'
+    //   }
+    // }
   }
 }
 </script>
