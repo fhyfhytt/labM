@@ -167,7 +167,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 取消删除

@@ -413,7 +413,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 根据用户ID查询所拥有的数据域信息接口函数---下一步调用
@@ -429,7 +429,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 新建人员基本信息下一步 根据用户ID查询所拥有的角色信息接口  1
@@ -457,7 +457,7 @@ export default {
               this.$message.error(response.msg)
             }
           }).catch(response => {
-            this.$message.error(response.message)
+            this.$message.error(response.msg)
           })
         } else {
           // console.log('error submit!!')
@@ -494,7 +494,7 @@ export default {
             this.$message.error(response.msg)
           }
         }).catch(response => {
-          this.$message.error(response.message)
+          this.$message.error(response.msg)
         })
       }
     },
@@ -707,7 +707,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 新增里面要新增的数据域列表-----查询数据域列表-----函数调用及分页调用sortOrder: 'create_time', sortColumn: 'desc',
@@ -721,7 +721,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // // 上传头像承购回调

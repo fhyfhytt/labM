@@ -135,7 +135,9 @@ export default {
         this.loading = false
         if (response.code === 0) {
           if (response.data === '') {
+            this.delTableById = []
             this.$message.success('删除成功')
+            this.handleGetTree1()
           } else {
             this.$message.confirm('库房名称为' + response.data + '未删除成功')
           }
@@ -144,7 +146,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 取消删除

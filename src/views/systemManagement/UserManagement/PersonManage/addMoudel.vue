@@ -434,7 +434,7 @@ export default {
             this.$message.error(response.msg)
           }
         }).catch(response => {
-          this.$message.error(response.message)
+          this.$message.error(response.msg)
         })
       }
     },
@@ -615,7 +615,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 新增里面要新增的数据域列表-----查询数据域列表-----函数调用及分页调用sortOrder: 'create_time', sortColumn: 'desc',
@@ -629,7 +629,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // // 上传头像承购回调

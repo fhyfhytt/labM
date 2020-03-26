@@ -124,7 +124,7 @@ export default {
           this.totalCount = Number(response.data.totalCount)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 字典查询----模糊查询
@@ -154,7 +154,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 批量删除
@@ -220,7 +220,7 @@ export default {
       //       this.$message.error(response.data)
       //     }
       //   }).catch(response => {
-      //     this.$message.error(response.message)
+      //     this.$message.error(response.msg)
       //   })
 
       //   console.log('zirow', row)

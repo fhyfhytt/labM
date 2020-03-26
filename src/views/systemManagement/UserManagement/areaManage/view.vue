@@ -128,7 +128,7 @@ export default {
         }
       }).catch(response => {
         this.loading = false
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 点击tree树获取table表格的数据
@@ -142,7 +142,7 @@ export default {
       }).catch(response => {
         this.tableData = []
         this.totalNum = 0
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
 

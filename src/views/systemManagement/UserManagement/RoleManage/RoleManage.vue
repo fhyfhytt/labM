@@ -232,6 +232,7 @@ export default {
       })
       deleteRole({ roleIdList }).then(res => {
         if (res.success === true) {
+          this.deleteParam = []
           this.$message.success('删除成功')
           this.getList()
         } else {
@@ -243,13 +244,14 @@ export default {
       this.confirmVisible = false
       deleteRole(this.deleteParam).then(response => {
         if (response.success === true) {
+          this.deleteParam = []
           this.$message.success('删除成功')
           this.getList()
         } else {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response)
+        this.$message.error(response.msg)
       })
     },
     cancelAllBtn() {
