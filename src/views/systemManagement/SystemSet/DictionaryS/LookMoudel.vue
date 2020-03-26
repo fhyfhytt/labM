@@ -110,7 +110,7 @@ export default {
           this.$message.error(response.data)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // // 根据字典名称精确查询字典子项信息-不分页-按level排序
@@ -123,7 +123,7 @@ export default {
     //       this.$message.error(response.data)
     //     }
     //   }).catch(response => {
-    //     this.$message.error(response.message)
+    //     this.$message.error(response.msg)
     //   })
     // },
     // 新增字典子表
@@ -181,7 +181,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
 
@@ -211,7 +211,7 @@ export default {
       margin-left:-4px;
       margin-bottom: -4px;
       .el-input__inner {
-          height: 34px;
+          height: 32px;
           width: 166px;
         }
         .el-form-item__label{

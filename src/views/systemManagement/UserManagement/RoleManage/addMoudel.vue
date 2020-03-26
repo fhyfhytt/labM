@@ -70,7 +70,7 @@
         <el-table ref="userTable" :data="userInfo" tooltip-effect="dark" height="380" style="width: 100%;height:300px" @row-click="selectUserRow" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
+          <el-table-column prop="userCode" label="工号" />
           <el-table-column prop="name" label="用户名" />
         </el-table>
         <div style="text-align:right;margin-top:40px;">
@@ -83,14 +83,14 @@
       <div>
         <el-row style="margin-bottom:10px">
           关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入姓名或ID" style="width:200px;margin:0px 10px" />
+          <el-input v-model="primaryKey" placeholder="请输入用户名或工号" style="width:200px;margin:0px 10px" />
           <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
           <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button>
         </el-row>
         <el-table ref="userInfoTable" v-loading="userloading" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow" @selection-change="handleUnSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
+          <el-table-column prop="userCode" label="工号" />
           <el-table-column prop="name" label="用户名" />
           <el-table-column prop="mobile" label="手机" />
           <el-table-column prop="email" label="邮箱" />
@@ -108,16 +108,16 @@
 
 <script>
 import { saveRole, getRolePermission, getRoleUsers, searchRoleUsers, saveAddRole, searchRoleName } from '@/api/roleManage'
-import { tree2Array } from '@/utils/utils'
+import { tree2Array, setTreeData, checked } from '@/utils/utils'
 export default {
   name: 'AddRolePage',
   data() {
     return {
       activeName: '0',
-      baseInfo: { name: '', status: '', description: '' }, // 基本信息
+      baseInfo: { name: '', status: '1', description: '' }, // 基本信息
       baseInfoRule: {
         name: [{ required: true, message: '请输入角色名', trigger: ['blur'] }],
-        status: [{ required: true, message: '请选择状态', trigger: ['blur'] }]
+        status: [{ required: true, message: '请选择状态', trigger: ['blur', 'change'] }]
       },
       defaultProps: {
         label: 'name',
@@ -166,17 +166,21 @@ export default {
       this.toData = []
       this.roleData = []// 初始化权限
       this.$refs.treeTransfer.clearChecked()
-      this.baseInfo = {}
+      this.baseInfo = { status: '1' }
     },
     async getRoleMenuFirst() {
       await getRolePermission({ roleId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.fromData = res.data
-          this.roleData = res.data.filter(item => {
+          var newArr = []
+          res.data.filter(item => {
             return item.checked === '1'
           }).map(item => {
             return item.id
+          }).forEach(item => {
+            checked(item, setTreeData(res.data), newArr)
           })
+          this.roleData = newArr
         } else {
           this.$message.error(res.msg)
         }
@@ -201,6 +205,7 @@ export default {
       } else {
         console.log(1)
         // this.baseInfo = {}
+        this.toData = []
         this.userInfo = []
         this.$emit('reset-save-flag', true)
         this.addFlag = true
@@ -299,9 +304,9 @@ export default {
                 this.activeName = '1'
                 this.active = 1
                 this.getRoleMenuFirst()
-              } else {
-                this.$message.error(res.msg)
               }
+            }).catch(res => {
+              this.$message.error(res.msg)
             })
           }
         } else {
@@ -320,7 +325,6 @@ export default {
             this.$message.success('保存成功')
             this.rolePrev = false
             this.handleGetRoleUsers()
-
             this.$refs.treeTransfer.clearChecked()
             this.$emit('reset-save-flag', false)
           } else {
@@ -330,6 +334,9 @@ export default {
           this.$message.error(e.msg)
         })
       } else {
+        if (this.ids.length === 0) {
+          return this.$message.error('权限不能为空')
+        }
         this.activeName = '2'
         this.active = 2
       }
@@ -353,11 +360,13 @@ export default {
           this.loading = false
           if (res.success === true) {
             this.$message.success('保存成功')
-            this.closeAddRole()
-          } else {
-            this.$message.error(res.msg)
           }
-        }).catch(res => { this.$message.error(res.msg) })
+          this.clearContent()
+          this.closeAddRole()
+        }).catch(res => {
+          this.loading = false
+          this.$message.error(res.msg)
+        })
       } else {
         var resourcesList = this.ids
         param.sysRole = {
@@ -377,11 +386,11 @@ export default {
           this.loading = false
           if (res.success === true) {
             this.$message.success('新建成功')
-            this.closeAddRole()
-          } else {
-            this.$message.error(res.msg)
           }
+          this.clearContent()
+          this.closeAddRole()
         }).catch(res => {
+          this.loading = false
           this.$message.error(res.msg)
         })
       }
@@ -458,7 +467,16 @@ export default {
     add(fromData, toData, obj) {
       // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
       // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
-      this.ids = obj.keys
+      if (toData.length === 0) {
+        toData[0] = []
+      }
+      this.ids = tree2Array(toData[toData.length - 1], '0').map(item => {
+        if (item) {
+          return item.id
+        } else {
+          return
+        }
+      })
     },
     // 监听穿梭框组件移除
     remove(fromData, toData, obj) {
@@ -467,7 +485,7 @@ export default {
       if (toData.length === 0) {
         toData[0] = []
       }
-      this.ids = tree2Array(toData[0], '0').map(item => {
+      this.ids = tree2Array(toData[toData.length - 1], '0').map(item => {
         if (item) {
           return item.id
         } else {

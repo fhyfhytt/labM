@@ -32,6 +32,12 @@
               :normalizer="normalizer"
             />
           </el-form-item>
+          <el-form-item label="是否为个人消息 :" prop="isPerson" class="mgItem">
+            <el-switch
+              v-model="ruleForm.isPerson"
+              active-color="#379EFC"
+              inactive-color="#C0C4CC"
+            /></el-form-item>
         </el-col>
         <el-col :xl="{span:8,push:8}" :lg="{span:12}">
           <el-form-item label="生效时间 : " prop="endMsgTime" class="mgItem">
@@ -45,11 +51,17 @@
               <el-option v-for="(item,index) in typeSs" :key="index" :label="item.name" :value="item" />
             </el-select>
           </el-form-item>
+          <el-form-item label="发布平台 :" prop="pubWay" class="mgItem">
+            <el-radio v-model="ruleForm.pubWay" label="0">PC</el-radio>
+            <el-radio v-model="ruleForm.pubWay" label="1">APP</el-radio>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
+
         <el-form-item label="通知内容 : ">
-          <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" />
+          <vue-html5-editor :content="content" :height="500" :z-index="1000" :auto-height="true" :show-module-name="false" @change="updateData" />
+
         </el-form-item>
       </el-row>
       <el-row>
@@ -94,7 +106,7 @@
               multiple
             >
               <el-button size="small" class="filebtn" type="primary">选择文件</el-button>
-              <div slot="tip" class="el-upload__tip">文件大小不成超过1MB</div>
+              <div slot="tip" class="el-upload__tip">文件大小不能超过10MB</div>
 
             </el-upload>
           </el-form-item>
@@ -113,13 +125,12 @@
 </template>
 <script>
 import { getOrgTreeNew } from '@/api/userManagement'
-import { setTreeData } from '@/utils/utils'
+import { setTreeData, url2obj } from '@/utils/utils'
 import { removeFJ, addMsg, getContent } from '@/api/message'
-import { VueEditor } from 'vue2-editor/dist/vue2-editor.core.js'
+// import Quill from 'quill'
 import common from '@/utils/common'
 export default {
   name: 'SendMsg',
-  components: { VueEditor },
   data() {
     return {
       ruleForm: {
@@ -131,17 +142,19 @@ export default {
         sendPeople: this.$store.getters.name, // 发布人
         startMsgTime: '',
         endMsgTime: '',
-        appendixIdName: [] // 文件对象
+        appendixIdName: [], // 文件对象
+        isPerson: false,
+        pubWay: '0'
       },
       rules: {
         topic: [
           { required: true, message: '请输入标题', trigger: 'blur' }
         ],
         typeL: [
-          { required: true, message: '请选择通知类型', trigger: 'blur' }
+          { required: true, message: '请选择通知类型', trigger: ['blur', 'change'] }
         ],
         typeS: [
-          { required: true, message: '请选择系统类型', trigger: 'blur' }
+          { required: true, message: '请选择系统类型', trigger: ['blur', 'change'] }
         ],
         sendPeople: [
           { required: true, message: '请输入发布人', trigger: 'blur' }
@@ -153,12 +166,13 @@ export default {
           { type: 'string', required: true, message: '请选择结束时间', trigger: 'blur' }
         ],
         organ: [
-          { required: true, message: '请选择组织', trigger: 'blur' }
+          { required: true, message: '请选择组织', trigger: ['blur', 'change'] }
         ]
       },
       limitText: count => `以及 ${count} 个组织部门`,
       limit: 3,
       tip: true,
+      msId: '',
       iconclass: 'el-icon-upload',
       noResultsText: '无数据',
       valueConsistsOf: 'ALL',
@@ -172,6 +186,7 @@ export default {
         type: 1,
         attCode: 600
       },
+
       fileData: {
         type: [0, 2],
         attCode: 100
@@ -186,18 +201,16 @@ export default {
       organTree: [], // 组织数据
       content: '', // 编辑器内容
       customToolbar: [
-        [{ 'header': [false, 1, 2, 3, 4, 5, 6] }],
-        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-        [{ 'align': ['', 'center', 'right', 'justify'] }],
-        ['blockquote'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }], // superscript/subscript
-        [{ 'indent': '-1' }, { 'indent': '+1' }], // outdent/indent
-        [{ 'color': [] }, { 'background': [] }], // dropdown with defaults from theme
-        ['link', 'image'],
-        ['clean']
+
       ]
 
+    }
+  },
+  watch: {
+    'ruleForm.organ': function(newvalue, oldvalue) {
+      if (newvalue !== '') {
+        this.$refs.ruleForm.clearValidate('organ')
+      }
     }
   },
   created() {
@@ -215,12 +228,6 @@ export default {
         this.$nextTick(() => {
           this.typeLs = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -230,12 +237,6 @@ export default {
         this.$nextTick(() => {
           this.typeSs = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -269,14 +270,12 @@ export default {
             'invalidTime': this.ruleForm.endMsgTime,
             'publishTime': this.ruleForm.startMsgTime,
             'pubWay': '0',
+            'isPerson': this.ruleForm.isPerson,
             'appendixIdName': this.ruleForm.appendixIdName,
             'appendixImgId': this.ruleForm.appendixImgId,
             'organ': this.ruleForm.organ
           }
-          console.log(param)
-          if (state === 0) {
-            param.msId = this.msId
-          }
+          param.msId = this.msId
           addMsg(param).then(res => {
             this.bigloading = false
             if (res.success) {
@@ -304,6 +303,10 @@ export default {
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
+              this.$store.dispatch('dashord/imgIdPath', '')
+              this.$nextTick(() => {
+                this.$refs.ruleForm.clearValidate()
+              })
             }
           }).catch(res => {
             this.bigloading = false
@@ -321,10 +324,11 @@ export default {
       getContent(id).then(res => {
         var msgSys = res.data.msgSys
         this.ruleForm.topic = msgSys.topic
-        this.ruleForm.sendPeople = msgSys.publishPer
+        this.ruleForm.sendPeople = msgSys.createPer
         this.ruleForm.startMsgTime = msgSys.publishTime
         this.ruleForm.endMsgTime = msgSys.invalidTime
         this.content = msgSys.memo
+        this.msId = msgSys.msId
         this.ruleForm.organ = res.data.organ
         this.ruleForm.typeL = { code: msgSys.typeL }
         this.ruleForm.typeS = { code: msgSys.typeS }
@@ -332,11 +336,11 @@ export default {
           var appendixIdArr = msgSys.appendixId.split(',')
           var appendixNameArr = msgSys.appendixName.split(',')
           var appendixPathArr = msgSys.appendixPath.split(',')
-          var fileList = appendixIdArr.map((item, index) => {
-            this.ruleForm.appendixIdName.push({ name: appendixNameArr[index], path: appendixPathArr[index], id: item })
+          appendixIdArr.map((item, index) => {
+            this.ruleForm.appendixIdName.push({ name: appendixNameArr[index], path: url2obj(appendixPathArr[index]).path, id: item })
+            this.fileList.push({ name: appendixNameArr[index], path: appendixPathArr[index].path, id: item })
             return { id: item, name: appendixNameArr[index], url: appendixPathArr[index] }
           })
-          this.fileList = fileList
         }
         if (msgSys.appendixImgId !== '') {
           this.tip = false
@@ -356,12 +360,11 @@ export default {
         this.$message.success('上传成功')
         this.iconclass = 'el-icon-upload'
         this.ruleForm.appendixImgId = res.data.id
+        this.$store.dispatch('dashord/imgIdPath', { id: res.data.id })
         this.tip = false
-        this.imgurl = res.data.appendixPath
+        this.imgurl = URL.createObjectURL(file.raw)
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
-        this.$store.store.state.user.token = null
-        this.$store.dispatch('tagsView/delAllVisitedViews', '')
         this.$store.dispatch('user/logout')
       } else {
         this.$message.error(res.msg)
@@ -370,11 +373,13 @@ export default {
     handlefileSuccess(res, file, fileList) {
       if (res.code === 0) {
         this.ruleForm.appendixIdName.push({ name: res.data.appendixName, path: res.data.appendixPath, id: res.data.id })
+        var fileIds = this.ruleForm.appendixIdName.map(item => {
+          return item.id
+        })
+        this.$store.dispatch('dashord/fjIdPath', { id: fileIds })
         this.$message.success('上传成功')
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
-        this.$store.store.state.user.token = null
-        this.$store.dispatch('tagsView/delAllVisitedViews', '')
         this.$store.dispatch('user/logout')
       } else {
         this.$message.error(res.msg)
@@ -391,31 +396,45 @@ export default {
       this.iconclass = 'el-icon-loading'
       return isImage && isLt2M
     }, beforeFileUpload(file) {
-      var fileName = file.name
-      const mimeTypes = {
-        '.pdf': 'application/pdf',
-        '.txt': 'text/plain',
-        '.wav': 'audio/x-wav',
-        '.wma': 'audio/x-ms-wma',
-        '.wmv': 'video/x-ms-wmv',
-        '.xml': 'text/xml',
-        '.avi ': 'video/x-msvideo',
-        '.xls': 'application/vnd.ms-excel',
-        '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      }
-
-      var extendName = fileName.substring(fileName.lastIndexOf('.')).toLowerCase()
-      var isFile = mimeTypes[extendName] === file.type
-      if (!isFile) {
-        this.$message.error('上传文件类型不符合要求!')
-      }
-
-      const isLt2M = file.size / 1024 / 1024 < 50
-      if (!isLt2M) {
-        this.$message.error('上传文件大小不能超过50MB!')
-      }
-      return isFile && isLt2M
+      return new Promise((resolve, reject) => {
+        var sameFileName = false
+        this.ruleForm.appendixIdName.forEach((item, index) => {
+          if (item.name === file.name) {
+            sameFileName = true
+          }
+        })
+        if (sameFileName) {
+          return reject(false)
+        }
+        var fileName = file.name
+        this.autoUpload = true
+        const mimeTypes = {
+          '.pdf': 'application/pdf',
+          '.txt': 'text/plain',
+          '.wav': 'audio/x-wav',
+          '.wma': 'audio/x-ms-wma',
+          '.wmv': 'video/x-ms-wmv',
+          '.xml': 'text/xml',
+          '.avi ': 'video/x-msvideo',
+          '.xls': 'application/vnd.ms-excel',
+          '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        }
+        var extendName = fileName.substring(fileName.lastIndexOf('.')).toLowerCase()
+        var isFile = mimeTypes[extendName] === file.type
+        if (!isFile) {
+          this.$message.error('上传文件类型不符合要求!')
+        }
+        const isLt2M = file.size / 1024 / 1024 < 10
+        if (!isLt2M) {
+          this.$message.error('上传文件大小不能超过10MB!')
+        }
+        if (isFile && isLt2M) {
+          return resolve(true)
+        } else {
+          return reject(false)
+        }
+      })
     }, closeTab() {
       const vistedRouer = this.$store.state.tagsView.visitedViews
       if (this.appendixId) {
@@ -455,6 +474,7 @@ export default {
       }
       common.closeCurrentTab(vistedRouer, this.$route)
     }, handleError(e) {
+      console.log(e)
       const img = e.srcElement
       this.$message.error('上传失败')
       img.onerror = null
@@ -481,10 +501,13 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
-    }, onRemoveTxt(file, fileList) {
+    },
+    onRemoveTxt(file, fileList) {
+      if (file.response === undefined && fileList.length > 0) {
+        return this.$message.warning('文件名称重复')
+      }
       removeFJ({ id: file.response.data.id, appendixPath: file.response.data.appendixPath }).then(res => {
         if (res.success) {
-          this.$message.success('删除成功')
           this.ruleForm.appendixIdName = fileList.map(item => {
             return { name: item.response.data.appendixName, path: item.response.data.appendixPath, id: item.response.data.id }
           })
@@ -493,13 +516,15 @@ export default {
       }).catch(res => {
         this.$message.error(res.msg)
       })
+    }, updateData(e) {
+      this.content = e
     }
-
   }
 
 }
+
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
 .el-loading-mask{
   height: 100vh;
 }
@@ -508,11 +533,7 @@ export default {
 .note-placeholder {
   color: #ccc;
 }
-@import '~vue2-editor/dist/vue2-editor.css';
-/* Import the Quill styles you want */
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
+
 @import '~@/styles/message/sendMsg.scss';
 
 </style>

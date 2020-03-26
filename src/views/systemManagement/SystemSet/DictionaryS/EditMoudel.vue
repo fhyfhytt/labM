@@ -2,6 +2,9 @@
   <div class="DictionarysEdit">
     <p class="bkb" />
     <el-form ref="editForm" :model="editForm" label-width="140px" :rules="editFormRules" class="edittop">
+      <el-form-item label="字典编码：" prop="dictCode">
+        <el-input v-model="editForm.dictCode" placeholder="请输入字典编码" />
+      </el-form-item>
       <el-form-item label="字典名称：" prop="name">
         <el-input v-model="editForm.name" placeholder="请输入字典名称" />
       </el-form-item>
@@ -34,10 +37,24 @@ export default {
     }
   },
   data() {
+    const validatePass2 = (rule, value, callback) => {
+      var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？ ]")
+      var myreg = /^[a-zA-Z]\w{3,15}$/
+      if (value === '') {
+        callback(new Error('请输入字典编码'))
+      } else if (pattern.test(value)) {
+        callback(new Error('字典编码不含除-符号以外的符号'))
+      } else if (!myreg.test(value)) {
+        callback(new Error('字典编码以字母开头的4-16位字母或数字组成'))
+      } else {
+        callback()
+      }
+    }
     return {
       // 新增界面数据
-      editForm: { name: '', description: '', remark: '' },
+      editForm: { dictCode: '', name: '', description: '', remark: '' },
       editFormRules: {
+        dictCode: [{ required: true, validator: validatePass2, trigger: 'blur' }],
         name: [{ required: true, message: '请输入字典名称', trigger: 'blur' }],
         description: [{ required: true, message: '请输入字典描述', trigger: 'blur' }]
       }
@@ -45,7 +62,6 @@ export default {
   },
   watch: {
     row(newValue, oldVal) {
-      // this.editForm = this.row
       this.editForm = Object.assign({}, this.row)
     }
   },
@@ -63,6 +79,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const param = {
+            dictCode: this.editForm.dictCode,
             dictName: this.editForm.name,
             description: this.editForm.description,
             remark: this.editForm.remark,
@@ -78,7 +95,7 @@ export default {
               this.$message.error(response.msg)
             }
           }).catch(response => {
-            this.$message.error(response.message)
+            this.$message.error(response.msg)
           })
         } else {
         //   console.log('error submit!!')

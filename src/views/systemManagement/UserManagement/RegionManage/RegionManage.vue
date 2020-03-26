@@ -186,7 +186,7 @@ export default {
         }
       }).catch(response => {
         this.loading = false
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
 
@@ -319,13 +319,16 @@ export default {
       })
       delRegion({ regionIdList }).then(res => {
         if (res.success === true) {
+          this.multipleSelection = []
           this.$message.success('删除成功')
           // this.getList()
           this.getTableData()
         } else {
           this.$message.error(res.msg)
         }
-      }).catch(e => {})
+      }).catch(response => {
+        this.$message.error(response.msg)
+      })
     },
     confirmBtn() {
       this.confirmVisible = false
@@ -338,7 +341,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response)
+        this.$message.error(response.msg)
       })
     },
     cancelAllBtn() {

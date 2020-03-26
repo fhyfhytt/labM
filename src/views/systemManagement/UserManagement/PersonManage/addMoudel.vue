@@ -45,7 +45,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="所属组织:" prop="deptId">
-                  <treeselect v-model="addForm.deptId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
+                  <treeselect v-model="addForm.deptId" :open-direction="'top'" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -65,9 +65,10 @@
                     :data="avatarData"
                     :accept="'image/*'"
                   >
-                    <img v-if="addForm.avatar" :src="avatar.appendixPath" class="avatar">
-                    <i v-else :class="iconclass" />
-                    <div v-if="!tip" class="mask"><i class="iconfont iconxingzhuang1" @click.native="deleteAvatar" /></div>
+                    <img v-if="addForm.avatar" :src="avatar.url" class="avatar">
+                    <img v-else :src="header" class="avatar" alt="">
+                    <div v-if="tip" class="mask"><i :class="iconclass" /></div>
+                    <div v-if="!tip" class="mask" @click.stop="deleteAvatar"><i class="iconfont iconxingzhuang1" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
                     <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2" @click="deleteAvatar"></div> -->
                   </el-upload>
@@ -88,7 +89,7 @@
                   <el-input v-model="addForm.password" autocomplete="off" placeholder="修改用户可不用填写密码" />
                 </el-form-item>
                 <el-form-item label="所属班组:" prop="groupId">
-                  <treeselect v-model="addForm.groupId" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
+                  <treeselect v-model="addForm.groupId" :open-direction="'top'" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="groupTree" placeholder="点击选择班组" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -101,7 +102,6 @@
             </el-row>
           </el-form>
           <div class="dialog-footer">
-
             <el-button v-preventReClick="1000" size="small" class="button-sub" @click.native="submitUserForm('addForm')">下一步</el-button>
           </div>
         </div>
@@ -240,6 +240,7 @@ import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData } from '@/utils/utils'
 import common from '@/utils/common'
 import { saveUserAll, userIsRepeat, getRoleList, getRegionList } from '@/api/userManagement.js'
+import header from '@/assets/img/header.png'
 export default {
   data() {
     var validatePass1 = (rule, value, callback) => {
@@ -261,7 +262,7 @@ export default {
       } else if (pattern.test(value)) {
         callback(new Error('账号不含除-符号以外的符号'))
       } else if (!myreg.test(value)) {
-        callback(new Error('4-16位字母或数字,首位必须为字母'))
+        callback(new Error('账号以字母开头的4-16位字母或数字组成'))
       } else {
         callback()
       }
@@ -270,6 +271,7 @@ export default {
       disabled: true, // tabs是否禁用
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
+      header: header,
       loading: false,
       addForm: { name: '', userCode: '', avatar: '', avatarId: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', deptId: null },
       addFormRules: {
@@ -279,12 +281,12 @@ export default {
         mobile: [{ required: true, validator: validatePass1, trigger: 'change' }],
         email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-        sex: [{ required: true, message: '请选择性别', trigger: 'blur' }],
+        sex: [{ required: true, message: '请选择性别', trigger: ['blur', 'change'] }],
         available: [{ required: true, message: '请选择账号状态', trigger: ['blur', 'change'] }],
         active: [{ required: true, message: '请选择在职状态', trigger: ['blur', 'change'] }],
         avatar: [{ required: true, message: '请上传头像', trigger: ['change'] }],
         deptId: [{ required: true, message: '请选择组织', trigger: ['blur', 'change'] }],
-        password: [{ required: true, message: '请选择组织', trigger: ['blur', 'change'] }]
+        password: [{ required: true, message: '请输入密码', trigger: ['blur', 'change'] }]
       },
       noResultsText: '无数据', // 无搜索数据
       groupTree: [], // 班组树
@@ -327,10 +329,11 @@ export default {
       headers: {
         'Authorization': this.$store.state.user.token
       },
-      iconclass: 'el-icon-plus avatar-uploader-icon',
+      iconclass: 'iconfont iconbianzu2 avatar-uploader-icon',
       avatar: {
         id: '',
-        appendixPath: ''
+        appendixPath: '',
+        url: ''
       }
     }
   },
@@ -431,7 +434,7 @@ export default {
             this.$message.error(response.msg)
           }
         }).catch(response => {
-          this.$message.error(response.message)
+          this.$message.error(response.msg)
         })
       }
     },
@@ -612,7 +615,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 新增里面要新增的数据域列表-----查询数据域列表-----函数调用及分页调用sortOrder: 'create_time', sortColumn: 'desc',
@@ -626,7 +629,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // // 上传头像承购回调
@@ -640,11 +643,10 @@ export default {
         this.$refs.addForm.clearValidate('avatar')
         this.addForm.avatar = res.data.id
         this.avatar.id = res.data.id
+        this.avatar.url = window.URL.createObjectURL(file.raw)
         this.avatar.appendixPath = res.data.appendixPath
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
-        this.$store.store.state.user.token = null
-        this.$store.dispatch('tagsView/delAllVisitedViews', '')
         this.$store.dispatch('user/logout')
       } else {
         this.$message.error(res.msg)
@@ -669,6 +671,7 @@ export default {
           this.$message.success('删除成功')
           this.avatardisabled = false
           this.addForm.avatar = ''
+          this.avatar.id = ''
           this.tip = true
         } else {
           throw res
@@ -717,21 +720,21 @@ export default {
 }
 .UserManage-add {
   //树形选择框
-  .avatar-uploader:hover .mask{
+  .avatar-uploader:hover .mask {
     display: flex;
   }
-  .mask{
+  .mask {
     position: absolute;
-    background:rgba(0,0,0,0.4);
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
+    background: rgba(0, 0, 0, 0.4);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: none;
     flex-direction: column;
     justify-content: center;
-    i{
-      color:#fff;
+    i {
+      color: #fff;
       font-size: 40px;
       vertical-align: middle;
     }
@@ -766,9 +769,24 @@ export default {
       margin-bottom: 0px;
       color: #909399;
       font-weight: 100;
+            &::-webkit-scrollbar {
+        width: 5px;
+        background-color: transparent;
+      }
+
+      /* 滚动条中能上下移动的小块 */
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 5px;
+      }
+      /* scroll轨道背景 */
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background-color: transparent;
+      }
     }
     .vue-treeselect__option--highlight {
-      .vue-treeselect__label{
+      .vue-treeselect__label {
         font-weight: 900;
       }
 
@@ -817,16 +835,18 @@ export default {
     color: #292929;
   }
   >>> .avatar-uploader {
-    text-align: center;
+    // text-align: center;
     .el-upload {
       border: 1px dashed #d9d9d9;
-      border-radius: 6px;
+      border-radius: 50%;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+       border-radius: 50%;
       .el-upload-dragger {
-        width: auto;
-        height: auto;
+        width: 135px;
+        height: 135px;
+        border: none;
       }
     }
     .el-upload__tip {
@@ -860,14 +880,16 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 135px;
-    height: 135px;
+    width: 100%;
+    height: 100%;
     line-height: 135px;
     text-align: center;
+    display: block;
   }
   .avatar {
     width: 135px;
     height: 135px;
+    border-radius: 50%;
     display: block;
   }
 }

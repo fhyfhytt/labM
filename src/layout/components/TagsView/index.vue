@@ -22,7 +22,6 @@
     </ul>
   </div>
 </template>
-
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
@@ -132,14 +131,14 @@ export default {
     closeSelectedTag(view) {
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
-          if (view.name === 'SendMsg') {
+          if (view.name === 'Sendnotice') {
             if (this.$store.state.dashord.imgIdPath.id) {
               const param = {
-                'id': this.$store.state.dashord.imgIdPath.id,
-                'appendixPath': this.$store.state.dashord.imgIdPath.path
+                'id': this.$store.state.dashord.imgIdPath.id
               }
               removeFJ(param).then(res => {
                 if (res.success) {
+                  console.log(1)
                   // return
                 }
               }).catch(res => {
@@ -148,17 +147,18 @@ export default {
               })
             }
             if (this.$store.state.dashord.fjIdPath.id) {
-              const param = {
-                'id': this.$store.state.dashord.fjIdPath.id,
-                'appendixPath': this.$store.state.dashord.fjIdPath.path
-              }
-              removeFJ(param).then(res => {
-                if (res.success) {
-                  // return
+              this.$store.state.dashord.fjIdPath.id.forEach(item => {
+                const param = {
+                  'id': item
                 }
-              }).catch(res => {
-                this.$message.error(res.msg)
-                return
+                removeFJ(param).then(res => {
+                  if (res.success) {
+                  // return
+                  }
+                }).catch(res => {
+                  this.$message.error(res.msg)
+                  return
+                })
               })
             }
           }

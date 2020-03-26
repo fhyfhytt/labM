@@ -33,13 +33,13 @@ const manageControlRouter = {
       name: 'OrganManage'
     },
     {
-      path: 'customManage',
+      path: 'customerManage',
       component: () =>
         import(
-          '@/views/systemManagement/UserManagement/customManage/view.vue'
+          '@/views/systemManagement/UserManagement/customerManage/view.vue'
         ),
-      meta: { title: '客户管理', icon: 'icon111', roles: ['customManage'] },
-      name: 'customManage'
+      meta: { title: '客户管理', icon: 'icon111', roles: ['customerManage'] },
+      name: 'customerManage'
     },
     {
       path: 'roleManage',
@@ -100,8 +100,7 @@ const manageControlRouter = {
       component: () => import('@/views/systemManagement/UserManagement/messageManagement/index.vue'),
       meta: {
         title: '消息管理',
-        icon: 'icon111',
-        roles: ['messageManagement']
+        icon: 'icon111'
       },
       name: 'messageManagement'
     }
@@ -152,9 +151,9 @@ const manageControlRouter = {
       meta: {
         title: '通知管理',
         icon: 'icon111',
-        roles: ['noticeManagement']
+        roles: ['NoticeManage']
       },
-      name: 'noticeManagement'
+      name: 'NoticeManage'
     },
     {
       path: 'sendnotice',
@@ -165,7 +164,7 @@ const manageControlRouter = {
         title: '通知新增',
         icon: 'iconxiaoxiguanli',
         noCache: false,
-        roles: ['sendnotice']
+        roles: ['sendNotice']
       }
     },
     {

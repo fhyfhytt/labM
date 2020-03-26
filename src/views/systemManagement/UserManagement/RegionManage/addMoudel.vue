@@ -69,40 +69,13 @@
             <el-button class="button-sub btn" icon="iconfont iconxingzhuang1 " style="margin-right:5px" @click="delUsers">批量删除</el-button>
           </div>
         </el-row>
-        <el-table
-          ref="userTable"
-          :data="userInfo"
-          tooltip-effect="dark"
-          height="380"
-          style="width: 100%;height:300px"
-          @row-click="selectUserRow"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            width="60"
-          />
-          <el-table-column
-            type="index"
-            label="序号"
-            width="60"
-          />
-          <el-table-column
-            prop="id"
-            label="用户ID"
-          />
-          <el-table-column
-            prop="name"
-            label="用户名"
-          />
-          <el-table-column
-            prop="mobile"
-            label="手机"
-          />
-          <el-table-column
-            prop="email"
-            label="邮箱"
-          />
+        <el-table ref="userTable" :data="userInfo" tooltip-effect="dark" height="380" style="width: 100%;height:300px" @row-click="selectUserRow" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="60" />
+          <el-table-column type="index" label="序号" width="60" />
+          <el-table-column prop="id" label="用户ID" />
+          <el-table-column prop="name" label="用户名" />
+          <el-table-column prop="mobile" label="手机" />
+          <el-table-column prop="email" label="邮箱" />
         </el-table>
         <div style="text-align:right;margin-top:40px;">
           <el-button v-if="!addFlag" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(1)">上一步</el-button>
@@ -170,55 +143,21 @@
     <el-dialog title="选择人员" append-to-body :visible.sync="addUserVisible" :before-close="handleAddNewUser" width="45%" class="addRoleUserDialog">
       <div>
         <el-row style="margin-top:10px">
-          关键字 : <el-input v-model="primaryKey" placeholder="请输入姓名或ID" style="width:200px;margin:0px 10px" />
+          关键字 :
+          <el-input v-model="primaryKey" placeholder="请输入用户名或工号" style="width:200px;margin:0px 10px" />
           <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
           <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button>
         </el-row>
-        <el-table
-          ref="userInfoTable"
-          :data="userUnselectedInfo"
-          tooltip-effect="dark"
-          height="435"
-          style="width: 100%;height:400px"
-          @row-click="selectUserInfoRow"
-          @selection-change="handleUnSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            width="60"
-          />
-          <el-table-column
-            type="index"
-            label="序号"
-            width="60"
-          />
-          <el-table-column
-            prop="id"
-            label="用户ID"
-          />
-          <el-table-column
-            prop="name"
-            label="用户名"
-          />
-          <el-table-column
-            prop="mobile"
-            label="手机"
-          />
-          <el-table-column
-            prop="email"
-            label="邮箱"
-          />
+        <el-table ref="userInfoTable" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow" @selection-change="handleUnSelectionChange">
+          <el-table-column type="selection" width="60" />
+          <el-table-column type="index" label="序号" width="60" />
+          <el-table-column prop="userCode" label="工号" />
+          <el-table-column prop="name" label="用户名" />
+          <el-table-column prop="mobile" label="手机" />
+          <el-table-column prop="email" label="邮箱" />
         </el-table>
         <div class="numListJup " style="padding-right:70px">
-          <el-pagination
-            :page-size="userPageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total,sizes,prev, pager, next, jumper"
-            :total="userTotalCount"
-            :current-page.sync="selectUserPage"
-            @size-change="handleUserSizeChange"
-            @current-change="handleSelectUserChange"
-          />
+          <el-pagination :page-size="userPageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="userTotalCount" :current-page.sync="selectUserPage" @size-change="handleUserSizeChange" @current-change="handleSelectUserChange" />
         </div>
       </div>
     </el-dialog>
@@ -568,7 +507,7 @@ export default {
           } else {
             this.$message.error(res.msg)
           }
-        }).catch(e => {})
+        }).catch(e => { })
       } else {
         this.activeName = '3'
         this.active = 3
@@ -595,7 +534,7 @@ export default {
           } else {
             this.$message.error(res.msg)
           }
-        }).catch(e => {})
+        }).catch(e => { })
       } else {
         this.activeName = '4'
         this.active = 4
@@ -620,7 +559,7 @@ export default {
           } else {
             this.$message.error(res.msg)
           }
-        }).catch(e => {})
+        }).catch(e => { })
       } else {
         var deptIdList = this.ids
         var warehouseIdList = this.houseIds
@@ -790,19 +729,19 @@ export default {
 }
 </script>
 <style scoped>
-.numListJup{
-  padding-right: 10px
+.numListJup {
+  padding-right: 10px;
 }
-.right{
+.right {
   text-align: right;
   padding-right: 10px;
 }
-.height50{
-  height:50px;
+.height50 {
+  height: 50px;
   line-height: 50px;
 }
-.margin10{
-  margin:0 10px;
+.margin10 {
+  margin: 0 10px;
   width: 200px;
 }
 </style>
@@ -823,11 +762,11 @@ export default {
     }
   }
   >>> .el-step__head.is-success {
-    color: #379EFC;
-    border-color: #379EFC;
+    color: #379efc;
+    border-color: #379efc;
   }
   >>> .el-step__title.is-success {
-    color: #379EFC;
+    color: #379efc;
   }
   >>> .el-step__icon.is-text {
     color: #292929;
@@ -836,25 +775,25 @@ export default {
     font-size: 14px;
     font-weight: 900;
     .el-icon-check {
-      color: #379EFC;
+      color: #379efc;
       font-weight: bold;
       font-size: 24px;
     }
   }
-  >>>.el-textarea__inner{
-  max-height: 340px;
-}
+  >>> .el-textarea__inner {
+    max-height: 340px;
+  }
   >>> .el-step__title.is-process {
     color: #292929;
   }
 }
 
- .btn{
+.btn {
   height: 32px;
   color: #fff;
   padding: 0px 15px;
   font-size: 12px;
-  background: #379EFC;
+  background: #379efc;
   outline: none;
   &:hover {
     background: rgba(113, 160, 255, 1);
@@ -863,18 +802,17 @@ export default {
     background: #4b7bdb;
   }
   &:visited {
-    background: #379EFC;
+    background: #379efc;
   }
 
-  >>> i{
+  >>> i {
     font-size: 14px;
-    margin-right: 4px
+    margin-right: 4px;
   }
 }
-.btn2{
-    padding: 5px 15px
-  }
-
+.btn2 {
+  padding: 5px 15px;
+}
 </style>
 <style lang="scss">
 </style>

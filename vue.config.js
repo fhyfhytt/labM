@@ -2,6 +2,7 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 const webpack = require('webpack')
+const CompressionPlugin = require('compression-webpack-plugin')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -14,7 +15,7 @@ const port = 9527 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-
+  // runtimeCompiler: true,
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
@@ -40,22 +41,45 @@ module.exports = {
     }
     // after: require('./mock/mock-server.js')
   },
-  configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
-    name: name,
-    resolve: {
-      alias: {
-        '@': resolve('src')
+  configureWebpack: config => {
+    if (process.env.NODE_ENV === 'production') {
+      return {
+        plugins: [new CompressionPlugin({
+          test: /\.js$|\.html$|\.css/,
+          threshold: 10240,
+          deleteOriginalAssets: false
+        }), new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          'windows.jQuery': 'jquery'
+        })],
+        name: name,
+        resolve: {
+          alias: {
+            '@': resolve('src'),
+            'vue$': 'vue/dist/vue.esm.js'
+          }
+        }
+
       }
-    },
-    plugins: [
-      new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-        'windows.jQuery': 'jquery'
-      })
-    ]
+    } else {
+      return {
+        name: name,
+        resolve: {
+          alias: {
+            '@': resolve('src'),
+            'vue$': 'vue/dist/vue.esm.js'
+          }
+        },
+        plugins: [
+          new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'windows.jQuery': 'jquery'
+          })
+        ]
+      }
+    }
   },
   chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test

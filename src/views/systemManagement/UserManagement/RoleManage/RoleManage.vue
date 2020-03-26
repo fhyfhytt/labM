@@ -170,11 +170,9 @@ export default {
       }
       getRoleList(param).then(response => {
         this.loading = false
-        if (response.success === true) {
+        if (response.code === 0) {
           this.tableData = response.data.rows || []
           this.totalCount = Number(response.data.totalCount)
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(e => {
         this.loading = false
@@ -234,6 +232,7 @@ export default {
       })
       deleteRole({ roleIdList }).then(res => {
         if (res.success === true) {
+          this.deleteParam = []
           this.$message.success('删除成功')
           this.getList()
         } else {
@@ -245,13 +244,14 @@ export default {
       this.confirmVisible = false
       deleteRole(this.deleteParam).then(response => {
         if (response.success === true) {
+          this.deleteParam = []
           this.$message.success('删除成功')
           this.getList()
         } else {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response)
+        this.$message.error(response.msg)
       })
     },
     cancelAllBtn() {

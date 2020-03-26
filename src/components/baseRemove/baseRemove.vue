@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="titles" width="30%" :visible.sync="sureDioag" append-to-body class="typeInfoAdd outGoing">
+  <el-dialog :title="titles" width="30%" :visible.sync="sureDioag" append-to-body class="typeInfoAdd  baseMove">
     <div class="sureRemove"><i :class="iconfont" :style="svgStyle" />{{ msg }}</div>
     <div class="goOut">
       <!-- <span @click="sureClick">确认</span><span @click="confireClick">取消</span> -->
@@ -37,7 +37,7 @@ export default {
   methods: {
     sureClick() {
       this.sureDioag = false
-      this.$store.dispatch('tagsView/delAllVisitedViews', '')
+      this.$store.dispatch('tagsView/delAllViews', '')
       this.$store.dispatch('user/logout')
     },
     confireClick() {
@@ -46,7 +46,7 @@ export default {
   }
 }
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
 // @import "~@/styles/manage.scss";
 
 .typeInfoAdd {
@@ -75,7 +75,8 @@ export default {
     }
   }
 }
-.outGoing {
+.baseMove {
+
   .goOut {
     width: 100%;
     text-align: right;
