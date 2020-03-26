@@ -10,7 +10,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="基本信息" name="0" :disabled="pane1" style="height:490px">
         <el-row style="margin-top:50px;">
-          <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="true" class="addtop">
+          <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
             <el-col :span="12">
               <el-form-item label="角色名称：" prop="name">
                 <el-input v-model="baseInfo.name" placeholder="请输入角色名称" />
@@ -83,7 +83,7 @@
       <div>
         <el-row style="margin-bottom:10px">
           关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入姓名或ID" style="width:200px;margin:0px 10px" />
+          <el-input v-model="primaryKey" placeholder="请输入用户名或ID" style="width:200px;margin:0px 10px" />
           <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
           <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button>
         </el-row>
@@ -185,8 +185,7 @@ export default {
           this.$message.error(res.msg)
         }
       }).catch(e => {
-        console.log(e)
-        this.$message.error(e.msg || e)
+        this.$message.error(e.msg)
       })
     },
     addEditRoleDialog(data) {
@@ -204,7 +203,9 @@ export default {
         // 根据角色获取人员
         this.handleGetRoleUsers()
       } else {
-        // this.baseInfo = { status: '1' }
+        console.log(1)
+        // this.baseInfo = {}
+        this.toData = []
         this.userInfo = []
         this.$emit('reset-save-flag', true)
         this.addFlag = true
@@ -303,9 +304,9 @@ export default {
                 this.activeName = '1'
                 this.active = 1
                 this.getRoleMenuFirst()
-              } else {
-                this.$message.error(res.msg)
               }
+            }).catch(res => {
+              this.$message.error(res.msg)
             })
           }
         } else {
@@ -324,7 +325,6 @@ export default {
             this.$message.success('保存成功')
             this.rolePrev = false
             this.handleGetRoleUsers()
-
             this.$refs.treeTransfer.clearChecked()
             this.$emit('reset-save-flag', false)
           } else {
@@ -334,6 +334,9 @@ export default {
           this.$message.error(e.msg)
         })
       } else {
+        if (this.ids.length === 0) {
+          return this.$message.error('权限不能为空')
+        }
         this.activeName = '2'
         this.active = 2
       }
@@ -357,11 +360,13 @@ export default {
           this.loading = false
           if (res.success === true) {
             this.$message.success('保存成功')
-            this.closeAddRole()
-          } else {
-            this.$message.error(res.msg)
           }
-        }).catch(res => { this.$message.error(res.msg) })
+          this.clearContent()
+          this.closeAddRole()
+        }).catch(res => {
+          this.loading = false
+          this.$message.error(res.msg)
+        })
       } else {
         var resourcesList = this.ids
         param.sysRole = {
@@ -381,11 +386,11 @@ export default {
           this.loading = false
           if (res.success === true) {
             this.$message.success('新建成功')
-            this.closeAddRole()
-          } else {
-            this.$message.error(res.msg)
           }
+          this.clearContent()
+          this.closeAddRole()
         }).catch(res => {
+          this.loading = false
           this.$message.error(res.msg)
         })
       }
