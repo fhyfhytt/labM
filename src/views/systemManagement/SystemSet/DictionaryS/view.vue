@@ -136,7 +136,7 @@ export default {
     },
     // 字典删除
     handleDel(index, row) {
-      this.ids = row.id
+      this.ids = [row.id]
       this.moveShow = true
     },
     // 确认删除
@@ -148,6 +148,7 @@ export default {
       }
       dictConnDel(param).then(response => {
         if (response.success === true) {
+          this.ids = []
           this.$message.success(response.msg)
           this.getDiction()
         } else {

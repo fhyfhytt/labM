@@ -83,7 +83,7 @@
       <div>
         <el-row style="margin-bottom:10px">
           关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入用户名或ID" style="width:200px;margin:0px 10px" />
+          <el-input v-model="primaryKey" placeholder="请输入用户名或工号" style="width:200px;margin:0px 10px" />
           <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
           <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button>
         </el-row>
