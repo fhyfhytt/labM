@@ -465,7 +465,7 @@ export default {
       if (toData.length === 0) {
         toData[0] = []
       }
-      this.ids = tree2Array(toData[0], '0').map(item => {
+      this.ids = tree2Array(toData[toData.length - 1], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -477,7 +477,10 @@ export default {
     remove(fromData, toData, obj) {
       // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
       // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
-      this.ids = tree2Array(toData[0] || [], '0').map(item => {
+      if (toData.length === 0) {
+        toData[0] = []
+      }
+      this.ids = tree2Array(toData[toData.length - 1], '0').map(item => {
         if (item) {
           return item.id
         } else {

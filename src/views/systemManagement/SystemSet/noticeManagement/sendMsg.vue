@@ -532,11 +532,7 @@ export default {
 .note-placeholder {
   color: #ccc;
 }
-@import '~vue2-editor/dist/vue2-editor.css';
-/* Import the Quill styles you want */
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
+
 @import '~@/styles/message/sendMsg.scss';
 
 </style>
