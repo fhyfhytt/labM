@@ -162,6 +162,9 @@ export default {
     },
     arearArr: function() {
       return this.areas.length > 0 ? this.areas.split(',') : ''
+    },
+    houseIds: function() {
+      return this.filters.houseIds ? this.filters.houseIds.join(',').split(',') : []
     }
   },
   created() {
@@ -262,22 +265,17 @@ export default {
     // 查询
     getList() {
       const param = {
-        // pageNum: this.pageNumber,
-        // pageSize: this.pageSize,
-        // assetName: this.filters.assetNo,
-        // assetItemType: this.itemTypesArr,
-        // checkStatus: '1'
-        'pageSize': 10,
-        'pageNum': 1,
-        'checkStatus': 1,
-        'assetName': '',
-        'assetItemType': '',
-        'houseIds': this.filters.houseIds.join(',').split(',')
+        pageNum: this.pageNumber,
+        pageSize: this.pageSize,
+        assetName: this.filters.assetNo,
+        assetItemType: this.itemTypesArr,
+        checkStatus: '1',
+        houseIds: this.houseIds
       }
       queryByWarehouseAsset(param).then(response => {
         this.loading = false
         if (response.success === true) {
-          this.tableData = response.data.list || []
+          this.tableData = response.data.assetList || []
           this.totalCount = Number(response.data.totalNum)
         } else {
           this.$message.error(response.msg)
@@ -288,19 +286,16 @@ export default {
       })
       // 用于导出
       const param2 = {
-        pageNumber: 1,
+        pageNum: 1,
         pageSize: 9999,
-        no: this.filters.no,
-        itemTypes: this.itemTypesArr,
-        status: this.filters.name,
-        areas: this.arearArr,
-        itsmUserid: localStorage.getItem('login-id'),
-        checkStatus: '审核通过'
+        assetName: this.filters.assetNo,
+        assetItemType: this.itemTypesArr,
+        checkStatus: '1',
+        houseIds: this.houseIds
       }
       queryByWarehouseAsset(param2).then(response => {
         if (response.success === true) {
-          this.tableDataExport = response.data.list || []
-          console.log('tableDataExport:', this.tableDataExport)
+          this.tableDataExport = response.data.assetList || []
         } else {
           this.$message.error(response.msg)
         }
