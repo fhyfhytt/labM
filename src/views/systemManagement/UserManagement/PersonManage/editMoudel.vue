@@ -264,7 +264,7 @@ export default {
       } else if (pattern.test(value)) {
         callback(new Error('账号不含除-符号以外的符号'))
       } else if (!myreg.test(value)) {
-        callback(new Error('账号以字母开头的4-16位字母或数字组成'))
+        callback(new Error('账号为字母开头,由4-16位字母或数字组成'))
       } else {
         callback()
       }
