@@ -1,6 +1,5 @@
 <template>
   <div class="pageRow">
-
     <div class="page-title">
       <el-form ref="form1" :model="formSpare" size="small" label-width="110px">
         <el-row>
@@ -12,7 +11,7 @@
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件分类：" @click.native="handleAdd">
               <el-input v-model="typeNames" :title="typeNames" placeholder="请选择备件分类" />
-              <el-input v-model="formSpare.assetItemType" hidden />
+              <input v-model="formSpare.assetItemType" hidden>
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
