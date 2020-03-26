@@ -3,10 +3,10 @@
     <div class="button-tool">
       <div class="button-tool-left fl" />
       <div class="button-tool-right fr">
-        <el-button v-permission="'houseDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">删除草稿</el-button>
+        <el-button v-permission="'myAssetsDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">删除草稿</el-button>
       </div>
     </div>
-    <el-table v-loading="tableload" :data="tableDate" empty-text="无数据" @selection-change="handleSelectionChange">
+    <el-table ref="myAssets" v-loading="tableload" :data="tableDate" empty-text="无数据" @row-click="selectRow" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="序号" width="55" />
       <el-table-column prop="no" label="资产编号" />
@@ -17,7 +17,7 @@
       <el-table-column prop="price" label="价格（元）" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
-          <i v-permission="'houseEdit'" class="iconfont iconbianji1 scope-caozuo" title="编辑" @click="handleEdit(scope.$index, scope.row)" />
+          <i v-permission="'myAssetsEdit'" class="iconfont iconbianji1 scope-caozuo" title="编辑" @click="handleEdit(scope.$index, scope.row)" />
         </template>
       </el-table-column>
     </el-table>
@@ -166,6 +166,10 @@ export default {
       this.$emit('handleGetTableData', { pageSize: this.pageSize, currentPage: val, pageNumber: this.pageNumber })
     },
     handleJumper(currentPage) {
+    },
+    // 点击行选中
+    selectRow(row) {
+      this.$refs.myAssets.toggleRowSelection(row)
     }
 
   }

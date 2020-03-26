@@ -3,10 +3,10 @@
     <div class="button-tool">
       <div class="button-tool-left fl" />
       <div class="button-tool-right fr">
-        <el-button v-permission="'houseDeleteMore'" @click="handleSelectCheck">批量审核</el-button>
+        <el-button v-permission="'assetsAuditDeleteMore'" @click="handleSelectCheck">批量审核</el-button>
       </div>
     </div>
-    <el-table v-loading="tableload" :data="tableDate" empty-text="无数据" @selection-change="handleSelectionChange">
+    <el-table ref="assetsAudit" v-loading="tableload" :data="tableDate" empty-text="无数据" @row-click="selectRow" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="序号" width="55" />
       <el-table-column prop="no" label="资产编号" />
@@ -19,7 +19,7 @@
       <el-table-column prop="createTime" label="新建时间" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
-          <i v-permission="'houseEdit'" class="iconfont iconwenjian scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
+          <i v-permission="'assetsAuditEdit'" class="iconfont iconwenjian scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
         </template>
       </el-table-column>
     </el-table>
@@ -57,7 +57,7 @@
       </div>
     </el-dialog>
     <!--编辑界面-->
-    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="审核" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" width="800px">
+    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="审核" :close-on-click-modal="false" :visible.sync="editFormVisible" width="800px">
       <editMoudel ref="childrenEdit" :row="row" @handleGetTree1="handleGetTree1" @handeleditFormVisible="handeleditFormVisible" />
     </el-dialog>
   </div>
@@ -138,7 +138,7 @@ export default {
       updateCheckMore(param).then(response => {
         this.loading = false
         if (response.success === true) {
-          this.$message.success('已审核')
+          this.$message.success('提交成功')
           this.showCheckAll = false
           this.handleGetTree1()
         } else {
@@ -166,6 +166,10 @@ export default {
     },
     handleCurrentChange(val) {
       this.$emit('handleGetTableData', { newPageSize: this.pageSize, newPageNumber: val })
+    },
+    // 点击行选中
+    selectRow(row) {
+      this.$refs.assetsAudit.toggleRowSelection(row)
     }
 
   }

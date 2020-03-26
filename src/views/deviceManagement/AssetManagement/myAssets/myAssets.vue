@@ -15,7 +15,7 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchList">查询</el-button>
+            <el-button v-permission="'myAssetsSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchList">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -101,7 +101,7 @@ export default {
         pageSize: this.pageSize,
         no: this.filters.no,
         itemTypes: this.itemTypesArr,
-        itsmUserid: -2, // localStorage.getItem('login-id') ||
+        itsmUserid: localStorage.getItem('login-id'),
         checkStatus: '审核未通过',
         sortColumn: 'create_time',
         sortOrder: 'desc'

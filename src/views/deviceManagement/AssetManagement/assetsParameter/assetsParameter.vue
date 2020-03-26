@@ -27,7 +27,7 @@
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label-width="50px">
-              <el-button v-permission="'roleSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
+              <el-button v-permission="'assetsParameterSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -39,14 +39,14 @@
           <span class="fl">
             <!-- <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)"> -->
             <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
-            <el-button icon="iconfont " size="small" @click="toLead">导入</el-button>
-            <el-button v-permission="'roleDeleteMore'" icon="iconfont " size="small" @click="exportExcel('1')">导出</el-button>
-            <el-button v-permission="'roleDeleteMore'" icon="iconfont " size="small" @click="exportExcel('2')">模板</el-button>
+            <el-button v-permission="'assetsParameterImport'" icon="iconfont " size="small" @click="toLead">导入</el-button>
+            <el-button v-permission="'assetsParameterExport'" icon="iconfont " size="small" @click="exportExcel('1')">导出</el-button>
+            <el-button v-permission="'assetsParameterMoudle'" icon="iconfont " size="small" @click="exportExcel('2')">模板</el-button>
           </span>
           <span class="fr">
-            <el-button v-permission="'roleAdd'" icon="iconfont icontianjia1" size="small" @click="handleQRCode">二维码</el-button>
-            <el-button v-permission="'roleAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-            <el-button v-permission="'roleDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
+            <el-button v-permission="'QRcodeAdd'" icon="iconfont icontianjia1" size="small" @click="handleQRCode">二维码</el-button>
+            <el-button v-permission="'assetsParameterAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+            <el-button v-permission="'assetsParameterDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
           </span>
         </div>
         <el-table ref="assetsParameter" v-loading="loading" :data="tableData" height="568" @row-click="selectRow" @selection-change="handleSelectRow">
@@ -82,7 +82,6 @@
     </div>
     <!-- 导出数据 -->
     <el-table v-show="false" id="exportExcelTable" :data="tableExport">
-      <el-table-column v-if="showIndex" type="index" label="编号" />
       <el-table-column prop="no" label="资产代码" />
       <el-table-column prop="assetName" label="资产名称" />
       <el-table-column prop="itemType" label="资产分类" />
@@ -159,7 +158,6 @@ export default {
       componentName: '所属区域',
       tableExport: [], // 存放模板或导出数据
       tableDataExport: [], // 导出数据
-      showIndex: true,
       showQRcode: false, // 二维码显示
       statuesList: [], // 状态列表
       itemTypes: '',
@@ -293,7 +291,7 @@ export default {
         itemTypes: this.itemTypesArr,
         status: this.filters.name,
         areas: this.arearArr,
-        itsmUserid: -2, // localStorage.getItem('login-id') ||
+        itsmUserid: localStorage.getItem('login-id'),
         checkStatus: '审核通过'
       }
       getAssetsList(param).then(response => {
@@ -310,9 +308,14 @@ export default {
       })
       // 用于导出
       const param2 = {
-        pageNumber: this.pageNumber,
+        pageNumber: 1,
         pageSize: 9999,
-        itsmUserid: -2
+        no: this.filters.no,
+        itemTypes: this.itemTypesArr,
+        status: this.filters.name,
+        areas: this.arearArr,
+        itsmUserid: localStorage.getItem('login-id'),
+        checkStatus: '审核通过'
       }
       getAssetsList(param2).then(response => {
         if (response.success === true) {
@@ -507,11 +510,9 @@ export default {
     exportExcel(type) {
       let excelName = ''
       if (type === '2') {
-        this.showIndex = false
         this.tableExport = []
         excelName = '资产模板'
       } else {
-        this.showIndex = true
         this.tableExport = this.tableDataExport
         excelName = '资产台账'
       }

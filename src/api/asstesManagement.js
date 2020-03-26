@@ -89,3 +89,32 @@ export function deleteMoreAssets(data) {
     data
   })
 }
+
+// 备件管理
+// 备件管理查询
+export function queryByWarehouseAsset(data) {
+  return request({
+    url: '/warehouseAssetC/queryByWarehouseAsset',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 备件管理新增、修改
+export function addOrUpdateWarehouseAsset(data) {
+  return request({
+    url: '/warehouseAssetC/addOrUpdateWarehouseAsset',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 备件管理删除
+export function deleteById(data) {
+  return request({
+    url: '/assetC/deleteById',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}

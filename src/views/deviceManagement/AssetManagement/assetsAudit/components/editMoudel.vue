@@ -126,7 +126,7 @@ export default {
           const param = {
             'ids': [this.editForm.id],
             'checkStatus': this.editForm.checkStatus,
-            'checkNote': this.editForm.note
+            'checkNote': this.editForm.note || ''
           }
           updateCheckMore(param).then(response => {
             this.loading = false

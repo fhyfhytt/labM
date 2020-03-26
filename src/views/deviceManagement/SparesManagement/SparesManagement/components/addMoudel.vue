@@ -1,7 +1,7 @@
 <template>
   <div class="roleManage-addRole">
     <el-row>
-      <el-form ref="baseInfo" :model="baseInfo" label-width="105px" :rules="baseInfoRule" :validate-on-rule-change="false">
+      <el-form ref="baseInfo" :model="baseInfo" label-width="105px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
         <el-col :span="8">
           <el-form-item label="物资编码">
             <el-input v-model="baseInfo.no" disabled />
@@ -45,13 +45,15 @@
         <el-col :span="8">
           <el-form-item label="物资状态" prop="status">
             <el-select v-model="baseInfo.status" popper-class="select-option" clearable placeholder="-请选择-">
-              <el-option v-for="item in statuesList" :key="item.code" :label="item.name" :value="item.name" />
+              <el-option v-for="item in goodsStatusList" :key="item.code" :label="item.name" :value="item.name" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="所属区域" prop="area">
-            <el-input v-model="baseInfo.area" placeholder="-请选择-" @focus="showAddArea"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
+          <el-form-item label="所属库房" prop="area">
+            <el-select v-model="baseInfo.houseId" popper-class="select-option" clearable placeholder="-请选择-">
+              <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.code" />
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -62,7 +64,7 @@
         <el-col :span="8">
           <el-form-item label="维保状态">
             <el-select v-model="baseInfo.maintranStatus" popper-class="select-option" placeholder="-请选择状态-">
-              <el-option v-for="item in maintranStatusList" :key="item.code" :label="item.name" :value="item.code" />
+              <el-option v-for="item in maintranStatusList" :key="item.code" :label="item.name" :value="item.name" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -100,19 +102,13 @@
 </template>
 
 <script>
-import { addAssets, assetsUpdate } from '@/api/asstesManagement'
+import { addOrUpdateWarehouseAsset } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import addCode from './codeList'
 import addFilters from '../../components/addFiltersType'
 export default {
   name: 'AddAssetsPage',
   components: { addFilters, addCode },
-  props: {
-    statuesList: {
-      type: Array,
-      default: () => []
-    }
-  },
   data() {
     var checkNull = (rule, value, callback) => {
       if (value === '') {
@@ -126,8 +122,8 @@ export default {
       isRadio: true,
       baseInfo: {}, // 基本信息
       baseInfoRule: {
-        num: [{ required: true, message: '请输入数量', trigger: ['blur'] }],
-        assetName: [{ required: true, message: '请输入物资名称', trigger: ['blur'] }],
+        // num: [{ required: true, message: '请输入数量', trigger: ['blur'] }],
+        // assetName: [{ required: true, message: '请输入物资名称', trigger: ['blur'] }],
         status: [{ required: true, message: '请选择物资状态', trigger: ['blur'] }],
         code: [
           { required: true, validator: checkNull, trigger: 'change' }
@@ -136,7 +132,9 @@ export default {
           { required: true, validator: checkNull, trigger: 'change' }
         ]
       },
+      houseList: [], // 所属库房
       maintranStatusList: [], // 维保状态
+      goodsStatusList: [], // 物资状态
 
       disabledFlg: false,
       filtersTypeId: [],
@@ -146,11 +144,51 @@ export default {
 
     }
   },
+  computed: {
+    houseId: function() {
+      const that = this
+      return this.houseList.filter((item) => {
+        item.name === that.baseInfo.house
+      }).code
+    }
+  },
   created() {
     common.getDictNameList({ dictName: '维保状态', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
           this.maintranStatusList = res.data
+          console.log('res.data：', res.data)
+        })
+      } else {
+        if (res.data !== '') {
+          this.$message.error(res.data)
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
+    }).catch(res => {
+      this.$message.error(res.message)
+    })
+
+    common.getDictNameList({ dictName: '物资状态', dictNameIsLike: 0 }).then(res => {
+      if (res.success === true) {
+        this.$nextTick(() => {
+          this.goodsStatusList = res.data
+        })
+      } else {
+        if (res.data !== '') {
+          this.$message.error(res.data)
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
+    }).catch(res => {
+      this.$message.error(res.message)
+    })
+    common.getDictNameList({ dictName: '所属库房', dictNameIsLike: 0 }).then(res => {
+      if (res.success === true) {
+        this.$nextTick(() => {
+          this.houseList = res.data
         })
       } else {
         if (res.data !== '') {
@@ -175,7 +213,8 @@ export default {
           if (valid) {
             const param = that.baseInfo
             param.checkStatus = '未审核'
-            addAssets(param).then(response => {
+            console.log('param:', param)
+            addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
               if (response.success === true) {
                 that.$message.success('新增成功')
@@ -196,7 +235,7 @@ export default {
           if (valid) {
             const param = that.baseInfo
             param.checkStatus = '未审核'
-            assetsUpdate(param).then(response => {
+            addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
               if (response.success === true) {
                 that.$message.success('修改成功')
