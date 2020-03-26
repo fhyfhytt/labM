@@ -19,7 +19,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { getAssetsTypeTree, getAreaTypeTree } from '@/api/asstesManagement'
 import { setTreeData } from '@/utils/utils.js'

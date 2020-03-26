@@ -3,23 +3,21 @@
     <div class="button-tool">
       <div class="button-tool-left fl" />
       <div class="button-tool-right fr">
-        <!-- <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button> -->
         <el-button v-permission="'houseDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">删除草稿</el-button>
       </div>
     </div>
     <el-table v-loading="tableload" :data="tableDate" empty-text="无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="序号" width="55" />
-      <el-table-column prop="code" label="资产编号" />
-      <el-table-column prop="name" label="资产名称" />
-      <el-table-column prop="type" label="资产分类" />
-      <el-table-column prop="state" label="来源" />
-      <el-table-column prop="person" label="生产商" />
-      <el-table-column prop="person" label="价格（元）" />
+      <el-table-column prop="no" label="资产编号" />
+      <el-table-column prop="assetName" label="资产名称" />
+      <el-table-column prop="itemType" label="资产分类" />
+      <el-table-column prop="dataFrom" label="来源" />
+      <el-table-column prop="factory" label="生产商" />
+      <el-table-column prop="price" label="价格（元）" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
           <i v-permission="'houseEdit'" class="iconfont iconbianji1 scope-caozuo" title="编辑" @click="handleEdit(scope.$index, scope.row)" />
-          <!-- <i v-permission="'houseDelete'" class="iconfont iconxingzhuang1  scope-caozuo" title="删除" @click="handleDel(scope.$index, scope.row)" /> -->
         </template>
       </el-table-column>
     </el-table>
@@ -37,25 +35,19 @@
     <el-dialog v-loading="loading" title="删除" :visible.sync="moveShow" class="baseMove">
       <removeDialog @sureMsg="sureMsg" @confireMsg="confireMsg" />
     </el-dialog>
-    <!--新增界面-->
-    <el-dialog v-if="addFormVisible" v-model="addFormVisible" title="新建库房" :close-on-click-modal="false" :visible.sync="addFormVisible" class="deviceAdd addmanage">
-      <addMoudel @handleGetTree1="handleGetTree1" @handeladdFormVisible="handeladdFormVisible" />
-    </el-dialog>
     <!--编辑界面-->
-    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="修改库房" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" class="deviceAdd addmanage">
+    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="修改我的资产" :close-on-click-modal="false" :visible.sync="editFormVisible" width="800px">
       <editMoudel ref="childrenEdit" :row="row" @handleGetTree1="handleGetTree1" @handeleditFormVisible="handeleditFormVisible" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-// import { conDelete } from '@/api/manage.js'
-import { deleteHouse } from '@/api/house.js'
-import addMoudel from './addMoudel.vue'
+import { deleteMoreAssets } from '@/api/asstesManagement.js'
 import editMoudel from './editMoudel.vue'
 import removeDialog from '@/views/baseComponents/baseRemove'
 export default {
-  components: { addMoudel, editMoudel, removeDialog },
+  components: { editMoudel, removeDialog },
   props: {
     tableDate: {
       type: Array,
@@ -99,6 +91,7 @@ export default {
   methods: {
     // 重新刷新页面
     handleGetTree1() {
+      this.editFormVisible = false
       this.$emit('handleGetTableData')
     },
     // 选择table数据  删除的项
@@ -126,21 +119,15 @@ export default {
         this.moveShow = true
       }
     },
-    // 删除
-    handleDel(index, row) {
-      // console.log('shanchu', row.id)
-      this.delTableById.push(row.id)
-      this.moveShow = true
-    },
     // 确认删除
     sureMsg(flag) {
       this.moveShow = flag
       this.loading = true
-      // if (this.delTableById.length === 0) {
-      //   return this.$message.error('请至少选择一条数据')
-      // }
-      const param = { warehouseIds: this.delTableById.join(',') }
-      deleteHouse(param).then(response => {
+      if (this.delTableById.length === 0) {
+        return this.$message.error('请至少选择一条数据')
+      }
+      const param = { ids: this.delTableById }
+      deleteMoreAssets(param).then(response => {
         this.loading = false
         if (response.success === true) {
           this.$message.success('删除成功')
@@ -167,17 +154,6 @@ export default {
     // 取消编辑
     handeleditFormVisible(editFormVisible) {
       this.editFormVisible = false
-    },
-    handleClose(done) {
-      // if (this.$refs.childrenEdit) {
-      //   this.$refs.childrenEdit.handeleditFormVisible()
-      // }
-      done()
-      this.handleGetTree1()
-      // this.$refs.childrenEdit.clearDate()
-    },
-    handleSearch() {
-
     },
     // 分页
     handleSizeChange(val) {

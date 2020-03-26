@@ -37,7 +37,8 @@
       <div class="page-table-content">
         <div class="button-tool">
           <span class="fl">
-            <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)">
+            <!-- <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)"> -->
+            <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
             <el-button icon="iconfont " size="small" @click="toLead">导入</el-button>
             <el-button v-permission="'roleDeleteMore'" icon="iconfont " size="small" @click="exportExcel('1')">导出</el-button>
             <el-button v-permission="'roleDeleteMore'" icon="iconfont " size="small" @click="exportExcel('2')">模板</el-button>
@@ -80,7 +81,7 @@
       </div>
     </div>
     <!-- 导出数据 -->
-    <el-table v-show="false" id="productionDaily" :data="tableExport">
+    <el-table v-show="false" id="exportExcelTable" :data="tableExport">
       <el-table-column v-if="showIndex" type="index" label="编号" />
       <el-table-column prop="no" label="资产代码" />
       <el-table-column prop="assetName" label="资产名称" />
@@ -92,8 +93,23 @@
       <el-table-column prop="price" label="采购价(元)" />
       <el-table-column prop="num" label="数量" />
     </el-table>
+    <!-- 导出数据模板 -->
+    <el-table v-show="false" id="exportExcelMould" :data="tableExport">
+      <el-table-column prop="code" label="操作编码" />
+      <el-table-column prop="assetName" label="资产名称" />
+      <el-table-column prop="itemType" label="资产分类" />
+      <el-table-column prop="unitType" label="设备型号" />
+      <el-table-column prop="factory" label="设备厂商" />
+      <el-table-column prop="status" label="资产状态" />
+      <el-table-column prop="area" label="所属区域" />
+      <el-table-column prop="location" label="分布位置" />
+      <el-table-column prop="price" label="采购价(元)" />
+      <el-table-column prop="maintranStatus" label="维保状态" />
+      <el-table-column prop="maintranDate" label="维保日期" />
+      <el-table-column prop="note" label="备注" />
+    </el-table>
     <div class="childrenlog">
-      <!--新增界面-->
+      <!--新增/编辑界面-->
       <el-dialog v-model="addFormVisible" :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" class="addRoleDialog" width="45%">
         <addMoudel ref="addEditRole" :statues-list="statuesList" @reset-save-flag="resetSaveFlag" @closeAddRole="closeAddRole" @addSuccess="addSuccess" />
       </el-dialog>
@@ -124,12 +140,11 @@
   </div>
 </template>
 <script>
-import { getAssetsList, deleteAssets } from '@/api/asstesManagement'
+import { getAssetsList, deleteAssets, importExcel } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 import addMoudel from './components/addMoudel'
 import addFilters from '../components/addFiltersType'
-// import baseRemove from '@/views/baseComponents/baseRemove'
 
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
@@ -200,11 +215,6 @@ export default {
     // this.getList()
   },
   methods: {
-    emptyInput() {
-      this.$nextTick(() => {
-        this.filters.itemTypes = ''
-      })
-    },
     // 选择筛选条件
     showAddFiltersType() {
       this.dialogName = '资产分类选择'
@@ -228,7 +238,6 @@ export default {
       if (res && res.length > 0) {
         this.addFiltersVisible = false
         this.filtersTypeId = []
-        console.log('res:', res)
         const valueArr = []
         for (const value of res) {
           valueArr.push(value.name)
@@ -285,7 +294,7 @@ export default {
         status: this.filters.name,
         areas: this.arearArr,
         itsmUserid: -2, // localStorage.getItem('login-id') ||
-        checkStatus: ''
+        checkStatus: '审核通过'
       }
       getAssetsList(param).then(response => {
         this.loading = false
@@ -316,16 +325,6 @@ export default {
         this.loading = false
         this.$message.error(e.msg)
       })
-    },
-    // table表格内容替换
-    formStatus(row, column) {
-      if (row.status) {
-        if (row.status === '1') {
-          return '启用'
-        } else {
-          return '未启用'
-        }
-      }
     },
     // 点击新增弹出新增页面moudel框
     handleAdd() {
@@ -418,6 +417,34 @@ export default {
     toLead() {
       document.getElementById('toLeadId').click()
     },
+
+    // 导入文件
+    importFile() {
+      const that = this
+      const formData = new window.FormData()
+      const files = document.querySelector('#toLeadId').files
+      formData.append('file', files[0])
+      if (files.length <= 0) {
+        this.$message.error('请选择导入文件')
+      } else {
+        // if (!/.(xls)$/.test(files[0].name)) {
+        //   this.$message.error("导入文件格式不正确");
+        // } else {
+        importExcel(formData).then(res => {
+          if (res.data.code === '0') {
+            that.visibleImportRole = false
+            this.$message.success('导入成功')
+            this.getList()
+          } else {
+            this.$message.error(res.data.msg)
+          }
+        }).catch(() => {
+          this.$message.error('导入失败，请核对文档格式是否正确', 'error')
+        })
+        // }
+      }
+    },
+
     importf(obj) {
       // const _this = this
       // // const inputDOM = this.$refs.inputer
@@ -482,17 +509,22 @@ export default {
       if (type === '2') {
         this.showIndex = false
         this.tableExport = []
-        excelName = '模板'
+        excelName = '资产模板'
       } else {
         this.showIndex = true
         this.tableExport = this.tableDataExport
         excelName = '资产台账'
       }
       this.$nextTick(() => {
-        var wb = XLSX.utils.table_to_book(document.querySelector('#productionDaily'))
+        var wb = null
+        if (type === '2') {
+          wb = XLSX.utils.table_to_book(document.querySelector('#exportExcelMould'))
+        } else {
+          wb = XLSX.utils.table_to_book(document.querySelector('#exportExcelTable'))
+        }
         var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
         try {
-          FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), excelName + '.xlsx')
+          FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), excelName + '.xls')
         } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
         return wbout
       })

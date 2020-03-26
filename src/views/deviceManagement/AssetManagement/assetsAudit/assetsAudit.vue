@@ -6,23 +6,23 @@
         <el-row>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="关键字">
-              <el-input v-model="filters.name" placeholder="请输入内容" />
+              <el-input v-model="filters.no" placeholder="请输入内容" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="资产分类">
-              <el-input v-model="filters.type" placeholder="-请选择-" @focus="showAddFilters"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
+              <el-input v-model="itemTypes" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="来源">
-              <el-select v-model="filters.name" value-key="code" clearable placeholder="-请选择-">
-                <el-option v-for="item in houseClass" :key="item.code" :label="item.name" :value="item" />
+              <el-select v-model="filters.dataFrom" value-key="code" clearable placeholder="-请选择-">
+                <el-option v-for="item in dataFromList" :key="item.code" :label="item.name" :value="item.name" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchHouse">查询</el-button>
+            <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchList">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -31,16 +31,15 @@
     <div class="page-table">
       <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
     </div>
-
-    <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="filterClose" width="300px">
-      <addFilters :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+    <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
+      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-import { queryHouseList } from '@/api/house.js'
+import { getAssetsList } from '@/api/asstesManagement.js'
 import common from '@/utils/common'
 import tableManageParent from './components/table.vue'
 import addFilters from '../components/addFiltersType'
@@ -52,32 +51,30 @@ export default {
   },
   data() {
     return {
-      filters: { name: '', type: '' },
-      addFormVisible: false,
+      filters: { no: '', dataFrom: '' },
+      itemTypes: '',
+      addFiltersVisible: false,
       dialogName: '',
       filtersTypeId: [],
-      houseClass: [],
       tableDate: [],
       totalNum: 0,
       currentPage: 1,
-      param: {
-        pageSize: 10,
-        pageNumber: 1,
-        sortColumn: 'create_time',
-        sortOrder: 'desc'
-      },
-      input: '',
-      tableloading: true
-      // selectData: {} // 点击tree树获取整个节点对象
-      // isDel: true // 最初默认标识可以删除
+      pageSize: 10,
+      pageNumber: 1,
+      tableloading: true,
+      dataFromList: [] // 来源
     }
   },
-
+  computed: {
+    itemTypesArr: function() {
+      return this.itemTypes.length > 0 ? this.itemTypes.split(',') : ''
+    }
+  },
   created() {
-    common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
+    common.getDictNameList({ dictName: '资产来源', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
-          this.houseClass = res.data
+          this.dataFromList = res.data
         })
       } else {
         if (res.data !== '') {
@@ -91,69 +88,68 @@ export default {
     })
   },
   mounted() {
-    this.getTableData()
+    this.searchList()
   },
   methods: {
     // 选择筛选条件
-    showAddFilters() {
+    showAddFiltersType() {
       this.dialogName = '资产分类选择'
-      this.addFormVisible = true
-      // this.$nextTick(() => {
-      //   this.$refs.addEditRole.addEditRoleDialog()
-      //   this.$refs.addEditRole.clearContent()
-      // })
+      this.addFiltersVisible = true
+      this.$nextTick(() => {
+        this.$refs.addFilters.getAssetsTreeData()
+      })
     },
     filterClose() {
-      this.addFormVisible = false
+      this.addFiltersVisible = false
     },
     // 条件选择返回
     filterRes(res) {
       if (res && res.length > 0) {
-        this.addFormVisible = false
+        this.addFiltersVisible = false
         this.filtersTypeId = []
-        console.log('res:', res)
         const valueArr = []
         for (const value of res) {
-          valueArr.push(value.label)
-          this.filtersTypeId = value.id
+          valueArr.push(value.name)
         }
-        this.filters.type = valueArr.join(',')
+        this.itemTypes = valueArr.join(',')
+      } else {
+        this.addFiltersVisible = false
       }
     },
-    //
-    // 点击tree树获取table表格的数据
-    getTableData() {
+    // 查询
+    searchList() {
+      const param = {
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize,
+        no: this.filters.no,
+        itemTypes: this.itemTypesArr,
+        itsmUserid: -2, // localStorage.getItem('login-id') ||
+        checkStatus: '未审核',
+        sortColumn: 'create_time',
+        sortOrder: 'desc',
+        dataFrom: this.filters.dataFrom
+      }
       this.tableloading = true
-      queryHouseList(this.param)
-        .then(response => {
-          this.tableloading = false
-          if (response.code === 0) {
-            this.tableDate = response.data.list instanceof Array ? response.data.list : []
-            this.totalNum = Number(response.data.totalNum)
-          } else {
-            this.$message.error(response.msg)
-          }
-        })
-        .catch(response => {
-          this.tableloading = false
+      getAssetsList(param).then(response => {
+        this.tableloading = false
+        if (response.code === 0) {
+          this.tableDate = response.data.list instanceof Array ? response.data.list : []
+          this.totalNum = Number(response.data.totalNum)
+        } else {
           this.$message.error(response.msg)
-        })
-    },
-    searchHouse() {
-      this.param.pageNumber = 1
-      this.param.pageSize = 10
-      this.currentPage = 1
-      this.param = Object.assign(this.param, this.filters)
-      this.getTableData()
+        }
+      }).catch(response => {
+        this.tableloading = false
+        this.$message.error(response.msg)
+      })
     },
     // 分页掉接口
     handleGetTableData(value) {
       if (value) {
-        this.param.pageSize = value.pageSize
-        this.param.pageNumber = value.pageNumber
-        this.currentPage = value.currentPage
+        this.pageSize = value.newPageSize
+        this.pageNumber = value.newPageNumber
       }
-      this.getTableData()
+      this.searchList()
     }
   }
 }

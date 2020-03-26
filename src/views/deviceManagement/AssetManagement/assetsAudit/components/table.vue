@@ -3,30 +3,23 @@
     <div class="button-tool">
       <div class="button-tool-left fl" />
       <div class="button-tool-right fr">
-        <!-- <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button> -->
-        <el-button v-permission="'houseDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量审核</el-button>
+        <el-button v-permission="'houseDeleteMore'" @click="handleSelectCheck">批量审核</el-button>
       </div>
-      <!-- <el-button-group style="float:right;margin-right:10px;">
-        <el-button icon="iconfont iconshuaxin" size="small" style="margin-right:0px" title="刷新" @click="handleRes(val)" />
-        <el-button icon="iconfont iconmoban" size="small" title="切换" @click="handleQiHuan" />
-        <el-button icon="iconfont iconxiazai" size="small" title="Export data" @click="handleDownload" />
-      </el-button-group> -->
     </div>
     <el-table v-loading="tableload" :data="tableDate" empty-text="无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="序号" width="55" />
-      <el-table-column prop="code" label="资产编号" />
-      <el-table-column prop="name" label="资产名称" />
-      <el-table-column prop="name" label="资产状态" />
-      <el-table-column prop="type" label="所属区域" />
-      <el-table-column prop="type" label="分布位置" />
-      <el-table-column prop="state" label="来源" />
-      <el-table-column prop="person" label="备注" />
-      <el-table-column prop="person" label="新建时间" />
+      <el-table-column prop="no" label="资产编号" />
+      <el-table-column prop="assetName" label="资产名称" />
+      <el-table-column prop="status" label="资产状态" />
+      <el-table-column prop="area" label="所属区域" />
+      <el-table-column prop="location" label="分布位置" />
+      <el-table-column prop="dataFrom" label="来源" />
+      <el-table-column prop="note" label="备注" />
+      <el-table-column prop="createTime" label="新建时间" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
           <i v-permission="'houseEdit'" class="iconfont iconwenjian scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
-          <!-- <i v-permission="'houseDelete'" class="iconfont iconxingzhuang1  scope-caozuo" title="删除" @click="handleDel(scope.$index, scope.row)" /> -->
         </template>
       </el-table-column>
     </el-table>
@@ -36,28 +29,45 @@
         layout="total,sizes,prev, pager, next, jumper"
         :total="totalNum"
         :pager-count="5"
-        :current-page.sync="currentPage"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
     </div>
-    <el-dialog v-loading="loading" title="删除" :visible.sync="moveShow" class="baseMove">
-      <removeDialog @sureMsg="sureMsg" @confireMsg="confireMsg" />
+    <el-dialog v-loading="loading" title="批量审核" :visible.sync="showCheckAll">
+      <el-form :model="checkAll" label-width="110px">
+        <div class="minTitle">审核备注</div>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="审核状态：" style="width:500px">
+              <el-select v-model="checkAll.checkStatus" placeholder="-请选择审核状态-">
+                <el-option label="审核通过" value="审核通过" />
+                <el-option label="审核未通过" value="审核未通过" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="备注：">
+              <el-input v-model="checkAll.checkNote" type="textarea" placeholder="请输入备注" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div class="dialog-footer">
+        <el-button size="medium " class="button-sub" @click="submitCheckAll()">确定</el-button>
+      </div>
     </el-dialog>
     <!--编辑界面-->
-    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="修改库房" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" width="40%">
+    <el-dialog v-if="editFormVisible" v-model="editFormVisible" title="审核" :close-on-click-modal="false" :visible.sync="editFormVisible" :before-close="handleClose" width="800px">
       <editMoudel ref="childrenEdit" :row="row" @handleGetTree1="handleGetTree1" @handeleditFormVisible="handeleditFormVisible" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-// import { conDelete } from '@/api/manage.js'
-import { deleteHouse } from '@/api/house.js'
+import { updateCheckMore } from '@/api/asstesManagement'
 import editMoudel from './editMoudel.vue'
-import removeDialog from '@/views/baseComponents/baseRemove'
 export default {
-  components: { editMoudel, removeDialog },
+  components: { editMoudel },
   props: {
     tableDate: {
       type: Array,
@@ -82,12 +92,12 @@ export default {
       editFormVisible: false, // 编辑界面是否显示
       row: {}, // 编辑初始化内容
       multipleSelection: [], // 选择的table数据的对象组成的数组
-      delTableById: [], // 删除数据传参的id数组
-      moveShow: false, // //确认删除弹框是否显示
+      delTableById: [], // 审核数据传参的id数组
+      showCheckAll: false, // //确认审核弹框是否显示
       loading: false,
-      tableload: true,
-      sonShow: false
-      // removeDioag: false // 确认删除
+      tableload: false,
+      sonShow: false,
+      checkAll: { checkStatus: '审核通过' }
     }
   },
   watch: {
@@ -103,93 +113,65 @@ export default {
     handleGetTree1() {
       this.$emit('handleGetTableData')
     },
-    // 选择table数据  删除的项
+    // 选择table数据  需要审核的项
     handleSelectionChange(val) {
       this.delTableById = []
       this.multipleSelection = val
       this.multipleSelection.map(value => {
         this.delTableById.push(value.id)
       })
-      // console.log('delTableById', this.delTableById)
     },
-    // 批量删除
-    handleSelectDel() {
+    // 批量审核
+    handleSelectCheck() {
       if (this.delTableById.length === 0) {
         this.$message.error('请至少选择一条数据')
       } else {
-        this.moveShow = true
+        this.showCheckAll = true
       }
     },
-    // 删除
-    handleDel(index, row) {
-      // console.log('shanchu', row.id)
-      this.delTableById.push(row.id)
-      this.moveShow = true
-    },
-    // 确认删除
-    sureMsg(flag) {
-      this.moveShow = flag
-      this.loading = true
-      // if (this.delTableById.length === 0) {
-      //   return this.$message.error('请至少选择一条数据')
-      // }
-      const param = { warehouseIds: this.delTableById.join(',') }
-      deleteHouse(param).then(response => {
+    submitCheckAll() {
+      const param = {
+        ids: this.delTableById,
+        checkNote: this.checkAll.checkNote,
+        checkStatus: this.checkAll.checkStatus
+      }
+      updateCheckMore(param).then(response => {
         this.loading = false
         if (response.success === true) {
-          this.$message.success('删除成功')
+          this.$message.success('已审核')
+          this.showCheckAll = false
           this.handleGetTree1()
         } else {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.loading = false
+        this.$message.error(response.msg)
       })
     },
-    // 取消删除
-    confireMsg(flag) {
-      this.moveShow = flag
-    },
-
     // 编辑
     handleEdit(index, row) {
-      // console.log(index, row)
       this.row = row
-      // console.log('this', row)
       this.editFormVisible = true
     },
     // 取消编辑
     handeleditFormVisible(editFormVisible) {
       this.editFormVisible = false
     },
-    handleClose(done) {
-      // if (this.$refs.childrenEdit) {
-      //   this.$refs.childrenEdit.handeleditFormVisible()
-      // }
-      done()
-      this.handleGetTree1()
-      // this.$refs.childrenEdit.clearDate()
-    },
-    handleSearch() {
-
-    },
     // 分页
     handleSizeChange(val) {
       this.pageSize = val
       this.pageNumber = 1
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNumber: this.pageNumber })
+      this.$emit('handleGetTableData', { newPageSize: val, newPageNumber: 1 })
     },
     handleCurrentChange(val) {
-      this.pageNumber = val
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, currentPage: val, pageNumber: this.pageNumber })
-    },
-    handleJumper(currentPage) {
+      this.$emit('handleGetTableData', { newPageSize: this.pageSize, newPageNumber: val })
     }
 
   }
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+  .minTitle {margin:0 0 10px 0;color: #38a4ed;padding-bottom: 10px;font-weight: bold;border-bottom: 2px solid #ddd;}
 </style>

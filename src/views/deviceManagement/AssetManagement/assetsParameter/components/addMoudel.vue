@@ -77,7 +77,7 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="备注">
-            <el-input v-model="baseInfo.description" type="textarea" autocomplete="off" placeholder="请输入备注" />
+            <el-input v-model="baseInfo.note" type="textarea" autocomplete="off" placeholder="请输入备注" />
           </el-form-item>
         </el-col>
 
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { addAssets } from '@/api/asstesManagement'
+import { addAssets, assetsUpdate } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import addCode from './codeList'
 import addFilters from '../../components/addFiltersType'
@@ -192,7 +192,24 @@ export default {
         })
       } else {
         // 修改提交
-
+        that.$refs['baseInfo'].validate((valid) => {
+          if (valid) {
+            const param = that.baseInfo
+            assetsUpdate(param).then(response => {
+              that.loading = false
+              if (response.success === true) {
+                that.$message.success('修改成功')
+                that.$emit('addSuccess')
+              } else {
+                that.$message.error(response.msg)
+              }
+            }).catch(response => {
+              that.$message.error(response.message)
+            })
+          } else {
+            return false
+          }
+        })
       }
     },
     addEditRoleDialog(data) {

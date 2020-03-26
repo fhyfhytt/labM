@@ -1,107 +1,107 @@
 <template>
-  <div v-loading="loading" class="dialgEditform1">
-    <el-form ref="editForm" :model="editForm" label-width="120px" :rules="addFormRules" class="formAdd">
-      <el-row class="addtop">
-        <el-col :span="12">
-          <el-form-item label="资产编号:" prop="code">
-            <el-input v-model="editForm.code" autocomplete="off" disabled />
+  <div class="roleManage-addRole">
+    <el-row>
+      <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
+        <el-col :span="8">
+          <el-form-item label="物资编码">
+            <el-input v-model="baseInfo.no" disabled />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="操作编号" prop="type">
-            <el-input v-model="editForm.name" autocomplete="off" disabled />
+        <el-col :span="8">
+          <el-form-item label="操作编码" prop="code">
+            <el-input v-model="baseInfo.code" placeholder="-请选择-" disabled><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="资产名称" prop="person">
-            <el-input v-model="editForm.name" autocomplete="off" disabled />
+        <el-col :span="8">
+          <el-form-item label="物资名称" prop="assetName">
+            <el-input v-model="baseInfo.assetName" disabled />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="资产分类" prop="name">
-            <el-input v-model="editForm.name" autocomplete="off" disabled />
+        <el-col :span="8">
+          <el-form-item label="物资分类">
+            <el-input v-model="baseInfo.itemType" disabled />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="设备型号" prop="state">
-            <el-input v-model="editForm.name" autocomplete="off" disabled />
+        <el-col :span="8">
+          <el-form-item label="设备型号">
+            <el-input v-model="baseInfo.unitType" disabled />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="设备厂商" prop="personMobile">
-            <el-input v-model="editForm.personMobile" autocomplete="off" disabled />
+        <el-col :span="8">
+          <el-form-item label="设备厂商">
+            <el-input v-model="baseInfo.factory" disabled />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="数量" prop="personMobile">
-            <el-input v-model="editForm.personMobile" autocomplete="off" disabled />
+        <el-col :span="8">
+          <el-form-item label="数量" prop="num">
+            <el-input v-model="baseInfo.num" disabled />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="采购价（元）" prop="personMobile">
-            <el-input v-model="editForm.personMobile" autocomplete="off" readonly />
+        <el-col :span="8">
+          <el-form-item label="采购价(元)">
+            <el-input v-model="baseInfo.price" disabled />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="资产状态" prop="personMobile">
-            <el-select v-model="editForm.state" value-key="name" popper-class="select-option" placeholder="-请选择库房状态-">
-              <el-option v-for="item in selecthouseState" :key="item.code" :label="item.name" :value="item" />
+        <el-col :span="8">
+          <el-form-item label="物资状态" prop="status">
+            <el-select v-model="baseInfo.status" popper-class="select-option" clearable placeholder="-请选择-">
+              <el-option v-for="item in statuesList" :key="item.code" :label="item.name" :value="item.name" />
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="所属区域" prop="personMobile">
-            <el-input v-model="editForm.personMobile" autocomplete="off" readonly />
+        <el-col :span="8">
+          <el-form-item label="所属区域" prop="area">
+            <el-input v-model="baseInfo.area" placeholder="-请选择-" @focus="showAddArea"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="分布位置" prop="personMobile">
-            <el-input v-model="editForm.personMobile" autocomplete="off" readonly />
+        <el-col :span="8">
+          <el-form-item label="分布位置">
+            <el-input v-model="baseInfo.location" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="维保状态">
+            <el-select v-model="baseInfo.maintranStatus" popper-class="select-option" placeholder="-请选择状态-">
+              <el-option v-for="item in maintranStatusList" :key="item.code" :label="item.name" :value="item.code" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="维保日期">
+            <el-date-picker
+              v-model="baseInfo.maintran_date"
+              type="date"
+              placeholder="选择日期"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="备注:" prop="memo">
-            <el-input v-model="editForm.memo" type="textarea" placeholder="请输入备注" />
+          <el-form-item label="备注">
+            <el-input v-model="baseInfo.note" type="textarea" autocomplete="off" placeholder="请输入备注" />
           </el-form-item>
         </el-col>
-      </el-row>
-    </el-form>
-    <div class="dialog-footer">
-      <el-button size="medium " class="button-cancel" @click="handeleditFormVisible('editForm')">取消</el-button>
-      <el-button size="medium " class="button-sub" @click.native="submitForm('editForm')">确定</el-button>
+
+      </el-form>
+    </el-row>
+    <div style="text-align:right">
+      <el-button v-preventReClick="1000" class="button-sub" @click="saveBaseInfo">确认</el-button>
+      <el-button v-preventReClick="1000" class="button-cancel" @click="this.$parent.handleClose">取消</el-button>
     </div>
-    <el-dialog title="选择人员" append-to-body :visible.sync="addUserVisible" :before-close="handleAddNewUser" width="45%" class="addHouseUserDialog">
-      <div>
-        <el-row style="margin-bottom:10px">
-          关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入姓名或ID" style="width:200px;margin:0px 10px" />
-          <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
-        <!-- <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button> -->
-        </el-row>
-        <el-table ref="userInfoTable" v-loading="userloading" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
-          <el-table-column prop="name" label="用户名" />
-          <el-table-column prop="mobile" label="手机" />
-          <el-table-column prop="email" label="邮箱" />
-        </el-table>
-        <div class="numListJup " style="padding-right:70px">
-          <el-pagination :page-size="userPageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="userTotalCount" :current-page.sync="selectUserPage" @size-change="handleUserSizeChange" @current-change="handleSelectUserChange" />
-        <!-- <div class="sendAllBtn">
-            <span>跳转</span>
-          </div> -->
-        </div>
-      </div>
+
+    <!-- 所属区域 -->
+    <el-dialog title="所属区域选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="addArea" :before-close="filterClose" width="300px">
+      <addFilters ref="addFilters" :is-radio="isRadio" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
   </div>
-
 </template>
 
 <script>
-import { searchRoleUsers } from '@/api/roleManage'
-import { dictUpdate } from '@/api/house.js'
+import { assetsUpdate } from '@/api/asstesManagement'
 import common from '@/utils/common'
+import addFilters from '../../components/addFiltersType'
 export default {
+  name: 'AddAssetsPage',
+  components: { addFilters },
   props: {
     row: {
       type: Object,
@@ -109,35 +109,44 @@ export default {
     }
   },
   data() {
+    var checkNull = (rule, value, callback) => {
+      if (value === '') {
+        return callback(new Error('请选择区域'))
+      } else {
+        callback()
+      }
+    }
     return {
-      // 新增界面数据  state: '',
-      editForm: { code: '', name: '', person: '', state: '', type: '', memo: '', typecode: '', statecode: '' },
-      editFormVisible: false,
-      addFormRules: {
-        code: [{ required: true, message: '请输入库房编号', trigger: 'blur' }],
-        name: [{ required: true, message: '请输入库房名称', trigger: 'blur' }],
-        person: [{ required: true, message: '请选择库房管理员', trigger: 'change' }],
-        state: [{ required: true, message: '请选择库房状态', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择库房类型', trigger: 'blur' }]
+      loading: '0',
+      isRadio: true,
+      baseInfo: {}, // 基本信息
+      baseInfoRule: {
+        num: [{ required: true, message: '请输入数量', trigger: ['blur'] }],
+        assetName: [{ required: true, message: '请输入物资名称', trigger: ['blur'] }],
+        status: [{ required: true, message: '请选择物资状态', trigger: ['blur'] }],
+        code: [
+          { required: true, validator: checkNull, trigger: 'change' }
+        ],
+        area: [
+          { required: true, validator: checkNull, trigger: 'change' }
+        ]
       },
-      selecthouseType: [],
-      selecthouseState: [],
-      loading: false,
-      addUserVisible: false,
-      userloading: true,
-      userUnselectedInfo: [],
-      userTotalCount: 0, // 未选择人数页数
-      userPageSize: 10, // 选择人员每页个数
-      selectUserPage: 1, // 为选择人员页数
-      primaryKey: '' // 查询参数
+      maintranStatusList: [], // 维保状态
+      statuesList: [], // 物资状态
+
+      disabledFlg: false,
+      filtersTypeId: [],
+      addArea: false,
+
+      showCode: false
+
     }
   },
-
   created() {
-    common.getDictNameList({ dictName: '库房状态', dictNameIsLike: 0 }).then(res => {
+    common.getDictNameList({ dictName: '资产状态', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
-          this.selecthouseState = res.data
+          this.statuesList = res.data
         })
       } else {
         if (res.data !== '') {
@@ -147,12 +156,12 @@ export default {
         }
       }
     }).catch(res => {
-      this.$message.error(res.msg)
+      this.$message.error(res.message)
     })
-    common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
+    common.getDictNameList({ dictName: '维保状态', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
-          this.selecthouseType = res.data
+          this.maintranStatusList = res.data
         })
       } else {
         if (res.data !== '') {
@@ -162,91 +171,73 @@ export default {
         }
       }
     }).catch(res => {
-      this.$message.error(res.msg)
+      this.$message.error(res.message)
     })
+    this.baseInfo = this.row
   },
   mounted() {
-    this.editForm = Object.assign({}, this.row)
-    this.editForm.personMobile = this.editForm.personMobile
-    this.editForm.type = { name: this.row.type }// 传入对象
-    this.editForm.state = { name: this.row.state }// 传入对象
+
   },
   methods: {
-    // 取消新增
-    handeleditFormVisible(editFormVisible) {
-      this.$emit('handeleditFormVisible', this.editFormVisible)
-      this.editForm = {}
-    },
-    // 提交新增
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    saveBaseInfo() {
+      const that = this
+      // 修改提交
+      that.$refs['baseInfo'].validate((valid) => {
         if (valid) {
-          this.loading = true
-          const param = Object.assign({}, this.editForm)
-          param.type = this.editForm.type.code
-          param.state = this.editForm.state.code
-          dictUpdate(param).then(response => {
-            this.loading = false
+          const param = that.baseInfo
+          param.checkStatus = '未审核'
+          assetsUpdate(param).then(response => {
+            that.loading = false
             if (response.success === true) {
-              this.$message.success('修改成功')
+              that.$message.success('修改成功')
               this.$emit('handleGetTree1')
-              this.handeleditFormVisible()
             } else {
-              this.$message.error(response.msg)
+              that.$message.error(response.msg)
             }
           }).catch(response => {
-            this.loading = false
-            this.$message.error(response.msg)
+            that.$message.error(response.message)
           })
         } else {
-          // console.log('error submit!!')
           return false
         }
       })
-    }, selectUserInfoRow(row) {
-      this.editForm.person = row.name
-      this.editForm.personMobile = row.personMobile
-      this.editForm.personId = row.id
-      this.addUserVisible = false
-    }, handleUserSizeChange(val) {
-      this.userPageSize = val
-      this.handleGetUnselectRoleUsers()
-    }, // 未添加人员信息列表
-    handleSelectUserChange() {
-      this.handleGetUnselectRoleUsers()
-    }, // 获取未选择的人员
-    handleGetUnselectRoleUsers(data) {
-      searchRoleUsers({ pageSize: this.userPageSize, pageNumber: this.selectUserPage, name: data }).then(res => {
-        this.userloading = false
-        if (res.success === true) {
-          this.userUnselectedInfo = res.data.rows
-          this.userTotalCount = res.data.totalCount
-        } else {
-          this.$message.error(res.msg)
-        }
-      }).catch(e => {
-        this.userloading = false
-        this.$message.error(e.msg)
+    },
+    addEditRoleDialog(data) {
+      if (data) {
+        this.disabledFlg = true
+        this.baseInfo = data
+      } else {
+        this.$refs['baseInfo'].resetFields()
+        this.disabledFlg = false
+        this.baseInfo = { num: 1 }
+      }
+    },
+
+    // 选择区域
+    showAddArea() {
+      this.dialogName = '所属区域选择'
+      this.addArea = true
+      this.$nextTick(() => {
+        this.$refs.addFilters.getAreaTreeData()
       })
-    // 清空新增数据
-    // clearDate() {
-    //   this.editForm = {}
-    // }
-    }, // 添加新成员
-    addNewUser() {
-      this.editForm.person = ''
-      this.editForm.personMobile = ''
-      this.addUserVisible = true
-      this.handleGetUnselectRoleUsers()
-    }, // 查询要新添加的用户
-    searchNewUsers() {
-      this.selectUserPage = 1
-      this.handleGetUnselectRoleUsers(this.primaryKey)
+    },
+    filterClose() {
+      this.addArea = false
+    },
+    // 条件选择返回
+    filterRes(res) {
+      if (res && res.length > 0) {
+        this.addArea = false
+        this.filtersTypeId = []
+        const valueArr = []
+        for (const value of res) {
+          valueArr.push(value.name)
+        }
+        this.baseInfo.area = valueArr.join(',')
+      }
     }
+
   }
 }
 </script>
 
-<style lang="scss">
-@import '~@/styles/modul.scss';
-</style>
