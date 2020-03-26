@@ -41,7 +41,7 @@
           <el-table-column prop="memo" label="内容">
             <!-- show-overflow-tooltip -->
             <template slot-scope="scope">
-              <div v-if="scope.row.ifRead==='0'?true:false" class="tableContent">
+              <div v-if="scope.row.isRead==='0'?true:false" class="tableContent">
                 <span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
               </div>
               <div v-else class="tableContent"><span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
@@ -222,7 +222,7 @@ export default {
         return
       }
       var haveNow = this.removeRd.find(res => {
-        return res.ifRead === '1'
+        return res.isRead === '1'
       })
       if (haveNow) {
         this.$message.error('请选择未读的消息！')
@@ -252,7 +252,7 @@ export default {
       const querys = {
         id: row.msId
       }
-      if (row.ifRead === '0') {
+      if (row.isRead === '0') {
         this.changeStatus(row.msId)
       }
       if (row.state === '0') {
@@ -327,7 +327,6 @@ export default {
     },
     changeStatus(id) {
       checkStatus(id).then(res => {
-
       }).catch(res => {
         this.$message.error(res.msg)
       })

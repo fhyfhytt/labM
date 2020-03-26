@@ -39,7 +39,7 @@
           <el-table-column prop="memo" label="内容">
             <!-- show-overflow-tooltip -->
             <template slot-scope="scope">
-              <div v-if="scope.row.ifRead==='0'?true:false" class="tableContent">
+              <div v-if="scope.row.isRead==='0'?true:false" class="tableContent">
                 <span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
               </div>
               <div v-else class="tableContent"><span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
