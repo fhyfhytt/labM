@@ -48,11 +48,11 @@
           <el-table-column type="index" label="编号" />
           <el-table-column label="备件编码">
             <template slot-scope="scope">
-              <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.assetNo }}</a>
+              <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.assetInfo.assetNo }}</a>
             </template>
           </el-table-column>
-          <el-table-column prop="assetName" label="备件名称" />
-          <el-table-column prop="itemType" label="备件分类" />
+          <el-table-column prop="assetInfo.assetName" label="备件名称" />
+          <el-table-column prop="assetInfo.itemType" label="备件分类" />
           <el-table-column prop="status" label="所属状态" />
           <el-table-column prop="house" label="所属库房" />
           <el-table-column prop="num" label="数量" />
@@ -97,7 +97,7 @@
     </el-table>
     <div class="childrenlog">
       <!--新增/编辑界面-->
-      <el-dialog v-model="addFormVisible" :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" class="addRoleDialog" width="45%">
+      <el-dialog v-model="addFormVisible" :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" class="addRoleDialog" width="800px">
         <addMoudel ref="addEditRole" @reset-save-flag="resetSaveFlag" @closeAddRole="closeAddRole" @addSuccess="addSuccess" />
       </el-dialog>
       <!-- 弹出框 -->
@@ -276,7 +276,7 @@ export default {
         this.loading = false
         if (response.success === true) {
           this.tableData = response.data.assetList || []
-          this.totalCount = Number(response.data.totalNum)
+          this.totalCount = Number(response.data.count)
         } else {
           this.$message.error(response.msg)
         }
@@ -311,7 +311,6 @@ export default {
       this.addFlag = false
       this.$nextTick(() => {
         this.$refs.addEditRole.addEditRoleDialog()
-        // this.$refs.addEditRole.clearContent()
       })
     },
     // 取消新增

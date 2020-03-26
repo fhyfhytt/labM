@@ -91,7 +91,7 @@
     </div>
 
     <!-- 操作编码选择 -->
-    <el-dialog title="操作编码选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showCode" :before-close="codeClose" width="40%">
+    <el-dialog title="操作编码选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showCode" :before-close="codeClose" width="800px">
       <addCode @resCode="resCode" />
     </el-dialog>
     <!-- 所属区域 -->
@@ -122,8 +122,6 @@ export default {
       isRadio: true,
       baseInfo: {}, // 基本信息
       baseInfoRule: {
-        // num: [{ required: true, message: '请输入数量', trigger: ['blur'] }],
-        // assetName: [{ required: true, message: '请输入物资名称', trigger: ['blur'] }],
         status: [{ required: true, message: '请选择物资状态', trigger: ['blur'] }],
         code: [
           { required: true, validator: checkNull, trigger: 'change' }
@@ -138,21 +136,11 @@ export default {
         { name: '已过保', value: '2' }
       ], // 维保状态
       goodsStatusList: [], // 物资状态
-
       disabledFlg: false,
       filtersTypeId: [],
       addArea: false,
-
       showCode: false
 
-    }
-  },
-  computed: {
-    houseId: function() {
-      const that = this
-      return this.houseList.filter((item) => {
-        item.name === that.baseInfo.house
-      }).code
     }
   },
   created() {
@@ -199,7 +187,6 @@ export default {
           if (valid) {
             const param = that.baseInfo
             param.checkStatus = '0'
-            console.log('param:', param)
             addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
               if (response.success === true) {
@@ -219,7 +206,26 @@ export default {
         // 修改提交
         that.$refs['baseInfo'].validate((valid) => {
           if (valid) {
-            const param = that.baseInfo
+            // const param = that.baseInfo
+            const param = {
+              assetId: '123456',
+              code: '123456',
+              num: '10',
+              status: '1',
+              houseId: '123456',
+              house: '库房修改',
+              note: '备注',
+              dataFrom: '1',
+              checkStatus: '1',
+              checkNote: '审核备注',
+              maintranDate: '365',
+              maintranStatus: '1',
+              areaId: '123457',
+              area: '区域',
+              location: 'A3',
+              price: '10'
+            }
+
             param.checkStatus = '0'
             addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
@@ -241,7 +247,26 @@ export default {
     addEditRoleDialog(data) {
       if (data) {
         this.disabledFlg = true
-        this.baseInfo = data
+        // this.baseInfo = data
+        this.baseInfo = {
+          id: data.id,
+          assetId: data.assetId,
+          code: data.code,
+          num: '10',
+          status: '1',
+          houseId: '123456',
+          house: '库房修改',
+          note: '备注',
+          dataFrom: '1',
+          checkStatus: '1',
+          checkNote: '审核备注',
+          maintranDate: '365',
+          maintranStatus: '1',
+          areaId: '123457',
+          area: '区域',
+          location: 'A3',
+          price: '10'
+        }
       } else {
         this.$refs['baseInfo'].resetFields()
         this.disabledFlg = false
