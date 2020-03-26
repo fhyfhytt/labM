@@ -106,7 +106,7 @@
               multiple
             >
               <el-button size="small" class="filebtn" type="primary">选择文件</el-button>
-              <div slot="tip" class="el-upload__tip">文件大小不成超过1MB</div>
+              <div slot="tip" class="el-upload__tip">文件大小不能超过10MB</div>
 
             </el-upload>
           </el-form-item>
@@ -425,9 +425,9 @@ export default {
         if (!isFile) {
           this.$message.error('上传文件类型不符合要求!')
         }
-        const isLt2M = file.size / 1024 / 1024 < 50
+        const isLt2M = file.size / 1024 / 1024 < 10
         if (!isLt2M) {
-          this.$message.error('上传文件大小不能超过50MB!')
+          this.$message.error('上传文件大小不能超过10MB!')
         }
         if (isFile && isLt2M) {
           return resolve(true)
