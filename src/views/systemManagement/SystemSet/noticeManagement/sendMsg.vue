@@ -61,7 +61,7 @@
 
         <el-form-item label="通知内容 : ">
           <vue-html5-editor :content="content" :height="500" :z-index="1000" :auto-height="true" :show-module-name="false" @change="updateData" />
-          <!-- <vue-editor v-model="content" v-loading="loading" :editor-toolbar="customToolbar" /> -->
+
         </el-form-item>
       </el-row>
       <el-row>
@@ -303,6 +303,7 @@ export default {
               this.imgurl = ''
               this.tip = true
               this.$refs.uploadFile.clearFiles()
+              this.$store.dispatch('dashord/imgIdPath', '')
               this.$nextTick(() => {
                 this.$refs.ruleForm.clearValidate()
               })
@@ -359,6 +360,7 @@ export default {
         this.$message.success('上传成功')
         this.iconclass = 'el-icon-upload'
         this.ruleForm.appendixImgId = res.data.id
+        this.$store.dispatch('dashord/imgIdPath', { id: res.data.id })
         this.tip = false
         this.imgurl = URL.createObjectURL(file.raw)
       } else if (res.code === 10003) {
@@ -373,6 +375,10 @@ export default {
     handlefileSuccess(res, file, fileList) {
       if (res.code === 0) {
         this.ruleForm.appendixIdName.push({ name: res.data.appendixName, path: res.data.appendixPath, id: res.data.id })
+        var fileIds = this.ruleForm.appendixIdName.map(item => {
+          return item.id
+        })
+        this.$store.dispatch('dashord/fjIdPath', { id: fileIds })
         this.$message.success('上传成功')
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
@@ -401,7 +407,6 @@ export default {
             sameFileName = true
           }
         })
-        console.log(sameFileName)
         if (sameFileName) {
           return reject(false)
         }
