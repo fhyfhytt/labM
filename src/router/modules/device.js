@@ -2,14 +2,16 @@
 
 import Layout from '@/layout'
 
-const assetsModuleRouter = {
+const deviceControlRouter = {
   path: '/deviceManagement',
   component: Layout,
-  redirect: '/deviceManagement/assetManagement/assetsAudit',
-  name: 'DeviceManagement',
+  redirect: '/deviceManagement/AssetManagement/SuppliesManage',
+  name: 'deviceManagement',
   meta: {
     title: '设备管理',
     icon: 'iconxitongguanli'
+    // ,
+    // roles: ['deviceManagement']
   },
   children: [{
     path: 'assetManagement',
@@ -47,6 +49,16 @@ const assetsModuleRouter = {
         roles: ['MyAssets']
       },
       name: 'MyAssets'
+    }, {
+      path: 'suppliesManage',
+      component: () => import('@/views/deviceManagement/AssetManagement/SuppliesManage/view.vue'),
+      meta: {
+        title: '物资管理',
+        icon: 'icon111'
+        // ,
+        // roles: ['suppliesManage']
+      },
+      name: 'SuppliesManage'
     }]
   }, {
     path: 'sparesManagement',
@@ -66,8 +78,18 @@ const assetsModuleRouter = {
         roles: ['SparesManagement']
       },
       name: 'SparesManagementChild'
+    }, {
+      path: 'sparesManage',
+      component: () => import('@/views/deviceManagement/SparesManagement/SparesCheck/view.vue'),
+      meta: {
+        title: '备件审核',
+        icon: 'icon111'
+        // ,
+        // roles: ['sparesCheck']
+      },
+      name: 'SparesCheck'
     }]
   }]
-}
 
-export default assetsModuleRouter
+}
+export default deviceControlRouter

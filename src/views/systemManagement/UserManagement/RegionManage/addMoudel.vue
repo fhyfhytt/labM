@@ -31,7 +31,7 @@
           </el-form>
         </el-row>
         <div style="position:absolute;bottom:0px;right:0">
-          <el-button v-preventReClick="1000" class="button-sub" @click="saveBaseInfo">下一步</el-button>
+          <el-button v-preventReClick="1000" class="button-sub" @click="saveBaseInfo('baseInfo')">下一步</el-button>
         </div>
       </el-tab-pane>
       <!-- 第二步，组织选择 -->
@@ -57,7 +57,7 @@
           />
         </el-row>
         <div style="position:absolute;bottom:0;right:0">
-          <el-button v-if="!addFlag" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(0)">上一步</el-button>
+          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(0)">上一步</el-button>
           <el-button v-preventReClick="1000" class="button-sub" @click="addUserInfo">下一步</el-button>
         </div>
       </el-tab-pane>
@@ -78,7 +78,7 @@
           <el-table-column prop="email" label="邮箱" />
         </el-table>
         <div style="text-align:right;margin-top:40px;">
-          <el-button v-if="!addFlag" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(1)">上一步</el-button>
+          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(1)">上一步</el-button>
           <el-button v-preventReClick="1000" class="button-sub" @click="addHouseInfo">下一步</el-button>
         </div>
       </el-tab-pane>
@@ -106,7 +106,7 @@
           />
         </el-row>
         <div style="position:absolute;bottom:0;right:0">
-          <el-button v-if="!addFlag" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(2)">上一步</el-button>
+          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(2)">上一步</el-button>
           <el-button v-preventReClick="1000" class="button-sub" @click="addClassifyInfo">下一步</el-button>
         </div>
       </el-tab-pane>
@@ -134,7 +134,7 @@
           />
         </el-row>
         <div style="position:absolute;bottom:0;right:0">
-          <el-button v-if="!addFlag" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(3)">上一步</el-button>
+          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(3)">上一步</el-button>
           <el-button v-preventReClick="2000" class="button-sub" @click="saveUserInfo">完 成</el-button>
         </div>
       </el-tab-pane>
@@ -166,12 +166,9 @@
 
 <script>
 import { addRegion, editRegion, getDeptByRegionId, searchRegion, getUserByRegionId, getUserList, getClassifyByRegionId, getHouseByRegionId } from '@/api/userManagement.js'
-// import addClassMoudel from './addClassMoudel.vue'
-// import addHouseMoudel from './addHouseMoudel.vue'
-import { tree2Array } from '@/utils/utils'
+import { tree2Array, setTreeData, checked } from '@/utils/utils'
 export default {
   name: 'AddRolePage',
-  // components: { addClassMoudel, addHouseMoudel },
   props: {
     treeId: {
       type: String,
@@ -229,14 +226,10 @@ export default {
       houseFromData: [],
       houseToData: [],
       houseRoleData: [], // 库房参数
-      houseTitle: ['全部库房', '已选库房']
+      houseTitle: ['全部库房', '已选库房'],
+      isPrev: true // 上一步按钮提示
     }
   },
-  // watch: {
-  //   regionId: function() {
-  //     this.baseInfo.id = this.regionId
-  //   }
-  // },
   methods: {
     handleClick(tab) {
     },
@@ -258,11 +251,15 @@ export default {
       await getDeptByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.fromData = res.data
-          this.roleData = res.data.filter(item => {
-            return item.checked === '1' // 选中加1
+          var newArr = []
+          res.data.filter(item => {
+            return item.checked === '1'
           }).map(item => {
             return item.id
+          }).forEach(item => {
+            checked(item, setTreeData(res.data), newArr)
           })
+          this.roleData = newArr
         } else {
           this.$message.error(res.msg)
         }
@@ -276,11 +273,15 @@ export default {
       await getClassifyByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.classFromData = res.data
-          this.classRoleData = res.data.filter(item => {
-            return item.checked === '1' // 选中加1
+          var newArr1 = []
+          res.data.filter(item => {
+            return item.checked === '1'
           }).map(item => {
             return item.id
+          }).forEach(item => {
+            checked(item, setTreeData(res.data), newArr1)
           })
+          this.classRoleData = newArr1
         } else {
           this.$message.error(res.msg)
         }
@@ -295,7 +296,7 @@ export default {
         if (res.success === true) {
           this.houseFromData = res.data
           this.houseRoleData = res.data.filter(item => {
-            return item.checked === '1' // 选中加1
+            return item.checked === '1'
           }).map(item => {
             return item.id
           })
@@ -326,14 +327,10 @@ export default {
         this.handleGetRoleUsers()
         // 根据数据获取库房
         this.getHouseMenu()
-        // this.$refs.addHouseMoudel.getHouseMenu()
         // 根据数据获取分类
         this.getClassifyMenu()
-        // this.$refs.addClassMoudel.getClassifyMenu()
       } else {
         this.baseInfo = {}
-        // this.roleMenuTree = []
-        // this.roleBtnTree = []
         this.userInfo = []
         this.$emit('reset-save-flag', true)
         this.addFlag = true
@@ -341,12 +338,6 @@ export default {
         this.pane3 = true
         this.pane4 = true
         this.pane5 = true
-        // this.toData = []
-        // this.roleData = []
-        // this.classToData = []
-        // this.classRoleData = []
-        // this.houseToData = []
-        // this.houseRoleData = []
       }
     },
     // 行点击获取行信息
@@ -412,56 +403,55 @@ export default {
       this.handleGetRoleUsers()
     },
     // 保存数据域基本信息--第一步
-    saveBaseInfo() {
+    saveBaseInfo(formName) {
+      const param = {}
       if (this.addFlag === false) {
-        const param =
-        {
-          flag: '0',
-          sysRegion: {
-            code: this.baseInfo.code,
-            name: this.baseInfo.name,
-            description: this.baseInfo.description,
-            id: this.baseInfo.id
-          }
-        }
-        editRegion(param).then(res => {
-          if (res.success === true) {
-            this.activeName = '1'
-            this.active = 1
-            this.$message.success('修改成功')
-            this.$emit('refresh')
-            this.getRegionMenuFirst()
-          } else {
-            this.$message.error(res.msg)
-          }
-        })
-      } else {
-        // 查重
-        searchRegion({ sysRegion: { code: this.baseInfo.code, name: this.baseInfo.name }}).then(res => {
-          if (res.success === false) {
-            this.$message.error(res.msg)
-            return false
-          } else {
-            this.activeName = '1'
-            this.active = 1
-            this.getRegionMenuFirst()
-          }
-        }).catch(res => {
-          this.$message.error(res.msg)
-        })
+        param.flag = '0'
+        param.sysRegion = {}
+        param.sysRegion.code = this.baseInfo.code
+        param.sysRegion.name = this.baseInfo.name
+        param.sysRegion.description = this.baseInfo.description || ''
+        param.sysRegion.id = this.baseInfo.id
       }
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.addFlag === false) {
+            editRegion(param).then(res => {
+              if (res.success === true) {
+                this.activeName = '1'
+                this.active = 1
+                this.$message.success('修改成功')
+                this.$emit('refresh')
+                this.getRegionMenuFirst()
+              } else {
+                this.$message.error(res.msg)
+              }
+            }).catch(res => {
+              this.$message.error(res.msg)
+            })
+          } else {
+            // 查重
+            searchRegion({ sysRegion: { code: this.baseInfo.code, name: this.baseInfo.name }}).then(res => {
+              if (res.code === 0) {
+                this.activeName = '1'
+                this.active = 1
+                this.getRegionMenuFirst()
+              } else {
+                this.$message.error(res.msg)
+              }
+            })
+          }
+        } else {
+          return false
+        }
+      })
     },
     // 保存或修改数据域组织信息--第二步
-    // 组织不能为空
-    orgNotNull() {
+    addUserInfo() {
       if (this.ids.length === 0) {
         this.$message.error('组织不能为空！')
-        return false
-      } else {
-        this.addUserInfo()
+        return
       }
-    },
-    addUserInfo() {
       if (this.addFlag === false) {
         var deptIdList = this.ids
         editRegion({ flag: '1', sysRegion: { id: this.baseInfo.id }, deptIdList }).then(res => {
@@ -473,11 +463,12 @@ export default {
             this.handleGetRoleUsers()
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
+            this.isPrev = false
           } else {
-            this.$message.error('组织不能为空！')
+            this.$message.error(res.msg)
           }
         }).catch(e => {
-
+          this.$message.error(e.msg)
         })
       } else {
         this.activeName = '2'
@@ -500,10 +491,9 @@ export default {
             this.$message.success('保存成功')
             this.$emit('getTableData')
             this.getHouseMenu()
-            // this.regionId = this.baseInfo.id
-            // this.$refs.addHouseMoudel.getHouseMenu()
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
+            this.isPrev = false
           } else {
             this.$message.error(res.msg)
           }
@@ -513,13 +503,11 @@ export default {
         this.active = 3
         // 根据数据获取库房
         this.getHouseMenu()
-        // this.$refs.addHouseMoudel.getHouseMenu()
       }
     },
     //  保存或修改数据域库房信息--第四步
     addClassifyInfo() {
       if (this.addFlag === false) {
-        // const houseIds = this.$refs.addHouseMoudel.getHouseIds()
         var warehouseIdList = this.houseIds
         editRegion({ flag: '3', sysRegion: { id: this.baseInfo.id }, warehouseIdList }).then(res => {
           if (res.success === true) {
@@ -528,9 +516,9 @@ export default {
             this.$message.success('保存成功')
             this.$emit('getTableData')
             this.getClassifyMenu()
-            // this.$ref.addClassMoudel.getClassifyMenu()
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
+            this.isPrev = false
           } else {
             this.$message.error(res.msg)
           }
@@ -540,7 +528,6 @@ export default {
         this.active = 4
         // 根据数据获取分类
         this.getClassifyMenu()
-        // this.$refs.addClassMoudel.getClassifyMenu()
       }
     },
 
@@ -556,6 +543,7 @@ export default {
             this.$message.success('保存成功')
             this.closeAddRole()
             this.$emit('refresh')
+            this.isPrev = false
           } else {
             this.$message.error(res.msg)
           }
@@ -599,6 +587,7 @@ export default {
       this.classToData = []
       this.$refs.classTreeTransfer.clearChecked()
       this.$emit('closeAddRole')
+      this.isPrev = true
     },
     // 添加新成员
     addNewUser() {
@@ -635,6 +624,7 @@ export default {
       }
       this.userInfo = this.userInfo.concat(userIdList)
       this.addUserVisible = false
+      this.primaryKey = ''
     },
     // 查询要新添加的用户
     searchNewUsers() {
@@ -658,6 +648,11 @@ export default {
       })
     },
     prev(e) {
+      if (this.isPrev && e === 0 && this.addFlag !== false) {
+        this.toData = []
+        this.houseToData = []
+        this.classToData = []
+      }
       // 上一页
       this.activeName = e + ''
       this.active = e
@@ -674,16 +669,24 @@ export default {
     add(fromData, toData, obj) {
       // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
       // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
-      this.ids = obj.keys
+      // this.ids = obj.keys
+      // this.ids = obj.keys.concat(obj.harfKeys)
+      // if (toData.length === 0) {
+      //   toData[0] = []
+      // }
+      this.ids = tree2Array(toData.length > 0 ? toData[toData.length - 1] : [], '0').map(item => {
+        if (item) {
+          return item.id
+        } else {
+          return
+        }
+      })
     },
     // 监听穿梭框组件移除
     remove(fromData, toData, obj) {
       // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
       // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
-      if (toData.length === 0) {
-        toData[0] = []
-      }
-      this.ids = tree2Array(toData[0], '0').map(item => {
+      this.ids = tree2Array(toData.length > 0 ? toData[toData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -693,14 +696,29 @@ export default {
     },
     // 监听穿梭框组件添加
     add2(houseFromData, houseToData, obj) {
-      this.houseIds = obj.keys
+      // if (houseToData.length === 0) {
+      //   houseToData[0] = []
+      // }
+      // this.houseIds = tree2Array(houseToData[0], '0').map(item => {
+      //   if (item) {
+      //     return item.id
+      //   } else {
+      //     return
+      //   }
+      // })
+      this.houseIds = houseToData.map(item => {
+        return item.id
+      })
     },
     // 监听穿梭框组件移除
     remove2(houseFromData, houseToData, obj) {
-      if (houseToData.length === 0) {
-        houseToData[0] = []
-      }
-      this.classIds = tree2Array(houseToData[0], '0').map(item => {
+      this.houseIds = houseToData.map(item => {
+        return item.id
+      })
+    },
+    // 监听穿梭框组件添加
+    add3(classFromData, classToData, obj) {
+      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -708,16 +726,9 @@ export default {
         }
       })
     },
-    // 监听穿梭框组件添加
-    add3(classFromData, classToData, obj) {
-      this.classIds = obj.keys
-    },
     // 监听穿梭框组件移除
     remove3(classFromData, classToData, obj) {
-      if (classToData.length === 0) {
-        classToData[0] = []
-      }
-      this.classIds = tree2Array(classToData[0], '0').map(item => {
+      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {
