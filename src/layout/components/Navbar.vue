@@ -68,7 +68,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
-import { getAllList } from '@/api/message'
+import { getAllList, checkStatus } from '@/api/message'
 // getShort
 export default {
   components: {
@@ -116,14 +116,16 @@ export default {
         pageSize: 10,
         pageNumber: 1,
         isPerson: 0,
-        sortColumn: 'publish_time'
+        sortColumn: 'publish_time',
+        isRead: 0
       }
       const param2 = {
         state: [1],
         pageSize: 10,
         pageNumber: 1,
         isPerson: 1,
-        sortColumn: 'publish_time'
+        sortColumn: 'publish_time',
+        isRead: 0
       }
       await getAllList(param1).then(res => {
         that.$nextTick(() => {
@@ -157,14 +159,21 @@ export default {
     },
     MsgClickTo(e) {
       const query = { id: this.sysCenter[e].msId }
+      this.changeStatus(query.id)
       this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
     },
     NoticeClickTo(e) {
       const query = { id: this.sysCenter[e].msId }
+      this.changeStatus(query.id)
       this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
     },
     leavetab(activeName, oldActiveName) {
       console.log(activeName)
+    }, changeStatus(id) {
+      checkStatus(id).then(res => {
+      }).catch(res => {
+        this.$message.error(res.msg)
+      })
     }
   }
 }

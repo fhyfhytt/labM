@@ -154,6 +154,7 @@ export default {
     },
     // 确认删除
     sureMsg(flag) {
+      this.moveShow = flag
       const param = { ids: this.delTableById.join(',') }
       var that = this
       this.removeLoading = true
