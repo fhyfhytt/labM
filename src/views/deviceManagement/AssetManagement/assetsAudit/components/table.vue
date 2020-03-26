@@ -3,7 +3,7 @@
     <div class="button-tool">
       <div class="button-tool-left fl" />
       <div class="button-tool-right fr">
-        <el-button v-permission="'assetsAuditDeleteMore'" @click="handleSelectCheck">批量审核</el-button>
+        <el-button v-permission="'assetsAuditDeleteMore'" class="iconfont iconshenpi" @click="handleSelectCheck"> 批量审核</el-button>
       </div>
     </div>
     <el-table ref="assetsAudit" v-loading="tableload" :data="tableDate" empty-text="无数据" @row-click="selectRow" @selection-change="handleSelectionChange">

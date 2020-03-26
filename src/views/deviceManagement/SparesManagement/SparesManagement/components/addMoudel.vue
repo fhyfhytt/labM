@@ -71,7 +71,7 @@
         <el-col :span="8">
           <el-form-item label="维保日期">
             <el-date-picker
-              v-model="baseInfo.maintran_date"
+              v-model="baseInfo.maintranDate"
               type="date"
               placeholder="选择日期"
             />
@@ -206,26 +206,7 @@ export default {
         // 修改提交
         that.$refs['baseInfo'].validate((valid) => {
           if (valid) {
-            // const param = that.baseInfo
-            const param = {
-              assetId: '123456',
-              code: '123456',
-              num: '10',
-              status: '1',
-              houseId: '123456',
-              house: '库房修改',
-              note: '备注',
-              dataFrom: '1',
-              checkStatus: '1',
-              checkNote: '审核备注',
-              maintranDate: '365',
-              maintranStatus: '1',
-              areaId: '123457',
-              area: '区域',
-              location: 'A3',
-              price: '10'
-            }
-
+            const param = that.baseInfo
             param.checkStatus = '0'
             addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
@@ -247,25 +228,29 @@ export default {
     addEditRoleDialog(data) {
       if (data) {
         this.disabledFlg = true
-        // this.baseInfo = data
         this.baseInfo = {
           id: data.id,
           assetId: data.assetId,
           code: data.code,
-          num: '10',
-          status: '1',
-          houseId: '123456',
-          house: '库房修改',
-          note: '备注',
-          dataFrom: '1',
-          checkStatus: '1',
-          checkNote: '审核备注',
-          maintranDate: '365',
-          maintranStatus: '1',
-          areaId: '123457',
-          area: '区域',
-          location: 'A3',
-          price: '10'
+          num: data.num,
+          status: data.status,
+          houseId: data.houseId,
+          house: data.house,
+          note: data.assetInfo.note,
+          dataFrom: data.dataFrom,
+          checkStatus: data.checkStatus,
+          checkNote: data.checkNote,
+          maintranDate: data.maintranDate,
+          maintranStatus: data.maintranStatus,
+          areaId: data.areaId,
+          area: data.area,
+          location: data.location,
+          price: data.price,
+          itemType: data.assetInfo.itemType,
+          assetName: data.assetInfo.assetName,
+          assetNo: data.assetInfo.assetNo,
+          unitType: data.assetInfo.unitType,
+          factory: data.assetInfo.factory
         }
       } else {
         this.$refs['baseInfo'].resetFields()
