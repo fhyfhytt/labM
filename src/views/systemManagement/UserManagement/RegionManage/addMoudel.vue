@@ -321,11 +321,6 @@ export default {
             checked(item, setTreeData(res.data), newArr)
           })
           this.roleData = newArr
-          // this.roleData = res.data.filter(item => {
-          //   return item.checked === '1' // 选中加1
-          // }).map(item => {
-          //   return item.id
-          // })
         } else {
           this.$message.error(res.msg)
         }
@@ -339,11 +334,6 @@ export default {
       await getClassifyByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.classFromData = res.data
-          // this.classRoleData = res.data.filter(item => {
-          //   return item.checked === '1' // 选中加1
-          // }).map(item => {
-          //   return item.id
-          // })
           var newArr1 = []
           res.data.filter(item => {
             return item.checked === '1'
@@ -366,20 +356,11 @@ export default {
       await getHouseByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.houseFromData = res.data
-          // this.houseRoleData = res.data.filter(item => {
-          //   return item.checked === '1' // 选中加1
-          // }).map(item => {
-          //   return item.id
-          // })
-          var newArr2 = []
-          res.data.filter(item => {
+          this.houseRoleData = res.data.filter(item => {
             return item.checked === '1'
           }).map(item => {
             return item.id
-          }).forEach(item => {
-            checked(item, setTreeData(res.data), newArr2)
           })
-          this.houseRoleData = newArr2
         } else {
           this.$message.error(res.msg)
         }
@@ -528,14 +509,12 @@ export default {
     },
     // 保存或修改数据域组织信息--第二步
     addUserInfo() {
+      if (this.ids.length === 0) {
+        this.$message.error('组织不能为空！')
+        return
+      }
       if (this.addFlag === false) {
-        // var deptIdList = this.ids
-        var deptIdList = []
-        if (this.ids.length === 0) {
-          deptIdList = this.roleData
-        } else {
-          deptIdList = this.ids
-        }
+        var deptIdList = this.ids
         editRegion({ flag: '1', sysRegion: { id: this.baseInfo.id }, deptIdList }).then(res => {
           if (res.success === true) {
             this.activeName = '2'
@@ -553,13 +532,8 @@ export default {
           this.$message.error(e.msg)
         })
       } else {
-        if (this.ids.length === 0) {
-          this.$message.error('组织不能为空！')
-          return
-        } else {
-          this.activeName = '2'
-          this.active = 2
-        }
+        this.activeName = '2'
+        this.active = 2
       }
     },
     //  保存或修改数据域用户信息--第三步
@@ -735,6 +709,11 @@ export default {
       })
     },
     prev(e) {
+      if (this.isPrev && e === 0 && this.addFlag !== false) {
+        this.toData = []
+        this.houseToData = []
+        this.classToData = []
+      }
       // 上一页
       this.activeName = e + ''
       this.active = e
@@ -753,10 +732,10 @@ export default {
       // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
       // this.ids = obj.keys
       // this.ids = obj.keys.concat(obj.harfKeys)
-      if (toData.length === 0) {
-        toData[0] = []
-      }
-      this.ids = tree2Array(toData[0], '0').map(item => {
+      // if (toData.length === 0) {
+      //   toData[0] = []
+      // }
+      this.ids = tree2Array(toData.length > 0 ? toData[toData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -768,10 +747,7 @@ export default {
     remove(fromData, toData, obj) {
       // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
       // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
-      if (toData.length === 0) {
-        toData[0] = []
-      }
-      this.ids = tree2Array(toData[0], '0').map(item => {
+      this.ids = tree2Array(toData.length > 0 ? toData[toData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -781,36 +757,29 @@ export default {
     },
     // 监听穿梭框组件添加
     add2(houseFromData, houseToData, obj) {
-      if (houseToData.length === 0) {
-        houseToData[0] = []
-      }
-      this.houseIds = tree2Array(houseToData[0], '0').map(item => {
-        if (item) {
-          return item.id
-        } else {
-          return
-        }
+      // if (houseToData.length === 0) {
+      //   houseToData[0] = []
+      // }
+      // this.houseIds = tree2Array(houseToData[0], '0').map(item => {
+      //   if (item) {
+      //     return item.id
+      //   } else {
+      //     return
+      //   }
+      // })
+      this.houseIds = houseToData.map(item => {
+        return item.id
       })
     },
     // 监听穿梭框组件移除
     remove2(houseFromData, houseToData, obj) {
-      if (houseToData.length === 0) {
-        houseToData[0] = []
-      }
-      this.houseIds = tree2Array(houseToData[0], '0').map(item => {
-        if (item) {
-          return item.id
-        } else {
-          return
-        }
+      this.houseIds = houseToData.map(item => {
+        return item.id
       })
     },
     // 监听穿梭框组件添加
     add3(classFromData, classToData, obj) {
-      if (classToData.length === 0) {
-        classToData[0] = []
-      }
-      this.classIds = tree2Array(classToData[0], '0').map(item => {
+      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -820,10 +789,7 @@ export default {
     },
     // 监听穿梭框组件移除
     remove3(classFromData, classToData, obj) {
-      if (classToData.length === 0) {
-        classToData[0] = []
-      }
-      this.classIds = tree2Array(classToData[0], '0').map(item => {
+      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {

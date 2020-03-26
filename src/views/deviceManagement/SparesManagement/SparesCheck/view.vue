@@ -11,7 +11,7 @@
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件分类：" @click.native="handleAdd">
-              <el-input placeholder="请选择备件分类" />
+              <el-input v-model="types" :title="types" placeholder="请选择备件分类" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
@@ -72,7 +72,8 @@ export default {
       // isDel: true // 最初默认标识可以删除
       sparesTypeVisible: false, // 备件分类页面是否显示
       id: '',
-      typeData: []
+      typeData: [],
+      types: ''
     }
   },
 
@@ -143,7 +144,12 @@ export default {
     // 点击查询备件列表数据
     getData(msg) {
       this.typeData = msg
+      this.types = this.typeData.map(item => {
+        return item.name
+      }).join(',')
+
       console.log(this.typeData)
+      console.log(this.types)
     }
   }
 }
@@ -155,7 +161,7 @@ export default {
 
 </style>
 <style lang="scss" scoped>
-  /deep/.deviceAdd .el-dialog {
+  .deviceAdd .el-dialog {
     width: 350px!important;
   }
 </style>
