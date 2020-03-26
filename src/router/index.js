@@ -9,6 +9,7 @@ import Layout from '@/layout'
 // import projectManageControl from './modules/projectManageControl'
 // import eventMonitoring from './modules/eventMonitoring'
 import manageControlRouter from './modules/manageControl'
+import assetsModuleRouter from './modules/device'
 // import tunnelControlShowRouter from './modules/tunnelControlShow'
 // import environmentalMonitor from './modules/environmentMonitor'
 // import animation from '@/views/components-demo/animation'         //3d
@@ -24,6 +25,7 @@ import manageControlRouter from './modules/manageControl'
 // import userManagement from '@/views/userManagement'               //用户管理
 // import systemManagement from '@/views/systemManagement'           //系统管理
 // import messageManagement from '@/views/messageManagement'         //消息管理
+
 export const constantRoutes = [
   {
     path: '',
@@ -112,6 +114,7 @@ export const constantRoutes = [
 export const asyncRoutes = [
 
   manageControlRouter,
+  assetsModuleRouter,
   { path: '*', redirect: '/404', hidden: true }
 ]
 
