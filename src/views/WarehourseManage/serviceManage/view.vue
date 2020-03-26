@@ -1,0 +1,385 @@
+<template>
+  <div class="pageRow">
+    <el-row>
+      <!-- 左侧列表 -->
+      <el-col :xl="{span:3}" :lg="{span:5}">
+        <div class="warehourse">
+          <div class="cangku">
+            <i class="iconfont iconcangku" style="color: #36A1FE" />
+            仓库
+          </div>
+          <div class="search-hourse">
+            <input v-model="inputContent" type="text" name="" class="search-input">
+            <i class="iconfont iconsousuo1 hoursesousuo" @click="searchWarehourse()" />
+          </div>
+          <div class="kufanglist">
+            <div v-for="(data,index) in wareHourseList" :key="index" :class="{bg: index === isActive}" class="hourser-list" @click="changeList(index)">
+              <i class="iconfont iconcangku" style="color: #FFCA25" />
+              <span>{{ data.name }}</span>
+            </div>
+          </div>
+        </div>
+      </el-col>
+      <el-col :xl="{span:21}" :lg="{span:19}" class="right-page">
+        <div class="rightTop">
+          <input v-model="searchHourseItem" type="text" name="" class="rightInput" style="border: none">
+          <i class="iconfont iconsousuo1 posisousuo" @click="searchHourse()" />
+          <i class="iconfont iconxinzeng iconStyle" @click="showAddBounced()" />
+          <i class="iconfont iconStyle" @click="importHourse()">&#xe6b2;</i>
+          <i class="iconfont iconxingzhuang1 iconStyleDel" @click="deleteWareHourse(checkHourseItem)" />
+        </div>
+        <div class="content">
+          <div v-for="(item,index) in hourseInfo" :key="index" class="contentItem">
+            <div class="face" @mouseover="ShowBounced(index)">
+              <img :src="item.defaultImg">
+            </div>
+            <!-- 库房点击详情弹框 -->
+            <ItemBounced v-if="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
+            <el-checkbox-group v-model="checkHourseItem" class="checkbox">
+              <el-checkbox :key="item.id" v-model="item.id" :checked="item.checked" :label="item.id" :disabled="item.disabled">编号:{{ item.code }}</el-checkbox>
+            </el-checkbox-group>
+          </div>
+        </div>
+        <footer class="footer">
+          <el-pagination
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </footer>
+      </el-col>
+    </el-row>
+    <el-dialog v-if="showFormAdd" v-model="showFormAdd" title="库位新增" :close-on-click-modal="false" :visible.sync="showFormAdd" class="deviceAdd addmanage">
+      <addMoudel @updateWarehourse="updateWarehourse" @formVisible="cancelupdate" />
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { editWarehourse, deleteWarehourse, getWarehouseList, getAllWarehouse } from '@/api/warehourse'
+import allware from '@/assets/img/warehourse/allware.png'
+import fullware from '@/assets/img/warehourse/fullware.png'
+import halfware from '@/assets/img/warehourse/halfware.png'
+import addMoudel from './addMoudel.vue'
+import ItemBounced from './itemBounced'
+export default {
+  components: {
+    addMoudel,
+    ItemBounced
+  },
+  data() {
+    return {
+      inputContent: '',
+      hourseInfo: [], // 库位列表
+      wareHourseList: [], // 库房列表
+      showNowhourse: '', // 当前展示的库位
+      searchHourseItem: '', // 需要搜索的库位
+      total: 0,
+      currentPage: 1,
+      isActive: 0,
+      showbouncedItx: -1,
+      showFormAdd: false,
+      defaultImg: '',
+      checkHourseItem: [],
+      checked: '',
+      listParam: {
+        warehouseId: '',
+        name: '',
+        code: '',
+        pageSize: 10,
+        pageNumber: this.currentPage,
+        sortColumn: '',
+        sortOrder: ''
+      },
+      wareHourseParam: {
+        sortColumn: 'create_time',
+        sortOrder: 'desc',
+        name: ''
+      } // 库房参数
+    }
+  },
+  created() {
+  },
+  mounted() {
+    // 查询库房列表
+    this.getwarehouseList()
+    // 查询库位列表
+    this.getList()
+  },
+  methods: {
+    // 展示新增弹框
+    showAddBounced() {
+      this.showFormAdd = true
+    },
+    // 展示每一项弹框
+    ShowBounced(index) {
+      this.showNowhourse = this.hourseInfo[index]
+      this.showbouncedItx = index
+    },
+    // 查询库房列表
+    getwarehouseList() {
+      getAllWarehouse(this.wareHourseParam).then(response => {
+        if (response.code === 0) {
+          this.wareHourseList = response.data
+        }
+      })
+    },
+    // 查询库位列表
+    getList() {
+      getWarehouseList(this.listParam).then(response => {
+        if (response.success === true) {
+          this.total = Number(response.data.totalNum)
+          this.hourseInfo = response.data.list
+          for (var i = 0; i < this.hourseInfo.length; i++) {
+            // 80%以上红色,20-80黄色,小于20绿色
+            if (parseInt(this.hourseInfo[i].rate) < 20) {
+              this.hourseInfo[i].defaultImg = allware
+              this.hourseInfo[i].disabled = false
+            } else if (parseInt(this.hourseInfo[i].rate) <= 80) {
+              this.hourseInfo[i].defaultImg = halfware
+              this.hourseInfo[i].disabled = true
+            } else {
+              this.hourseInfo[i].defaultImg = fullware
+              this.hourseInfo[i].disabled = true
+            }
+          }
+        } else {
+          return
+        }
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    // 删除库房
+    deleteWareHourse(id) {
+      this.$confirm('是否确定删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const param = {
+          ids: id.toString()
+        }
+        deleteWarehourse(param).then(response => {
+          if (response.code === 0) {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.getList()
+          }
+        }).catch((e) => {
+          console.log(e)
+        })
+      }).catch(() => {
+      })
+    },
+    // 新增/修改
+    updateWarehourse(param) {
+      const params = {
+        id: '',
+        name: param.name,
+        code: param.code,
+        site: param.position,
+        comment: param.memo,
+        warehouseId: this.listParam.warehouseId,
+        volume: param.volume,
+        weight: param.weight
+      }
+      editWarehourse(params).then(response => {
+        if (response.code === 0) {
+          this.showFormAdd = false
+          this.getList()
+        } else {
+          alert(response.msg)
+        }
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    // 隐藏弹框
+    cancelupdate() {
+      this.showFormAdd = false
+    },
+    // 导入
+    importHourse() {},
+    // 搜索库房
+    searchWarehourse() {
+      this.wareHourseParam.name = this.inputContent
+      this.getwarehouseList()
+    },
+    // 搜索库位
+    searchHourse() {
+      this.listParam.name = this.searchHourseItem
+      this.getList()
+    },
+    handleCurrentChange(val) {
+      this.listParam.pageNumber = val
+      this.getList()
+    },
+    handleSizeChange(val) {
+      console.log(val)
+    },
+    // 点击左侧list
+    changeList(index) {
+      const _this = this
+      _this.listParam.warehouseId = _this.wareHourseList[index].id
+      _this.getList()
+      _this.isActive = index
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+  @import '~@/styles/mixin.scss';
+  @import '~@/styles/variables.scss';
+  .warehourse{
+    background: #fff;
+    height: 100%;
+    text-align: center;
+    padding-top: 10px;
+    .cangku{
+      float: left;
+      padding-left: 20px;
+    }
+    .search-hourse{
+      position: relative;
+      padding: 10px 0;
+      display: inline-block;
+      width: 200px;
+      .search-input{
+        height: 30px;
+        width: 170px;
+        border-radius: 20px;
+        padding: 10px;
+        padding-right: 30px;
+        border: none;
+        background: #F1F2F6;
+      }
+      .hoursesousuo{
+        color: #C1CEE0;
+        position: absolute;
+        right: 20px;
+        top: 17px;
+        cursor: pointer;
+        &:hover{
+          color: #379EFC;
+        }
+      }
+    }
+    .kufanglist::-webkit-scrollbar{
+      width: 4px;
+      background: #8C8B8E;
+    }
+    .kufanglist{
+      overflow: hidden;
+      overflow-y: auto;
+      height: 500px;
+      .hourser-list{
+        text-align: left;
+        padding-left: 20px;
+        height: 40px;
+        line-height: 40px;
+        &.bg{
+          background: #EBF5FF;
+          border-right: 4px solid #379EFC;
+        }
+      }
+    }
+  }
+  .rightTop{
+    position: absolute;
+    right: 0;
+    .rightInput{
+      width: 324px;
+      height: 30px;
+      border-radius: 20px;
+      padding: 0 30px 0 10px;
+    }
+    .iconStyle{
+      color:#fff;
+      background: #39A0FF;
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow:0px 2px 10px 0px rgba(214,215,222,1);
+      cursor: pointer;
+      &:hover{
+        background: #fff;
+        color: #379EFC;
+      }
+    }
+    .iconStyleDel{
+      color: #4F95D4;
+      background: #fff;
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow:0px 2px 10px 0px rgba(214,215,222,1);
+      cursor: pointer;
+      &:hover{
+        background: #379EFC;
+        color: #fff;
+      }
+    }
+    .posisousuo{
+      position: absolute;
+      right: 100px;
+      top: 1px;
+      color: #5D99D9;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #E7F3FF;
+      text-align: center;
+      padding: 5px;
+      cursor: pointer;
+      &:hover{
+        background: #389DFA;
+        color: #fff;
+      }
+    }
+  }
+  .content{
+    margin: 30px 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    .contentItem{
+      display: inline-block;
+      margin: 10px;
+      position: relative;
+      width: 200px;
+      height: 200px;
+      .face,.back{
+        width: 180px;
+        height: 170px;
+        display: inline-block;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        transition: all 2s;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .face{transform: rotateY(0deg);}
+      .back{transform: perspective(200px) rotateY(-180deg);}
+      .checkbox{
+        margin-top: 17px;
+      }
+      &:hover .face{
+        transform: rotateY(180deg);
+      }
+      &:hover .back{
+        transform: rotateY(0deg);
+      }
+    }
+  }
+  .footer{
+    bottom: 0;
+    right: 0;
+    position: absolute;
+  }
+</style>

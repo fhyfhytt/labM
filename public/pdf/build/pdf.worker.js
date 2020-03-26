@@ -54839,7 +54839,7 @@ function () {
           return PostScriptToken.IFELSE;
 
         default:
-          return PostScriptToken.getOperator(str);
+          return PostScript.getOperator(str);
       }
     }
   }, {
