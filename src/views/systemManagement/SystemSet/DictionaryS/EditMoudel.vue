@@ -2,8 +2,8 @@
   <div class="DictionarysEdit">
     <p class="bkb" />
     <el-form ref="editForm" :model="editForm" label-width="140px" :rules="editFormRules" class="edittop">
-      <el-form-item label="字典编码：" prop="code">
-        <el-input v-model="editForm.code" placeholder="请输入字典编码" />
+      <el-form-item label="字典编码：" prop="dictCode">
+        <el-input v-model="editForm.dictCode" placeholder="请输入字典编码" />
       </el-form-item>
       <el-form-item label="字典名称：" prop="name">
         <el-input v-model="editForm.name" placeholder="请输入字典名称" />
@@ -52,9 +52,9 @@ export default {
     }
     return {
       // 新增界面数据
-      editForm: { code: '', name: '', description: '', remark: '' },
+      editForm: { dictCode: '', name: '', description: '', remark: '' },
       editFormRules: {
-        code: [{ required: true, validator: validatePass2, trigger: 'blur' }],
+        dictCode: [{ required: true, validator: validatePass2, trigger: 'blur' }],
         name: [{ required: true, message: '请输入字典名称', trigger: 'blur' }],
         description: [{ required: true, message: '请输入字典描述', trigger: 'blur' }]
       }
@@ -79,7 +79,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const param = {
-            code: this.editForm.code,
+            dictCode: this.editForm.dictCode,
             dictName: this.editForm.name,
             description: this.editForm.description,
             remark: this.editForm.remark,

@@ -27,7 +27,7 @@
         <el-table ref="multipleDel" v-loading="loading" :data="tableData" style="width: 100%" empty-text="无数据" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" />
-          <el-table-column prop="code" label="字典编号" />
+          <el-table-column prop="dictCode" label="字典编号" />
           <el-table-column prop="name" label="字典名称" />
           <el-table-column prop="description" label="字典描述" />
           <el-table-column prop="remark" label="备注" />

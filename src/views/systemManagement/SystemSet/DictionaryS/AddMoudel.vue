@@ -2,8 +2,8 @@
   <div class="DictionarysAdd">
     <p class="bkb" />
     <el-form ref="addForm" :model="addForm" label-width="140px" :rules="addFormRules" class="addtop">
-      <el-form-item label="字典编码：" prop="code">
-        <el-input v-model="addForm.code" placeholder="请输入字典编码" />
+      <el-form-item label="字典编码：" prop="dictCode">
+        <el-input v-model="addForm.dictCode" placeholder="请输入字典编码" />
       </el-form-item>
       <el-form-item label="字典名称：" prop="dictName">
         <el-input v-model="addForm.dictName" placeholder="请输入字典名称" />
@@ -42,9 +42,9 @@ export default {
     }
     return {
       // 新增界面数据
-      addForm: { code: '', dictName: '', description: '', remark: '' },
+      addForm: { dictCode: '', dictName: '', description: '', remark: '' },
       addFormRules: {
-        code: [{ required: true, validator: validatePass2, trigger: 'blur' }],
+        dictCode: [{ required: true, validator: validatePass2, trigger: 'blur' }],
         dictName: [{ required: true, message: '请输入字典名称', trigger: 'blur' }],
         description: [{ required: true, message: '请输入字典描述', trigger: 'blur' }]
       }
