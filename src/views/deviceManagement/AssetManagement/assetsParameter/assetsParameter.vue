@@ -3,30 +3,30 @@
     <div class="page-title">
       <el-form ref="form1" :model="filters" size="small" label-width="110px">
         <el-row>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="关键字：">
               <el-input v-model="filters.no" style="background:transparent" placeholder="请输入角色名称" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="资产分类">
               <el-input v-model="itemTypes" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="状态：">
               <el-select v-model="filters.name" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option v-for="item in statuesList" :key="item.code" :label="item.name" :value="item.name" />
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="所属区域">
               <el-input v-model="areas" placeholder="-请选择-" clearable @focus="showAddFiltersArea" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item label-width="50px">
+          <el-col :xl="{span:4}" :lg="{span:4}">
+            <el-form-item label-width="30px">
               <el-button v-permission="'assetsParameterSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
             </el-form-item>
           </el-col>
@@ -37,7 +37,6 @@
       <div class="page-table-content">
         <div class="button-tool">
           <span class="fl">
-            <!-- <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)"> -->
             <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
             <el-button v-permission="'assetsParameterImport'" icon="iconfont " size="small" @click="toLead">导入</el-button>
             <el-button v-permission="'assetsParameterExport'" icon="iconfont " size="small" @click="exportExcel('1')">导出</el-button>
@@ -109,7 +108,7 @@
     </el-table>
     <div class="childrenlog">
       <!--新增/编辑界面-->
-      <el-dialog v-model="addFormVisible" :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" class="addRoleDialog" width="45%">
+      <el-dialog v-model="addFormVisible" :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" class="addRoleDialog" width="800px">
         <addMoudel ref="addEditRole" :statues-list="statuesList" @reset-save-flag="resetSaveFlag" @closeAddRole="closeAddRole" @addSuccess="addSuccess" />
       </el-dialog>
       <!-- 弹出框 -->
@@ -430,91 +429,27 @@ export default {
       if (files.length <= 0) {
         this.$message.error('请选择导入文件')
       } else {
-        // if (!/.(xls)$/.test(files[0].name)) {
-        //   this.$message.error("导入文件格式不正确");
-        // } else {
         importExcel(formData).then(res => {
-          if (res.data.code === '0') {
+          console.log('导入：', res)
+          if (res.code === 0) {
             that.visibleImportRole = false
             this.$message.success('导入成功')
             this.getList()
           } else {
-            this.$message.error(res.data.msg)
+            this.$message.error(res.msg)
           }
-        }).catch(() => {
-          this.$message.error('导入失败，请核对文档格式是否正确', 'error')
         })
-        // }
       }
-    },
-
-    importf(obj) {
-      // const _this = this
-      // // const inputDOM = this.$refs.inputer
-      // _this.file = event.currentTarget.files[0];
-      // var rABS = false;//是否将文件读取为二进制字符串
-      // var f = _this.file;
-      // var reader = new FileReader()
-      // FileReader.prototype.readAsBinaryString = function(f) {
-      //   var binary = ''
-      //   var rABS = false // 是否将文件读取为二进制字符串
-      //   var wb // 读取完成的数据
-      //   var outdata
-      //   var reader = new FileReader()
-      //   reader.onload = function(e) {
-      //     var bytes = new Uint8Array(reader.result)
-      //     var length = bytes.byteLength
-      //     for (var i = 0; i < length; i++) {
-      //       binary += String.fromCharCode(bytes[i])
-      //     }
-      //     var XLSX = require('xlsx')
-      //     if (rABS) {
-      //       wb = XLSX.read(btoa(fixdata(binary)), { // 手动转化
-      //         type: 'base64'
-      //       })
-      //     } else {
-      //       wb = XLSX.read(binary, {
-      //         type: 'binary'
-      //       })
-      //     }
-      //     // outdata就是你想要的东西 excel导入的数据
-      //     outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-      //     //excel数据再处理
-      //     const arr = []
-      //     outdata.map(v => {
-      //       const obj = {}
-      //       obj.name0 = v['资产代码']
-      //       obj.name1 = v['资产名称']
-      //       obj.name2 = v['资产分类']
-      //       obj.name3 = v['资产状态']
-      //       obj.name4 = v['生产厂商']
-      //       obj.name5 = v['设备型号']
-      //       obj.name6 = v['所属区域']
-      //       obj.name7 = v['采购价(元)']
-      //       obj.name8 = v['数量']
-      //       obj.name9 = v['状态']
-      //       arr.push(obj)
-      //     })
-      //     console.log('测试：', arr)
-      //     _this.tableData = arr
-      //   }
-      //   reader.readAsArrayBuffer(f)
-      // }
-      // if (rABS) {
-      //   reader.readAsArrayBuffer(f)
-      // } else {
-      //   reader.readAsBinaryString(f)
-      // }
     },
     // 导出表格
     exportExcel(type) {
       let excelName = ''
       if (type === '2') {
         this.tableExport = []
-        excelName = '资产模板'
+        excelName = 'Assets_template'
       } else {
         this.tableExport = this.tableDataExport
-        excelName = '资产台账'
+        excelName = 'Assets_table'
       }
       this.$nextTick(() => {
         var wb = null

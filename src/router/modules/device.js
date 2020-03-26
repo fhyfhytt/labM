@@ -62,7 +62,8 @@ const assetsModuleRouter = {
       component: () => import('@/views/deviceManagement/SparesManagement/SparesManagement/view'),
       meta: {
         title: '备件管理',
-        icon: 'icon111'
+        icon: 'icon111',
+        roles: ['SparesManagement']
       },
       name: 'SparesManagementChild'
     }]

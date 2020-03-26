@@ -89,7 +89,7 @@
     </div>
 
     <!-- 操作编码选择 -->
-    <el-dialog title="操作编码选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showCode" :before-close="codeClose" width="40%">
+    <el-dialog title="操作编码选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showCode" :before-close="codeClose" width="800px">
       <addCode @resCode="resCode" />
     </el-dialog>
     <!-- 所属区域 -->

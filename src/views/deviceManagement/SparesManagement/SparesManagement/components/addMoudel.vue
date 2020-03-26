@@ -4,7 +4,7 @@
       <el-form ref="baseInfo" :model="baseInfo" label-width="105px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
         <el-col :span="8">
           <el-form-item label="物资编码">
-            <el-input v-model="baseInfo.no" disabled />
+            <el-input v-model="baseInfo.assetNo" disabled />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -45,7 +45,7 @@
         <el-col :span="8">
           <el-form-item label="物资状态" prop="status">
             <el-select v-model="baseInfo.status" popper-class="select-option" clearable placeholder="-请选择-">
-              <el-option v-for="item in goodsStatusList" :key="item.code" :label="item.name" :value="item.name" />
+              <el-option v-for="item in goodsStatusList" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -64,7 +64,7 @@
         <el-col :span="8">
           <el-form-item label="维保状态">
             <el-select v-model="baseInfo.maintranStatus" popper-class="select-option" placeholder="-请选择状态-">
-              <el-option v-for="item in maintranStatusList" :key="item.code" :label="item.name" :value="item.name" />
+              <el-option v-for="item in maintranStatusList" :key="item.value" :label="item.name" :value="item.value" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -133,7 +133,10 @@ export default {
         ]
       },
       houseList: [], // 所属库房
-      maintranStatusList: [], // 维保状态
+      maintranStatusList: [
+        { name: '在保中', value: '1' },
+        { name: '已过保', value: '2' }
+      ], // 维保状态
       goodsStatusList: [], // 物资状态
 
       disabledFlg: false,
@@ -153,23 +156,6 @@ export default {
     }
   },
   created() {
-    common.getDictNameList({ dictName: '维保状态', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
-        this.$nextTick(() => {
-          this.maintranStatusList = res.data
-          console.log('res.data：', res.data)
-        })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
-      }
-    }).catch(res => {
-      this.$message.error(res.message)
-    })
-
     common.getDictNameList({ dictName: '物资状态', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
@@ -212,7 +198,7 @@ export default {
         that.$refs['baseInfo'].validate((valid) => {
           if (valid) {
             const param = that.baseInfo
-            param.checkStatus = '未审核'
+            param.checkStatus = '0'
             console.log('param:', param)
             addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
@@ -234,7 +220,7 @@ export default {
         that.$refs['baseInfo'].validate((valid) => {
           if (valid) {
             const param = that.baseInfo
-            param.checkStatus = '未审核'
+            param.checkStatus = '0'
             addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
               if (response.success === true) {
@@ -277,7 +263,7 @@ export default {
     // 条件选择返回
     resCode(res) {
       this.showCode = false
-      this.baseInfo.no = res.assetNo
+      this.baseInfo.assetNo = res.assetNo
       this.baseInfo.code = res.code
       this.baseInfo.assetName = res.assetName
       this.baseInfo.itemType = res.itemType

@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="dialgEditform1">
+  <div v-loading="loading" class="assetsAudit">
     <el-form ref="editForm" :model="editForm" label-width="110px" :rules="addFormRules" class="formAdd">
       <div class="minTitle">基本信息</div>
       <el-row>
@@ -151,10 +151,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '~@/styles/modul.scss';
-.el-form-item--medium .el-form-item__label {
-  line-height: 34px;
-}
-.minTitle {margin:0 0 10px 0;color: #38a4ed;padding-bottom: 10px;font-weight: bold;border-bottom: 2px solid #ddd;}
+<style lang="scss">
+  .assetsAudit {
+    .el-form-item--medium .el-form-item__label {
+      line-height: 34px;
+    }
+    .el-form-item {margin-bottom: 15px;}
+    .minTitle {
+      margin:0 0 10px 0;color: #38a4ed;padding-bottom: 10px;font-weight: bold;border-bottom: 2px solid #ddd;
+    }
+  }
 </style>

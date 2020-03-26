@@ -15,8 +15,8 @@
           </el-col>
           <el-col :xl="{span:5}" :lg="{span:6}">
             <el-form-item label="所属库房：">
-              <el-select v-model="filters.houseIds" popper-class="select-option" multiple clearable placeholder="-请选择-">
-                <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.name" />
+              <el-select v-model="filters.houseIds" popper-class="select-option" multiple clearable placeholder="-请选择-" @change="aa">
+                <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.code" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -73,27 +73,24 @@
     </div>
     <!-- 导出数据 -->
     <el-table v-show="false" id="exportExcelTable" :data="tableExport">
-      <el-table-column prop="no" label="资产代码" />
-      <el-table-column prop="assetName" label="资产名称" />
-      <el-table-column prop="itemType" label="资产分类" />
-      <el-table-column prop="status" label="资产状态" />
-      <el-table-column prop="factory" label="生产厂商" />
-      <el-table-column prop="unitType" label="设备型号" />
-      <el-table-column prop="area" label="所属区域" />
-      <el-table-column prop="price" label="采购价(元)" />
+      <el-table-column prop="assetNo" label="备件编码" />
+      <el-table-column prop="assetName" label="备件名称" />
+      <el-table-column prop="itemType" label="备件分类" />
+      <el-table-column prop="status" label="所属状态" />
+      <el-table-column prop="house" label="所属库房" />
       <el-table-column prop="num" label="数量" />
     </el-table>
     <!-- 导出数据模板 -->
     <el-table v-show="false" id="exportExcelMould" :data="tableExport">
       <el-table-column prop="code" label="操作编码" />
-      <el-table-column prop="assetName" label="资产名称" />
-      <el-table-column prop="itemType" label="资产分类" />
+      <el-table-column prop="assetName" label="物资名称" />
+      <el-table-column prop="itemType" label="物资分类" />
       <el-table-column prop="unitType" label="设备型号" />
       <el-table-column prop="factory" label="设备厂商" />
-      <el-table-column prop="status" label="资产状态" />
-      <el-table-column prop="area" label="所属区域" />
-      <el-table-column prop="location" label="分布位置" />
       <el-table-column prop="price" label="采购价(元)" />
+      <el-table-column prop="status" label="物资状态" />
+      <el-table-column prop="house" label="所属库房" />
+      <el-table-column prop="location" label="分布位置" />
       <el-table-column prop="maintranStatus" label="维保状态" />
       <el-table-column prop="maintranDate" label="维保日期" />
       <el-table-column prop="note" label="备注" />
@@ -190,6 +187,9 @@ export default {
     // this.getList()
   },
   methods: {
+    aa() {
+      console.log(this.filters.houseIds.join(',').split(','))
+    },
     // 选择筛选条件
     showAddFiltersType() {
       this.dialogName = '资产分类选择'
@@ -262,14 +262,17 @@ export default {
     // 查询
     getList() {
       const param = {
-        pageNumber: this.pageNumber,
-        pageSize: this.pageSize,
-        no: this.filters.no,
-        itemTypes: this.itemTypesArr,
-        status: this.filters.name,
-        areas: this.arearArr,
-        itsmUserid: localStorage.getItem('login-id'),
-        checkStatus: '审核通过'
+        // pageNum: this.pageNumber,
+        // pageSize: this.pageSize,
+        // assetName: this.filters.assetNo,
+        // assetItemType: this.itemTypesArr,
+        // checkStatus: '1'
+        'pageSize': 10,
+        'pageNum': 1,
+        'checkStatus': 1,
+        'assetName': '',
+        'assetItemType': '',
+        'houseIds': this.filters.houseIds.join(',').split(',')
       }
       queryByWarehouseAsset(param).then(response => {
         this.loading = false
@@ -486,10 +489,10 @@ export default {
       let excelName = ''
       if (type === '2') {
         this.tableExport = []
-        excelName = '资产模板'
+        excelName = 'SparesManage_template'
       } else {
         this.tableExport = this.tableDataExport
-        excelName = '资产台账'
+        excelName = 'SparesManage_table'
       }
       this.$nextTick(() => {
         var wb = null
