@@ -12,11 +12,27 @@
 
     <div class="right-menu">
       <div class="right-menu-item">
-        <el-popover placement="bottom" width="400" trigger="click">
-          <el-tabs v-model="activeName" @before-leave="leavetab" @tab-click="handleClick">
+        <el-popover placement="bottom" width="400" trigger="hover">
+          <el-tabs v-model="activeName" class="msgcenter" @before-leave="leavetab" @tab-click="handleClick">
             <!-- stretch 可以拉伸tab填充宽度 -->
-            <el-tab-pane label="消息中心" name="first" style="max-height:300px">消息中心</el-tab-pane>
-            <el-tab-pane label="消息公告" name="second" style="max-height:300px">消息公告</el-tab-pane>
+            <el-tab-pane label="消息中心" name="first" style="max-height:300px;overflow-y:auto">
+              <ul>
+                <li v-for="(item,index) in messageCenter" :key="index" @click="MsgClickTo(index)">
+                  <div class="minilabel">最新</div>
+                  <div class="title">{{ item.topic }}</div>
+                  <div>{{ item.publishTime }}</div>
+                </li>
+              </ul>
+            </el-tab-pane>
+            <el-tab-pane label="消息公告" name="second" style="max-height:300px;overflow-y:auto">
+              <ul>
+                <li v-for="(item,index) in sysCenter" :key="index" @click="NoticeClickTo(index)">
+                  <div class="minilabel">最新</div>
+                  <div class="title">{{ item.topic }}</div>
+                  <div>{{ item.publishTime }}</div>
+                </li>
+              </ul>
+            </el-tab-pane>
           </el-tabs>
           <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="true?&quot;point&quot;:&quot;&quot;" />
         </el-popover>
@@ -30,10 +46,10 @@
             <router-link to="/resetPassword">
               <el-dropdown-item>密码修改</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
+            <a href="javascript:void(0)">
               <el-dropdown-item>帮助中心</el-dropdown-item>
             </a>
-            <el-dropdown-item @click.native="logout">
+            <el-dropdown-item @click.native="logoutR">
               <span style="display:block;">切换账号</span>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -52,6 +68,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
+import { getAllList, checkStatus } from '@/api/message'
 // getShort
 export default {
   components: {
@@ -71,7 +88,9 @@ export default {
       greshow: false,
       pointNum: 0,
       activeName: 'first',
-      defaultAvater: defaultAvater
+      defaultAvater: defaultAvater,
+      messageCenter: [],
+      sysCenter: []
     }
   },
   computed: {
@@ -81,23 +100,80 @@ export default {
       'device'
     ])
   },
+  created() {
+    this.getmessage()
+  },
   mounted() {
     if (this.avatar !== '') {
       this.defaultAvater = this.avatar
     }
   },
   methods: {
+    async getmessage() {
+      var that = this
+      const param1 = {
+        state: [1],
+        pageSize: 10,
+        pageNumber: 1,
+        isPerson: 0,
+        sortColumn: 'publish_time',
+        isRead: 0
+      }
+      const param2 = {
+        state: [1],
+        pageSize: 10,
+        pageNumber: 1,
+        isPerson: 1,
+        sortColumn: 'publish_time',
+        isRead: 0
+      }
+      await getAllList(param1).then(res => {
+        that.$nextTick(() => {
+          that.messageCenter = res.data.list
+          console.log(that.messageCenter)
+        })
+      }).catch(res => {
+        that.$message.error(res.msg)
+      })
+      await getAllList(param2).then(res => {
+        that.$nextTick(() => {
+          that.sysCenter = res.data.list
+        })
+      }).catch(res => {
+        that.$message.error(res.msg)
+      })
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     logout() {
       this.$refs.baseRemoved.sureDioag = true
     },
+    logoutR() {
+      this.$store.dispatch('tagsView/delAllViews', '')
+      this.$store.dispatch('user/logout')
+      this.$router.push('/login')
+    },
     handleClick(e, v) {
       // console.log(e, v)
     },
+    MsgClickTo(e) {
+      const query = { id: this.sysCenter[e].msId }
+      this.changeStatus(query.id)
+      this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
+    },
+    NoticeClickTo(e) {
+      const query = { id: this.sysCenter[e].msId }
+      this.changeStatus(query.id)
+      this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
+    },
     leavetab(activeName, oldActiveName) {
       console.log(activeName)
+    }, changeStatus(id) {
+      checkStatus(id).then(res => {
+      }).catch(res => {
+        this.$message.error(res.msg)
+      })
     }
   }
 }
@@ -360,3 +436,59 @@ export default {
   }
 }
 </style>
+<style lang="scss" >
+.msgcenter {
+  .el-tab-pane {
+    &::-webkit-scrollbar {
+      width: 5px;
+      background-color: transparent;
+    }
+    /* 滚动条中能上下移动的小块 */
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 5px;
+    }
+    /* scroll轨道背景 */
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background-color: transparent;
+    }
+  }
+  ul {
+    padding: 0 10px;
+    li {
+      display: flex;
+      flex-wrap: nowrap;
+      margin-bottom: 16px;
+      .minilabel {
+        width: 35px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        background: #ff4b2b;
+        border-radius: 4px;
+        color: #fff;
+        flex-shrink: 0;
+        margin-right: 15px;
+      }
+      .title {
+        flex: 1;
+        color: #292929;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .time {
+        margin-left: 30px;
+      }
+    }
+  }
+  .msgfooter {
+    text-align: right;
+    span {
+      cursor: pointer;
+    }
+  }
+}
+</style>
+

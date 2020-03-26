@@ -89,15 +89,18 @@ export default {
       tableDate: [],
       totalNum: 0,
       currentPage: 1,
+      treeloading: true,
       param: {
         pageSize: 10,
         pageNumber: 1,
         sortColumn: 'create_time',
         sortOrder: 'desc'
       },
+      treedata: [],
       expandedkeys: [],
       input: '',
-      tableloading: true
+      tableloading: true,
+      treeId: ''
       // selectData: {} // 点击tree树获取整个节点对象
       // isDel: true // 最初默认标识可以删除
     }
@@ -105,16 +108,10 @@ export default {
 
   created() {
     common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-      if (res.success === true) {
+      if (res.code === 0) {
         this.$nextTick(() => {
           this.houseClass = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.message)
@@ -138,7 +135,7 @@ export default {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id
             }
-            this.param.parentId = this.treeId
+            this.param.areaId = this.treeId
             this.currentNodekey = this.treeId
             this.expandedkeys.push(this.treeId)
             this.$nextTick(() => {
@@ -146,12 +143,10 @@ export default {
             })
             this.getTableData()
           }
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.loading = false
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 点击tree树获取table表格的数据
@@ -163,8 +158,6 @@ export default {
           if (response.code === 0) {
             this.tableDate = response.data.list instanceof Array ? response.data.list : []
             this.totalNum = Number(response.data.totalNum)
-          } else {
-            this.$message.error(response.msg)
           }
         })
         .catch(response => {
@@ -192,7 +185,7 @@ export default {
       this.param.pageSize = 10
       this.param.pageNumber = 1
       this.selectedName = data.name
-      this.param.id = data.id
+      this.param.areaId = data.id
       this.selectedCode = data.code
       this.selectedState = data.status === '1' ? '启用' : '不启用'
       // this.selectedDescription = data.description

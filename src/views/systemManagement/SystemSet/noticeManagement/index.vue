@@ -35,13 +35,14 @@
           <el-table-column label="序号" width="120" prop="id">
             <template slot-scope="scope">{{ scope.$index + 1 }}</template>
           </el-table-column>
+          <el-table-column label="标题" width="200" prop="topic" />
           <el-table-column prop="memo" label="内容">
             <!-- show-overflow-tooltip -->
             <template slot-scope="scope">
-              <div v-if="scope.row.ifRead==='0'?true:false" class="tableContent">
-                <span class="board" :title="scope.row.topic+memoReplace(scope.row.memo)">{{ scope.row.topic }}<span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
+              <div v-if="scope.row.isRead==='0'?true:false" class="tableContent">
+                <span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span><span class="redBoard" />
               </div>
-              <div v-else class="tableContent"><span class="board" :title="scope.row.topic+memoReplace(scope.row.memo)">{{ scope.row.topic }}<span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
+              <div v-else class="tableContent"><span class="board" :title="memoReplace(scope.row.memo)"><span class="momoLeft" v-html="memoReplace(scope.row.memo)" /></span></div>
             </template>
           </el-table-column>
           <el-table-column prop="state" label="状态" width="120" :formatter="stateFormatter" />
@@ -104,14 +105,9 @@ export default {
     common.getDictNameList({ dictName: '消息类型', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
+          res.data.unshift({ code: '', name: '全部' })
           this.btns = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -128,6 +124,8 @@ export default {
       const param = {
         'state': [0, 1, 2]
       }
+      this.pageNumber = 1
+      this.pageSize = 10
       this.getListData(param)
     },
     searchMsg() {
@@ -145,6 +143,9 @@ export default {
         })
         return
       }
+
+      this.pageNumber = 1
+      this.pageSize = 10
       const param = {
         'state': [0, 1, 2],
         'startDate': getTime(this.startMsgTime),
@@ -152,6 +153,7 @@ export default {
       }
       this.pageNumber = 1
       this.pageSize = 10
+      this.currentPage = 1
       this.getListData(param)
     },
     sendMsg() {
@@ -164,7 +166,10 @@ export default {
       }
       this.removeRd.forEach(element => {
         if (element.state === '1') {
-          this.$message.error('消息已发布，请重新选择！')
+          setTimeout(() => {
+            this.$message.error('消息已发布，请重新选择！')
+          }, 0)
+
           flag = true
           return
         }
@@ -173,7 +178,7 @@ export default {
         return
       }
       const ids = this.removeRd.map(res => {
-        return res.ms_id
+        return res.msId
       })
       sendCg(ids.join(',')).then(res => {
         if (res.success) {
@@ -237,9 +242,14 @@ export default {
     sureMsg(flag) {
       this.moveShow = flag
       const ids = this.removeRd.map(res => {
-        return res.ms_id
+        return res.msId
       })
-      remove(ids.join(',')).then(res => {
+      remove(ids.join(','), 0).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.msg)
+        } else {
+          this.$message.errorr(res.msg)
+        }
         this.getListData('', true)
       }).catch(res => {
         this.$message.error(res.msg)
@@ -291,7 +301,6 @@ export default {
     },
     changeStatus(id) {
       checkStatus(id).then(res => {
-
       }).catch(res => {
         this.$message.error(res.msg)
       })
@@ -324,10 +333,17 @@ export default {
   .page-table {
     .button-tool {
       overflow: hidden;
-      >>>.el-button .iconfabu1 {
+      >>> .el-button .iconfabu1 {
         font-size: 13px;
       }
     }
+  }
+
+  .momoLeft {
+    text-overflow: ellipsis;
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
   }
 }
 </style>

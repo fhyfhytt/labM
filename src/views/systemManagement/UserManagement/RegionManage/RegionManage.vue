@@ -186,7 +186,7 @@ export default {
         }
       }).catch(response => {
         this.loading = false
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
 
@@ -196,9 +196,8 @@ export default {
         .then(response => {
           this.loading = false
           if (response.code === 0) {
-            // .filter(item => item.parentId === this.treeId)
             this.tableData = response.data.filter(item => item.parentId === this.treeId)
-            this.totalCount = Number(response.data.length)
+            this.totalCount = Number(this.tableData.length)
           } else {
             this.tableData = []
             this.totalCount = 0
@@ -261,7 +260,6 @@ export default {
       getRegionList(param).then(response => {
         this.loading = false
         if (response.success === true) {
-          // .filter(item => item.parentId === this.currentNodekey)
           this.tableData = response.data.rows || []
           this.totalCount = Number(response.data.totalCount)
         } else {
@@ -319,13 +317,16 @@ export default {
       })
       delRegion({ regionIdList }).then(res => {
         if (res.success === true) {
+          this.multipleSelection = []
           this.$message.success('删除成功')
           // this.getList()
           this.getTableData()
         } else {
           this.$message.error(res.msg)
         }
-      }).catch(e => {})
+      }).catch(response => {
+        this.$message.error(response.msg)
+      })
     },
     confirmBtn() {
       this.confirmVisible = false
@@ -338,7 +339,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response)
+        this.$message.error(response.msg)
       })
     },
     cancelAllBtn() {

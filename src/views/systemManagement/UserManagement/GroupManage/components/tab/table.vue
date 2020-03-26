@@ -23,7 +23,7 @@
       </el-table-column>
     </el-table>
     <div class="numListJup margin-jump">
-      <el-pagination :page-size="pageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="total" :pager-count="5" :current-page.sync="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+      <el-pagination :page-size="pageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="totalNum" :pager-count="5" :current-page.sync="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
 
     </div>
     <!--确认删除-->
@@ -70,7 +70,7 @@ export default {
       pageSize: 10,
       pageNumber: 1,
       currentPage: 1, // 直接前往第几页
-      total: 0,
+      // total: 0,
       addFormVisible: false, // 新增界面是否显示
       editFormVisible: false, // 编辑界面是否显示
       row: {}, // 编辑初始化内容
@@ -154,7 +154,7 @@ export default {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 取消删除

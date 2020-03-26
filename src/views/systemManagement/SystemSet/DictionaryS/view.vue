@@ -27,6 +27,7 @@
         <el-table ref="multipleDel" v-loading="loading" :data="tableData" style="width: 100%" empty-text="无数据" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" />
+          <el-table-column prop="dictCode" label="字典编号" />
           <el-table-column prop="name" label="字典名称" />
           <el-table-column prop="description" label="字典描述" />
           <el-table-column prop="remark" label="备注" />
@@ -121,22 +122,21 @@ export default {
         if (response.success === true) {
           this.tableData = response.data.sysDicts
           this.totalCount = Number(response.data.totalCount)
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 字典查询----模糊查询
     getDiction() {
       this.pageNumber = 1
       this.pageSize = 10
+      this.currentPage = 1
       this.getStartDiction()
     },
     // 字典删除
     handleDel(index, row) {
-      this.ids = row.id
+      this.ids = [row.id]
       this.moveShow = true
     },
     // 确认删除
@@ -148,13 +148,14 @@ export default {
       }
       dictConnDel(param).then(response => {
         if (response.success === true) {
+          this.ids = []
           this.$message.success(response.msg)
           this.getDiction()
         } else {
           this.$message.error(response.msg)
         }
       }).catch(response => {
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 批量删除
@@ -220,7 +221,7 @@ export default {
       //       this.$message.error(response.data)
       //     }
       //   }).catch(response => {
-      //     this.$message.error(response.message)
+      //     this.$message.error(response.msg)
       //   })
 
       //   console.log('zirow', row)

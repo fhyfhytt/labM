@@ -68,7 +68,7 @@ export function searchRoleUsers(data) {
   return request({
     url: '/user/getUserList',
     method: 'post',
-    data
+    data: Object.assign(data, { available: 1, active: 1 })
   })
 }
 // 根据角色ID保存用户信息

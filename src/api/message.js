@@ -45,13 +45,14 @@ export function getContent(id) {
   })
 }
 // 消息删除
-export function remove(id) {
+export function remove(id, isPerson) {
   return request({
     url: '/msg/deleteByMsgId',
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: {
-      ids: id
+      ids: id,
+      isPerson: isPerson
     }
   })
 }

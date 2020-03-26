@@ -52,7 +52,7 @@ export default {
       editFormRules: {
         code: [{ required: true, message: '请输入分类编号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
-        status: [{ required: true, message: '请输入分类状态', trigger: 'blur' }]
+        status: [{ required: true, message: '请输入分类状态', trigger: ['blur', 'change'] }]
       },
       loading: false,
       editFormVisible: false,
@@ -94,7 +94,7 @@ export default {
               this.$message.error(response.msg)
             }
           }).catch(response => {
-            this.$message.error(response.message)
+            this.$message.error(response.msg)
           })
         } else {
           // console.log('error submit!!')

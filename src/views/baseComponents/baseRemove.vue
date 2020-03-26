@@ -68,12 +68,7 @@ export default {
       text-align: right;
 
     }
-    .el-dialog__headerbtn .el-dialog__close{
-      color: #292929;
-      &:hover{
-        color: #5B92FF
-      }
-    }
+
     .el-dialog__headerbtn{
       top: 0!important;
       &:active{

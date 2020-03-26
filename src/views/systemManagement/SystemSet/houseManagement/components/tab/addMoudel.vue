@@ -50,13 +50,13 @@
       <div>
         <el-row style="margin-bottom:10px">
           关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入姓名或ID" style="width:200px;margin:0px 10px" />
+          <el-input v-model="primaryKey" placeholder="请输入用户名或工号" style="width:200px;margin:0px 10px" />
           <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
         <!-- <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button> -->
         </el-row>
         <el-table ref="userInfoTable" v-loading="userloading" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow">
           <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
+          <el-table-column prop="userCode" label="工号" />
           <el-table-column prop="name" label="用户名" />
           <el-table-column prop="mobile" label="手机" />
           <el-table-column prop="email" label="邮箱" />
@@ -88,8 +88,8 @@ export default {
         code: [{ required: true, message: '请输入库房编号', trigger: 'blur' }],
         name: [{ required: true, message: '请输入库房名称', trigger: 'blur' }],
         person: [{ required: true, message: '请选择库房管理员', trigger: 'change' }],
-        state: [{ required: true, message: '请选择库房状态', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择库房类型', trigger: 'blur' }]
+        state: [{ required: true, message: '请选择库房状态', trigger: ['blur', 'change'] }],
+        type: [{ required: true, message: '请选择库房类型', trigger: ['blur', 'change'] }]
       },
       selecthouseType: [],
       selecthouseState: [],
@@ -110,12 +110,6 @@ export default {
         this.$nextTick(() => {
           this.selecthouseState = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
@@ -125,12 +119,6 @@ export default {
         this.$nextTick(() => {
           this.selecthouseType = res.data
         })
-      } else {
-        if (res.data !== '') {
-          this.$message.error(res.data)
-        } else {
-          this.$message.error(res.msg)
-        }
       }
     }).catch(res => {
       this.$message.error(res.msg)
