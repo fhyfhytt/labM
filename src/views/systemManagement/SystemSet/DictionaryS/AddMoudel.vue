@@ -2,6 +2,9 @@
   <div class="DictionarysAdd">
     <p class="bkb" />
     <el-form ref="addForm" :model="addForm" label-width="140px" :rules="addFormRules" class="addtop">
+      <el-form-item label="字典编码：" prop="code">
+        <el-input v-model="addForm.code" placeholder="请输入字典编码" />
+      </el-form-item>
       <el-form-item label="字典名称：" prop="dictName">
         <el-input v-model="addForm.dictName" placeholder="请输入字典名称" />
       </el-form-item>
@@ -24,10 +27,24 @@
 import { dictConnAdd } from '@/api/Dictionarys.js'
 export default {
   data() {
+    const validatePass2 = (rule, value, callback) => {
+      var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？ ]")
+      var myreg = /^[a-zA-Z]\w{3,15}$/
+      if (value === '') {
+        callback(new Error('请输入字典编码'))
+      } else if (pattern.test(value)) {
+        callback(new Error('字典编码不含除-符号以外的符号'))
+      } else if (!myreg.test(value)) {
+        callback(new Error('字典编码以字母开头的4-16位字母或数字组成'))
+      } else {
+        callback()
+      }
+    }
     return {
       // 新增界面数据
-      addForm: { dictName: '', description: '', remark: '' },
+      addForm: { code: '', dictName: '', description: '', remark: '' },
       addFormRules: {
+        code: [{ required: true, validator: validatePass2, trigger: 'blur' }],
         dictName: [{ required: true, message: '请输入字典名称', trigger: 'blur' }],
         description: [{ required: true, message: '请输入字典描述', trigger: 'blur' }]
       }
