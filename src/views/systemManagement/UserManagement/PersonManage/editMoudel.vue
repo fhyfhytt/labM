@@ -940,6 +940,7 @@ export default {
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      border-radius: 50%;
       .el-upload-dragger {
         width: auto;
         height: auto;
@@ -987,6 +988,7 @@ export default {
     width: 135px;
     height: 135px;
     display: block;
+    border-radius: 50%;
   }
 }
 </style>

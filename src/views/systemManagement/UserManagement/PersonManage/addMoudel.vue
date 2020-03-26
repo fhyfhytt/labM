@@ -844,6 +844,7 @@ export default {
       cursor: pointer;
       position: relative;
       overflow: hidden;
+       border-radius: 50%;
       .el-upload-dragger {
         width: 135px;
         height: 135px;
@@ -890,6 +891,7 @@ export default {
   .avatar {
     width: 135px;
     height: 135px;
+    border-radius: 50%;
     display: block;
   }
 }
