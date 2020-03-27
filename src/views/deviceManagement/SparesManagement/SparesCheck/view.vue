@@ -33,7 +33,7 @@
       <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
     </div>
     <!--备件分类界面-->
-    <el-dialog v-if="sparesTypeVisible" v-model="sparesTypeVisible" title="备件分类" :close-on-click-modal="false" :visible.sync="sparesTypeVisible" class="deviceAdd addmanage">
+    <el-dialog v-if="sparesTypeVisible" v-model="sparesTypeVisible" title="备件分类" :close-on-click-modal="false" :visible.sync="sparesTypeVisible" class="deviceAdd addmanage sparesTypeDialog">
       <sparesType ref="sparesType" :tree-id="id" @getData="getData" @handelsparesTypeVisible="handelsparesTypeVisible" />
     </el-dialog>
   </div>
@@ -77,7 +77,7 @@ export default {
       currentPage: 1,
       param: {
         // assetItemType: '',
-        checkStatus: '0',
+        checkStatus: 0,
         // houseIds: '',
         pageNum: 1,
         pageSize: 10
@@ -162,7 +162,7 @@ export default {
 
 </style>
 <style lang="scss" scoped>
-  .deviceAdd /deep/.el-dialog {
+  .sparesTypeDialog /deep/.el-dialog {
     width: 350px!important;
   }
 </style>

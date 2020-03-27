@@ -9,16 +9,16 @@ const deviceControlRouter = {
   name: 'deviceManagement',
   meta: {
     title: '设备管理',
-    icon: 'iconxitongguanli'
-    // ,
-    // roles: ['deviceManagement']
+    icon: 'iconxitongguanli',
+    roles: ['DeviceManagement']
   },
   children: [{
     path: 'assetManagement',
     component: () => import('@/views/deviceManagement/AssetManagement'),
     meta: {
       title: '资产管理',
-      icon: 'iconxitongguanli'
+      icon: 'iconxitongguanli',
+      roles: ['AssetManagement']
     },
     name: 'AssetManagement',
     redirect: '/deviceManagement/assetManagement/assetsAudit',
@@ -54,9 +54,8 @@ const deviceControlRouter = {
       component: () => import('@/views/deviceManagement/AssetManagement/SuppliesManage/view.vue'),
       meta: {
         title: '物资管理',
-        icon: 'icon111'
-        // ,
-        // roles: ['suppliesManage']
+        icon: 'icon111',
+        roles: ['SuppliesManage']
       },
       name: 'SuppliesManage'
     }]
@@ -65,7 +64,8 @@ const deviceControlRouter = {
     component: () => import('@/views/deviceManagement/SparesManagement'),
     meta: {
       title: '备件管理',
-      icon: 'iconxitongguanli'
+      icon: 'iconxitongguanli',
+      roles: ['SparesManagement']
     },
     name: 'SparesManagement',
     redirect: '/deviceManagement/sparesManagement/sparesManagement',
@@ -79,15 +79,23 @@ const deviceControlRouter = {
       },
       name: 'SparesManagementChild'
     }, {
-      path: 'sparesManage',
+      path: 'sparesCheck',
       component: () => import('@/views/deviceManagement/SparesManagement/SparesCheck/view.vue'),
       meta: {
         title: '备件审核',
-        icon: 'icon111'
-        // ,
-        // roles: ['sparesCheck']
+        icon: 'icon111',
+        roles: ['SparesCheck']
       },
       name: 'SparesCheck'
+    }, {
+      path: 'inHouseManage',
+      component: () => import('@/views/deviceManagement/SparesManagement/InHouseManage/view.vue'),
+      meta: {
+        title: '入库管理',
+        icon: 'icon111',
+        roles: ['InHouseManage']
+      },
+      name: 'InHouseManage'
     }]
   }]
 

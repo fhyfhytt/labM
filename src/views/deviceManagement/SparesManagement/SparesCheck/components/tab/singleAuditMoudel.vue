@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" class="dialgEditform1">
-    <el-form ref="AuditForm" :model="AuditForm" :rules="batchFormRules" label-width="80px" class="formAdd">
+    <el-form ref="AuditForm" :model="AuditForm" :rules="batchFormRules" label-width="120px" class="formAdd">
       <h3 class="title">基本信息</h3>
       <el-row class="addtop">
         <el-col :span="8">
@@ -8,10 +8,10 @@
             <el-input v-model="AuditForm.assetInfo.assetNo" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="设备型号:" prop="unitType">
-            <el-input v-model="AuditForm.unitType" autocomplete="off" readonly />
+            <el-input v-model="AuditForm.assetInfo.unitType" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="资产分类:" prop="itemType">
-            <el-input v-model="AuditForm.itemType" autocomplete="off" readonly />
+            <el-input v-model="AuditForm.assetInfo.itemType" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="维保状态:" prop="maintranStatusS">
             <el-input v-model="AuditForm.maintranStatusS" autocomplete="off" readonly />
@@ -27,8 +27,8 @@
           <el-form-item label="数量:" prop="num">
             <el-input v-model="AuditForm.num" autocomplete="off" readonly />
           </el-form-item>
-          <el-form-item label="维保时间:" prop="maintranDate">
-            <el-input v-model="AuditForm.maintranDate" autocomplete="off" readonly />
+          <el-form-item label="维保时间:" prop="modifyTime">
+            <el-input v-model="AuditForm.modifyTime" autocomplete="off" readonly />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -42,7 +42,7 @@
             <el-input v-model="AuditForm.price" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="存放位置:" prop="location">
-            <el-input v-model="AuditForm.location" autocomplete="off" readonly />
+            <el-input v-model="AuditForm.houseInfo.location" autocomplete="off" readonly />
           </el-form-item>
         </el-col>
       </el-row>
@@ -149,13 +149,14 @@ export default {
   }
   /deep/.addtop .el-input__inner {
     border: none!important;
+    font-size: 14px;
   }
   .dialgEditform1 .title {
     border-bottom: 2px solid #c7cbd6;color:#1890ff;height:30px;
   }
-  .el-form-item__content {
-    margin-left:80px;
-  }
+  // .el-form-item__content {
+  //   margin-left:80px;
+  // }
   .dialgEditform1 /deep/.el-form-item__label{
     color:#292929 !important;
   }

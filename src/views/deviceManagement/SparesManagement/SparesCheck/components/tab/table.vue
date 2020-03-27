@@ -31,11 +31,11 @@
       />
     </div>
     <!--批量审核界面-->
-    <el-dialog v-if="batchAuditVisible" v-model="batchAuditVisible" title="批量审核" :close-on-click-modal="false" :visible.sync="batchAuditVisible" class="deviceAdd addmanage">
+    <el-dialog v-if="batchAuditVisible" v-model="batchAuditVisible" title="批量审核" :close-on-click-modal="false" :visible.sync="batchAuditVisible" class="deviceAdd addmanage batchAduitDialog">
       <batchAuditMoudel :audit-table-by-id="auditTableById" @handleGetTree1="handleGetTree1" @handelbatchAuditVisible="handelbatchAuditVisible" />
     </el-dialog>
     <!--审核界面-->
-    <el-dialog v-if="singleAuditVisible" v-model="singleAuditVisible" title="资产审核" :close-on-click-modal="false" :visible.sync="singleAuditVisible" :before-close="handleClose" class="deviceAdd addmanage">
+    <el-dialog v-if="singleAuditVisible" v-model="singleAuditVisible" title="资产审核" :close-on-click-modal="false" :visible.sync="singleAuditVisible" :before-close="handleClose" class="deviceAdd addmanage singleAuditDialog">
       <singleAuditMoudel ref="childrenEdit" :row="row" @handleGetTree1="handleGetTree1" @handelsingleAuditVisible="handelsingleAuditVisible" />
     </el-dialog>
   </div>
@@ -140,6 +140,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+  .singleAuditDialog /deep/.el-dialog {
+    width:900px;
+  }
 </style>
