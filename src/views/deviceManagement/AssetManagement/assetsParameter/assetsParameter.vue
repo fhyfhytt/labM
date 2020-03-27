@@ -40,12 +40,12 @@
             <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
             <el-button-group class="buttonGroup">
               <el-button v-permission="'arameterImport'" icon="iconfont icondaoru" size="small" @click="toLead" />
-              <el-button v-permission="'arameterExport'" icon="iconfont " size="small" @click="exportExcel('1')">导出</el-button>
-              <el-button v-permission="'arameterMoudle'" icon="iconfont iconxiazai-" size="small" @click="exportExcel('2')">模板</el-button>
+              <el-button v-permission="'arameterExport'" icon="iconfont icondaochu" size="small" class="export-btn" @click="exportExcel('1')" />
+              <el-button v-permission="'arameterMoudle'" icon="iconfont iconbaocunbeifen" size="small" @click="exportExcel('2')" />
             </el-button-group>
           </span>
           <span class="fr">
-            <el-button v-permission="'QRcodeAdd'" icon="iconfont icontianjia1" size="small" @click="handleQRCode">二维码</el-button>
+            <el-button v-permission="'QRcodeAdd'" icon="iconfont iconbaocunbeifen1" size="small" @click="handleQRCode">二维码</el-button>
             <el-button v-permission="'arameterAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
             <el-button v-permission="'arameterDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
           </span>

@@ -36,8 +36,8 @@
               <!-- <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)"> -->
               <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
               <el-button v-permission="'attachmentImport'" icon="iconfont icondaoru" class="firstB" @click="toLead" />
-              <el-button v-permission="'attachmentExport'" icon="iconfont" @click="exportExcel('1')">导出</el-button>
-              <el-button v-permission="'attachmentMoudle'" icon="iconfont " @click="exportExcel('2')">模板</el-button>
+              <el-button v-permission="'attachmentExport'" icon="iconfont icondaochu" @click="exportExcel('1')" />
+              <el-button v-permission="'attachmentMoudle'" icon="iconfont iconbaocunbeifen" @click="exportExcel('2')" />
             </el-button-group>
           </span>
           <span class="fr">

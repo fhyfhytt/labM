@@ -6,6 +6,27 @@
   "description": "实验室管理系统",
   "glyphs": [
     {
+      "icon_id": "13758218",
+      "name": "导出",
+      "font_class": "daochu",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
+      "icon_id": "13757889",
+      "name": "模版",
+      "font_class": "baocunbeifen",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
+      "icon_id": "13757890",
+      "name": "二维码",
+      "font_class": "baocunbeifen1",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
       "icon_id": "13662505",
       "name": "容量",
       "font_class": "rongliang",
