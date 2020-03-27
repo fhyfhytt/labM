@@ -115,7 +115,7 @@
   </div>
 </template>
 <script>
-import { queryByWarehouseAsset, deleteById, importExcel } from '@/api/asstesManagement'
+import { queryByWarehouseAsset, deleteById, importWarehouseAsset } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 import addMoudel from './components/addMoudel'
@@ -272,6 +272,7 @@ export default {
         checkStatus: '1',
         houseIds: this.houseIds
       }
+      this.loading = true
       queryByWarehouseAsset(param).then(response => {
         this.loading = false
         if (response.success === true) {
@@ -405,7 +406,7 @@ export default {
         // if (!/.(xls)$/.test(files[0].name)) {
         //   this.$message.error("导入文件格式不正确");
         // } else {
-        importExcel(formData).then(res => {
+        importWarehouseAsset(formData).then(res => {
           if (res.data.code === '0') {
             that.visibleImportRole = false
             this.$message.success('导入成功')
@@ -418,65 +419,6 @@ export default {
         })
         // }
       }
-    },
-
-    importf(obj) {
-      // const _this = this
-      // // const inputDOM = this.$refs.inputer
-      // _this.file = event.currentTarget.files[0];
-      // var rABS = false;//是否将文件读取为二进制字符串
-      // var f = _this.file;
-      // var reader = new FileReader()
-      // FileReader.prototype.readAsBinaryString = function(f) {
-      //   var binary = ''
-      //   var rABS = false // 是否将文件读取为二进制字符串
-      //   var wb // 读取完成的数据
-      //   var outdata
-      //   var reader = new FileReader()
-      //   reader.onload = function(e) {
-      //     var bytes = new Uint8Array(reader.result)
-      //     var length = bytes.byteLength
-      //     for (var i = 0; i < length; i++) {
-      //       binary += String.fromCharCode(bytes[i])
-      //     }
-      //     var XLSX = require('xlsx')
-      //     if (rABS) {
-      //       wb = XLSX.read(btoa(fixdata(binary)), { // 手动转化
-      //         type: 'base64'
-      //       })
-      //     } else {
-      //       wb = XLSX.read(binary, {
-      //         type: 'binary'
-      //       })
-      //     }
-      //     // outdata就是你想要的东西 excel导入的数据
-      //     outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-      //     //excel数据再处理
-      //     const arr = []
-      //     outdata.map(v => {
-      //       const obj = {}
-      //       obj.name0 = v['资产代码']
-      //       obj.name1 = v['资产名称']
-      //       obj.name2 = v['资产分类']
-      //       obj.name3 = v['资产状态']
-      //       obj.name4 = v['生产厂商']
-      //       obj.name5 = v['设备型号']
-      //       obj.name6 = v['所属区域']
-      //       obj.name7 = v['采购价(元)']
-      //       obj.name8 = v['数量']
-      //       obj.name9 = v['状态']
-      //       arr.push(obj)
-      //     })
-      //     console.log('测试：', arr)
-      //     _this.tableData = arr
-      //   }
-      //   reader.readAsArrayBuffer(f)
-      // }
-      // if (rABS) {
-      //   reader.readAsArrayBuffer(f)
-      // } else {
-      //   reader.readAsBinaryString(f)
-      // }
     },
     // 导出表格
     exportExcel(type) {

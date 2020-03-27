@@ -50,7 +50,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="所属库房" prop="area">
+          <el-form-item label="所属库房" prop="houseId">
             <el-select v-model="baseInfo.houseId" popper-class="select-option" clearable placeholder="-请选择-">
               <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
@@ -123,10 +123,11 @@ export default {
       baseInfo: {}, // 基本信息
       baseInfoRule: {
         status: [{ required: true, message: '请选择物资状态', trigger: ['blur'] }],
+        assetName: [{ required: true, message: '请选择物资名称', trigger: ['blur'] }],
         code: [
           { required: true, validator: checkNull, trigger: 'change' }
         ],
-        area: [
+        houseId: [
           { required: true, validator: checkNull, trigger: 'change' }
         ]
       },
@@ -157,7 +158,7 @@ export default {
         }
       }
     }).catch(res => {
-      this.$message.error(res.message)
+      this.$message.error(res.msg)
     })
     common.getDictNameList({ dictName: '所属库房', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
@@ -172,7 +173,7 @@ export default {
         }
       }
     }).catch(res => {
-      this.$message.error(res.message)
+      this.$message.error(res.msg)
     })
   },
   mounted() {

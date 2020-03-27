@@ -118,3 +118,12 @@ export function deleteById(data) {
     data
   })
 }
+// 备件导入
+export function importWarehouseAsset(data) {
+  return request({
+    url: '/warehouseAssetC/importWarehouseAsset',
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+    data
+  })
+}
