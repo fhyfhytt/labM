@@ -34,12 +34,12 @@
               <el-form ref="form1" :model="formhouse" size="small" label-width="110px" class="searchform">
                 <el-row>
                   <el-col :xl="{span:5}" :lg="{span:6}">
-                    <el-form-item label="库房名称">
+                    <el-form-item label="库房名称 :">
                       <el-input v-model="formhouse.name" placeholder="请输入内容" />
                     </el-form-item>
                   </el-col>
                   <el-col :xl="{span:5}" :lg="{span:6}">
-                    <el-form-item label="库房类型">
+                    <el-form-item label="库房类型 :">
                       <el-select v-model="formhouse.type" value-key="code" clearable placeholder="-请选择-">
                         <el-option v-for="item in houseClass" :key="item.code" :label="item.name" :value="item" />
                       </el-select>
