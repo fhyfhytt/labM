@@ -2,69 +2,69 @@
   <div v-loading="loading" class="assetsAudit">
     <el-form ref="editForm" :model="editForm" label-width="110px" :rules="addFormRules" class="formAdd">
       <div class="minTitle">基本信息</div>
-      <el-row>
+      <el-row class="dis-info">
         <el-col :span="8">
           <el-form-item label="资产编号：">
-            <span>{{ editForm.no }}</span>
+            <span class="con-name">{{ editForm.no }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="资产名称：">
-            <span>{{ editForm.assetName }}</span>
+            <span class="con-name">{{ editForm.assetName }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="资产状态：">
-            <span>{{ editForm.status }}</span>
+            <span class="con-name">{{ editForm.status }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备型号：">
-            <span>{{ editForm.unitType }}</span>
+            <span class="con-name">{{ editForm.unitType }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备厂商：">
-            <span>{{ editForm.factory }}</span>
+            <span class="con-name">{{ editForm.factory }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="所属区域：">
-            <span>{{ editForm.area }}</span>
+            <span class="con-name">{{ editForm.area }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="资产分类：">
-            <span>{{ editForm.itemType }}</span>
+            <span class="con-name">{{ editForm.itemType }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="数量：">
-            <span>{{ editForm.num }}</span>
+            <span class="con-name">{{ editForm.num }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="采购价(元)：" prop="price">
-            <span>{{ editForm.price }}</span>
+            <span class="con-name">{{ editForm.price }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="维保状态：">
-            <span>{{ editForm.maintranStatus }}</span>
+            <span class="con-name">{{ editForm.maintranStatus }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="维保日期：">
-            <span>{{ editForm.maintranDate }}</span>
+            <span class="con-name">{{ editForm.maintranDate }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="分布位置：">
-            <span>{{ editForm.location }}</span>
+            <span class="con-name">{{ editForm.location }}</span>
           </el-form-item>
         </el-col>
       </el-row>
-      <div class="minTitle">审核备注</div>
+      <div class="minTitle" style="margin-top:10px;">审核备注</div>
       <el-row>
         <el-col :span="8">
           <el-form-item label="审核状态：">
@@ -155,9 +155,13 @@ export default {
     .el-form-item--medium .el-form-item__label {
       line-height: 34px;
     }
-    .el-form-item {margin-bottom: 15px;}
+    .dis-info .el-form-item {margin-bottom: 10px;}
     .minTitle {
-      margin:0 0 10px 0;color: #38a4ed;padding-bottom: 10px;font-weight: bold;border-bottom: 2px solid #ddd;
+      margin:0 0 10px 27px;color: #292929;padding-bottom: 10px;font-weight: bold;padding-left: 15px;position: relative;font-size: 16px;
+      &::before {
+        content: '';background:#379EFC;width: 4px;height: 17px;border-radius: 3px;position: absolute;left: 0;top: 0;
+      }
     }
+    .con-name {color: #909399;}
   }
 </style>

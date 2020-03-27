@@ -405,13 +405,10 @@ export default {
       if (files.length <= 0) {
         this.$message.error('请选择导入文件')
       } else {
-        // if (!/.(xls)$/.test(files[0].name)) {
-        //   this.$message.error("导入文件格式不正确");
-        // } else {
         importWarehouseAsset(formData).then(res => {
-          if (res.data.code === '0') {
+          if (res.code === 0) {
             that.visibleImportRole = false
-            this.$message.success('导入成功')
+            this.$message.success('导入成功, 请在备件审核中查看')
             formData.delete('file')
             return false
           } else {
@@ -420,7 +417,6 @@ export default {
         }).catch(() => {
           this.$message.error('导入失败，请核对文档格式是否正确', 'error')
         })
-        // }
       }
     },
     // 导出表格
