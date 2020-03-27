@@ -14,6 +14,17 @@ const deviceControlRouter = {
     // roles: ['deviceManagement']
   },
   children: [{
+    path: 'serviceManagement',
+    component: () => import('@/views/deviceManagement/serviceManage'),
+    meta: {
+      title: '服务台',
+      icon: 'icon111',
+      roles: ['serviceManagement']
+    },
+    name: 'serviceManagement',
+    redirect: '/deviceManagement/serviceManagement/serviceManage',
+    children: []
+  }, {
     path: 'assetManagement',
     component: () => import('@/views/deviceManagement/AssetManagement'),
     meta: {

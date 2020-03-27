@@ -278,7 +278,7 @@ export default {
     .kufanglist{
       overflow: hidden;
       overflow-y: auto;
-      height: 500px;
+      height: 100%;
       .hourser-list{
         text-align: left;
         padding-left: 20px;
