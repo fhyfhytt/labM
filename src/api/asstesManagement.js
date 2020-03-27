@@ -112,7 +112,7 @@ export function addOrUpdateWarehouseAsset(data) {
 // 备件管理删除
 export function deleteById(data) {
   return request({
-    url: '/assetC/deleteById',
+    url: '/warehouseAssetC/deleteById',
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data

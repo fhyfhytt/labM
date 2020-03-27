@@ -1,7 +1,7 @@
 <template>
   <div class="roleManage-addRole">
     <el-row>
-      <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
+      <el-form ref="baseInfo" :model="baseInfo" label-width="115px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
         <el-col :span="8">
           <el-form-item label="物资编码">
             <el-input v-model="baseInfo.no" disabled />

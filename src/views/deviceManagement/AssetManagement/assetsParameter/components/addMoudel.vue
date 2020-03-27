@@ -94,7 +94,7 @@
     </el-dialog>
     <!-- 所属区域 -->
     <el-dialog title="所属区域选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="addArea" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :is-radio="isRadio" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+      <addFilters ref="addFilters" :component-name="dialogName" :is-radio="isRadio" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
   </div>
 </template>
@@ -178,8 +178,8 @@ export default {
             addAssets(param).then(response => {
               that.loading = false
               if (response.success === true) {
-                that.$message.success('新增成功')
-                that.$emit('addSuccess')
+                that.$message.success('新增成功，请在资产审核中查看')
+                that.$emit('addSuccess', '新增')
               } else {
                 that.$message.error(response.msg)
               }
@@ -199,7 +199,7 @@ export default {
             assetsUpdate(param).then(response => {
               that.loading = false
               if (response.success === true) {
-                that.$message.success('修改成功')
+                that.$message.success('编辑成功，请在资产审核中查看')
                 that.$emit('addSuccess')
               } else {
                 that.$message.error(response.msg)

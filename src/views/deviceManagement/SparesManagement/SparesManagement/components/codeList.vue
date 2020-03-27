@@ -44,35 +44,37 @@ export default {
   },
 
   mounted() {
-    const params = {}
-    queryByAsset(params).then(response => {
-      if (response.code === 0) {
-        this.loading = false
-        this.tableDate = response.data.assetList
-        this.total = Number(response.data.count)
-      } else {
-        this.$message.error(response.msg)
+    this.getList()
+  },
+  methods: {
+    getList() {
+      const params = {
+        pageSize: this.pageSize,
+        pageNum: this.pageNumber
       }
-    })
-      .catch(response => {
+      queryByAsset(params).then(response => {
+        if (response.code === 0) {
+          this.loading = false
+          this.tableDate = response.data.assetList
+          this.total = Number(response.data.count)
+        } else {
+          this.$message.error(response.msg)
+        }
+      }).catch(response => {
         this.loading = false
         this.$message.error(response.msg)
       })
-  },
-  methods: {
+    },
     // 分页
     handleSizeChange(val) {
       this.pageSize = val
       this.pageNumber = 1
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNumber: this.pageNumber })
+      this.getList()
     },
     handleCurrentChange(val) {
       this.pageNumber = val
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNumber: this.pageNumber })
+      this.getList()
     },
-    handleJumper(currentPage) {
-    },
-
     handleChoose(row) {
       this.$emit('resCode', row)
     }

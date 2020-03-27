@@ -15,13 +15,13 @@
           </el-col>
           <el-col :xl="{span:5}" :lg="{span:6}">
             <el-form-item label="所属库房：">
-              <el-select v-model="filters.houseIds" popper-class="select-option" multiple clearable placeholder="-请选择-" @change="aa">
+              <el-select v-model="filters.houseIds" popper-class="select-option" multiple clearable placeholder="-请选择-">
                 <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.code" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item label-width="50px">
+            <el-form-item label-width="30px">
               <el-button v-permission="'attachmentSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
             </el-form-item>
           </el-col>
@@ -32,11 +32,13 @@
       <div class="page-table-content">
         <div class="button-tool">
           <span class="fl">
-            <!-- <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)"> -->
-            <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
-            <el-button icon="attachmentImport" size="small" @click="toLead">导入</el-button>
-            <el-button v-permission="'attachmentExport'" icon="iconfont " size="small" @click="exportExcel('1')">导出</el-button>
-            <el-button v-permission="'attachmentMoudle'" icon="iconfont " size="small" @click="exportExcel('2')">模板</el-button>
+            <el-button-group class="buttonGroup">
+              <!-- <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)"> -->
+              <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
+              <el-button v-permission="'attachmentImport'" icon="iconfont icondaoru" class="firstB" @click="toLead" />
+              <el-button v-permission="'attachmentExport'" icon="iconfont" @click="exportExcel('1')">导出</el-button>
+              <el-button v-permission="'attachmentMoudle'" icon="iconfont " @click="exportExcel('2')">模板</el-button>
+            </el-button-group>
           </span>
           <span class="fr">
             <el-button v-permission="'attachmentAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
@@ -53,7 +55,7 @@
           </el-table-column>
           <el-table-column prop="assetInfo.assetName" label="备件名称" />
           <el-table-column prop="assetInfo.itemType" label="备件分类" />
-          <el-table-column prop="status" label="所属状态" />
+          <el-table-column prop="statusS" label="所属状态" />
           <el-table-column prop="house" label="所属库房" />
           <el-table-column prop="num" label="数量" />
         </el-table>
@@ -73,10 +75,10 @@
     </div>
     <!-- 导出数据 -->
     <el-table v-show="false" id="exportExcelTable" :data="tableExport">
-      <el-table-column prop="assetNo" label="备件编码" />
-      <el-table-column prop="assetName" label="备件名称" />
-      <el-table-column prop="itemType" label="备件分类" />
-      <el-table-column prop="status" label="所属状态" />
+      <el-table-column prop="assetInfo.assetNo" label="备件编码" />
+      <el-table-column prop="assetInfo.assetName" label="备件名称" />
+      <el-table-column prop="assetInfo.itemType" label="备件分类" />
+      <el-table-column prop="statusS" label="所属状态" />
       <el-table-column prop="house" label="所属库房" />
       <el-table-column prop="num" label="数量" />
     </el-table>
@@ -110,7 +112,7 @@
     </div>
     <!-- 树 -->
     <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+      <addFilters ref="addFilters" :component-name="dialogName" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
   </div>
 </template>
@@ -162,9 +164,6 @@ export default {
     },
     arearArr: function() {
       return this.areas.length > 0 ? this.areas.split(',') : ''
-    },
-    houseIds: function() {
-      return this.filters.houseIds ? this.filters.houseIds.join(',').split(',') : []
     }
   },
   created() {
@@ -190,9 +189,6 @@ export default {
     // this.getList()
   },
   methods: {
-    aa() {
-      console.log(this.filters.houseIds.join(',').split(','))
-    },
     // 选择筛选条件
     showAddFiltersType() {
       this.dialogName = '资产分类选择'
@@ -270,13 +266,16 @@ export default {
         assetName: this.filters.assetNo,
         assetItemType: this.itemTypesArr,
         checkStatus: '1',
-        houseIds: this.houseIds
+        houseIds: this.filters.houseIds
       }
       this.loading = true
       queryByWarehouseAsset(param).then(response => {
         this.loading = false
         if (response.success === true) {
-          this.tableData = response.data.assetList || []
+          this.tableData = response.data.assetList.map(item => {
+            if (item.assetInfo === undefined) item.assetInfo = {}
+            return item
+          }) || []
           this.totalCount = Number(response.data.count)
         } else {
           this.$message.error(response.msg)
@@ -292,11 +291,14 @@ export default {
         assetName: this.filters.assetNo,
         assetItemType: this.itemTypesArr,
         checkStatus: '1',
-        houseIds: this.houseIds
+        houseIds: this.filters.houseIds
       }
       queryByWarehouseAsset(param2).then(response => {
         if (response.success === true) {
-          this.tableDataExport = response.data.assetList || []
+          this.tableDataExport = response.data.assetList.map(item => {
+            if (item.assetInfo === undefined) item.assetInfo = {}
+            return item
+          }) || []
         } else {
           this.$message.error(response.msg)
         }
@@ -410,7 +412,8 @@ export default {
           if (res.data.code === '0') {
             that.visibleImportRole = false
             this.$message.success('导入成功')
-            this.getList()
+            formData.delete('file')
+            return false
           } else {
             this.$message.error(res.data.msg)
           }
@@ -458,5 +461,7 @@ export default {
       p {text-align: center;color: #38a4ed;font-size: 16px;margin-top: 5px;}
     }
   }
+  .buttonGroup .el-button {margin-left: 0;}
+  .buttonGroup .el-button.firstB {border-top-left-radius: 4px;border-bottom-left-radius: 4px;}
 </style>
 

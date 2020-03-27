@@ -26,7 +26,7 @@
     </div>
 
     <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+      <addFilters ref="addFilters" :component-name="dialogName" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
       itemTypes: '',
       filtersTypeId: [],
       addFiltersVisible: false,
-      dialogName: '',
+      dialogName: '资产分类选择',
       tableDate: [],
       totalNum: 0,
       currentPage: 1,

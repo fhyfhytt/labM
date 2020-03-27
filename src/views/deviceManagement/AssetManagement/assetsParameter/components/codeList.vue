@@ -10,7 +10,7 @@
       <el-table-column prop="price" label="物资价格" />
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <a style="cursor:pointer;color: #01AAED;}" @click="handleChoose(scope.row)"><i class="el-icon-plus" /></a>
+          <a style="cursor:pointer;color: #01AAED;font-size:25px;}" @click="handleChoose(scope.row)"><i class="el-icon-plus" /></a>
         </template>
       </el-table-column>
     </el-table>
@@ -39,40 +39,41 @@ export default {
       tableDate: [],
       row: {}, // 编辑初始化内容
       loading: true
-
     }
   },
 
   mounted() {
-    const params = {}
-    queryByAsset(params).then(response => {
-      if (response.code === 0) {
-        this.loading = false
-        this.tableDate = response.data.assetList
-        this.total = Number(response.data.count)
-      } else {
-        this.$message.error(response.msg)
+    this.getList()
+  },
+  methods: {
+    getList() {
+      const params = {
+        pageSize: this.pageSize,
+        pageNum: this.pageNumber
       }
-    })
-      .catch(response => {
+      queryByAsset(params).then(response => {
+        if (response.code === 0) {
+          this.loading = false
+          this.tableDate = response.data.assetList
+          this.total = Number(response.data.count)
+        } else {
+          this.$message.error(response.msg)
+        }
+      }).catch(response => {
         this.loading = false
         this.$message.error(response.msg)
       })
-  },
-  methods: {
+    },
     // 分页
     handleSizeChange(val) {
       this.pageSize = val
       this.pageNumber = 1
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNumber: this.pageNumber })
+      this.getList()
     },
     handleCurrentChange(val) {
       this.pageNumber = val
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNumber: this.pageNumber })
+      this.getList()
     },
-    handleJumper(currentPage) {
-    },
-
     handleChoose(row) {
       this.$emit('resCode', row)
     }
