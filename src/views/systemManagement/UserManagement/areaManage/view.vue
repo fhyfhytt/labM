@@ -22,7 +22,7 @@
                     <use xlink:href="#iconquyu" />
                   </svg>{{ data.name }}
                 </span>
-                <span v-else>
+                <span v-else style="paddingLeft:16px;">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconquyu" />
                   </svg>{{ data.name }}
