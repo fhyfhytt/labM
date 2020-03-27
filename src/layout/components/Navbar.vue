@@ -3,7 +3,7 @@
     <div v-if="device!=='mobile'" class="left-menu">
       <div>
         <img src="../../assets/img/favicon.png">
-        <span style="line-height: 100%;">实验室管理系统</span>
+        <span style="line-height: 100%;">设备管理系统</span>
         <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
         <breadcrumb v-if="device==='mobile'" id="breadcrumb-container" class="breadcrumb-container" />
       </div>

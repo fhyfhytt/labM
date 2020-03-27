@@ -3,7 +3,7 @@
     <p class="bkb" />
     <el-form ref="editForm" :model="editForm" label-width="140px" :rules="editFormRules" class="edittop">
       <el-form-item label="字典编码：" prop="dictCode">
-        <el-input v-model="editForm.dictCode" placeholder="请输入字典编码" />
+        <el-input v-model="editForm.dictCode" placeholder="请输入字典编码" disabled />
       </el-form-item>
       <el-form-item label="字典名称：" prop="name">
         <el-input v-model="editForm.name" placeholder="请输入字典名称" />
