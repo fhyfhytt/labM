@@ -9,7 +9,7 @@
           <el-form-item label="审核状态">
             <el-select v-model="batchForm.checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-">
               <el-option label="审核通过" value="1" />
-              <el-option label="审核未通过" value="0" />
+              <el-option label="审核未通过" value="2" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -64,7 +64,6 @@ export default {
     // 提交批量审核
     submitForm(batchform) {
       this.batchForm.ids = this.auditTableById.join(',')
-      console.log('ids:', this.batchForm.ids)
       this.$refs[batchform].validate((valid) => {
         if (valid) {
           this.loading = true

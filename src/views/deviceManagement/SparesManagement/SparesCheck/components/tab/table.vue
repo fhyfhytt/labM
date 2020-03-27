@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       pageSize: 10,
-      pageNumber: 1,
+      pageNum: 1,
       total: 0,
       batchAuditVisible: false, // 批量审核界面是否显示
       singleAuditVisible: false, // 审核界面是否显示
@@ -91,7 +91,6 @@ export default {
     },
     // 批量审核
     handleBatchAudit() {
-      console.log('11', this.auditTableById)
       if (this.auditTableById.length === 0) {
         this.$message.error('请至少选择一条数据')
       } else {
@@ -127,12 +126,12 @@ export default {
     // 分页
     handleSizeChange(val) {
       this.pageSize = val
-      this.pageNumber = 1
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNumber: this.pageNumber })
+      this.pageNum = 1
+      this.$emit('handleGetTableData', { pageSize: this.pageSize, pageNum: this.pageNum })
     },
     handleCurrentChange(val) {
-      this.pageNumber = val
-      this.$emit('handleGetTableData', { pageSize: this.pageSize, currentPage: val, pageNumber: this.pageNumber })
+      this.pageNum = val
+      this.$emit('handleGetTableData', { pageSize: this.pageSize, currentPage: val, pageNum: this.pageNum })
     },
     handleJumper(currentPage) {
     }

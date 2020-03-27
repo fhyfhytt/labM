@@ -71,6 +71,7 @@ export default {
         this.treeloading = false
         if (response.code === 0) {
           this.treedata = setTreeData(response.data)
+          console.log(setTreeData(response.data))
           if (response.data.length > 0) {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id

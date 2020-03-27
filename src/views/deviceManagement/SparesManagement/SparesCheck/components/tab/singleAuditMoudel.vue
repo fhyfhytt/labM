@@ -50,9 +50,12 @@
         <h3 class="title" style="">审核备注</h3>
         <el-col :span="24">
           <el-form-item label="审核状态:">
-            <el-select v-model="AuditForm.checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-">
+            <!-- <el-select v-model="AuditStatus.code" value-key="code" clearable placeholder="-请选择-">
+              <el-option v-for="item in AuditStatus" :key="item.code" :label="item.name" :value="item.code" />
+            </el-select> -->
+            <el-select v-model="checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-"> -->
               <el-option label="审核通过" value="1" />
-              <el-option label="审核未通过" value="0" />
+              <el-option label="审核未通过" value="2" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -83,13 +86,22 @@ export default {
   },
   data() {
     return {
-      AuditForm: { id: '', assetInfo: '', itemType: '', dataFrom: '', statusS: '', checkStatus: '', house: '', checkNote: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
+      AuditForm: { id: '', assetInfo: '', itemType: '', dataFrom: '', statusS: '', house: '', checkNote: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
       singleAuditVisible: false,
       loading: false,
       addUserVisible: false,
       batchFormRules: {
         checkStatus: [{ required: true, message: '请选择状态', trigger: 'blur' }]
-      }
+      },
+      AuditStatus: [{
+        name: '审核通过',
+        code: 1
+      }, {
+        name: '审核未通过',
+        code: 2
+      }],
+      checkStatus: ''
+      // 审核状态值，默认审核未通过
       // primaryKey: '' // 查询参数
     }
   },
@@ -111,7 +123,7 @@ export default {
         if (valid) {
           this.loading = true
           const param = {}
-          param.checkStatus = this.AuditForm.checkStatus
+          param.checkStatus = this.checkStatus
           param.checkNote = this.AuditForm.checkNote
           param.ids = this.AuditForm.id
 

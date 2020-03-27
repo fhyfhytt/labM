@@ -23,7 +23,7 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-button v-permission="'sparesSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchSpares">查询</el-button>
+            <el-button v-permission="'sparesSearch'" size="small" class="button-sub" style="margin-left:24px;" @click.native="searchSpares">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -101,13 +101,13 @@ export default {
     // 查询备件数据
     getTableData() {
       this.tableloading = true
-      console.log(this.param)
       getSparesList(this.param)
         .then(response => {
           this.tableloading = false
           if (response.code === 0) {
             this.tableDate = response.data.assetList
             this.totalNum = Number(response.data.count)
+            // this.formSpare.assetItemType =''
           } else {
             this.$message.error(response.msg)
           }
@@ -150,7 +150,6 @@ export default {
       this.formSpare.assetItemType = this.typeData.map(item => {
         return item.id
       }).join(',')
-      console.log('this.formSpare.assetItemType:', this.formSpare.assetItemType)
     }
   }
 }
