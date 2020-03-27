@@ -385,8 +385,6 @@ export default {
         getOrgTreeNew().then(res => {
           if (res.code === 0) {
             _this.organTree = setTreeData(res.data)
-          } else {
-            _this.$message.error(res.msg)
           }
         })
       }
@@ -394,8 +392,6 @@ export default {
         getOrgTreeNew().then(res => {
           if (res.code === 0) {
             _this.groupTree = setTreeData(res.data)
-          } else {
-            _this.$message.error(res.msg)
           }
         })
       }
@@ -409,8 +405,6 @@ export default {
       selectRoleByUserId(paraRole).then(response => {
         if (response.success === true) {
           this.tableDataRole = response.data
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.msg)
@@ -425,8 +419,6 @@ export default {
       selectRegionByUserId(paraRegion).then(response => {
         if (response.success === true) {
           this.tableDataRegion = response.data
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.msg)
@@ -453,8 +445,6 @@ export default {
               this.activeName = '1'
               this.active = 1
               this.$emit('clickAdd')
-            } else {
-              this.$message.error(response.msg)
             }
           }).catch(response => {
             this.$message.error(response.msg)
@@ -490,8 +480,6 @@ export default {
             this.activeName = '2'
             this.active = 2
             this.$emit('clickAdd')
-          } else {
-            this.$message.error(response.msg)
           }
         }).catch(response => {
           this.$message.error(response.msg)
@@ -522,8 +510,6 @@ export default {
             if (this.editForm.name === this.$store.getters.name) {
               location.reload()
             }
-          } else {
-            this.$message.error(response.msg)
           }
         }).catch(response => {
           this.$message.error(response.msg)
@@ -703,8 +689,6 @@ export default {
         if (response.success === true) {
           this.AddtwoRoletable = response.data.rows
           this.totalCount = response.data.totalCount
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.msg)
@@ -717,8 +701,6 @@ export default {
         if (response.success === true) {
           this.AddtwoRegiontable = response.data.rows
           this.totalCountRegion = response.data.totalCount
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.msg)
