@@ -109,6 +109,7 @@ export default {
 
 <style lang="scss" >
 .DictionarysEdit{
+  margin-right:27px;
    .addtop{
       padding-top:18px;
       margin-left:-13px;
@@ -139,7 +140,6 @@ export default {
 
    .el-textarea.el-input--medium{
       .el-textarea__inner {
-     width:300px;
      margin-left:0px;
      max-height: 70px
    }

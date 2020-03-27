@@ -546,7 +546,9 @@ vue-treeselect__control {
   transform: scale(1.1);
 }
 
-
+.el-radio-button--medium .el-radio-button__inner{
+  padding: 8px 20px;
+}
 
 // 表格上方操作按钮
 .button-tool {
