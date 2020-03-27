@@ -78,7 +78,7 @@ export default {
     background: #fff;
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 100px;
     padding: 10px;
     font-size: 12px;
     box-shadow:0px 2px 40px 0px rgba(0,0,0,0.16);
@@ -116,7 +116,7 @@ export default {
         font-size: 14px;
     }
     .itembottom{
-      margin-top: 6px;
+      margin-top: 5%;
       display: flex;
       .mainchart{
         flex: 0.9;

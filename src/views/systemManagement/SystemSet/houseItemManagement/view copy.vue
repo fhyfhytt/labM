@@ -29,14 +29,12 @@
           <i class="iconfont iconxingzhuang1 iconStyleDel" @click="deleteWareHourse(checkHourseItem)" />
         </div>
         <div class="content">
-          <div v-for="(item,index) in hourseInfo" :key="index" class="flip-container">
-            <div class="flipper">
-              <div class="front" @mouseover="ShowBounced(index)">
-                <img :src="item.defaultImg">
-              </div>
-              <!-- 库房点击详情弹框 -->
-              <ItemBounced v-if="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
+          <div v-for="(item,index) in hourseInfo" :key="index" class="contentItem">
+            <div class="face" @mouseover="ShowBounced(index)">
+              <img :src="item.defaultImg">
             </div>
+            <!-- 库房点击详情弹框 -->
+            <ItemBounced v-if="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
             <el-checkbox-group v-model="checkHourseItem" class="checkbox">
               <el-checkbox :key="item.id" v-model="item.id" :checked="item.checked" class="checkscolor" :class="{checkcolor: index === showbouncedItx}" :label="'编号：'+item.code" :disabled="item.disabled" />
             </el-checkbox-group>
@@ -395,6 +393,12 @@ export default {
           color: #2A2A2C;
         }
       }
+      &:hover .face{
+        transform: rotateY(180deg);
+      }
+      &:hover .back{
+        transform: rotateY(0deg);
+      }
     }
   }
   .footer{
@@ -402,34 +406,4 @@ export default {
     right: 0;
     position: absolute;
   }
-.flip-container {
-  display: inline-block;
-  margin: 10px 0 0 20px;
-  position: relative;
-  width: 23%;
-  height: 28%;
-}
-.flip-container:hover .flipper, .flip-container.hover .flipper {
-	transform: rotateY(-180deg);
-}
-.flipper {
-	transition: 0.6s;
-	transform-style: preserve-3d;
-	position: relative;
-  height: 100%;
-  .front, .back {
-    backface-visibility: hidden;
-    width: 75%;
-    height: 95%;
-    display: inline-block;
-    img{
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .back {
-    transform: rotateY(-180deg);
-  }
-}
-
 </style>

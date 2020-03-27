@@ -43,10 +43,6 @@
 </template>
 
 <script>
-// import { managementCenterEdit } from '@/api/manage.js'
-// import { searchRoleUsers } from '@/api/roleManage'
-// import { dictUpdate } from '@/api/house.js'
-// import common from '@/utils/common'
 export default {
   data() {
     return {
@@ -85,4 +81,8 @@ export default {
 
 <style lang="scss">
 @import '~@/styles/modul.scss';
+.dialgAddform1{
+  // position: absolute;
+  // top: 50%;
+}
 </style>
