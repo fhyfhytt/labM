@@ -8,10 +8,14 @@
             <el-tree ref="tree" v-loading="treeloading" :data="treedata" node-key="id" default-expand-all :props="defaultProps" :highlight-current="true" :expand-on-click-node="false" @node-click="handleNodeClick">
               <span slot-scope="{ node, data }" class="custom-tree-node span-ellipsis">
                 <span v-if="data.children" :title="data.name">
-                  <i class="iconfont iconzuzhi" />{{ data.name }}
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconzuzhi" />
+                  </svg>{{ data.name }}
                 </span>
                 <span v-else style="paddingLeft:16px;" :title="data.name">
-                  <i class="iconfont iconbumen" />{{ data.name }}
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconzuzhi" />
+                  </svg>{{ data.name }}
                 </span>
               </span>
             </el-tree>

@@ -11,6 +11,7 @@
               :data="treedata"
               node-key="id"
               default-expand-all
+              :indent="10"
               :props="defaultProps"
               :highlight-current="true"
               :expand-on-click-node="false"
@@ -18,10 +19,14 @@
             >
               <span slot-scope="{ node, data }" class="custom-tree-node">
                 <span v-if="data.children">
-                  <i class="iconfont iconzuzhi" />{{ data.name }}
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconfenlei" />
+                  </svg>{{ data.name }}
                 </span>
-                <span v-else style="paddingLeft:16px;">
-                  <i class="iconfont iconbumen" />{{ data.name }}
+                <span v-else>
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconfenlei" />
+                  </svg>{{ data.name }}
                 </span>
               </span>
             </el-tree>

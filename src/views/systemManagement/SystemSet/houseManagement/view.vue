@@ -17,10 +17,14 @@
             >
               <span slot-scope="{ node, data }" class="custom-tree-node">
                 <span v-if="data.children">
-                  <i class="iconfont iconzuzhi" />{{ data.name }}
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconquyu" />
+                  </svg>{{ data.name }}
                 </span>
-                <span v-else style="paddingLeft:16px;">
-                  <i class="iconfont iconbumen" />{{ data.name }}
+                <span v-else>
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconquyu" />
+                  </svg>{{ data.name }}
                 </span>
               </span>
             </el-tree>
