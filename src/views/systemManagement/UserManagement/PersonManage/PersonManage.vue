@@ -384,6 +384,7 @@ export default {
 }
 .userEdit {
   .el-dialog {
+    margin-top: 10vh !important;
     .el-dialog__body {
       padding: 24px 20px 30px ;
     }

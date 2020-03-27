@@ -303,7 +303,9 @@ vue-treeselect__control {
 .el-select>.el-input{
   height: 32px;
 }
-
+.el-select.el-select--medium{
+  width: 100%;
+}
 
 //不跳转分页
 .numListJup{
