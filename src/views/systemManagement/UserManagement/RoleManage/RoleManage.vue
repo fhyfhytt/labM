@@ -17,9 +17,7 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item>
-              <el-button v-permission="'roleSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
-            </el-form-item>
+            <el-button v-permission="'roleSearch'" size="small" class="button-sub" style="margin-left:24px" @click="searchData">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -46,16 +44,7 @@
           </el-table-column>
         </el-table>
         <div class="numListJup margin-jump">
-          <el-pagination
-            :page-size="pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total,sizes,prev, pager, next, jumper"
-            :total="totalCount"
-            :pager-count="5"
-            :current-page.sync="currentPage"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <el-pagination :page-size="pageSize" :page-sizes="[10, 20, 50, 100]" layout="total,sizes,prev, pager, next, jumper" :total="totalCount" :pager-count="5" :current-page.sync="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
           <!-- <div class="sendAllBtn">
             <span>跳转</span>
           </div> -->
@@ -238,7 +227,7 @@ export default {
         } else {
           this.$message.error(res.msg)
         }
-      }).catch(e => {})
+      }).catch(e => { })
     },
     confirmBtn() {
       this.confirmVisible = false
@@ -298,281 +287,286 @@ export default {
 }
 </script>
 <style scoped>
-
 </style>
 <style lang="scss" scoped>
-.RoleManage{
-    .addRoleDialog >>> .el-dialog{
-      border-radius: 10px;
-      color: #01E6E9;
-      background:transparent;
-      border:1px solid #379EFC;
-      background-image: url(/static/img/bgTwo.a178d248.png)!important;
-      background-size: 100% 100%;
-      overflow: hidden;
-      .el-table__body {
-        width:100%
-      }
-      .el-tree::-webkit-scrollbar{
-        width: 0 !important
-      }
-      .el-tree{
+.RoleManage {
+  .addRoleDialog >>> .el-dialog {
+    border-radius: 10px;
+    color: #01e6e9;
+    background: transparent;
+    border: 1px solid #379efc;
+    background-image: url(/static/img/bgTwo.a178d248.png) !important;
+    background-size: 100% 100%;
+    overflow: hidden;
+    .el-table__body {
+      width: 100%;
+    }
+    .el-tree::-webkit-scrollbar {
+      width: 0 !important;
+    }
+    .el-tree {
+      background: transparent;
+      overflow-y: auto;
+      .el-tree__empty-block {
         background: transparent;
-        overflow-y: auto;
-        .el-tree__empty-block{
-          background: transparent
-        }
-        .el-tree__empty-text{
-          color: #ffffff
-        }
-        .el-checkbox__inner{
-          top: 3px;
-          border:1px solid #379EFC;
-          background:transparent
-        }
-        .el-tree-node__label{
-          color: #ffffff
-        }
-        .el-tree-node__content{
-          background: none;
-          &:hover{
-            opacity: 0.5;
-          }
-        }
-        .el-tree-node__children .el-tree-node__content::before {
-          content: "";
-          border-left: 1px dashed #006a78;
-          height: 100vh;
-          overflow-y: auto;
-          width: 1px;
-          position: absolute;
-          left: 15px;
-          top: -12px;
-        }
-        .el-tree-node__children .el-tree-node__content::after {
-          content: "";
-          border-top: 1px dashed #006a78;
-          height: 1px;
-          width: 10px;
-          position: absolute;
-          left:16px
-        }
-        .el-tree-node__expand-icon.expanded {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        .el-icon-caret-right:before {
-          background: url("../../../../../public/img/jia.png") no-repeat center center;
-          content: "";
-          display: block;
-          width: 18px;
-          height: 18px;
-          font-size: 18px;
-          background-size: 18px;
-        }
-        .el-tree-node__expand-icon.expanded.el-icon-caret-right:before {
-          background: url("../../../../../public/img/jian.png") no-repeat center center;
-          content: "";
-          display: block;
-          width: 18px;
-          height: 18px;
-          font-size: 18px;
-          background-size: 18px;
-        }
-        .el-tree-node__expand-icon.is-leaf::before {
-          // display: none;
-          visibility: hidden;
+      }
+      .el-tree__empty-text {
+        color: #ffffff;
+      }
+      .el-checkbox__inner {
+        top: 3px;
+        border: 1px solid #379efc;
+        background: transparent;
+      }
+      .el-tree-node__label {
+        color: #ffffff;
+      }
+      .el-tree-node__content {
+        background: none;
+        &:hover {
+          opacity: 0.5;
         }
       }
-      .bkb{
+      .el-tree-node__children .el-tree-node__content::before {
+        content: '';
+        border-left: 1px dashed #006a78;
+        height: 100vh;
+        overflow-y: auto;
+        width: 1px;
+        position: absolute;
+        left: 15px;
+        top: -12px;
+      }
+      .el-tree-node__children .el-tree-node__content::after {
+        content: '';
+        border-top: 1px dashed #006a78;
         height: 1px;
+        width: 10px;
+        position: absolute;
+        left: 16px;
+      }
+      .el-tree-node__expand-icon.expanded {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      .el-icon-caret-right:before {
+        background: url('../../../../../public/img/jia.png') no-repeat center
+          center;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+        background-size: 18px;
+      }
+      .el-tree-node__expand-icon.expanded.el-icon-caret-right:before {
+        background: url('../../../../../public/img/jian.png') no-repeat center
+          center;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+        background-size: 18px;
+      }
+      .el-tree-node__expand-icon.is-leaf::before {
+        // display: none;
+        visibility: hidden;
+      }
+    }
+    .bkb {
+      height: 1px;
       width: 90%;
       margin: -1px auto 0;
       background: radial-gradient(#53e3fd 20%, transparent 80%);
+    }
+    .el-table::-webkit-scrollbar {
+      width: 0 !important;
+    }
+    .el-table {
+      border: 1px solid #379efc;
+      border-radius: 4px;
+      overflow-y: auto;
+      .cell {
+        border-bottom: 1px solid rgba(80, 220, 245, 0.39);
       }
-      .el-table::-webkit-scrollbar{
-    width: 0 !important
-  }
-      .el-table{
-        border: 1px solid #379EFC;
-        border-radius: 4px;
-        overflow-y: auto;
-        .cell{
-          border-bottom: 1px solid rgba(80,220,245,0.39)
-        }
-        th>.cell{
-          border: none
-        }
-        .el-table__empty-text{
-          color: #ffffff
-        }
-        // .el-table__row.hover-row{
-        //   background: #50dcf5
-        // }
-        .el-table__row.current-row{
-          background: #0099ff
-        }
+      th > .cell {
+        border: none;
       }
-      .el-dialog__header{
-        text-align: left;
-        margin:0 auto;
-        font-size: 14px;
-        padding:0 0 0 16px;
-        background: linear-gradient(to bottom, rgba(83,227,253,1) 0%, rgba(83,227,253,0.0) 100%);
-        color:#379EFC;
-        width: 100%;
-        height: 34px;
-        line-height: 34px;
-        .el-dialog__title{
-          color: #379EFC;
-          font-size: 14px;
-          font-weight: bold;
-          line-height: 34px;
-        }
-      }
-      .el-dialog__body{
-        // padding:0 20px;
-        font-size: 14px;
-        color:#379EFC
-      }
-      .el-tabs__item{
+      .el-table__empty-text {
         color: #ffffff;
-        &.is-active{
-         color: #379EFC
-        }
       }
-      .el-tabs__nav-wrap::after{
-        background: rgba(83,227,253,0.4) !important
+      // .el-table__row.hover-row{
+      //   background: #50dcf5
+      // }
+      .el-table__row.current-row {
+        background: #0099ff;
       }
-      .el-tabs__active-bar{
-        background: #379EFC
+    }
+    .el-dialog__header {
+      text-align: left;
+      margin: 0 auto;
+      font-size: 14px;
+      padding: 0 0 0 16px;
+      background: linear-gradient(
+        to bottom,
+        rgba(83, 227, 253, 1) 0%,
+        rgba(83, 227, 253, 0) 100%
+      );
+      color: #379efc;
+      width: 100%;
+      height: 34px;
+      line-height: 34px;
+      .el-dialog__title {
+        color: #379efc;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 34px;
       }
-      .el-tabs__item:hover{
-        color: #379EFC
+    }
+    .el-dialog__body {
+      // padding:0 20px;
+      font-size: 14px;
+      color: #379efc;
+    }
+    .el-tabs__item {
+      color: #ffffff;
+      &.is-active {
+        color: #379efc;
       }
-      .el-dialog__headerbtn{
-        outline: none;
+    }
+    .el-tabs__nav-wrap::after {
+      background: rgba(83, 227, 253, 0.4) !important;
+    }
+    .el-tabs__active-bar {
+      background: #379efc;
+    }
+    .el-tabs__item:hover {
+      color: #379efc;
+    }
+    .el-dialog__headerbtn {
+      outline: none;
 
-        i{
-          color: #379EFC;
-          font-size: 18px;
-          font-weight: bold;
-        }
+      i {
+        color: #379efc;
+        font-size: 18px;
+        font-weight: bold;
       }
     }
-    .RoleManage-title{
-        margin: 1%;
-        // padding-left:20px;
-        background-size: 100% 100%;
-        border-radius: 5px;
-        border: 1px solid #50DCF5;
-        padding-top:1.5%;
-        .el-table .cell{
-          height: 43px;
-          line-height: 43px;
-          border-bottom:1px solid #379EFC
-        }
-        .el-table th>.cell{
-          border: none
-        }
-        .el-card__body {
-          padding: 0;
-        }
-        .el-collapse {
-          border-bottom: 0;
-          border-top: 0;
-        }
-        .el-collapse-item__wrap {
-          background: transparent;
-          border-bottom: 0;
-        }
-        .el-collapse-item__header {
-          background: transparent;
-          border-bottom: 0;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          color: #379EFC;
-          opacity: 0.9;
-        }
-        .el-textarea__inner {
-          background-color: transparent;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          color:rgba(255,255,255,1);
-          border:1px solid rgba(80,220,245,0.7);
-          &:focus {
-            border:1px solid rgba(80,220,245,1);
-          }
-        }
-        >>> .el-form-item__label{
-          color: #379EFC
-        }
-      >>> .el-input--small .el-input__inner {
-          background-color: transparent;
-          font-family:Microsoft YaHei;
-          font-weight:400;
-          color:rgba(255,255,255,1);
-          border:1px solid rgba(80,220,245,0.7);
-          &:focus {
-            border:1px solid rgba(80,220,245,1);
-          }
-        }
-        .el-input--small.is-focus .el-input__inner {
-          background-color: transparent;
-          font-family:Microsoft YaHei;
-          font-weight:400;
-          color:rgba(255,255,255,1);
-          border:1px solid rgba(80,220,245,1);
-        }
-        .el-form-item__label {
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          color: #379EFC;
-          opacity: 0.9;
-        }
-        input::-webkit-input-placeholder {
-          opacity: 0.5;
-        }
-        textarea::-webkit-input-placeholder {
-          opacity: 0.5;
-        }
+  }
+  .RoleManage-title {
+    margin: 1%;
+    // padding-left:20px;
+    background-size: 100% 100%;
+    border-radius: 5px;
+    border: 1px solid #50dcf5;
+    padding-top: 1.5%;
+    .el-table .cell {
+      height: 43px;
+      line-height: 43px;
+      border-bottom: 1px solid #379efc;
     }
-    .RoleManage-table{
-       margin: 0 1%;
-       background-size: 100% 100%;
-       border-radius: 5px;
-      //  padding:0 20px;
-       border: 1px solid #50DCF5;
-       .button-tool{
-         padding-top:1%;
-       }
-       .scope-caozuo{
-          margin-left: 12px;
-          margin-right:8px;
-          color:#00FFFF;
-          font-size: 16px;
-       }
-       >>> .el-table .cell{
-          height: 43px;
-          line-height: 43px;
-          border-bottom:1px solid rgba(80,220,245,0.39)
-        }
-        >>> .el-table th>.cell{
-          border: none
-        }
+    .el-table th > .cell {
+      border: none;
     }
-    .childrenlog{
-      .dialog-content{
-        color: #379EFC;
-        font-size: 16px;
-        // margin-top: 60px;
-        padding-top: 20px;
-        margin-bottom: 40px;
-      }
-      .dialog-footer{
-        text-align: center;
+    .el-card__body {
+      padding: 0;
+    }
+    .el-collapse {
+      border-bottom: 0;
+      border-top: 0;
+    }
+    .el-collapse-item__wrap {
+      background: transparent;
+      border-bottom: 0;
+    }
+    .el-collapse-item__header {
+      background: transparent;
+      border-bottom: 0;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: #379efc;
+      opacity: 0.9;
+    }
+    .el-textarea__inner {
+      background-color: transparent;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(80, 220, 245, 0.7);
+      &:focus {
+        border: 1px solid rgba(80, 220, 245, 1);
       }
     }
+    >>> .el-form-item__label {
+      color: #379efc;
+    }
+    >>> .el-input--small .el-input__inner {
+      background-color: transparent;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(80, 220, 245, 0.7);
+      &:focus {
+        border: 1px solid rgba(80, 220, 245, 1);
+      }
+    }
+    .el-input--small.is-focus .el-input__inner {
+      background-color: transparent;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(80, 220, 245, 1);
+    }
+    .el-form-item__label {
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: #379efc;
+      opacity: 0.9;
+    }
+    input::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+    textarea::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+  }
+  .RoleManage-table {
+    margin: 0 1%;
+    background-size: 100% 100%;
+    border-radius: 5px;
+    //  padding:0 20px;
+    border: 1px solid #50dcf5;
+    .button-tool {
+      padding-top: 1%;
+    }
+    .scope-caozuo {
+      margin-left: 12px;
+      margin-right: 8px;
+      color: #00ffff;
+      font-size: 16px;
+    }
+    >>> .el-table .cell {
+      height: 43px;
+      line-height: 43px;
+      border-bottom: 1px solid rgba(80, 220, 245, 0.39);
+    }
+    >>> .el-table th > .cell {
+      border: none;
+    }
+  }
+  .childrenlog {
+    .dialog-content {
+      color: #379efc;
+      font-size: 16px;
+      // margin-top: 60px;
+      padding-top: 20px;
+      margin-bottom: 40px;
+    }
+    .dialog-footer {
+      text-align: center;
+    }
+  }
 }
 </style>
 

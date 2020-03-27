@@ -25,9 +25,9 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item>
-              <el-button v-permission="'personSearch'" size="small" class="button-sub" @click="searchUser">查询</el-button>
-            </el-form-item>
+
+            <el-button v-permission="'personSearch'" size="small" class="button-sub" style="margin-left:24px" @click="searchUser">查询</el-button>
+
           </el-col>
         </el-row>
       </el-form>
