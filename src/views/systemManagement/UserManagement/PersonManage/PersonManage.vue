@@ -25,9 +25,9 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-form-item>
-              <el-button v-permission="'personSearch'" size="small" class="button-sub" style="marginLeft:-70px" @click="searchUser">查询</el-button>
-            </el-form-item>
+
+            <el-button v-permission="'personSearch'" size="small" class="button-sub" style="margin-left:24px" @click="searchUser">查询</el-button>
+
           </el-col>
         </el-row>
       </el-form>
@@ -224,7 +224,7 @@ export default {
       const param = { id: row.id }
       rsPassword(param).then(response => {
         if (response.success === true) {
-          this.$message.success('重置密码成功')
+          this.$message.success(response.msg)
         } else {
           this.$message.error(response.msg)
         }
@@ -374,7 +374,9 @@ export default {
   }
 }
 .userAdd {
+
   .el-dialog {
+    margin-top: 10vh !important;
     .el-dialog__body {
       padding: 24px 20px 30px ;
     }
@@ -382,6 +384,7 @@ export default {
 }
 .userEdit {
   .el-dialog {
+    margin-top: 10vh !important;
     .el-dialog__body {
       padding: 24px 20px 30px ;
     }

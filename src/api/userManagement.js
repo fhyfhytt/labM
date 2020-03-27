@@ -111,7 +111,7 @@ export function getUserList(param) {
     url: '/user/getUserList',
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    data: Object.assign(param, { active: 1, available: 1 })
+    data: Object.assign({ active: 1, available: 1 }, param)
   })
 }
 

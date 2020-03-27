@@ -31,9 +31,9 @@ export function yzlogin(data) {
     url: '/user/verification',
     method: 'post',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    data: querystring.stringify({
+    data: {
       mobile: data.mobile
-    })
+    }
   })
 }
 export function resetLogin(data) {
@@ -41,14 +41,14 @@ export function resetLogin(data) {
     url: '/user/reset',
     method: 'post',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    data: querystring.stringify(data)
+    data: data
   })
 }
 export function updateLogin(data) {
   return request({
     url: '/user/updatePassword',
     method: 'post',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    data: querystring.stringify(data)
+    headers: { 'Content-Type': 'application/json' },
+    data: data
   })
 }

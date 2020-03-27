@@ -7,27 +7,25 @@
           <el-form-item label="库房编号:" prop="code">
             <el-input v-model="addForm.code" autocomplete="off" placeholder="请输入库房编号" />
           </el-form-item>
-
-          <el-form-item label="库房类型" prop="type">
-
+          <el-form-item label="库房类型:" prop="type">
             <el-select v-model="addForm.type" value-key="code" popper-class="select-option" placeholder="-请选择库房类型-">
               <el-option v-for="item in selecthouseType" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
           </el-form-item>
-          <el-form-item label="库房管理员" prop="person">
+          <el-form-item label="库房管理员:" prop="person">
             <el-input v-model="addForm.person" autocomplete="off" placeholder="-点击选择管理员-" readonly @click.native="addNewUser" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="库房名称" prop="name">
+          <el-form-item label="库房名称:" prop="name">
             <el-input v-model="addForm.name" autocomplete="off" placeholder="请输入库房名称" />
           </el-form-item>
-          <el-form-item label="库房状态" prop="state">
+          <el-form-item label="库房状态:" prop="state">
             <el-select v-model="addForm.state" value-key="code" popper-class="select-option" placeholder="-请选择库房状态-">
               <el-option v-for="item in selecthouseState" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
           </el-form-item>
-          <el-form-item label="管理员电话" prop="personMobile">
+          <el-form-item label="管理员电话:" prop="personMobile">
             <el-input v-model="addForm.personMobile" autocomplete="off" readonly />
           </el-form-item>
 

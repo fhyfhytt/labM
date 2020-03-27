@@ -1,6 +1,7 @@
 import { login, getInfo, logout } from '@/api/user'
 import { getAvatar, setAvatar, getToken, setToken, removeToken, setUserName, getUserName, getUserId, setUserId } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import { Message } from 'element-ui'
 import global from '@/base.vue'
 const state = {
   token: getToken(),
@@ -130,6 +131,19 @@ const actions = {
         commit('SET_ROLES', [])
         removeToken()
         resetRouter()
+        console.log(location)
+        location.reload()
+        resolve()
+      }).catch(error => {
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        removeToken()
+        resetRouter()
+        Message({
+          message: error.msg,
+          type: 'error',
+          duration: 3 * 1000
+        })
         location.reload()
         resolve()
       })

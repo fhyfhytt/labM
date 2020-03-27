@@ -381,8 +381,6 @@ export default {
             if (response.success === true) {
               this.activeName = '1'
               this.active = 1
-            } else {
-              this.$message.error(response.msg)
             }
           }).catch(response => {
             this.$message.error(response.msg)
@@ -430,8 +428,6 @@ export default {
             this.$emit('clickAdd')
             this.$emit('closeAdd')
             this.activeName = '0'
-          } else {
-            this.$message.error(response.msg)
           }
         }).catch(response => {
           this.$message.error(response.msg)
@@ -611,8 +607,6 @@ export default {
         if (response.success === true) {
           this.AddtwoRoletable = response.data.rows
           this.totalCount = response.data.totalCount
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.msg)
@@ -625,8 +619,6 @@ export default {
         if (response.success === true) {
           this.AddtwoRegiontable = response.data.rows
           this.totalCountRegion = response.data.totalCount
-        } else {
-          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.msg)
@@ -648,8 +640,6 @@ export default {
       } else if (res.code === 10003) {
         this.$message.error(res.msg)
         this.$store.dispatch('user/logout')
-      } else {
-        this.$message.error(res.msg)
       }
     },
 
@@ -800,7 +790,7 @@ export default {
 
   .el-steps--simple {
     padding: 17px 20px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     >>> .is-wait {
       .icontext {
         color: #c0c4cc;

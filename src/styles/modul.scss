@@ -1,5 +1,5 @@
 .dialgAddform1{
-
+  margin-right:28px;
   .addtop{
      padding-top:18px;
   }
@@ -24,9 +24,7 @@
  .el-form-item__error{
   top: 100%;
  }
- .el-form-item.is-success .el-input__inner{
-   border-color: #379EFC;
- }
+
   .dialog-footer{
     text-align: right;
     margin-top: 10px;
@@ -43,7 +41,7 @@
    }
 }
 .dialgEditform1{
-
+  margin-right:28px;
   .edittop{
     padding-top:18px;
   }
@@ -62,12 +60,8 @@
       // }
     }
  }
- .el-form-item__label{
-   color:#379EFC !important;
- }
- .el-form-item.is-success .el-input__inner{
-  border-color: #379EFC;
-}
+
+
  .el-form-item__error{
   top: 100%;
  }

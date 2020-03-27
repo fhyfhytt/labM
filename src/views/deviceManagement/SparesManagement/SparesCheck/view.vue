@@ -1,6 +1,5 @@
 <template>
   <div class="pageRow">
-
     <div class="page-title">
       <el-form ref="form1" :model="formSpare" size="small" label-width="110px">
         <el-row>
