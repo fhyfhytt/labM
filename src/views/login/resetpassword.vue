@@ -103,6 +103,7 @@ export default {
     submitForm() {
       const param = {
         userName: this.ruleForm.userName.trim(),
+        userId: this.$store.state.user.userId,
         password: this.$md5(this.ruleForm.oldpassword.trim()),
         newPassword: this.$md5(this.ruleForm.oldpassword.trim()),
         confirmPassword: this.$md5(this.ruleForm.checkPassword.trim())
@@ -120,7 +121,6 @@ export default {
             this.$message.error(response.msg)
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -184,6 +184,7 @@ export default {
         font-size: 16px;
         color:rgba(41,41,41,1);
         font-weight: 600;
+        line-height: 42px;
         font-family:"PingFangSC-Medium,PingFang SC" !important;
       }
       .passButton{
