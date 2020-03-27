@@ -105,7 +105,7 @@ export default {
         userName: this.ruleForm.userName.trim(),
         userId: this.$store.state.user.userId,
         password: this.$md5(this.ruleForm.oldpassword.trim()),
-        newPassword: this.$md5(this.ruleForm.oldpassword.trim()),
+        newPassword: this.$md5(this.ruleForm.newpassword.trim()),
         confirmPassword: this.$md5(this.ruleForm.checkPassword.trim())
       }
       this.$refs.ruleForm.validate(valid => {
