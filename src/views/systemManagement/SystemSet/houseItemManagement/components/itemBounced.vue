@@ -10,7 +10,7 @@
     <div class="capacity"><i class="iconfont iconrongliang iconcolor" />容量：{{ hourseitem.volume }}</div>
     <div class="bearing"><i class="iconfont iconchengzailiang iconcolor" />承载：{{ hourseitem.weight }}</div>
     <div class="itembottom">
-      <div id="mainchart" style="width:50px;height: 50px;" />
+      <div id="mainchart" class="mainchart" style="width:50px;height: 50px;" />
       <div class="desc">{{ hourseitem.comment }}</div>
     </div>
   </div>
@@ -47,7 +47,7 @@ export default {
         series: [
           {
             type: 'pie',
-            radius: '70%',
+            radius: [0, '65%'],
             data: [
               { value: parseInt(this.hourseitem.rate), name: '存量' },
               { value: 100 - parseInt(this.hourseitem.rate), name: '可用' }
@@ -118,7 +118,7 @@ export default {
     .itembottom{
       margin-top: 6px;
       display: flex;
-      #mainchart{
+      .mainchart{
         flex: 0.8;
       }
       .desc{

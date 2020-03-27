@@ -64,8 +64,8 @@ import { editWarehourse, deleteWarehourse, getWarehouseList, getAllWarehouse } f
 import allware from '@/assets/img/warehourse/allware.png'
 import fullware from '@/assets/img/warehourse/fullware.png'
 import halfware from '@/assets/img/warehourse/halfware.png'
-import addMoudel from './addMoudel.vue'
-import ItemBounced from './itemBounced'
+import addMoudel from './components/addMoudel.vue'
+import ItemBounced from './components/itemBounced'
 export default {
   components: {
     addMoudel,
