@@ -20,7 +20,7 @@
                 <li v-for="(item,index) in messageCenter" :key="index" @click="MsgClickTo(index)">
                   <div class="minilabel">最新</div>
                   <div class="title">{{ item.topic }}</div>
-                  <div>{{ item.publishTime }}</div>
+                  <div class="time">{{ item.publishTime }}</div>
                 </li>
               </ul>
             </el-tab-pane>
@@ -29,7 +29,7 @@
                 <li v-for="(item,index) in sysCenter" :key="index" @click="NoticeClickTo(index)">
                   <div class="minilabel">最新</div>
                   <div class="title">{{ item.topic }}</div>
-                  <div>{{ item.publishTime }}</div>
+                  <div class="time">{{ item.publishTime }}</div>
                 </li>
               </ul>
             </el-tab-pane>
@@ -480,6 +480,7 @@ export default {
       }
       .time {
         margin-left: 30px;
+        color:#B1B1B1;
       }
     }
   }
