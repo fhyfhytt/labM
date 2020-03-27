@@ -145,11 +145,10 @@ export default {
     margin-top: 60px;
   }
   .nameTime {
-    text-align: center;
+    text-align: right;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: #B1B1B1;
     margin: 12px auto 32px;
-    color: #292929;
     & > span {
       margin: 0 6px;
     }
@@ -182,10 +181,14 @@ export default {
     li{
       margin-bottom: 10px;
     }
+    .iconwenjian{
+      margin-right:10px;
+      color:#C0C4CC;
+    }
     .btn {
       margin-right: 13px;
       cursor: pointer;
-      color: #379efc;
+      color: #C0C4CC;
       &:hover {
         color: #8ac7ff;
       }
