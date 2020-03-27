@@ -32,8 +32,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="资产状态:" prop="status">
-            <el-input v-model="AuditForm.status" autocomplete="off" readonly />
+          <el-form-item label="资产状态:" prop="statusS">
+            <el-input v-model="AuditForm.statusS" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="所属库房:" prop="house">
             <el-input v-model="AuditForm.house" autocomplete="off" readonly />
@@ -53,7 +53,6 @@
             <el-select v-model="AuditForm.checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-">
               <el-option label="审核通过" value="1" />
               <el-option label="审核未通过" value="0" />
-              <!-- <el-option v-for="item in selectAuditState" :key="item.checkStatus" :label="item.checkStatusS" :value="item.checkStatus" /> -->
             </el-select>
           </el-form-item>
         </el-col>
@@ -84,7 +83,7 @@ export default {
   },
   data() {
     return {
-      AuditForm: { id: '', assetInfo: '', itemType: '', dataFrom: '', checkStatus: '', house: '', checkNote: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
+      AuditForm: { id: '', assetInfo: '', itemType: '', dataFrom: '', statusS: '', checkStatus: '', house: '', checkNote: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
       singleAuditVisible: false,
       loading: false,
       addUserVisible: false,
@@ -96,68 +95,30 @@ export default {
   },
 
   created() {
-    // common.getDictNameList({ dictName: '库房状态', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.selectAuditState = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.msg)
-    // })
-    // common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.selecthouseType = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.msg)
-    // })
   },
   mounted() {
-    console.log(this.row)
     this.AuditForm = Object.assign({}, this.row)
-    // this.AuditForm.personMobile = this.AuditForm.personMobile
-    // this.AuditForm.type = { name: this.row.type }// 传入对象
-    // this.AuditForm.state = { name: this.row.state }// 传入对象
   },
   methods: {
-    // 取消新增
+    // 取消审核
     handelsingleAuditVisible(singleAuditVisible) {
       this.$emit('handelsingleAuditVisible', this.singleAuditVisible)
       this.AuditForm = {}
     },
-    // 提交新增
+    // 提交审核
     submitForm(formName) {
-      console.log(this.AuditForm.checkStatus)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          // const param = Object.assign({}, this.AuditForm)
-          // param.type = this.AuditForm.type.code
-          // param.state = this.AuditForm.state.code
           const param = {}
           param.checkStatus = this.AuditForm.checkStatus
           param.checkNote = this.AuditForm.checkNote
-          param.id = this.AuditForm.id
+          param.ids = this.AuditForm.id
 
           sparesCheck(param).then(response => {
             this.loading = false
             if (response.success === true) {
-              this.$message.success('修改成功')
+              this.$message.success(response.msg)
               this.$emit('handleGetTree1')
               this.handelsingleAuditVisible()
             } else {
@@ -172,12 +133,6 @@ export default {
         }
       })
     }
-    // selectUserInfoRow(row) {
-    //   // this.AuditForm.person = row.name
-    //   // this.AuditForm.personMobile = row.personMobile
-    //   this.AuditForm.id = row.id
-    //   this.addUserVisible = false
-    // }
   }
 }
 </script>

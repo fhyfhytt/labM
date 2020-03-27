@@ -7,12 +7,12 @@
           <input v-model="formSpare.assetItemType" hidden>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件名称：">
-              <el-input v-model="formSpare.assetName" placeholder="请输入备件名称" />
+              <el-input v-model="formSpare.assetName" placeholder="请输入备件名称" clearable />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件分类：" @click.native="handleAdd">
-              <el-input v-model="typeNames" :title="typeNames" placeholder="请选择备件分类" />
+              <el-input v-model="typeNames" :title="typeNames" placeholder="请选择备件分类" clearable />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
@@ -23,7 +23,7 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchSpares">查询</el-button>
+            <el-button v-permission="'sparesSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchSpares">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -76,9 +76,9 @@ export default {
       totalNum: 0,
       currentPage: 1,
       param: {
-        assetItemType: '',
+        // assetItemType: '',
         checkStatus: '0',
-        houseIds: [],
+        // houseIds: '',
         pageNum: 1,
         pageSize: 10
       },
@@ -93,21 +93,6 @@ export default {
   },
 
   created() {
-    // common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.houseClass = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.message)
-    // })
   },
   mounted() {
     this.getTableData()

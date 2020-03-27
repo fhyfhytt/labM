@@ -6,21 +6,18 @@
           <h3>审核备注</h3>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="审核状态" prop="checkStatus">
-            <el-select v-model="batchForm.checkStatus" value-key="code" popper-class="select-option" placeholder="-请选择-">
-              <el-option v-for="item in selecthouseState" :key="item.code" :label="item.name" :value="item.code" />
-            </el-select>
-            <!-- <el-select popper-class="select-option" placeholder="-请选择-">
+          <el-form-item label="审核状态">
+            <el-select v-model="batchForm.checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-">
               <el-option label="审核通过" value="1" />
               <el-option label="审核未通过" value="0" />
-            </el-select> -->
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="备注:" prop="memo">
-            <el-input v-model="batchForm.memo" type="textarea" placeholder="请输入备注" />
+          <el-form-item label="备注:" prop="checkNote">
+            <el-input v-model="batchForm.checkNote" type="textarea" placeholder="请输入备注" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -35,14 +32,19 @@
 
 <script>
 import { sparesCheck } from '@/api/deviceManage.js'
-// import common from '@/utils/common'
 export default {
+  props: {
+    auditTableById: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
-      batchForm: { state: '', memo: '', personId: '' },
+      batchForm: { checkStatus: '', checkNote: '', ids: '' },
       batchAuditVisible: false,
       batchFormRules: {
-        state: [{ required: true, message: '请选择库房状态', trigger: 'blur' }]
+        checkStatus: [{ required: true, message: '请选择状态', trigger: 'blur' }]
       },
       selecthouseType: [],
       selecthouseState: [],
@@ -52,36 +54,6 @@ export default {
   },
 
   created() {
-    // common.getDictNameList({ dictName: '库房状态', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.selecthouseState = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.msg)
-    // })
-    // common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.selecthouseType = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.msg)
-    // })
   },
   methods: {
     // 取消批量审核
@@ -91,6 +63,8 @@ export default {
     },
     // 提交批量审核
     submitForm(batchform) {
+      this.batchForm.ids = this.auditTableById.join(',')
+      console.log('ids:', this.batchForm.ids)
       this.$refs[batchform].validate((valid) => {
         if (valid) {
           this.loading = true

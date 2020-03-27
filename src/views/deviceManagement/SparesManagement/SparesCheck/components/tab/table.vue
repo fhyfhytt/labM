@@ -2,11 +2,10 @@
   <div class="page-table-content">
     <div class="button-tool">
       <div class="button-tool-right fr">
-        <el-button v-permission="'houseAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">批量审核</el-button>
+        <el-button v-permission="'sparesAuditMore'" icon="iconfont icontianjia1" size="small" @click="handleBatchAudit">批量审核</el-button>
       </div>
     </div>
-    <!-- @selection-change="handleSelectionChange" -->
-    <el-table v-loading="tableload" :data="tableDate" empty-text="无数据">
+    <el-table v-loading="tableload" :data="tableDate" empty-text="无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40" />
       <el-table-column type="index" label="编号" width="55" />
       <el-table-column prop="assetInfo.assetNo" label="备件编码" width="" />
@@ -16,7 +15,7 @@
       <el-table-column prop="createTime" label="新建时间" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
-          <i v-permission="'houseEdit'" class="iconfont iconbianji1 scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
+          <i v-permission="'spareSingleAudit'" class="iconfont iconwenjian scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
         </template>
       </el-table-column>
     </el-table>
@@ -33,7 +32,7 @@
     </div>
     <!--批量审核界面-->
     <el-dialog v-if="batchAuditVisible" v-model="batchAuditVisible" title="批量审核" :close-on-click-modal="false" :visible.sync="batchAuditVisible" class="deviceAdd addmanage">
-      <batchAuditMoudel @handleGetTree1="handleGetTree1" @handelbatchAuditVisible="handelbatchAuditVisible" />
+      <batchAuditMoudel :audit-table-by-id="auditTableById" @handleGetTree1="handleGetTree1" @handelbatchAuditVisible="handelbatchAuditVisible" />
     </el-dialog>
     <!--审核界面-->
     <el-dialog v-if="singleAuditVisible" v-model="singleAuditVisible" title="资产审核" :close-on-click-modal="false" :visible.sync="singleAuditVisible" :before-close="handleClose" class="deviceAdd addmanage">
@@ -73,7 +72,8 @@ export default {
       multipleSelection: [], // 选择的table数据的对象组成的数组
       loading: false,
       tableload: true,
-      sonShow: false
+      sonShow: false,
+      auditTableById: [] // 批量审核数据传参的id数组
     }
   },
   watch: {
@@ -90,24 +90,33 @@ export default {
       this.$emit('handleGetTableData')
     },
     // 批量审核
-    // handleSelectEdit() {
-    //   this.batchAuditVisible = true
-    // },
-    // 新增
-    handleAdd() {
-      this.batchAuditVisible = true
+    handleBatchAudit() {
+      console.log('11', this.auditTableById)
+      if (this.auditTableById.length === 0) {
+        this.$message.error('请至少选择一条数据')
+      } else {
+        this.batchAuditVisible = true
+      }
     },
-    // 取消新增
+    // 选择table数据  删除的项
+    handleSelectionChange(val) {
+      this.auditTableById = []
+      this.multipleSelection = val
+      this.multipleSelection.map(value => {
+        this.auditTableById.push(value.id)
+      })
+    },
+    // 取消批量审核
     handelbatchAuditVisible(batchAuditVisible) {
       this.batchAuditVisible = false
     },
 
-    // 编辑
+    // 单个审核
     handleEdit(index, row) {
       this.row = row
       this.singleAuditVisible = true
     },
-    // 取消编辑
+    // 取消单个审核
     handelsingleAuditVisible(singleAuditVisible) {
       this.singleAuditVisible = false
     },
@@ -127,17 +136,6 @@ export default {
     },
     handleJumper(currentPage) {
     }
-    // 来源转换
-    // dataFromformatter(row, column) {
-    //   const dataFrom = row.dataFrom
-    //   if (dataFrom === '1') {
-    //     return '新增'
-    //   } else if (dataFrom === '2') {
-    //     return '编辑'
-    //   } else if (dataFrom === '0') {
-    //     return '删除'
-    //   }
-    // }
   }
 }
 </script>
