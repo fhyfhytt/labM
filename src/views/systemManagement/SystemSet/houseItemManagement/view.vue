@@ -259,6 +259,7 @@ export default {
         padding-right: 30px;
         border: none;
         background: #F1F2F6;
+        outline: none;
       }
       .hoursesousuo{
         color: #C1CEE0;
@@ -299,6 +300,7 @@ export default {
       height: 30px;
       border-radius: 20px;
       padding: 0 30px 0 10px;
+      outline: none;
     }
     .iconStyle{
       color:#fff;
