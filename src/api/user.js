@@ -48,7 +48,7 @@ export function updateLogin(data) {
   return request({
     url: '/user/updatePassword',
     method: 'post',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: { 'Content-Type': 'application/json' },
     data: data
   })
 }
