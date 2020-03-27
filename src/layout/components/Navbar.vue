@@ -34,7 +34,7 @@
               </ul>
             </el-tab-pane>
           </el-tabs>
-          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="true?&quot;point&quot;:&quot;&quot;" />
+          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="messageCenter.length?&quot;point&quot;:&quot;&quot;" />
         </el-popover>
       </div>
       <div class="imgContain">

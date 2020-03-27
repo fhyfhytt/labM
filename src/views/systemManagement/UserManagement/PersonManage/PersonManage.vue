@@ -224,7 +224,7 @@ export default {
       const param = { id: row.id }
       rsPassword(param).then(response => {
         if (response.success === true) {
-          this.$message.success('重置密码成功')
+          this.$message.success(response.msg)
         } else {
           this.$message.error(response.msg)
         }
