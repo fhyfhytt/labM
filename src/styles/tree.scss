@@ -69,7 +69,7 @@
 
         //节点有间隙，隐藏掉展开按钮就好了,如果觉得空隙没事可以删掉
         .el-tree-node__expand-icon.is-leaf {
-          display: none;
+          display: block;
         }
         .el-tree-node__children {
           padding-left: 16px;
@@ -110,7 +110,7 @@
           border-left: 1px dashed #d8dce6;
           bottom: 0px;
           height: 100%;
-          top: -17px;
+          top: -5px;
           width: 1px;
         }
 
@@ -162,7 +162,7 @@
         line-height: 100%;
       }
       .el-form-item--small.el-form-item{
-        margin-bottom: 0;
+        margin-bottom: 0 ;
       }
     }
     .right-page-table {

@@ -3,7 +3,7 @@
     <div v-if="device!=='mobile'" class="left-menu">
       <div>
         <img src="../../assets/img/favicon.png">
-        <span style="line-height: 100%;">实验室管理系统</span>
+        <span style="line-height: 100%;">设备管理系统</span>
         <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
         <breadcrumb v-if="device==='mobile'" id="breadcrumb-container" class="breadcrumb-container" />
       </div>
@@ -20,7 +20,7 @@
                 <li v-for="(item,index) in messageCenter" :key="index" @click="MsgClickTo(index)">
                   <div class="minilabel">最新</div>
                   <div class="title">{{ item.topic }}</div>
-                  <div>{{ item.publishTime }}</div>
+                  <div class="time">{{ item.publishTime }}</div>
                 </li>
               </ul>
             </el-tab-pane>
@@ -29,12 +29,12 @@
                 <li v-for="(item,index) in sysCenter" :key="index" @click="NoticeClickTo(index)">
                   <div class="minilabel">最新</div>
                   <div class="title">{{ item.topic }}</div>
-                  <div>{{ item.publishTime }}</div>
+                  <div class="time">{{ item.publishTime }}</div>
                 </li>
               </ul>
             </el-tab-pane>
           </el-tabs>
-          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="true?&quot;point&quot;:&quot;&quot;" />
+          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="messageCenter.length?&quot;point&quot;:&quot;&quot;" />
         </el-popover>
       </div>
       <div class="imgContain">
@@ -480,6 +480,7 @@ export default {
       }
       .time {
         margin-left: 30px;
+        color:#B1B1B1;
       }
     }
   }

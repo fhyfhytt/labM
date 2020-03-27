@@ -18,6 +18,7 @@
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  margin-right:5px;
 }
 .blue-btn {
   @include colorBtn($blue);
@@ -303,7 +304,9 @@ vue-treeselect__control {
 .el-select>.el-input{
   height: 32px;
 }
-
+.el-select.el-select--medium{
+  width: 100%;
+}
 
 //不跳转分页
 .numListJup{
@@ -546,12 +549,14 @@ vue-treeselect__control {
   transform: scale(1.1);
 }
 
-
+.el-radio-button--medium .el-radio-button__inner{
+  padding: 8px 20px;
+}
 
 // 表格上方操作按钮
 .button-tool {
-  padding: 1% 0;
-  height: 64px;
+  padding: 26px 0 12px 0 ;
+  // height: 64px;
   .el-button {
     height: 32px;
     text-align: justify;
