@@ -9,7 +9,7 @@
             仓库
           </div>
           <div class="search-hourse">
-            <input v-model="inputContent" type="text" name="" class="search-input">
+            <input v-model="inputContent" type="text" name="" class="search-input" @focus="focus" @blur="blur">
             <i class="iconfont iconsousuo1 hoursesousuo" @click="searchWarehourse()" />
           </div>
           <div class="kufanglist">
@@ -22,7 +22,7 @@
       </el-col>
       <el-col :xl="{span:21}" :lg="{span:19}" class="right-page">
         <div class="rightTop">
-          <input v-model="searchHourseItem" type="text" name="" class="rightInput" style="border: none">
+          <input v-model="searchHourseItem" type="text" name="" class="rightInput" style="border: none" @focus="focus1" @blur="blur1">
           <i class="iconfont iconsousuo1 posisousuo" @click="searchHourse()" />
           <i class="iconfont iconxinzeng iconStyle" @click="showAddBounced()" />
           <i class="iconfont iconStyle" @click="importHourse()">&#xe6b2;</i>
@@ -36,7 +36,7 @@
             <!-- 库房点击详情弹框 -->
             <ItemBounced v-if="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
             <el-checkbox-group v-model="checkHourseItem" class="checkbox">
-              <el-checkbox :key="item.id" v-model="item.id" :checked="item.checked" :label="item.id" :disabled="item.disabled">编号:{{ item.code }}</el-checkbox>
+              <el-checkbox :key="item.id" v-model="item.id" :checked="item.checked" class="checkscolor" :class="{checkcolor: index === showbouncedItx}" :label="'编号：'+item.code" :disabled="item.disabled" />
             </el-checkbox-group>
           </div>
         </div>
@@ -47,7 +47,6 @@
             :page-size="100"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
-            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
         </footer>
@@ -119,6 +118,9 @@ export default {
     ShowBounced(index) {
       this.showNowhourse = this.hourseInfo[index]
       this.showbouncedItx = index
+    },
+    closeBounced() {
+      this.showbouncedItx = -1
     },
     // 查询库房列表
     getwarehouseList() {
@@ -221,8 +223,20 @@ export default {
       this.listParam.pageNumber = val
       this.getList()
     },
-    handleSizeChange(val) {
-      console.log(val)
+    // 聚焦时修改输入框按钮样式
+    focus() {
+      $('.hoursesousuo').css('color', '#379EFC')
+    },
+    blur() {
+      $('.hoursesousuo').css('color', '#C8C9D2')
+    },
+    focus1() {
+      $('.posisousuo').css('color', '#fff')
+      $('.posisousuo').css('background', '#389DFA')
+    },
+    blur1() {
+      $('.posisousuo').css('color', '#5D99D9')
+      $('.posisousuo').css('background', '#E7F3FF')
     },
     // 点击左侧list
     changeList(index) {
@@ -250,30 +264,27 @@ export default {
       position: relative;
       padding: 10px 0;
       display: inline-block;
-      width: 200px;
+      width: 100%;
       .search-input{
         height: 30px;
-        width: 170px;
+        width: 85%;
         border-radius: 20px;
         padding: 10px;
         padding-right: 30px;
         border: none;
         background: #F1F2F6;
+        outline: none;
       }
       .hoursesousuo{
         color: #C1CEE0;
         position: absolute;
         right: 20px;
-        top: 17px;
+        top: 16px;
         cursor: pointer;
         &:hover{
-          color: #379EFC;
+          color: #379EFC!important;
         }
       }
-    }
-    .kufanglist::-webkit-scrollbar{
-      width: 4px;
-      background: #8C8B8E;
     }
     .kufanglist{
       overflow: hidden;
@@ -289,6 +300,10 @@ export default {
           border-right: 4px solid #379EFC;
         }
       }
+      &::-webkit-scrollbar{
+        width: 4px;
+        background: #8C8B8E;
+      }
     }
   }
   .rightTop{
@@ -299,6 +314,7 @@ export default {
       height: 30px;
       border-radius: 20px;
       padding: 0 30px 0 10px;
+      outline: none;
     }
     .iconStyle{
       color:#fff;
@@ -337,8 +353,8 @@ export default {
       padding: 5px;
       cursor: pointer;
       &:hover{
-        background: #389DFA;
-        color: #fff;
+        background: #389DFA!important;
+        color: #fff!important;
       }
     }
   }
@@ -346,15 +362,17 @@ export default {
     margin: 30px 0;
     overflow: hidden;
     overflow-y: scroll;
+    width: 100%;
+    height: 100%;
     .contentItem{
       display: inline-block;
       margin: 10px;
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 23%;
+      height: 28%;
       .face,.back{
-        width: 180px;
-        height: 170px;
+        width: 78%;
+        height: 100%;
         display: inline-block;
         backface-visibility: hidden;
         transform-style: preserve-3d;
@@ -368,6 +386,12 @@ export default {
       .back{transform: perspective(200px) rotateY(-180deg);}
       .checkbox{
         margin-top: 17px;
+        .checkscolor{
+          color: #B8B9BD;
+        }
+        .checkcolor{
+          color: #2A2A2C;
+        }
       }
       &:hover .face{
         transform: rotateY(180deg);
