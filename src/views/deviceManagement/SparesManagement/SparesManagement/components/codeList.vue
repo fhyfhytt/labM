@@ -10,7 +10,7 @@
       <el-table-column prop="price" label="物资价格" />
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <a style="cursor:pointer;color: #01AAED;}" @click="handleChoose(scope.row)"><i class="el-icon-plus" /></a>
+          <a style="cursor:pointer;color: #01AAED;font-size:25px;}" @click="handleChoose(scope.row)"><i class="el-icon-plus" /></a>
         </template>
       </el-table-column>
     </el-table>
