@@ -14,6 +14,26 @@ const deviceControlRouter = {
     // roles: ['deviceManagement']
   },
   children: [{
+    path: 'serviceManagement',
+    component: () => import('@/views/deviceManagement/serviceManagement'),
+    meta: {
+      title: '服务台',
+      icon: 'iconxitongguanli'
+    },
+    name: 'ServiceManagement',
+    redirect: '/deviceManagement/serviceManagement/serviceManagement',
+    children: [{
+      path: 'Troubleshooting',
+      component: () => import('@/views/deviceManagement/serviceManagement/Troubleshooting/Troubleshooting'),
+      meta: {
+        title: '故障产品处理',
+        icon: 'icon111',
+        roles: ['Troubleshooting']
+      },
+      name: 'Troubleshooting'
+    }]
+  },
+  {
     path: 'assetManagement',
     component: () => import('@/views/deviceManagement/AssetManagement'),
     meta: {
