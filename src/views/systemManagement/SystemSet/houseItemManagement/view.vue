@@ -121,9 +121,6 @@ export default {
       this.showNowhourse = this.hourseInfo[index]
       this.showbouncedItx = index
     },
-    closeBounced() {
-      this.showbouncedItx = -1
-    },
     // 查询库房列表
     getwarehouseList() {
       getAllWarehouse(this.wareHourseParam).then(response => {
@@ -366,36 +363,6 @@ export default {
     overflow-y: scroll;
     width: 100%;
     height: 100%;
-    .contentItem{
-      display: inline-block;
-      margin: 10px;
-      position: relative;
-      width: 23%;
-      height: 28%;
-      .face,.back{
-        width: 78%;
-        height: 100%;
-        display: inline-block;
-        backface-visibility: hidden;
-        transform-style: preserve-3d;
-        transition: all 2s;
-        img{
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .face{transform: rotateY(0deg);}
-      .back{transform: perspective(200px) rotateY(-180deg);}
-      .checkbox{
-        margin-top: 17px;
-        .checkscolor{
-          color: #B8B9BD;
-        }
-        .checkcolor{
-          color: #2A2A2C;
-        }
-      }
-    }
   }
   .footer{
     bottom: 0;
@@ -408,6 +375,15 @@ export default {
   position: relative;
   width: 23%;
   height: 28%;
+  .checkbox{
+    margin-top: 17px;
+    .checkscolor{
+      color: #B8B9BD;
+    }
+    .checkcolor{
+      color: #2A2A2C;
+    }
+  }
 }
 .flip-container:hover .flipper, .flip-container.hover .flipper {
 	transform: rotateY(-180deg);
