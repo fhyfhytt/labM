@@ -17,8 +17,8 @@
                 <el-form-item label="用户名:" prop="name">
                   <el-input v-model="addForm.name" placeholder="请输入用户名" />
                 </el-form-item>
-                <el-form-item label="岗位:" prop="job">
-                  <el-input v-model="addForm.job" auto-complete="off" placeholder="请输入岗位" />
+                <el-form-item label="姓名:" prop="personName">
+                  <el-input v-model="addForm.personName" placeholder="请输入姓名" />
                 </el-form-item>
                 <el-form-item label="工号:" prop="userCode">
                   <el-input v-model="addForm.userCode" placeholder="请输入工号" />
@@ -74,10 +74,11 @@
                   </el-upload>
 
                 </el-form-item>
-                <el-form-item label="生日:" prop="birthday" class="birdate">
-                  <!-- <el-input v-model="addForm.birthday" placeholder="请输入生日" /> -->
-                  <!-- <el-date-picker v-model="addForm.birthday" type="date" placeholder="选择日期" /> -->
+                <!-- <el-form-item label="生日:" prop="birthday" class="birdate">
                   <el-date-picker v-model="addForm.birthday" value-format="yyyy-MM-dd" type="date" placeholder="请选择日期" align="right" prefix-icon="iconfont iconrili" />
+                </el-form-item> -->
+                <el-form-item label="岗位:" prop="job">
+                  <el-input v-model="addForm.job" auto-complete="off" placeholder="请输入岗位" />
                 </el-form-item>
                 <el-form-item label="联系方式:" prop="mobile">
                   <el-input v-model="addForm.mobile" autocomplete="off" placeholder="请输入联系方式" />
@@ -267,15 +268,29 @@ export default {
         callback()
       }
     }
+    const validatePass3 = (rule, value, callback) => {
+      var pattern = new RegExp("[`~!@#$^&*()=|{}'-:;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？ ]")
+      var myreg = /^(?:[\u4e00-\u9fa5]+)(?:·[\u4e00-\u9fa5]+)*$|^[a-zA-Z0-9]+\s?[\.·\-()a-zA-Z]*[a-zA-Z]+$/
+      if (value === '') {
+        callback(new Error('请输入姓名'))
+      } else if (pattern.test(value)) {
+        callback(new Error('姓名不含除·符号以外的符号'))
+      } else if (!myreg.test(value)) {
+        callback(new Error('姓名为中文或英文，不允许有数字和空格'))
+      } else {
+        callback()
+      }
+    }
     return {
       disabled: true, // tabs是否禁用
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
       header: header,
       loading: false,
-      addForm: { name: '', userCode: '', avatar: '', avatarId: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', deptId: null },
+      addForm: { name: '', personName: '', userCode: '', avatar: '', avatarId: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', deptId: null },
       addFormRules: {
         name: [{ validator: validatePass2, required: true, trigger: 'change' }],
+        personName: [{ validator: validatePass3, required: true, trigger: 'change' }],
         userCode: [{ required: true, message: '请输入工号', trigger: 'change' }],
         birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
         mobile: [{ required: true, validator: validatePass1, trigger: 'change' }],

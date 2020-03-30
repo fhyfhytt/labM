@@ -47,7 +47,7 @@
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" />
           <el-table-column prop="userCode" label="工号" />
-          <el-table-column prop="name" label="姓名" />
+          <el-table-column prop="personName" label="姓名" />
           <el-table-column prop="sex" label="性别" :formatter="formSex" />
           <el-table-column prop="active" label="在职状态" :formatter="formActive" />
           <el-table-column prop="available" label="账号状态" :formatter="formAvailable" />
