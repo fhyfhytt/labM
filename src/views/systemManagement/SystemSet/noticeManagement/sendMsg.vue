@@ -504,18 +504,26 @@ export default {
     },
     onRemoveTxt(file, fileList) {
       if (file.response === undefined && fileList.length > 0) {
-        return this.$message.warning('文件名称重复')
-      }
-      removeFJ({ id: file.response.data.id, appendixPath: file.response.data.appendixPath }).then(res => {
-        if (res.success) {
-          this.ruleForm.appendixIdName = fileList.map(item => {
-            return { name: item.response.data.appendixName, path: item.response.data.appendixPath, id: item.response.data.id }
-          })
-          this.$message.success('上传附件已删除')
+        var sameFile = fileList.filter(item => {
+          return file.name === item.name
+        })
+        if (sameFile.length > 0) {
+          return this.$message.warning('文件名称重复')
+        } else {
+          return
         }
-      }).catch(res => {
-        this.$message.error(res.msg)
-      })
+      } else {
+        removeFJ({ id: file.response.data.id, appendixPath: file.response.data.appendixPath }).then(res => {
+          if (res.success) {
+            this.ruleForm.appendixIdName = fileList.map(item => {
+              return { name: item.response.data.appendixName, path: item.response.data.appendixPath, id: item.response.data.id }
+            })
+            this.$message.success('上传附件已删除')
+          }
+        }).catch(res => {
+          this.$message.error(res.msg)
+        })
+      }
     }, updateData(e) {
       this.content = e
     }

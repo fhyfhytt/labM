@@ -72,7 +72,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
-import { getAllList, checkStatus } from '@/api/message'
+import { getAllList, checkStatus, getPersonAllList } from '@/api/message'
 // getShort
 export default {
   components: {
@@ -135,7 +135,7 @@ export default {
         sortColumn: 'publish_time',
         isRead: 0
       }
-      await getAllList(param1).then(res => {
+      await getPersonAllList(param1).then(res => {
         that.$nextTick(() => {
           that.messageCenter = res.data.list
         })
