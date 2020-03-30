@@ -15,7 +15,7 @@
         <el-popover placement="bottom" width="400" trigger="hover">
           <el-tabs v-model="activeName" class="msgcenter" @before-leave="leavetab" @tab-click="handleClick">
             <!-- stretch 可以拉伸tab填充宽度 -->
-            <el-tab-pane label="消息中心" name="first" style="max-height:300px;overflow-y:auto">
+            <el-tab-pane label="消息中心" name="first" style="max-height:300px;overflow-y:auto;min-height:250px;">
               <ul>
                 <li v-for="(item,index) in messageCenter" :key="index" @click="MsgClickTo(index)">
                   <div class="minilabel">最新</div>
@@ -24,7 +24,7 @@
                 </li>
               </ul>
             </el-tab-pane>
-            <el-tab-pane label="消息公告" name="second" style="max-height:300px;overflow-y:auto">
+            <el-tab-pane label="消息公告" name="second" style="max-height:300px;overflow-y:auto;min-height:250px;">
               <ul>
                 <li v-for="(item,index) in sysCenter" :key="index" @click="NoticeClickTo(index)">
                   <div class="minilabel">最新</div>
@@ -68,7 +68,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
-import { getAllList, checkStatus } from '@/api/message'
+import { getAllList, getPersonAllList, checkStatus } from '@/api/message'
 // getShort
 export default {
   components: {
@@ -127,10 +127,9 @@ export default {
         sortColumn: 'publish_time',
         isRead: 0
       }
-      await getAllList(param1).then(res => {
+      await getPersonAllList(param1).then(res => {
         that.$nextTick(() => {
           that.messageCenter = res.data.list
-          console.log(that.messageCenter)
         })
       }).catch(res => {
         that.$message.error(res.msg)
