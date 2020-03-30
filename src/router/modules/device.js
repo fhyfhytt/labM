@@ -108,14 +108,14 @@ const deviceControlRouter = {
       },
       name: 'SparesCheck'
     }, {
-      path: 'inHouseManage',
-      component: () => import('@/views/deviceManagement/SparesManagement/InHouseManage/view.vue'),
+      path: 'sparesAllocation',
+      component: () => import('@/views/deviceManagement/SparesManagement/SparesAllocation/view.vue'),
       meta: {
-        title: '入库管理',
+        title: '调拨管理',
         icon: 'icon111',
-        roles: ['InHouseManage']
+        roles: ['SparesAllocation']
       },
-      name: 'InHouseManage'
+      name: 'SparesAllocation'
     }]
   }]
 

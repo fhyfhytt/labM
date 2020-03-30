@@ -293,13 +293,11 @@ export default {
         this.saveShow = false
         this.saveShowFlag = false
         done()
-        // this.getList()
         this.getTableData()
       }
     },
     closeAddRole() {
       this.addFormVisible = false
-      // this.getList()
       this.getTableData()
       // this.handleGetTree1()
     },
@@ -323,8 +321,8 @@ export default {
         if (res.success === true) {
           this.multipleSelection = []
           this.$message.success('删除成功')
-          // this.getList()
           this.getTableData()
+          this.getTreeData()
         } else {
           this.$message.error(res.msg)
         }
@@ -337,8 +335,8 @@ export default {
       delRegion(this.deleteParam).then(response => {
         if (response.success === true) {
           this.$message.success('删除成功')
-          // this.getList()
           this.getTableData()
+          this.getTreeData()
         } else {
           this.$message.error(response.msg)
         }

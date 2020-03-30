@@ -75,10 +75,10 @@
             :default-transfer="true"
             :default-checked-keys="houseRoleData"
             :default-props="defaultProps"
-            :array-to-tree="true"
+            :array-to-tree="false"
             pid="parentId"
             height="490px"
-            placeholder="请输入区域关键词"
+            placeholder="请输入库房关键词"
             filter
             open-all
             @addBtn="add2"
@@ -165,8 +165,7 @@
 </template>
 
 <script>
-// getHouseByRegionId
-import { addRegion, editRegion, getAreaByRegionId, getDeptByRegionId, searchRegion, getUserByRegionId, getUserList, getClassifyByRegionId } from '@/api/userManagement.js'
+import { addRegion, editRegion, getDeptByRegionId, searchRegion, getUserByRegionId, getUserList, getClassifyByRegionId, getHouseByRegionId } from '@/api/userManagement.js'
 import { tree2Array, setTreeData, checked } from '@/utils/utils'
 export default {
   name: 'AddRolePage',
@@ -223,11 +222,11 @@ export default {
       classToData: [],
       classRoleData: [], // 分类参数
       classTitle: ['全部分类', '已选分类'],
-      houseIds: [], // 选中区域ids
+      houseIds: [], // 选中库房ids
       houseFromData: [],
       houseToData: [],
-      houseRoleData: [], // 区域参数
-      houseTitle: ['全部区域', '已选区域'],
+      houseRoleData: [], // 库房参数
+      houseTitle: ['全部库房', '已选库房'],
       isPrev: true // 上一步按钮提示
     }
   },
@@ -292,20 +291,16 @@ export default {
       })
     },
 
-    // 获取区域数据
+    // 获取库房数据
     async getHouseMenu() {
-      await getAreaByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
+      await getHouseByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.houseFromData = res.data
-          var newArr2 = []
-          res.data.filter(item => {
+          this.houseRoleData = res.data.filter(item => {
             return item.checked === '1'
           }).map(item => {
             return item.id
-          }).forEach(item => {
-            checked(item, setTreeData(res.data), newArr2)
           })
-          this.houseRoleData = newArr2
         } else {
           this.$message.error(res.msg)
         }
@@ -314,29 +309,10 @@ export default {
       })
     },
 
-    // // 获取库房数据
-    // async getHouseMenu() {
-    //   await getHouseByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
-    //     if (res.success === true) {
-    //       this.houseFromData = res.data
-    //       this.houseRoleData = res.data.filter(item => {
-    //         return item.checked === '1'
-    //       }).map(item => {
-    //         return item.id
-    //       })
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }).catch(e => {
-    //     this.$message.error(e.msg)
-    //   })
-    // },
-
     // 判断编辑还是新增弹框
     addEditRoleDialog(data) {
       this.activeName = '0'
       this.active = 0
-      this.loading = false
       if (data) {
         this.addFlag = false // edit
         this.baseInfo = data
@@ -464,8 +440,6 @@ export default {
               } else {
                 this.$message.error(res.msg)
               }
-            }).catch(res => {
-              this.$message.error(res.msg)
             })
           }
         } else {
@@ -503,11 +477,11 @@ export default {
         this.getHouseMenu()
       }
     },
-    // 保存或修改数据域区域信息--第三步
+    //  保存或修改数据域区域信息--第三步
     addHouseInfo() {
       if (this.addFlag === false) { // edit
-        var areaIdList = this.houseIds
-        editRegion({ flag: '3', sysRegion: { id: this.baseInfo.id }, areaIdList }).then(res => {
+        var warehouseIdList = this.houseIds
+        editRegion({ flag: '4', sysRegion: { id: this.baseInfo.id }, warehouseIdList }).then(res => {
           if (res.success === true) {
             this.activeName = '3'
             this.active = 3
@@ -528,11 +502,12 @@ export default {
         this.getClassifyMenu()
       }
     },
-    // 保存或修改数据域分类信息--第四步
+    //  保存或修改数据域分类信息--第四步
+
     addClassifyInfo() {
       if (this.addFlag === false) {
         var classificationIdList = this.classIds
-        editRegion({ flag: '4', sysRegion: { id: this.baseInfo.id }, classificationIdList }).then(res => {
+        editRegion({ flag: '3', sysRegion: { id: this.baseInfo.id }, classificationIdList }).then(res => {
           this.loading = false
           if (res.success === true) {
             this.activeName = '4'
@@ -574,7 +549,7 @@ export default {
         }).catch(e => { })
       } else {
         var deptIdList = this.ids
-        var areaIdList = this.houseIds
+        var warehouseIdList = this.houseIds
         var classificationIdList = this.classIds
         param.sysRegion = { // -- 基本信息
           name: this.baseInfo.name,
@@ -589,7 +564,7 @@ export default {
           })
         }
         param.deptIdList = deptIdList
-        param.areaIdList = areaIdList
+        param.warehouseIdList = warehouseIdList
         param.classificationIdList = classificationIdList
         addRegion(param).then(res => {
           this.loading = false
@@ -720,36 +695,19 @@ export default {
     },
     // 监听穿梭框组件添加
     add2(houseFromData, houseToData, obj) {
-      if (houseToData.length === 0) {
-        houseToData[0] = []
-      }
-      this.houseIds = tree2Array(houseToData[houseToData.length - 1], '0').map(item => {
-        if (item) {
-          return item.id
-        } else {
-          return
-        }
+      this.houseIds = houseToData.map(item => {
+        return item.id
       })
     },
     // 监听穿梭框组件移除
     remove2(houseFromData, houseToData, obj) {
-      if (houseToData.length === 0) {
-        houseToData[0] = []
-      }
-      this.houseIds = tree2Array(houseToData[houseToData.length - 1], '0').map(item => {
-        if (item) {
-          return item.id
-        } else {
-          return
-        }
+      this.houseIds = houseToData.map(item => {
+        return item.id
       })
     },
     // 监听穿梭框组件添加
     add3(classFromData, classToData, obj) {
-      if (classToData.length === 0) {
-        classToData[0] = []
-      }
-      this.classIds = tree2Array(classToData[classToData.length - 1], '0').map(item => {
+      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -759,10 +717,7 @@ export default {
     },
     // 监听穿梭框组件移除
     remove3(classFromData, classToData, obj) {
-      if (classToData.length === 0) {
-        classToData[0] = []
-      }
-      this.classIds = tree2Array(classToData[classToData.length - 1], '0').map(item => {
+      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
         if (item) {
           return item.id
         } else {

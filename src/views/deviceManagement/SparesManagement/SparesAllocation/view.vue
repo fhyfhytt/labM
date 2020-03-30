@@ -2,19 +2,20 @@
   <div class="pageRow">
     <div class="page-title">
       <el-form ref="form1" :model="filters" size="small" label-width="110px">
+        <!-- type="flex" justify="space-around" -->
         <el-row>
           <el-col :xl="{span:4}" :lg="{span:5}">
-            <el-form-item label="入库单编号:">
+            <el-form-item label="关键字:">
               <el-input v-model="filters.no" style="background:transparent" placeholder="请输入入库单编号" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:5}">
-            <el-form-item label="入库类型:">
+            <el-form-item label="调出仓库:">
               <el-input v-model="itemTypes" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:5}">
-            <el-form-item label="入库状态:">
+            <el-form-item label="调入仓库:">
               <el-select v-model="filters.name" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option v-for="item in statuesList" :key="item.code" :label="item.name" :value="item.name" />
               </el-select>
@@ -23,12 +24,12 @@
         </el-row>
         <el-row style="margin-top:10px;">
           <el-col :xl="{span:4}" :lg="{span:5}">
-            <el-form-item label="所属库房:">
+            <el-form-item label="调拨状态:">
               <el-input v-model="areas" placeholder="-请选择-" clearable @focus="showAddFiltersArea" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:8}" :lg="{span:10}">
-            <el-form-item label="入库时间:">
+            <el-form-item label="调出时间:">
               <el-col :span="11">
                 <el-date-picker v-model="dateForm.date1" type="date" placeholder="选择日期" style="width: 100%;" />
               </el-col>
@@ -57,18 +58,17 @@
         <el-table ref="assetsParameter" v-loading="loading" :data="tableData" height="568" @row-click="selectRow" @selection-change="handleSelectRow">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="编号" />
-          <el-table-column label="入库单编号">
+          <el-table-column label="调拨单编号">
             <template slot-scope="scope">
               <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.no }}</a>
             </template>
           </el-table-column>
-          <el-table-column prop="itemType" label="入库类型" />
-          <el-table-column prop="assetName" label="交付人" />
-          <el-table-column prop="area" label="所属库房" />
+          <el-table-column prop="itemType" label="调出仓库" />
+          <el-table-column prop="assetName" label="调入仓库" />
           <el-table-column prop="num" label="设备总数" />
-          <el-table-column prop="status" label="入库状态" />
           <el-table-column prop="factory" label="操作人" />
-          <el-table-column prop="unitType" label="入库时间" />
+          <el-table-column prop="area" label="接收人" />
+          <el-table-column prop="unitType" label="调拨状态" />
         </el-table>
         <div class="numListJup margin-jump">
           <el-pagination
@@ -85,7 +85,7 @@
       </div>
     </div>
     <div class="childrenlog">
-      <!--新增/编辑界面-->
+      <!--新增界面-->
       <el-dialog v-model="addFormVisible" :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" class="addRoleDialog" width="800px">
         <addMoudel ref="addEditRole" :statues-list="statuesList" @reset-save-flag="resetSaveFlag" @closeAddRole="closeAddRole" @addSuccess="addSuccess" />
       </el-dialog>

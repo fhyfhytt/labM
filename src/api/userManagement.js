@@ -319,6 +319,16 @@ export function getClassifyByRegionId(param) {
   })
 }
 
+// 查询所有区域，并根据数据域id将包含的区域标记checked=1  --change0330
+export function getAreaByRegionId(param) {
+  return request({
+    url: '/sysArea/getAreaByRegionId',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: param
+  })
+}
+
 // 查询所有库房，并根据数据域id将包含的库房标记checked=1  --change0317
 export function getHouseByRegionId(param) {
   return request({
