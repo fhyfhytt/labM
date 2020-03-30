@@ -21,7 +21,7 @@ const manageControlRouter = {
       roles: ['UserManagement']
     },
     name: 'UserManagement',
-    redirect: '/systemManagement/UserManagement/OrganManage',
+    redirect: '/systemManagement/UserManagement',
     children: [{
       path: 'organManage',
       component: () => import('@/views/systemManagement/UserManagement/OrganManage/view.vue'),
@@ -32,15 +32,15 @@ const manageControlRouter = {
       },
       name: 'OrganManage'
     },
-    // {
-    //   path: 'customerManage',
-    //   component: () =>
-    //     import(
-    //       '@/views/systemManagement/UserManagement/customerManage/view.vue'
-    //     ),
-    //   meta: { title: '客户管理', icon: 'icon111', roles: ['customerManage'] },
-    //   name: 'customerManage'
-    // },
+    {
+      path: 'customerManage',
+      component: () =>
+        import(
+          '@/views/systemManagement/UserManagement/customerManage/view.vue'
+        ),
+      meta: { title: '客户管理', icon: 'icon111', roles: ['customerManage'] },
+      name: 'customerManage'
+    },
     {
       path: 'roleManage',
       component: () =>
@@ -53,18 +53,6 @@ const manageControlRouter = {
         roles: ['RoleManage']
       },
       name: 'RoleManage'
-    }, {
-      path: 'areaManage',
-      component: () =>
-        import(
-          '@/views/systemManagement/UserManagement/areaManage/view.vue'
-        ),
-      meta: {
-        title: '区域管理',
-        icon: 'icon111',
-        roles: ['areaManage']
-      },
-      name: 'areaManage'
     },
     {
       path: 'groupManage',
@@ -99,8 +87,9 @@ const manageControlRouter = {
       path: 'messageManagement',
       component: () => import('@/views/systemManagement/UserManagement/messageManagement/index.vue'),
       meta: {
-        title: '消息管理',
-        icon: 'icon111'
+        title: '用户通知',
+        icon: 'icon111',
+        roles: ['messageManagement']
       },
       name: 'messageManagement'
     }
@@ -115,7 +104,7 @@ const manageControlRouter = {
       roles: ['SystemSet']
     },
     name: 'SystemSet',
-    redirect: '/systemManagement/SystemSet/DictionaryS',
+    redirect: '/systemManagement/SystemSet',
     children: [{
       path: 'houseManagement',
       component: () => import('@/views/systemManagement/SystemSet/houseManagement/view.vue'),
@@ -125,16 +114,6 @@ const manageControlRouter = {
         roles: ['houseManagement']
       },
       name: 'houseManagement'
-    },
-    {
-      path: 'houseItemManagement',
-      component: () => import('@/views/systemManagement/SystemSet/houseItemManagement/view.vue'),
-      meta: {
-        title: '库位管理',
-        icon: 'icon111',
-        roles: ['houseItemManagement']
-      },
-      name: 'houseItemManagement'
     },
     {
       path: 'classifyManagement',
@@ -163,7 +142,7 @@ const manageControlRouter = {
         icon: 'icon111',
         roles: ['NoticeManage']
       },
-      name: 'NoticeManage'
+      name: 'noticeManagement'
     },
     {
       path: 'sendnotice',
@@ -174,7 +153,7 @@ const manageControlRouter = {
         title: '通知新增',
         icon: 'iconxiaoxiguanli',
         noCache: false,
-        roles: ['sendNotice']
+        roles: ['sendnotice']
       }
     },
     {
@@ -209,6 +188,36 @@ const manageControlRouter = {
         icon: 'iconxiaoxiguanli',
         noCache: true
       }
+    }, {
+      path: 'sysLogManage',
+      component: () => import('@/views/systemManagement/SystemSet/sysLogManage'),
+      meta: {
+        title: '日志管理',
+        icon: 'icon111',
+        roles: ['sysLogManage']
+      },
+      name: 'sysLogManage',
+      children: [{
+        path: 'systemLog',
+        component: () => import('@/views/systemManagement/SystemSet/sysLogManage/systemLog'),
+        name: 'systemLog',
+        meta: {
+          title: '系统日志',
+          icon: 'iconxiaoxiguanli',
+          noCache: true,
+          roles: ['systemLog']
+        }
+      }, {
+        path: 'operationLog',
+        component: () => import('@/views/systemManagement/SystemSet/sysLogManage/operationLog'),
+        name: 'operationLog',
+        meta: {
+          title: '操作日志',
+          icon: 'iconxiaoxiguanli',
+          noCache: true,
+          roles: ['operationLog']
+        }
+      }]
     }
     ]
   }
