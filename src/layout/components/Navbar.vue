@@ -3,7 +3,7 @@
     <div v-if="device!=='mobile'" class="left-menu">
       <div>
         <img src="../../assets/img/favicon.png">
-        <span style="line-height: 100%;">设备管理系统</span>
+        <span style="line-height: 100%;">实验室管理系统</span>
         <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
         <breadcrumb v-if="device==='mobile'" id="breadcrumb-container" class="breadcrumb-container" />
       </div>
@@ -15,26 +15,26 @@
         <el-popover placement="bottom" width="400" trigger="hover">
           <el-tabs v-model="activeName" class="msgcenter" @before-leave="leavetab" @tab-click="handleClick">
             <!-- stretch 可以拉伸tab填充宽度 -->
-            <el-tab-pane label="消息中心" name="first" style="max-height:300px;overflow-y:auto;min-height:250px;">
+            <el-tab-pane label="消息中心" name="first" style="max-height:300px;overflow-y:auto">
               <ul>
                 <li v-for="(item,index) in messageCenter" :key="index" @click="MsgClickTo(index)">
                   <div class="minilabel">最新</div>
                   <div class="title">{{ item.topic }}</div>
-                  <div class="time">{{ item.publishTime }}</div>
+                  <div>{{ item.publishTime }}</div>
                 </li>
               </ul>
             </el-tab-pane>
-            <el-tab-pane label="消息公告" name="second" style="max-height:300px;overflow-y:auto;min-height:250px;">
+            <el-tab-pane label="消息公告" name="second" style="max-height:300px;overflow-y:auto">
               <ul>
                 <li v-for="(item,index) in sysCenter" :key="index" @click="NoticeClickTo(index)">
                   <div class="minilabel">最新</div>
                   <div class="title">{{ item.topic }}</div>
-                  <div class="time">{{ item.publishTime }}</div>
+                  <div>{{ item.publishTime }}</div>
                 </li>
               </ul>
             </el-tab-pane>
           </el-tabs>
-          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="messageCenter.length?&quot;point&quot;:&quot;&quot;" />
+          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="messageCenter.length>0?&quot;point&quot;:&quot;&quot;" />
         </el-popover>
       </div>
       <div class="imgContain">
@@ -57,7 +57,11 @@
         <p class="peopleName">{{ this.$store.getters.name }}</p>
         <p v-if="device!=='mobile'" @click="logout"><span class="iconfont icontuichu exit" /></p>
       </div>
-      <base-remove ref="baseRemoved" :msg="msg" :iconfont="iconfont" :svg-style="svgStyle" />
+      <!-- <el-dialog title="切换账号" :visible.sync="moveShow" class="baseMove">
+        <baseConfirm title="是否确认切换账号？" @sureMsg="sureMsg" @confireMsg="confireMsg" />
+      </el-dialog> -->
+      <base-remove ref="baseRemoved" :sure-dioag="sureDioag" :msg="'确认要退出系统么?'" :iconfont="iconfont" :svg-style="svgStyle" @confireMsg="confireMsg" @sureMsg="sureMsg" />
+      <base-remove ref="baseRemoved1" :sure-dioag="sureDioag1" :msg="'确认切换账号么?'" :iconfont="iconfont" :svg-style="svgStyle" @confireMsg="confireMsg" @sureMsg="sureMsg1" />
     </div>
   </div>
 </template>
@@ -68,7 +72,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
-import { getAllList, getPersonAllList, checkStatus } from '@/api/message'
+import { getAllList, checkStatus } from '@/api/message'
 // getShort
 export default {
   components: {
@@ -80,17 +84,21 @@ export default {
       checkItem: 'checkItem',
       noCheckItem: 'noCheckItem',
       msg: '确认要退出系统么?',
+      msg1: '确认切换账号么?',
       iconfont: 'el-icon-warning',
       svgStyle: 'color:#FFAA00;font-size:25px;margin-right:22px;',
       visible2: false,
       redshow: false,
       yelshow: false,
       greshow: false,
+      moveShow: false,
       pointNum: 0,
       activeName: 'first',
       defaultAvater: defaultAvater,
       messageCenter: [],
-      sysCenter: []
+      sysCenter: [],
+      sureDioag: false,
+      sureDioag1: false
     }
   },
   computed: {
@@ -127,9 +135,10 @@ export default {
         sortColumn: 'publish_time',
         isRead: 0
       }
-      await getPersonAllList(param1).then(res => {
+      await getAllList(param1).then(res => {
         that.$nextTick(() => {
           that.messageCenter = res.data.list
+          console.log(that.messageCenter)
         })
       }).catch(res => {
         that.$message.error(res.msg)
@@ -142,6 +151,10 @@ export default {
         that.$message.error(res.msg)
       })
     },
+    confireMsg(flag) {
+      this.$refs.baseRemoved.sureDioag = false
+      this.$refs.baseRemoved1.sureDioag = false
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -149,6 +162,15 @@ export default {
       this.$refs.baseRemoved.sureDioag = true
     },
     logoutR() {
+      this.$refs.baseRemoved1.sureDioag = true
+    },
+    sureMsg(flag) {
+      this.$refs.baseRemoved.sureDioag = false
+      this.$store.dispatch('tagsView/delAllViews', '')
+      this.$store.dispatch('user/logout')
+    },
+    sureMsg1(flag) {
+      this.$refs.baseRemoved1.sureDioag = false
       this.$store.dispatch('tagsView/delAllViews', '')
       this.$store.dispatch('user/logout')
       this.$router.push('/login')
@@ -479,7 +501,6 @@ export default {
       }
       .time {
         margin-left: 30px;
-        color:#B1B1B1;
       }
     }
   }
