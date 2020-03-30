@@ -5,22 +5,22 @@
         <el-col :span="12">
 
           <el-form-item label="库位名称:" prop="name">
-            <el-input v-model="addForm.name" autocomplete="off" placeholder="请输入文字" />
+            <el-input v-model="addForm.name" autocomplete="off" placeholder="请输入库位名称" />
           </el-form-item>
 
           <el-form-item label="实际位置" prop="position">
-            <el-input v-model="addForm.position" autocomplete="off" placeholder="请输入文字" />
+            <el-input v-model="addForm.position" autocomplete="off" placeholder="请输入实际位置" />
           </el-form-item>
           <el-form-item label="库位重量" prop="weight">
-            <el-input v-model="addForm.weight" autocomplete="off" placeholder="请输入文字" />
+            <el-input v-model="addForm.weight" autocomplete="off" placeholder="请输入库位重量" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="库位编号" prop="code">
-            <el-input v-model="addForm.code" autocomplete="off" placeholder="请输入文字" />
+            <el-input v-model="addForm.code" autocomplete="off" placeholder="请输入库位编号" />
           </el-form-item>
           <el-form-item label="库位体积" prop="volume">
-            <el-input v-model="addForm.volume" autocomplete="off" placeholder="请输入文字" />
+            <el-input v-model="addForm.volume" autocomplete="off" placeholder="请输入库位体积" />
           </el-form-item>
 
         </el-col>
@@ -28,7 +28,7 @@
       <el-row>
         <el-col :span="24">
           <el-form-item label="描述:" prop="memo">
-            <el-input v-model="addForm.memo" type="textarea" placeholder="请输入文字" />
+            <el-input v-model="addForm.memo" type="textarea" placeholder="请输入描述" />
           </el-form-item>
         </el-col>
       </el-row>
