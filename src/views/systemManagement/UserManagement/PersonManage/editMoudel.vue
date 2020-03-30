@@ -273,14 +273,15 @@ export default {
     }
     const personName = (rule, value, callback) => {
       var pattern = new RegExp("[`~!@#$^&*()=|{}'-:;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？ ]")
-      var myreg = /^(?:[\u4e00-\u9fa5]+)(?:·[\u4e00-\u9fa5]+)*$|^[a-zA-Z0-9]+\s?[\.·\-()a-zA-Z]*[a-zA-Z]+$/
-      // value = value.replace(/\s+/g, '')
+      var myreg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,8}$/
+      // value = value.replace(, '')
+      console.log(pattern.test(value))
       if (value === '') {
         callback(new Error('请输入姓名'))
       } else if (pattern.test(value)) {
-        callback(new Error('姓名不含除·符号以外的符号'))
+        callback(new Error('不允许有数字、空格以及出·以外的符号'))
       } else if (!myreg.test(value)) {
-        callback(new Error('姓名为中文或英文，不允许有数字和空格'))
+        callback(new Error('姓名为2个到8个以上中文字符'))
       } else {
         callback()
       }
