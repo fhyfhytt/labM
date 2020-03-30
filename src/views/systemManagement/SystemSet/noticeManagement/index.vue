@@ -102,7 +102,7 @@ export default {
     }
   },
   created() {
-    common.getDictNameList({ dictName: '消息类型', dictNameIsLike: 0 }).then(res => {
+    common.getDictNameList({ dictCode: 'msg_type', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
           res.data.unshift({ code: '', name: '全部' })

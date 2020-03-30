@@ -223,7 +223,7 @@ export default {
         this.$message.error(res.msg)
       }
     })
-    common.getDictNameList({ dictName: '消息类型', dictNameIsLike: 0 }).then(res => {
+    common.getDictNameList({ dictCode: 'msg_type', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
           this.typeLs = res.data
@@ -232,7 +232,7 @@ export default {
     }).catch(res => {
       this.$message.error(res.msg)
     })
-    common.getDictNameList({ dictName: '消息分类', dictNameIsLike: 0 }).then(res => {
+    common.getDictNameList({ dictCode: 'msg_category', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
           this.typeSs = res.data
