@@ -449,7 +449,7 @@ export default {
           const paramUser = {
             flag: '0'
           }
-          paramUser.sysUser = { name: this.editForm.name, userCode: this.editForm.userCode, mobile: this.editForm.mobile, email: this.editForm.email, sex: this.editForm.sex,
+          paramUser.sysUser = { name: this.editForm.name, personName: this.editForm.personName, userCode: this.editForm.userCode, mobile: this.editForm.mobile, email: this.editForm.email, sex: this.editForm.sex,
             available: this.editForm.available, active: this.editForm.active, remark: this.editForm.remark, birthday: this.editForm.birthday, job: this.editForm.job, userPosition: this.editForm.userPosition, id: this.row.id, avatar: this.editForm.avatar, groupId: this.editForm.groupId, deptId: this.editForm.deptId }
           if (this.editForm.password !== '') {
             paramUser.sysUser.password = this.editForm.password
