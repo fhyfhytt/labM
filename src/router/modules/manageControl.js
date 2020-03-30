@@ -199,7 +199,7 @@ const manageControlRouter = {
       name: 'sysLogManage',
       children: [{
         path: 'systemLog',
-        component: () => import('@/views/systemManagement/SystemSet/sysLogManage/systemLog'),
+        component: () => import('@/views/systemManagement/SystemSet/sysLogManage/systemLog/index.vue'),
         name: 'systemLog',
         meta: {
           title: '系统日志',
@@ -209,7 +209,7 @@ const manageControlRouter = {
         }
       }, {
         path: 'operationLog',
-        component: () => import('@/views/systemManagement/SystemSet/sysLogManage/operationLog'),
+        component: () => import('@/views/systemManagement/SystemSet/sysLogManage/operationLog/index.vue'),
         name: 'operationLog',
         meta: {
           title: '操作日志',
