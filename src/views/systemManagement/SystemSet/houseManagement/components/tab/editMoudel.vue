@@ -48,14 +48,14 @@
       <div>
         <el-row style="margin-bottom:10px">
           关键字 :
-          <el-input v-model="primaryKey" placeholder="请输入用户名或工号" style="width:200px;margin:0px 10px" />
+          <el-input v-model="primaryKey" placeholder="请输入姓名或工号" style="width:200px;margin:0px 10px" />
           <el-button class="button-sub btn btn2" @click="searchNewUsers">查询</el-button>
         <!-- <el-button class="button-sub btn btn2" @click="confirmAddUsers">确认</el-button> -->
         </el-row>
         <el-table ref="userInfoTable" v-loading="userloading" :data="userUnselectedInfo" tooltip-effect="dark" height="435" style="width: 100%;height:400px" @row-click="selectUserInfoRow">
           <el-table-column type="index" label="序号" width="60" />
           <el-table-column prop="userCode" label="工号" />
-          <el-table-column prop="name" label="用户名" />
+          <el-table-column prop="personName" label="姓名" />
           <el-table-column prop="mobile" label="手机" />
           <el-table-column prop="email" label="邮箱" />
         </el-table>
@@ -166,7 +166,7 @@ export default {
         }
       })
     }, selectUserInfoRow(row) {
-      this.editForm.person = row.name
+      this.editForm.person = row.personName
       this.editForm.personMobile = row.mobile
       this.editForm.personId = row.id
       this.addUserVisible = false
