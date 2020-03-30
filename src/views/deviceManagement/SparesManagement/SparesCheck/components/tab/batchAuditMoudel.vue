@@ -5,7 +5,7 @@
         <el-col :span="24" style="border-bottom: 2px solid #1890ff;color:#1890ff;margin-bottom:20px;">
           <h3>审核备注</h3>
         </el-col>
-        <el-col :span="24">
+        <el-col :span="12">
           <el-form-item label="审核状态">
             <el-select v-model="batchForm.checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-">
               <el-option label="审核通过" value="1" />

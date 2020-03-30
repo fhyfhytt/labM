@@ -48,12 +48,9 @@
       </el-row>
       <el-row>
         <h3 class="title" style="">审核备注</h3>
-        <el-col :span="24">
+        <el-col :span="8">
           <el-form-item label="审核状态:">
-            <!-- <el-select v-model="AuditStatus.code" value-key="code" clearable placeholder="-请选择-">
-              <el-option v-for="item in AuditStatus" :key="item.code" :label="item.name" :value="item.code" />
-            </el-select> -->
-            <el-select v-model="checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-"> -->
+            <el-select v-model="checkStatus" placeholder="-请选择-">
               <el-option label="审核通过" value="1" />
               <el-option label="审核未通过" value="2" />
             </el-select>
@@ -100,8 +97,7 @@ export default {
         name: '审核未通过',
         code: 2
       }],
-      checkStatus: ''
-      // 审核状态值，默认审核未通过
+      checkStatus: '' // 审核状态值
       // primaryKey: '' // 查询参数
     }
   },
