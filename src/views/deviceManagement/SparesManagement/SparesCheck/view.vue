@@ -165,7 +165,7 @@ export default {
       this.typeIds = this.typeData.map(item => {
         return item.id
       }).join(',')
-      console.log('this.typeIds:', this.typeIds)
+      // console.log('this.typeIds:', this.typeIds)
     }
   }
 }

@@ -138,7 +138,6 @@ export default {
       await getAllList(param1).then(res => {
         that.$nextTick(() => {
           that.messageCenter = res.data.list
-          console.log(that.messageCenter)
         })
       }).catch(res => {
         that.$message.error(res.msg)
@@ -189,7 +188,6 @@ export default {
       this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
     },
     leavetab(activeName, oldActiveName) {
-      console.log(activeName)
     }, changeStatus(id) {
       checkStatus(id).then(res => {
       }).catch(res => {
