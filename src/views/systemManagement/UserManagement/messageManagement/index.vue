@@ -67,7 +67,7 @@
 </template>
 <script>
 import { getTime } from '@/utils/time'
-import { getAllList, checkStatus, remove, allReads, sendCg } from '@/api/message'
+import { getPersonAllList, checkStatus, remove, allReads, sendCg } from '@/api/message'
 import baseConfirm from '@/views/baseComponents/baseConfirm'
 import common from '@/utils/common'
 export default {
@@ -299,7 +299,6 @@ export default {
           'pageNumber': 1,
           'pageSize': 12,
           'state': [0, 1, 2]
-
         }
         if (this.startMsgTime !== '' && this.endMsgTime !== '') {
           param.startDate = getTime(this.startMsgTime)
@@ -311,7 +310,7 @@ export default {
       param.typeL = this.factype
       param.isPerson = '1'
       const params = param
-      getAllList(params).then(res => {
+      getPersonAllList(params).then(res => {
         this.loading = false
         if (res.code !== 0) {
           this.tableData = []
