@@ -177,6 +177,7 @@ export default {
       white-space: nowrap;
       display: inline-block;
       overflow: hidden;
+      min-width:250px;
     }
     li{
       margin-bottom: 10px;
