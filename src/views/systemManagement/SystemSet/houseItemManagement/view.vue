@@ -9,7 +9,7 @@
             仓库
           </div>
           <div class="search-hourse">
-            <input v-model="inputContent" type="text" name="" class="search-input" @focus="focus" @blur="blur">
+            <input v-model.trim="inputContent" type="text" name="" class="search-input" @focus="focus" @blur="blur">
             <i class="iconfont iconsousuo1 hoursesousuo" @click="searchWarehourse()" />
           </div>
           <div class="kufanglist">
@@ -22,7 +22,7 @@
       </el-col>
       <el-col :xl="{span:21}" :lg="{span:19}" class="right-page">
         <div class="rightTop">
-          <input v-model="searchHourseItem" type="text" name="" class="rightInput" style="border: none" @focus="focus1" @blur="blur1">
+          <input v-model.trim="searchHourseItem" type="text" name="" class="rightInput" style="border: none" @focus="focus1" @blur="blur1">
           <i class="iconfont iconsousuo1 posisousuo" @click="searchHourse()" />
           <i class="iconfont iconxinzeng iconStyle" @click="showAddBounced()" />
           <i class="iconfont iconStyle" @click="importHourse()">&#xe6b2;</i>
@@ -157,27 +157,36 @@ export default {
     },
     // 删除库房
     deleteWareHourse(id) {
-      this.$confirm('是否确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const param = {
-          ids: id.toString()
-        }
-        deleteWarehourse(param).then(response => {
-          if (response.code === 0) {
-            this.$message({
-              type: 'success',
-              message: '删除成功'
-            })
-            this.getList()
-          }
-        }).catch((e) => {
-          console.log(e)
+      if (!id.toString()) {
+        this.$confirm('请选择要删除的库位', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-      }).catch(() => {
-      })
+        return
+      } else {
+        this.$confirm('是否确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const param = {
+            ids: id.toString()
+          }
+          deleteWarehourse(param).then(response => {
+            if (response.code === 0) {
+              this.$message({
+                type: 'success',
+                message: '删除成功'
+              })
+              this.getList()
+            }
+          }).catch((e) => {
+            console.log(e)
+          })
+        }).catch(() => {
+        })
+      }
     },
     // 新增/修改
     updateWarehourse(param) {
@@ -210,13 +219,25 @@ export default {
     importHourse() {},
     // 搜索库房
     searchWarehourse() {
-      this.wareHourseParam.name = this.inputContent
-      this.getwarehouseList()
+      if (!this.inputContent) {
+        this.$alert('请输入要查询的仓库名称', '提示', {
+          confirmButtonText: '确定'
+        })
+      } else {
+        this.wareHourseParam.name = this.inputContent
+        this.getwarehouseList()
+      }
     },
     // 搜索库位
     searchHourse() {
-      this.listParam.name = this.searchHourseItem
-      this.getList()
+      if (!this.searchHourseItem) {
+        this.$alert('请输入要查询的库位名称', '提示', {
+          confirmButtonText: '确定'
+        })
+      } else {
+        this.listParam.name = this.searchHourseItem
+        this.getList()
+      }
     },
     handleCurrentChange(val) {
       this.listParam.pageNumber = val

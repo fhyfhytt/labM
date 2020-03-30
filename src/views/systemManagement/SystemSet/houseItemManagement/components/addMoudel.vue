@@ -73,7 +73,6 @@ export default {
     // 新增
     submitForm() {
       this.$emit('updateWarehourse', this.addForm)
-    //   console.log(this.addForm)
     }
   }
 }
@@ -81,8 +80,4 @@ export default {
 
 <style lang="scss">
 @import '~@/styles/modul.scss';
-.dialgAddform1{
-  // position: absolute;
-  // top: 50%;
-}
 </style>
