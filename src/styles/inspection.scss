@@ -1,0 +1,266 @@
+.all-div {
+    width: 99.5%;
+    height: 100%;
+    ::-webkit-scrollbar{
+        display:none;
+      }
+    .collapse{
+      margin: 16px;
+      background-image: url('/img/bj.png');
+      background-size: 100% 100%;
+      border-radius: 5px;
+      border: 1px solid #50DCF5;
+      float: left;
+      .title-icon {
+        margin: 10px;
+      }
+    }
+    .float-div {
+      float: left;
+    }
+    .div-left {
+      width: 12.5%;
+      height: 95.5%;
+      margin-right: 0;
+    }
+    .div-right {
+      width: 84.5%;
+      height: 95.5%;
+    }
+    .right-top {
+      width: 84.5%;
+      height: 16%;
+      margin-bottom: 0;
+      padding-left: 3%;
+      padding-top: 20px;
+      span {
+        color: #ffffff;
+        font-size: 14px;
+      }
+    }
+    .right-bottom {
+      width: 84.5%;
+      height: 77.5%;
+    }
+    .div-top {
+        width: 98.5%;
+        height: 16%;
+        margin-bottom: 0;
+        padding-left: 3%;
+        padding-top: 20px;
+        span {
+            color: #ffffff;
+            font-size: 14px;
+        }
+      }
+    .div-bottom {
+        width: 98.5%;
+        height: 77.5%;
+    }
+  
+    >>> .el-card__body {
+      padding: 0;
+    }
+    >>> .el-collapse {
+      border-bottom: 0;
+      border-top: 0;
+    }
+    >>> .el-collapse-item__wrap {
+      background: transparent;
+      border-bottom: 0;
+    }
+    >>> .el-collapse-item__header {
+      background: transparent;
+      border-bottom: 0;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color: #00EEEE;
+      opacity: 0.9;
+    }
+    >>> .el-textarea__inner {
+      background-color: transparent;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,0.7);
+      width: 543px;
+      &:focus {
+        border:1px solid rgba(80,220,245,1);
+      }
+    }
+    .el-form-item {
+        >>> .el-input {
+            width: 200px;
+        }
+    }
+    >>> .el-input--small .el-input__inner {
+      background-color: transparent;
+      font-family:'微软雅黑';
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,0.7);
+      width: 200px;
+      &:focus {
+        border:1px solid rgba(80,220,245,1);
+      }
+    }
+    >>> .el-input--small.is-focus .el-input__inner {
+      background-color: transparent;
+      font-family:'微软雅黑';
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      border:1px solid rgba(80,220,245,1);
+      width: 200px;
+    }
+    >>> .el-form-item__label {
+      font-family: '微软雅黑';
+      font-weight: 400;
+      color: #00EEEE;
+      opacity: 0.9;
+    }
+    >>> input::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+    >>> textarea::-webkit-input-placeholder {
+      opacity: 0.5;
+    }
+    >>> .el-form-item .el-input__suffix {
+      left: 170px !important;
+    }
+    // 树节点被选中时 高亮颜色
+    >>> .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+      background-color: #207087;
+      color: #ffffff;
+    }
+  }
+  
+  .tree-div >>> .el-tree-node__content:hover {
+    background-color: #207087;
+    color: #ffffff;
+  }
+  .tree-div >>> .el-tree-node__content {
+    height: 32px;
+  }
+  
+  .tree-div {
+    >>> .tunnelOne {
+      background: url("/img/tunnel.png") no-repeat center center;
+      content: "";
+      display: block;
+      width: 15px;
+      height: 15px;
+      font-size: 15px;
+      background-size: 15px;
+      margin: 0 10px;
+    }
+    >>> .tunnel {
+      background: url("/img/tunnel.png") no-repeat center center;
+      content: "";
+      display: block;
+      width: 15px;
+      height: 15px;
+      font-size: 15px;
+      background-size: 15px;
+      margin: 0 10px;
+    }
+    >>> .el-tree > .el-tree-node.is-expanded > .el-tree-node__content::before {
+      content: "";
+      border-left: 1px dashed #006a78;
+      height: 9px;
+      width: 1px;
+      position: absolute;
+      left: 15px;
+      top: 22px;
+    }
+    >>> .el-tree-node__content {
+      position: relative;
+    }
+    >>> .el-tree-node__children .el-tree-node__content::before {
+      content: "";
+      border-left: 1px dashed #006a78;
+      height: 100%;
+      width: 1px;
+      position: absolute;
+      left: 15px;
+      top: -12px;
+    }
+    >>> .el-tree-node__children .el-tree-node__content::after {
+      content: "";
+      border-top: 1px dashed #006a78;
+      height: 1px;
+      width: 10px;
+      position: absolute;
+    }
+    >>> .el-tree .el-tree-node__expand-icon.expanded {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    >>> .el-tree .el-icon-caret-right:before {
+      background: url("/img/jia.png") no-repeat center center;
+      content: "";
+      display: block;
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
+      background-size: 18px;
+    }
+    >>> .el-tree .el-tree-node__expand-icon.expanded.el-icon-caret-right:before {
+      background: url("/img/jian.png") no-repeat center center;
+      content: "";
+      display: block;
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
+      background-size: 18px;
+    }
+    >>> .el-tree-node__expand-icon.is-leaf::before {
+      display: none;
+    }
+    >>> .el-tree-node:focus > .el-tree-node__content {
+      background-color: #207087;
+      color: #ffffff;
+    }
+  }
+  
+  .tree-div {
+    background: #002A40;
+    overflow-y: auto;
+    .inline-div {
+      background: linear-gradient(
+        to bottom,
+        rgba(1, 34, 49, 0.5) 0%,
+        rgba(2, 160, 219, 0.15) 100%
+      );
+      width: 100%;
+      padding-top: 6%;
+      // padding-bottom: 6%;
+      .el-tree {
+        width: 100%;
+        position: relative;
+        cursor: default;
+        color: rgba(255, 255, 255, 0.4);
+        background: transparent;
+        left: 0%;
+        top: 4%;
+      }
+    }
+  }
+  .tree-div::-webkit-scrollbar {
+      display: none;
+  }
+
+   // 表格滚动条显示
+   .table-div {
+    padding: 0 32px;
+    >>> .el-table--scrollable-y .el-table__body-wrapper::-webkit-scrollbar{
+      display: block;
+    }
+  }
+  .scroll-right {
+    >>> .el-table__fixed-right {
+      right: 0 !important;
+    }
+    >>> .el-table__fixed-right-patch {
+      width: 0px !important;
+    }
+  }

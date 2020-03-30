@@ -17,7 +17,7 @@ const deviceControlRouter = {
     path: 'serviceManagement',
     component: () => import('@/views/deviceManagement/serviceManagement'),
     meta: {
-      title: '服务台',
+      title: '服务管理',
       icon: 'iconxitongguanli'
     },
     name: 'ServiceManagement',
@@ -31,6 +31,61 @@ const deviceControlRouter = {
         roles: ['Troubleshooting']
       },
       name: 'Troubleshooting'
+    }, {
+      path: 'deviceInspection',
+      component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection'), // Parent router-view
+      name: 'DeviceInspection',
+      meta: { title: '设备巡检', icon: 'icon111', menus: 'e_sbxj' },
+      redirect: '/projectManage/deviceInspection/inspectionPlan/planManage',
+      children: [
+        {
+          path: 'inspectionPlan',
+          component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection/inspectionPlan/planManage'),
+          name: 'InspectionPlan',
+          meta: { title: '巡检计划', icon: 'icon111', noCache: false, menus: 's_xjjh' }
+        },
+        {
+          path: 'inspectionWork',
+          component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection/inspectionWork/workManage'),
+          name: 'InspectionWork',
+          meta: { title: '巡检任务', icon: 'icon111', noCache: false, menus: 's_xjrw' }
+        }
+      ]
+    },
+    {
+      path: 'addPlan',
+      component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection/inspectionPlan/addPlan'),
+      name: 'AddPlan',
+      hidden: true,
+      meta: { title: '巡检计划新建', icon: 'icon111', noCache: false, menus: '' }
+    },
+    {
+      path: 'detailPlan',
+      component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection/inspectionPlan/detailPlan'),
+      name: 'DetailPlan',
+      hidden: true,
+      meta: { title: '巡检计划详情', icon: 'icon111', noCache: false, menus: '' }
+    },
+    {
+      path: 'addTask',
+      component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection/inspectionWork/addTask'),
+      name: 'AddTask',
+      hidden: true,
+      meta: { title: '巡检任务新建', icon: 'icon111', noCache: false, menus: '' }
+    },
+    {
+      path: 'inspectInfo',
+      component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection/inspectionWork/inspectInfo'),
+      name: 'InspectInfo',
+      hidden: true,
+      meta: { title: '巡检', icon: 'icon111', noCache: false, menus: '' }
+    },
+    {
+      path: 'showTask',
+      component: () => import('@/views/deviceManagement/serviceManagement/deviceInspection/inspectionWork/showTask'),
+      name: 'ShowTask',
+      hidden: true,
+      meta: { title: '查看', icon: 'icon111', noCache: false, menus: '' }
     }]
   },
   {
