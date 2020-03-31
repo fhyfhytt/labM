@@ -11,12 +11,23 @@
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="调出仓库:">
-              <el-input v-model="itemTypes" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
+              <el-select v-model="filters.outHouseIds" popper-class="select-option" multiple clearable placeholder="-请选择-">
+                <el-option v-for="item in outHouseList" :key="item.code" :label="item.name" :value="item.code" />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="调入仓库:">
-              <el-input v-model="areas" placeholder="-请选择-" clearable @focus="showAddFiltersArea" />
+              <el-select v-model="filters.inHouseIds" popper-class="select-option" multiple clearable placeholder="-请选择-">
+                <el-option v-for="item in inHouseList" :key="item.code" :label="item.name" :value="item.code" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xl="{span:4}" :lg="{span:5}">
+            <el-form-item label="调拨状态:">
+              <el-select v-model="filters.status" popper-class="select-option" placeholder="-请选择-">
+                <el-option v-for="item in statusDatas" :key="item.code" :label="item.name" :value="item.code" />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -48,7 +59,8 @@
             <el-button v-permission="'assetsParameterDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
           </span>
         </div>
-        <el-table ref="assetsParameter" v-loading="loading" :data="tableData" height="568" @row-click="selectRow" @selection-change="handleSelectRow">
+        <!-- @row-click="selectRow"  -->
+        <el-table ref="assetsParameter" v-loading="loading" :data="tableData" height="568" @selection-change="handleSelectRow">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="编号" />
           <el-table-column label="调拨单编号">
@@ -90,10 +102,6 @@
         <confirmDialog title="将同时删除该角色与权限的关系，是否删除？" @sureMsg="confirmAllBtn" @confireMsg="cancelAllBtn" />
       </el-dialog>
     </div>
-    <!-- 树 -->
-    <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -101,19 +109,16 @@ import { getAssetsList, deleteAssets } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 import addMoudel from './components/addMoudel'
-import addFilters from '../../AssetManagement/components/addFiltersType'
 
-// import FileSaver from 'file-saver'
-// import XLSX from 'xlsx'
-// import QRCode from 'qrcodejs2'
 export default {
-  components: { confirmDialog, addMoudel, addFilters },
+  components: { confirmDialog, addMoudel },
   data() {
     return {
       addFiltersVisible: false,
-      filters: {},
+      filters: {}, // 查询条件
       filtersTypeId: [],
-      componentName: '所属区域',
+      inHouseList: [], // 入库库房
+      outHouseList: [], // 出库库房
       statuesList: [], // 状态列表
       itemTypes: '',
       areas: '',
@@ -124,36 +129,49 @@ export default {
       currentPage: 1, // 直接前往第几页
       addFormVisible: false, // 新增界面是否显示
       loading: true,
-
       saveShow: false, // 未保存提示
       saveShowFlag: true, // 子组件标识
       flag: true,
-      dialogName: '新建角色',
+      dialogName: '调拨单新增',
       confirmVisible: false,
       confirmAllVisible: false,
-      alertText: '是否删除 ?',
       addFlag: false, // 新增完成标识
       CloseAddFormVisible: false, // 取消新增界面
       multipleSelection: [], // 选择的table数据的对象组成的数组
       dateForm: { // 入库时间
         date1: '',
         date2: ''
-      }
+      },
+      statusDatas: [ // 调拨状态数据
+        {
+          code: 0,
+          name: '请选择'
+        },
+        {
+          code: 1,
+          name: '完成调拨'
+        },
+        {
+          code: 2,
+          name: '待调拨'
+        }
+      ]
     }
   },
   computed: {
-    itemTypesArr: function() {
-      return this.itemTypes.length > 0 ? this.itemTypes.split(',') : ''
+    outHouseIds: function() {
+      return this.filters.outHouseIds ? this.filters.outHouseIds.join(',').split(',') : []
     },
-    arearArr: function() {
-      return this.areas.length > 0 ? this.areas.split(',') : ''
+    inHouseIds: function() {
+      return this.filters.inHouseIds ? this.filters.inHouseIds.join(',').split(',') : []
     }
   },
   created() {
-    common.getDictNameList({ dictName: '资产状态', dictNameIsLike: 0 }).then(res => {
+    common.getDictNameList({ dictName: '所属库房', dictNameIsLike: 0 }).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
-          this.statuesList = res.data
+          this.inHouseList = res.data
+          this.outHouseList = res.data
         })
       } else {
         if (res.data !== '') {
@@ -172,42 +190,6 @@ export default {
     // this.getList()
   },
   methods: {
-    // 选择筛选条件
-    showAddFiltersType() {
-      this.dialogName = '资产分类选择'
-      this.addFiltersVisible = true
-      this.$nextTick(() => {
-        this.$refs.addFilters.getAssetsTreeData()
-      })
-    },
-    showAddFiltersArea() {
-      this.dialogName = '所属区域选择'
-      this.addFiltersVisible = true
-      this.$nextTick(() => {
-        this.$refs.addFilters.getAreaTreeData()
-      })
-    },
-    filterClose() {
-      this.addFiltersVisible = false
-    },
-    // 条件选择返回
-    filterRes(res) {
-      if (res && res.length > 0) {
-        this.addFiltersVisible = false
-        this.filtersTypeId = []
-        const valueArr = []
-        for (const value of res) {
-          valueArr.push(value.name)
-        }
-        if (this.dialogName === '资产分类选择') {
-          this.itemTypes = valueArr.join(',')
-        } else {
-          this.areas = valueArr.join(',')
-        }
-      } else {
-        this.addFiltersVisible = false
-      }
-    },
     // 新增成功返回
     addSuccess(res) {
       this.addFormVisible = false
@@ -227,10 +209,6 @@ export default {
       } else {
         this.saveShowFlag = false
       }
-    },
-    // 点击行选中
-    selectRow(row) {
-      this.$refs.assetsParameter.toggleRowSelection(row)
     },
     handleSelectRow(val) {
       this.multipleSelection = val
@@ -326,7 +304,7 @@ export default {
     // 编辑弹出编辑页面moudel框
     handleEdit(index, row) {
       var data = JSON.parse(JSON.stringify(row))
-      this.dialogName = '资产详情'
+      this.dialogName = '调拨单编辑'
       this.addFormVisible = true
       this.addFlag = true
       this.$nextTick(() => {

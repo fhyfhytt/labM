@@ -11,8 +11,10 @@
         <el-row style="margin-top:50px;">
           <el-form ref="baseInfo" :model="baseInfo" label-width="140px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
             <el-col :span="12">
-              <el-form-item label="调出仓库:" prop="outHouse">
-                <el-input v-model="baseInfo.outHouse" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
+              <el-form-item label="调出仓库:" prop="outHouseId">
+                <el-select v-model="baseInfo.outHouseId" popper-class="select-option" clearable placeholder="-请选择-">
+                  <el-option v-for="item in outHouseList" :key="item.code" :label="item.name" :value="item.code" />
+                </el-select>
               </el-form-item>
               <el-form-item label="日期:" prop="date">
                 <el-col>
@@ -24,8 +26,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="调入仓库:" prop="inHouse">
-                <el-input v-model="baseInfo.inHouse" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
+              <el-form-item label="调入仓库:" prop="inHouseId">
+                <el-select v-model="baseInfo.inHouseId" popper-class="select-option" clearable placeholder="-请选择-">
+                  <el-option v-for="item in inHouseList" :key="item.code" :label="item.name" :value="item.code" />
+                </el-select>
               </el-form-item>
               <el-form-item label="操作人:" prop="operator">
                 <el-input v-model="baseInfo.operator" style="background:transparent" placeholder="请输入操作人" disabled />
@@ -46,11 +50,11 @@
         <el-row style="margin-bottom:10px">
           <div style="display:inline-block">
             <el-button class="button-sub btn" icon="iconfont icontianjia1" @click="addNewDevices">选择在库资产</el-button>
-            <el-button class="button-sub btn" icon="iconfont iconxingzhuang1 " style="margin-right:5px">批量删除</el-button>
+            <el-button class="button-sub btn" icon="iconfont iconxingzhuang1 " style="margin-right:5px" @click="delUsers">批量删除</el-button>
           </div>
         </el-row>
-        <el-table ref="userTable" :data="userInfo" tooltip-effect="dark" height="380" style="width: 100%;height:300px">
-          <!--  @row-click="selectUserRow" @selection-change="handleSelectionChange" -->
+        <el-table ref="userTable" :data="userInfo" tooltip-effect="dark" height="380" style="width: 100%;height:300px" @row-click="selectUserRow" @selection-change="handleSelectionChange">
+          <!--  -->
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" width="60" />
           <el-table-column prop="userCode" label="资产编号" />
@@ -74,33 +78,26 @@
 
     <!-- 添加设备弹框 -->
     <el-dialog title="选择设备" append-to-body :visible.sync="addDeviceVisible" width="45%" class="addRoleUserDialog">
-      <deviceSearch ref="deviceSearch" />
-    </el-dialog>
-
-    <!-- 树 -->
-    <el-dialog append-to-body :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+      <deviceSearch ref="deviceSearch" @getUserInfo="getUserInfo" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 // import { saveRole, getRolePermission, getRoleUsers, searchRoleUsers, saveAddRole, searchRoleName } from '@/api/roleManage'
-// import { tree2Array, setTreeData, checked } from '@/utils/utils'
-import addFilters from '../../../AssetManagement/components/addFiltersType'
+import common from '@/utils/common'
 import userSearch from '../components/userSearch'
 import deviceSearch from '../components/deviceSearch'
 export default {
   name: 'AddRolePage',
-  components: { addFilters, userSearch, deviceSearch },
+  components: { userSearch, deviceSearch },
   data() {
     return {
+      inHouseList: [], // 入库库房
+      outHouseList: [], // 出库库房
       addDeviceVisible: false, // 在库资产弹框，默认不显示
       recevier: '', // 接收人
-      addFiltersVisible: false,
       dialogName: '新建角色',
-      filters: {},
-      filtersTypeId: [],
       activeName: '0',
       baseInfo: { outHouse: '', date: '', recevier: '', inHouse: '', operator: '', reason: '' }, // 基本信息
       baseInfoRule: {
@@ -126,7 +123,7 @@ export default {
       selectUserPage: 1, // 为选择人员页数
       multipleSelection: [], // 已选用户多选列表
       unSelectMultipleSelection: [], // 未选用户多选列表
-      userInfo: [], // 已添加人员信息
+      userInfo: [], // 已添加人员信息 -- 设备
       userUnselectedInfo: [], // 未添加人员信息
       formUserInfo: {},
       addUserVisible: false,
@@ -137,37 +134,39 @@ export default {
       itemTypes: ''
     }
   },
-  mounted() {
+  computed: {
+    inHouseId: function() {
+      const that = this
+      return this.inHouseList.filter((item) => {
+        item.name === that.baseInfo.inHouse
+      }).code
+    },
+    outHouseId: function() {
+      const that = this
+      return this.outHouseList.filter((item) => {
+        item.name === that.baseInfo.outHouse
+      }).code
+    }
+  },
+  created() {
+    common.getDictNameList({ dictName: '所属库房', dictNameIsLike: 0 }).then(res => {
+      if (res.success === true) {
+        this.$nextTick(() => {
+          this.inHouseList = res.data
+          this.outHouseList = res.data
+        })
+      } else {
+        if (res.data !== '') {
+          this.$message.error(res.data)
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
+    }).catch(res => {
+      this.$message.error(res.message)
+    })
   },
   methods: {
-    // 选择筛选条件
-    showAddFiltersType() {
-      this.dialogName = '资产分类选择'
-      this.addFiltersVisible = true
-      this.$nextTick(() => {
-        this.$refs.addFilters.getAssetsTreeData()
-      })
-    },
-    // 条件选择返回
-    filterRes(res) {
-      if (res && res.length > 0) {
-        this.addFiltersVisible = false
-        this.filtersTypeId = []
-        const valueArr = []
-        for (const value of res) {
-          valueArr.push(value.name)
-        }
-        if (this.dialogName === '资产分类选择') {
-          this.itemTypes = valueArr.join(',')
-        }
-      } else {
-        this.addFiltersVisible = false
-      }
-    },
-    // 关闭
-    filterClose() {
-      this.addFiltersVisible = false
-    },
     // 选择接收人 -- 打开人员查询弹框
     addNewUser() {
       this.addUserVisible = true
@@ -181,9 +180,39 @@ export default {
     addNewDevices() {
       this.addDeviceVisible = true
     },
+    // 添加设备 ,关闭弹框
+    getUserInfo(data) {
+      console.log('data', data)
+      this.userInfo = data
+      this.addDeviceVisible = false
+    },
+    // 已添加在库资产的批量删除
+    delUsers() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('请至少选择一条数据')
+        return
+      }
+      var userIdList = this.multipleSelection
+      userIdList = userIdList.map(item => {
+        return item.id
+      })
+      this.userInfo = this.userInfo.filter(item => {
+        if (userIdList.indexOf(item.id) === -1) {
+          return item
+        }
+      })
+    },
+    // 行点击获取行信息
+    selectUserRow(row) {
+      this.$refs.userTable.toggleRowSelection(row)
+    },
+    // 处理多选列表
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     //     // 父组件调用判断添加或者修改
     //     clearContent() {
-    //       this.baseInfo = { status: '1' }
+    //       this.baseInfo = { status: '' }
     //     },
     //     async getRoleMenuFirst() {
     //       await getRolePermission({ roleId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
@@ -209,30 +238,24 @@ export default {
       this.activeName = '0'
       this.active = 0
       if (data) {
+        console.log('this:', data)
         this.addFlag = false
         this.baseInfo = data
         this.pane1 = false
         this.pane2 = false
-        this.pane3 = false
         this.$emit('reset-save-flag', false)
         // // 根据角色获取按钮权限
         // this.getRoleMenuFirst()
         // // 根据角色获取人员
         // this.handleGetRoleUsers()
       } else {
+        this.baseInfo.operator = this.$store.getters.name
         this.$emit('reset-save-flag', true)
         this.addFlag = true
         this.pane2 = true
-        this.pane3 = true
       }
     },
-    //     selectUserRow(row) {
-    //       this.$refs.userTable.toggleRowSelection(row)
-    //     },
-    //     selectUserInfoRow(row) {
-    //       this.$refs.userInfoTable.toggleRowSelection(row)
-    //     },
-    //     // 获取人员信息
+    //     // 获取设备信息
     //     handleGetRoleUsers(data) {
     //       getRoleUsers({ pageSize: this.pageSize, active: '1', available: '1', pageNumber: this.currentPage, roleId: this.addFlag === false ? this.baseInfo.id : undefined, userName: data }).then(res => {
     //         if (res.success === true) {
@@ -243,50 +266,6 @@ export default {
     //       }).catch(e => {
     //         this.$message.error(e.msg)
     //       })
-    //     },
-    // // 获取未选择的人员
-    // handleGetUnselectRoleUsers(data) {
-    //   searchRoleUsers({ roleId: this.baseInfo.id, pageSize: this.userPageSize, pageNumber: this.selectUserPage, name: data }).then(res => {
-    //     this.userloading = false
-    //     if (res.success === true) {
-    //       this.userUnselectedInfo = res.data.rows
-    //       this.userTotalCount = res.data.totalCount
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }).catch(e => {
-    //     this.$message.error(e.msg)
-    //   })
-    // },
-    //     // 人员信息列表
-    //     handleCurrentChange() {
-    //       this.handleGetRoleUsers()
-    //     },
-    //     // 未添加人员信息列表
-    //     handleSelectUserChange() {
-    //       this.handleGetUnselectRoleUsers()
-    //     },
-    //     handleSizeChange(val) {
-    //       this.pageSize = val
-    //       this.pageNumber = 1
-    //       this.handleGetRoleUsers()
-    //     },
-    //     handleUserSizeChange(val) {
-    //       this.userPageSize = val
-    //       this.handleGetUnselectRoleUsers()
-    //     },
-    //     // 处理多选列表
-    //     handleSelectionChange(val) {
-    //       this.multipleSelection = val
-    //     },
-    //     // 处理未选多选列表
-    //     handleUnSelectionChange(val) {
-    //       this.unSelectMultipleSelection = val
-    //     },
-    //     // 关闭添加人员
-    //     closeAddRoleUser() {
-    //       this.addUserVisible = false
-    //       this.handleGetRoleUsers()
     //     },
     // 保存角色信息--第一步
     saveBaseInfo(formName) {
@@ -377,59 +356,11 @@ export default {
     //         })
     //       }
     //     },
-    //     // 添加新成员
-    // addNewUser() {
-    //   this.addUserVisible = true
-    //   this.handleGetUnselectRoleUsers()
-    // },
-    //     // 关闭添加用户页面
-    //     handleAddNewUser(done) {
-    //       this.primaryKey = ''
-    //       if (this.addFlag === false) {
-    //         this.handleGetRoleUsers()
-    //       }
-    //       done()
-    //     },
-    //     closeAddRole() {
-    //       this.toData = []
-    //       this.rolePrev = true
-    //       this.$refs.treeTransfer.clearChecked()
-    //       this.$emit('closeAddRole')
-    //     },
-    // 确认添加用户
-    // confirmAddUsers() {
-    //   if (this.unSelectMultipleSelection.length < 1) {
-    //     this.$message.info('您还没有选择要添加的人员')
-    //     return false
-    //   }
-    //   var selectedUsers = []
-    //   if (this.userInfo) {
-    //     this.userInfo.map(user => {
-    //       selectedUsers.push(user.id)
-    //     })
-    //   }
-    //   var userIdList = []
-    //   this.unSelectMultipleSelection.map(item => {
-    //     if (selectedUsers.indexOf(item.id) === -1) {
-    //       userIdList.push(item)
-    //     }
-    //   })
-    //   if (userIdList.length !== this.unSelectMultipleSelection.length) {
-    //     this.$message.info('已过滤掉重复人员')
-    //   }
-    //   this.userInfo = this.userInfo.concat(userIdList)
-    //   this.addUserVisible = false
-    // },
-    // 查询要新添加的用户
-    // searchNewUsers() {
-    //   this.selectUserPage = 1
-    //   this.handleGetUnselectRoleUsers(this.primaryKey)
-    // },
     prev(e) {
       // 上一页
       this.activeName = e + ''
       this.active = e
-    } // 树形遍历
+    }
   }
 }
 </script>
