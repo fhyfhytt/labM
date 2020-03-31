@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" class="roleManage-addRole">
-    <el-steps :active="active" finish-status="success" simple>
+    <el-steps :active="active" finish-status="success" simple style="padding:17px 125px">
       <el-step title="基本信息">
         <span slot="icon" class="icontext">1</span>
       </el-step>
@@ -212,7 +212,7 @@ export default {
     },
     //     // 父组件调用判断添加或者修改
     //     clearContent() {
-    //       this.baseInfo = { status: '' }
+    //       this.baseInfo = {}
     //     },
     //     async getRoleMenuFirst() {
     //       await getRolePermission({ roleId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
