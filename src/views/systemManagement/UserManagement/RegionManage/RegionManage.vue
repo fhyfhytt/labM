@@ -317,14 +317,14 @@ export default {
       this.multipleSelection.map(item => {
         regionIdList.push(item.id)
       })
-      delRegion({ regionIdList }).then(res => {
-        if (res.success === true) {
+      delRegion({ regionIdList }).then(response => {
+        if (response.success === true) {
           this.multipleSelection = []
           this.$message.success('删除成功')
           this.getTableData()
           this.getTreeData()
         } else {
-          this.$message.error(res.msg)
+          this.$message.error(response.msg)
         }
       }).catch(response => {
         this.$message.error(response.msg)
