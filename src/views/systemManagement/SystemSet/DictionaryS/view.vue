@@ -143,7 +143,7 @@ export default {
     sureMsg(flag) {
       this.moveShow = flag
       const param = {
-        ids: this.ids,
+        ids: this.ids.join(','),
         flag: '1'
       }
       dictConnDel(param).then(response => {
@@ -160,7 +160,7 @@ export default {
     },
     // 批量删除
     handleSelectDel() {
-      if (this.ids.length === 0) {
+      if (this.multipleDel.length === 0) {
         this.$message.error('请至少选择一条数据')
       } else {
         this.moveShow = true

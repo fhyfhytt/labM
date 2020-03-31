@@ -141,7 +141,7 @@ export default {
 
     // 批量删除
     handleSelectDel() {
-      if (this.delTableById.length === 0) {
+      if (this.multipleSelection.length === 0) {
         this.$message.error('请至少选择一条数据')
       } else {
         this.moveShow = true

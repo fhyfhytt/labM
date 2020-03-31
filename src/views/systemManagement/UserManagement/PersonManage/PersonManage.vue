@@ -272,6 +272,7 @@ export default {
     confireMsg(flag) {
       this.moveShow = flag
     },
+    // 选择
     handleSelectionChange(val) {
       this.selections = val
     },

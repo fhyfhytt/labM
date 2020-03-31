@@ -151,25 +151,25 @@ export default {
       })
     },
     confireMsg(flag) {
-      this.$refs.baseRemoved.sureDioag = false
-      this.$refs.baseRemoved1.sureDioag = false
+      this.sureDioag = false
+      this.sureDioag1 = false
     },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     logout() {
-      this.$refs.baseRemoved.sureDioag = true
+      this.sureDioag = true
     },
     logoutR() {
-      this.$refs.baseRemoved1.sureDioag = true
+      this.sureDioag1 = true
     },
     sureMsg(flag) {
-      this.$refs.baseRemoved.sureDioag = false
+      this.sureDioag = flag
       this.$store.dispatch('tagsView/delAllViews', '')
       this.$store.dispatch('user/logout')
     },
     sureMsg1(flag) {
-      this.$refs.baseRemoved1.sureDioag = false
+      this.sureDioag1 = flag
       this.$store.dispatch('tagsView/delAllViews', '')
       this.$store.dispatch('user/logout')
       this.$router.push('/login')

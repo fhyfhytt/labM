@@ -151,7 +151,7 @@ export default {
     },
     // 批量删除字典子表
     handleSelectDel() {
-      if (this.ids.length === 0) {
+      if (this.multipleDel.length === 0) {
         this.$message.error('请至少选择一条数据')
       } else {
         this.moveShow = true
