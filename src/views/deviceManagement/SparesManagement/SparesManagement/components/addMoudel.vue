@@ -52,7 +52,7 @@
         <el-col :span="8">
           <el-form-item label="所属库房" prop="houseId">
             <el-select v-model="baseInfo.houseId" popper-class="select-option" clearable placeholder="-请选择-">
-              <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.code" />
+              <el-option v-for="item in houseList" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { addOrUpdateWarehouseAsset } from '@/api/asstesManagement'
+import { addOrUpdateWarehouseAsset, getAllWarehouse } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import addCode from './codeList'
 import addFilters from '../../components/addFiltersType'
@@ -160,7 +160,7 @@ export default {
     }).catch(res => {
       this.$message.error(res.msg)
     })
-    common.getDictNameList({ dictName: '所属库房', dictNameIsLike: 0 }).then(res => {
+    getAllWarehouse({}).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
           this.houseList = res.data

@@ -3,20 +3,20 @@
     <div class="page-title">
       <el-form ref="form1" :model="filters" size="small" label-width="110px">
         <el-row>
-          <el-col :xl="{span:5}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="关键字：">
               <el-input v-model="filters.assetNo" style="background:transparent" placeholder="请输入角色名称" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:5}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件分类">
               <el-input v-model="itemTypes" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:5}" :lg="{span:6}">
-            <el-form-item label="所属库房：">
-              <el-select v-model="filters.houseIds" popper-class="select-option" multiple clearable placeholder="-请选择-">
-                <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.code" />
+          <el-col :xl="{span:4}" :lg="{span:6}">
+            <el-form-item label="所属库房：" class="selfStyle">
+              <el-select v-model="filters.houseIds" popper-class="select-option" multiple filterable clearable placeholder="-请选择-">
+                <el-option v-for="item in houseList" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -33,7 +33,6 @@
         <div class="button-tool">
           <span class="fl">
             <el-button-group class="buttonGroup">
-              <!-- <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importf(this)"> -->
               <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
               <el-button v-permission="'attachmentImport'" icon="iconfont icondaoru" class="firstB" @click="toLead" />
               <el-button v-permission="'attachmentExport'" icon="iconfont icondaochu" @click="exportExcel('1')" />
@@ -117,8 +116,7 @@
   </div>
 </template>
 <script>
-import { queryByWarehouseAsset, deleteById, importWarehouseAsset } from '@/api/asstesManagement'
-import common from '@/utils/common'
+import { queryByWarehouseAsset, deleteById, importWarehouseAsset, getAllWarehouse } from '@/api/asstesManagement'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 import addMoudel from './components/addMoudel'
 import addFilters from '../components/addFiltersType'
@@ -135,7 +133,7 @@ export default {
       componentName: '所属区域',
       tableExport: [], // 存放模板或导出数据
       tableDataExport: [], // 导出数据
-      houseList: [], // 状态列表
+      houseList: [], // 所属库房
       itemTypes: '',
       areas: '',
       tableData: [],
@@ -167,7 +165,7 @@ export default {
     }
   },
   created() {
-    common.getDictNameList({ dictName: '所属库房', dictNameIsLike: 0 }).then(res => {
+    getAllWarehouse({}).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
           this.houseList = res.data
@@ -180,7 +178,7 @@ export default {
         }
       }
     }).catch(res => {
-      this.$message.error(res.message)
+      this.$message.error(res.msg)
     })
     this.getList()
   },
@@ -271,11 +269,15 @@ export default {
       this.loading = true
       queryByWarehouseAsset(param).then(response => {
         this.loading = false
-        if (response.success === true) {
-          this.tableData = response.data.assetList.map(item => {
-            if (item.assetInfo === undefined) item.assetInfo = {}
-            return item
-          }) || []
+        if (response.code === 0) {
+          if (response.data === '') {
+            this.tableData = []
+          } else {
+            this.tableData = response.data.assetList.map(item => {
+              if (item.assetInfo === undefined) item.assetInfo = {}
+              return item
+            }) || []
+          }
           this.totalCount = Number(response.data.count)
         } else {
           this.$message.error(response.msg)
@@ -447,6 +449,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .el-select {width: 100%;}
   .fl {float: left;}
   .fr {float: right;}
   .qrcodeBox {
@@ -459,5 +462,9 @@ export default {
   }
   .buttonGroup .el-button {margin-left: 0;}
   .buttonGroup .el-button.firstB {border-top-left-radius: 4px;border-bottom-left-radius: 4px;}
+</style>
+<style lang="scss">
+  .button-tool .buttonGroup .el-button i.icondaochu {font-size: 16px;position: relative;top: -1px;}
+  .selfStyle .el-select__tags {height: 32px;flex-wrap: nowrap;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;left: 4px;}
 </style>
 

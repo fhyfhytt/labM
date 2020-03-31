@@ -127,3 +127,12 @@ export function importWarehouseAsset(data) {
     data
   })
 }
+// 获取所有库房
+export function getAllWarehouse(data) {
+  return request({
+    url: '/sysWarehouse/getAllWarehouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}

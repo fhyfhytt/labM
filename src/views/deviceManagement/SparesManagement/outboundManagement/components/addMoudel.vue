@@ -1,0 +1,424 @@
+<template>
+  <div class="outManage-add">
+    <el-steps :active="active" finish-status="success" simple>
+      <el-step title="入库基本信息"><span slot="icon" class="icontext">1</span></el-step>
+      <el-step title="添加设备"><span slot="icon" class="icontext">2</span></el-step>
+    </el-steps>
+    <el-tabs v-model="activeName" stretch>
+      <!--入库基本信息 :disabled="disabled"-->
+      <el-tab-pane label="入库基本信息" name="0" :disabled="disabled">
+        <div>
+          <el-form ref="baseInfo" :model="baseInfo" label-width="105px" :rules="baseInfoRule" :validate-on-rule-change="false" class="addtop">
+            <el-row>
+              <el-col :span="11">
+                <el-form-item label="出库类型" prop="outboundType">
+                  <el-select v-model="baseInfo.outboundType" popper-class="select-option" clearable placeholder="-请选择-" default-first-option>
+                    <el-option v-for="item in outboundTypeList" :key="item.code" :label="item.name" :value="item.name" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11" :offset="2">
+                <el-form-item label="备件去处" prop="sparesGo">
+                  <el-select v-model="baseInfo.sparesGo" popper-class="select-option" clearable placeholder="-请选择-">
+                    <el-option v-for="item in sparesGoWhereList" :key="item.code" :label="item.name" :value="item.name" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="操作人" prop="operatePerson">
+                  <el-input v-model="baseInfo.operatePerson" disabled />
+                </el-form-item>
+              </el-col>
+              <el-col :span="11" :offset="2">
+                <el-form-item label="替换区域">
+                  <el-input v-model="baseInfo.area" placeholder="-请选择-" :disabled="disabledFlg" @focus="showAddArea"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="所属库房" prop="houseId">
+                  <el-select v-model="baseInfo.houseId" popper-class="select-option" filterable clearable placeholder="-请选择-" @change="getHousrPerson">
+                    <el-option v-for="item in houseList" :key="item.id" :label="item.name" :value="item.id" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11" :offset="2">
+                <el-form-item label="接收人">
+                  <el-input v-model="baseInfo.receivedBy" placeholder="-请选择-" :disabled="disabledFlg" @focus="showSelectPerson"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="备注">
+                  <el-input v-model="baseInfo.note" type="textarea" autocomplete="off" placeholder="请输入备注" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <div class="dialog-footer">
+            <el-button v-preventReClick="1000" size="small" class="button-sub" @click.native="nextStep('baseInfo')">下一步</el-button>
+          </div>
+        </div>
+      </el-tab-pane>
+      <!-- 添加设备 -->
+      <el-tab-pane label="添加设备" name="1" :disabled="disabled">
+        <div>
+          <div v-show="baseInfo.outboundType==='替换'" class="tableStyle">
+            <div style="text-align:right;margin-bottom:10px;">
+              <el-button icon="iconfont icontianjia1" size="small"> 选择现场物资</el-button>
+              <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">删除</el-button>
+            </div>
+            <el-table v-loading="loading" border :data="tableData" max-height="500">
+              <el-table-column label="替换资产信息">
+                <el-table-column prop="assetNo" label="资产编号" />
+                <el-table-column prop="assetName" label="资产名称" />
+                <el-table-column prop="itemType" label="资产型号" />
+                <el-table-column prop="itemType" label="替换数量" />
+                <el-table-column prop="itemType" label="资产状态" />
+              </el-table-column>
+              <el-table-column label="替换备件信息">
+                <el-table-column prop="statusS" label="替换备件状态" />
+                <el-table-column prop="house" label="备件名称" />
+                <el-table-column prop="num" label="备件状态" />
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <span v-permission="'assetsEdite'" class="iconfont iconbianji1 scope-caozuo" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.assetNo }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-show="baseInfo.outboundType !== '替换'">
+            <div style="text-align:right;margin-bottom:10px;">
+              <el-button icon="iconfont icontianjia1" size="small" @click="selectHouseMaterials"> 选择在库物资</el-button>
+              <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">删除</el-button>
+            </div>
+            <el-table v-loading="loading" :data="tableData" max-height="500">
+              <el-table-column type="selection" width="50" />
+              <el-table-column type="index" label="编号" />
+              <el-table-column prop="assetNo" label="资产编号" />
+              <el-table-column prop="assetName" label="资产名称" />
+              <el-table-column prop="itemType" label="资产分类" />
+              <el-table-column prop="statusS" label="资产型号" />
+              <el-table-column prop="num" label="设备总数(需编辑)" width="140" />
+              <el-table-column prop="statusS" label="资产状态" />
+            </el-table>
+            <div class="numListJup margin-jump">
+              <el-pagination
+                :page-size="pageSize"
+                :page-sizes="[10, 20, 50, 100]"
+                layout="total,sizes,prev, pager, next, jumper"
+                :total="totalCount"
+                :pager-count="5"
+                :current-page.sync="currentPage"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
+            </div>
+          </div>
+          <div class="dialog-footer nextfooter">
+            <el-button v-preventReClick="3000" size="small" class="button-cancel" @click.native="prev(0)">上一步</el-button>
+            <el-button v-preventReClick="1000" size="small" class="button-sub">保存</el-button>
+            <el-button v-preventReClick="1000" size="small" class="button-sub">完成入库</el-button>
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+    <!-- 所属区域 -->
+    <el-dialog title="选择所属区域" :append-to-body="true" :close-on-click-modal="false" :visible.sync="addArea" :before-close="filterClose" width="300px">
+      <addFilters ref="addFilters" :is-radio="isRadio" :component-name="componentName" @filterRes="filterRes" />
+    </el-dialog>
+    <!-- 选人员 -->
+    <el-dialog title="选择接收人" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showReceivedBy" width="800px">
+      <selectPerson @resPerson="resPerson" />
+    </el-dialog>
+    <!-- 选择在库物资 -->
+    <el-dialog title="选择在库物资" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showHouseMaterials" width="900px">
+      <selectHouseMaterials @houseMaterial="houseMaterialRes" />
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { getAllWarehouse, addOrUpdateWarehouseAsset } from '@/api/asstesManagement'
+import common from '@/utils/common'
+import selectPerson from './selectPerson'
+import addFilters from '../../components/addFiltersType'
+import selectHouseMaterials from './selectHouseMaterials'
+export default {
+  name: 'AddAssetsPage',
+  components: { addFilters, selectPerson, selectHouseMaterials },
+  data() {
+    return {
+      disabled: true, // tabs是否禁用
+      activeName: 0, // tabs默认显示第一个用户基本信息
+      active: 0,
+      tableData: [],
+      totalCount: 0,
+      pageNumber: 1,
+      pageSize: 10,
+      currentPage: 1, // 直接前往第几页
+      loading: false,
+      isRadio: true,
+      componentName: '所属区域选择',
+      baseInfo: {}, // 基本信息
+      baseInfoRule: {
+        outboundType: [{ required: true, message: '请选择出库类型', trigger: 'change' }]
+        // sparesGo: [{ required: true, message: '请选择物备件去处', trigger: 'change' }],
+        // operatePerson: [{ required: true, message: '操作人必填', trigger: 'change' }],
+        // houseId: [{ required: true, message: '请选择库房名称', trigger: 'change' }]
+      },
+      houseList: [], // 所属库房
+      houseSiteList: [], // 所属库位
+      outboundTypeList: [], // 出库类型
+      sparesGoWhereList: [], // 备件去处
+      disabledFlg: false,
+      addArea: false,
+      showReceivedBy: false,
+      showHouseMaterials: false // 显示选在库物资组件
+
+    }
+  },
+  created() {
+    common.getDictNameList({ dictName: '出库类型', dictNameIsLike: 0 }).then(res => {
+      if (res.success === true) {
+        this.$nextTick(() => {
+          this.outboundTypeList = res.data
+        })
+      } else {
+        if (res.data !== '') {
+          this.$message.error(res.data)
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
+    }).catch(res => {
+      this.$message.error(res.msg)
+    })
+    common.getDictNameList({ dictName: '备件去处', dictNameIsLike: 0 }).then(res => {
+      if (res.success === true) {
+        this.$nextTick(() => {
+          this.sparesGoWhereList = res.data
+        })
+      } else {
+        if (res.data !== '') {
+          this.$message.error(res.data)
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
+    }).catch(res => {
+      this.$message.error(res.msg)
+    })
+    getAllWarehouse({}).then(res => {
+      if (res.success === true) {
+        this.$nextTick(() => {
+          this.houseList = res.data
+        })
+      } else {
+        if (res.data !== '') {
+          this.$message.error(res.data)
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
+    }).catch(res => {
+      this.$message.error(res.msg)
+    })
+  },
+  mounted() {
+
+  },
+  methods: {
+    // 选择库房获取库房管理员
+    getHousrPerson(val) {
+      this.houseList.forEach((item) => {
+        if (item.id === val) {
+          this.baseInfo.receivedBy = item.person
+        }
+      })
+    },
+    // 新建人员基本信息下一步  根据用户ID查询所拥有的角色信息接口  第一步--1
+    nextStep(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.activeName = '1'
+          this.active = 1
+          console.log('baseInfo:', this.baseInfo)
+        } else {
+          return false
+        }
+      })
+    },
+    // 上一步
+    prev(e) {
+      this.activeName = e + ''
+      this.active = e
+    },
+    saveBaseInfo() {
+      const that = this
+      if (!that.disabledFlg) {
+        // 新增提交
+        that.$refs['baseInfo'].validate((valid) => {
+          if (valid) {
+            const param = that.baseInfo
+            param.checkStatus = '0'
+            addOrUpdateWarehouseAsset(param).then(response => {
+              that.loading = false
+              if (response.success === true) {
+                that.$message.success('新增成功')
+                that.$emit('addSuccess')
+              } else {
+                that.$message.error(response.msg)
+              }
+            }).catch(response => {
+              that.$message.error(response.msg)
+            })
+          } else {
+            return false
+          }
+        })
+      } else {
+        // 修改提交
+        that.$refs['baseInfo'].validate((valid) => {
+          if (valid) {
+            const param = that.baseInfo
+            param.checkStatus = '0'
+            addOrUpdateWarehouseAsset(param).then(response => {
+              that.loading = false
+              if (response.success === true) {
+                that.$message.success('修改成功')
+                that.$emit('addSuccess')
+              } else {
+                that.$message.error(response.msg)
+              }
+            }).catch(response => {
+              that.$message.error(response.msg)
+            })
+          } else {
+            return false
+          }
+        })
+      }
+    },
+    addEditRoleDialog(data) {
+      if (data) {
+        this.disabledFlg = true
+        this.baseInfo = {
+          id: data.id,
+          assetId: data.assetId,
+          code: data.code,
+          num: data.num,
+          status: data.status,
+          houseId: data.houseId,
+          house: data.house,
+          note: data.assetInfo.note,
+          dataFrom: data.dataFrom,
+          checkStatus: data.checkStatus,
+          checkNote: data.checkNote,
+          maintranDate: data.maintranDate,
+          maintranStatus: data.maintranStatus,
+          areaId: data.areaId,
+          area: data.area,
+          location: data.location,
+          price: data.price,
+          itemType: data.assetInfo.itemType,
+          assetName: data.assetInfo.assetName,
+          assetNo: data.assetInfo.assetNo,
+          unitType: data.assetInfo.unitType,
+          factory: data.assetInfo.factory
+        }
+      } else {
+        this.$refs['baseInfo'].resetFields()
+        this.disabledFlg = false
+        this.baseInfo = {
+          operatePerson: localStorage.getItem('login-user')
+        }
+      }
+    },
+    // 显示选人员
+    showSelectPerson() {
+      this.showReceivedBy = true
+    },
+    // 返回人员选择信息
+    resPerson(res) {
+      if (res) {
+        this.showReceivedBy = false
+        this.baseInfo.receivedBy = res.name
+      }
+    },
+    // 显示选在库物资
+    selectHouseMaterials() {
+      this.showHouseMaterials = true
+    },
+    // 返回选物资
+    houseMaterialRes(res) {
+      if (res && res.length > 0) {
+        this.showHouseMaterials = false
+        const valueArr = []
+        for (const value of res) {
+          valueArr.push(value.name)
+        }
+        // this.baseInfo.area = valueArr.join(',')
+      }
+      console.log('--------:', res)
+    },
+    // 选择区域
+    showAddArea() {
+      this.addArea = true
+      this.$nextTick(() => {
+        this.$refs.addFilters.getAreaTreeData()
+      })
+    },
+    filterClose() {
+      this.addArea = false
+    },
+    // 条件选择返回
+    filterRes(res) {
+      if (res && res.length > 0) {
+        this.addArea = false
+        const valueArr = []
+        for (const value of res) {
+          valueArr.push(value.name)
+        }
+        this.baseInfo.area = valueArr.join(',')
+      }
+    },
+
+    // 批量删除
+    handleDelAll() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('请至少选择一条数据')
+      } else {
+        this.confirmAllVisible = true
+      }
+    },
+    // 分页
+    handleSizeChange(val) {
+      this.pageSize = val
+      this.pageNumber = 1
+      this.getList()
+    },
+    // 分页  点击哪一页跳到哪一页
+    handleCurrentChange(val) {
+      this.pageNumber = val
+      this.getList()
+    }
+
+  }
+}
+</script>
+<style lang="scss">
+  .outManage-add {
+    .el-steps--simple {margin-bottom: 30px;}
+    .el-tabs--top {
+      .el-tabs__header.is-top {
+        display: none !important;
+        margin-top: 110px;
+      }
+    }
+    .tableStyle{
+      .el-table th, .el-table th.is-leaf {border-right: 1px solid #dfe6ec;border-bottom: 1px solid #dfe6ec;}
+    }
+
+  }
+</style>
+

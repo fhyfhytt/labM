@@ -108,6 +108,15 @@ const deviceControlRouter = {
         // roles: ['sparesCheck']
       },
       name: 'SparesCheck'
+    }, {
+      path: 'outboundManagement',
+      component: () => import('@/views/deviceManagement/SparesManagement/outboundManagement/view.vue'),
+      meta: {
+        title: '出库管理',
+        icon: 'icon111',
+        roles: ['OutboundManagement']
+      },
+      name: 'OutboundManagement'
     }]
   }]
 

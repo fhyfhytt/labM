@@ -511,4 +511,7 @@ export default {
   }
   .buttonGroup .el-button {margin-left: 0;}
 </style>
+<style lang="scss">
+  .button-tool .buttonGroup .el-button i.icondaochu {font-size: 16px;position: relative;top: -1px;}
+</style>
 
