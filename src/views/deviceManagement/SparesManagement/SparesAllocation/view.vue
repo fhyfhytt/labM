@@ -16,24 +16,17 @@
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="调入仓库:">
-              <el-select v-model="filters.name" popper-class="select-option" clearable placeholder="-请选择-">
-                <el-option v-for="item in statuesList" :key="item.code" :label="item.name" :value="item.name" />
-              </el-select>
+              <el-input v-model="areas" placeholder="-请选择-" clearable @focus="showAddFiltersArea" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row style="margin-top:10px;">
-          <el-col :xl="{span:4}" :lg="{span:5}">
-            <el-form-item label="调拨状态:">
-              <el-input v-model="areas" placeholder="-请选择-" clearable @focus="showAddFiltersArea" />
-            </el-form-item>
-          </el-col>
           <el-col :xl="{span:8}" :lg="{span:10}">
             <el-form-item label="调出时间:">
               <el-col :span="11">
                 <el-date-picker v-model="dateForm.date1" type="date" placeholder="选择日期" style="width: 100%;" />
               </el-col>
-              <el-col class="line" :span="2" style="padding-left:15px;">-</el-col>
+              <el-col class="line" :span="2" style="padding-left:15px;">至</el-col>
               <el-col :span="11">
                 <el-date-picker v-model="dateForm.date2" placeholder="选择日期" style="width: 100%;" />
               </el-col>
@@ -85,7 +78,7 @@
       </div>
     </div>
     <div class="childrenlog">
-      <!--新增界面-->
+      <!--新增/编辑界面-->
       <el-dialog v-model="addFormVisible" :title="dialogName" :close-on-click-modal="false" :visible.sync="addFormVisible" :before-close="handleClose" class="addRoleDialog" width="800px">
         <addMoudel ref="addEditRole" :statues-list="statuesList" @reset-save-flag="resetSaveFlag" @closeAddRole="closeAddRole" @addSuccess="addSuccess" />
       </el-dialog>
@@ -104,26 +97,23 @@
   </div>
 </template>
 <script>
-import { getAssetsList, deleteAssets, importExcel } from '@/api/asstesManagement'
+import { getAssetsList, deleteAssets } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 import addMoudel from './components/addMoudel'
-import addFilters from '../components/addFiltersType'
+import addFilters from '../../AssetManagement/components/addFiltersType'
 
-import FileSaver from 'file-saver'
-import XLSX from 'xlsx'
-import QRCode from 'qrcodejs2'
+// import FileSaver from 'file-saver'
+// import XLSX from 'xlsx'
+// import QRCode from 'qrcodejs2'
 export default {
-  components: { addMoudel, confirmDialog, addFilters },
+  components: { confirmDialog, addMoudel, addFilters },
   data() {
     return {
       addFiltersVisible: false,
       filters: {},
       filtersTypeId: [],
       componentName: '所属区域',
-      tableExport: [], // 存放模板或导出数据
-      tableDataExport: [], // 导出数据
-      showQRcode: false, // 二维码显示
       statuesList: [], // 状态列表
       itemTypes: '',
       areas: '',
@@ -275,38 +265,14 @@ export default {
         this.loading = false
         this.$message.error(e.msg)
       })
-      // 用于导出
-      const param2 = {
-        pageNumber: 1,
-        pageSize: 9999,
-        no: this.filters.no,
-        itemTypes: this.itemTypesArr,
-        status: this.filters.name,
-        areas: this.arearArr,
-        itsmUserid: localStorage.getItem('login-id'),
-        checkStatus: '审核通过'
-      }
-      getAssetsList(param2).then(response => {
-        if (response.success === true) {
-          this.tableDataExport = response.data.list || []
-          console.log('tableDataExport:', this.tableDataExport)
-        } else {
-          this.$message.error(response.msg)
-        }
-      }).catch(e => {
-        this.loading = false
-        this.$message.error(e.msg)
-      })
     },
     // 点击新增弹出新增页面moudel框
     handleAdd() {
-      // this.$router.replace('/login')
-      this.dialogName = '新增资产'
+      this.dialogName = '调拨单新增'
       this.addFormVisible = true
       this.addFlag = false
       this.$nextTick(() => {
         this.$refs.addEditRole.addEditRoleDialog()
-        // this.$refs.addEditRole.clearContent()
       })
     },
     // 取消新增
@@ -385,83 +351,6 @@ export default {
     handleCurrentChange(val) {
       this.pageNumber = val
       this.getList()
-    },
-    // 导入
-    toLead() {
-      document.getElementById('toLeadId').click()
-    },
-
-    // 导入文件
-    importFile() {
-      const that = this
-      const formData = new window.FormData()
-      const files = document.querySelector('#toLeadId').files
-      formData.append('file', files[0])
-      if (files.length <= 0) {
-        this.$message.error('请选择导入文件')
-      } else {
-        importExcel(formData).then(res => {
-          console.log('导入：', res)
-          if (res.code === 0) {
-            that.visibleImportRole = false
-            this.$message.success('导入成功')
-            this.getList()
-          } else {
-            this.$message.error(res.msg)
-          }
-        })
-      }
-    },
-    // 导出表格
-    exportExcel(type) {
-      let excelName = ''
-      if (type === '2') {
-        this.tableExport = []
-        excelName = 'Assets_template'
-      } else {
-        this.tableExport = this.tableDataExport
-        excelName = 'Assets_table'
-      }
-      this.$nextTick(() => {
-        var wb = null
-        if (type === '2') {
-          wb = XLSX.utils.table_to_book(document.querySelector('#exportExcelMould'))
-        } else {
-          wb = XLSX.utils.table_to_book(document.querySelector('#exportExcelTable'))
-        }
-        var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-        try {
-          FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), excelName + '.xls')
-        } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
-        return wbout
-      })
-    },
-    // 点击显示二维码
-    handleQRCode() {
-      if (this.multipleSelection.length === 0) {
-        this.$message.warning('请至少选择一条数据')
-      } else {
-        this.showQRcode = true
-        this.$nextTick(() => {
-          this.multipleSelection.forEach((item, index) => {
-            var conTxt = item.no
-            // 设置参数方式
-            const doemId = 'qrcode' + index
-            document.getElementById(doemId).innerHTML = ''
-            var qrcode = new QRCode(doemId, {
-              text: conTxt,
-              width: 150,
-              height: 150,
-              colorDark: '#000000',
-              colorLight: '#ffffff',
-              correctLevel: QRCode.CorrectLevel.H
-            })
-            // 使用 API
-            qrcode.clear()
-            qrcode.makeCode(conTxt)
-          })
-        })
-      }
     }
   }
 }

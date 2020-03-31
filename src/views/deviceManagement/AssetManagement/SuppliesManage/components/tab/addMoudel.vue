@@ -29,6 +29,9 @@
           <el-form-item label="资产分类:" prop="suppliesType">
             <el-input v-model="suppliesType" placeholder="请输入物资分类" disabled />
           </el-form-item>
+          <el-form-item label="体积:" prop="size">
+            <el-input v-model="addForm.size" placeholder="请输入体积" />
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -61,7 +64,7 @@ export default {
   },
   data() {
     return {
-      addForm: { assetName: '', factory: '', price: '', code: '', unitType: '', note: '', itemType: this.treeId },
+      addForm: { assetName: '', factory: '', price: '', code: '', unitType: '', note: '', size: '', itemType: this.treeId },
       addFormVisible: false,
       loading: false,
       addFormRules: {

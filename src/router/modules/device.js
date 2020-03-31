@@ -116,7 +116,8 @@ const deviceControlRouter = {
         roles: ['SparesAllocation']
       },
       name: 'SparesAllocation'
-    }]
+    }
+    ]
   }]
 
 }

@@ -95,6 +95,9 @@ export default {
     tableLoading: function() {
       this.loading = this.tableLoading
     },
+    totalNum: function() {
+      this.total = this.totalNum || 0
+    },
     suppliesType: function() {
 
     }
