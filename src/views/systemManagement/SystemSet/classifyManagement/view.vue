@@ -127,6 +127,8 @@ export default {
               this.$refs.tree.setCurrentKey(this.currentNodekey)
             })
             this.getTableData()
+          } else {
+            this.tableloading = false
           }
         }
       }).catch(response => {
@@ -143,6 +145,7 @@ export default {
           this.totalNum = Number(response.data.count)
         }
       }).catch(response => {
+        this.tableloading = false
         this.tableData = []
         this.totalNum = 0
         this.$message.error(response.msg)

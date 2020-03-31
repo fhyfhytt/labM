@@ -29,6 +29,7 @@ const getters = {
   trafficDetail: state => state.projectManage.trafficDetail, // 交通管制详情页新建信息
   spoilDetail: state => state.projectManage.spoilDetail, // 抛洒物详情页新建信息
   superman: state => state.user.superman, // 超级管理员
-  rolesIds: state => state.user.rolesIds // 角色ID
+  rolesIds: state => state.user.rolesIds, // 角色ID
+  logs: state => state.errorLog.logs
 }
 export default getters

@@ -121,7 +121,7 @@ export default {
         }
       }).catch(response => {
         this.loading = false
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
 

@@ -72,7 +72,7 @@ import baseRemove from '@/components/baseRemove/baseRemove'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultAvater from '../../assets/img/header.png'
-import { getAllList, checkStatus, getPersonAllList } from '@/api/message'
+import { checkStatus, getPersonAllList } from '@/api/message'
 // getShort
 export default {
   components: {
@@ -123,7 +123,7 @@ export default {
         state: [1],
         pageSize: 10,
         pageNumber: 1,
-        isPerson: 0,
+        isPerson: 1,
         sortColumn: 'publish_time',
         isRead: 0
       }
@@ -131,7 +131,7 @@ export default {
         state: [1],
         pageSize: 10,
         pageNumber: 1,
-        isPerson: 1,
+        isPerson: 0,
         sortColumn: 'publish_time',
         isRead: 0
       }
@@ -142,7 +142,7 @@ export default {
       }).catch(res => {
         that.$message.error(res.msg)
       })
-      await getAllList(param2).then(res => {
+      await getPersonAllList(param2).then(res => {
         that.$nextTick(() => {
           that.sysCenter = res.data.list
         })

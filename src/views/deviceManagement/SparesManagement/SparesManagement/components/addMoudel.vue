@@ -209,7 +209,7 @@ export default {
                 that.$message.error(response.msg)
               }
             }).catch(response => {
-              that.$message.error(response.message)
+              that.$message.error(response.msg)
             })
           } else {
             return false
@@ -230,7 +230,7 @@ export default {
                 that.$message.error(response.msg)
               }
             }).catch(response => {
-              that.$message.error(response.message)
+              that.$message.error(response.msg)
             })
           } else {
             return false

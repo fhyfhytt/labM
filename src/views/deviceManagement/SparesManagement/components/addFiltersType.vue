@@ -75,7 +75,7 @@ export default {
         }
       }).catch(response => {
         this.loading = false
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     },
     // 获取区域分类tree树数据
@@ -90,7 +90,7 @@ export default {
         }
       }).catch(response => {
         this.loading = false
-        this.$message.error(response.message)
+        this.$message.error(response.msg)
       })
     }
   }
