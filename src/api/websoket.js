@@ -80,7 +80,7 @@ function websocketonmessage(e) {
   //     return item
   //   })
   //   store.commit('dashord/setWarnOnes', true)
-  //   store.commit('dashord/dataListOnes', dataListOne)
+  // store.commit('dashord/dataListOnes', dataListOne)
   // }
   // if (messages.fcTotalCount > 0) {
   //   var dataListTwo = messages.fcWarnInfoResponse.map(item => {

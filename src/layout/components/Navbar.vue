@@ -12,7 +12,7 @@
 
     <div class="right-menu">
       <div class="right-menu-item">
-        <el-popover placement="bottom" width="400" trigger="hover">
+        <el-popover v-model="visible" placement="bottom" width="400" trigger="manual">
           <el-tabs v-model="activeName" class="msgcenter" @before-leave="leavetab" @tab-click="handleClick">
             <!-- stretch 可以拉伸tab填充宽度 -->
             <el-tab-pane label="消息中心" name="first" style="max-height:300px;overflow-y:auto">
@@ -34,7 +34,7 @@
               </ul>
             </el-tab-pane>
           </el-tabs>
-          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="messageCenter.length>0?&quot;point&quot;:&quot;&quot;" />
+          <p slot="reference" class="iconfont iconxiaoxi1 bigIcon" :class="sysCenter.length>0||messageCenter.length>0?&quot;point&quot;:&quot;&quot;" @click="show" />
         </el-popover>
       </div>
       <div class="imgContain">
@@ -87,7 +87,7 @@ export default {
       msg1: '确认切换账号么?',
       iconfont: 'el-icon-warning',
       svgStyle: 'color:#FFAA00;font-size:25px;margin-right:22px;',
-      visible2: false,
+      visible: false,
       redshow: false,
       yelshow: false,
       greshow: false,
@@ -95,7 +95,7 @@ export default {
       pointNum: 0,
       activeName: 'first',
       defaultAvater: defaultAvater,
-      messageCenter: [],
+      messageCenter: this.$store.state.dashord.dataListOne,
       sysCenter: [],
       sureDioag: false,
       sureDioag1: false
@@ -108,6 +108,11 @@ export default {
       'device'
     ])
   },
+  watch: {
+    '$store.state.dashord.warnOne': function(oldval, newval) {
+      this.show()
+    }
+  },
   created() {
     this.getmessage()
   },
@@ -115,33 +120,36 @@ export default {
     if (this.avatar !== '') {
       this.defaultAvater = this.avatar
     }
+    // 测试自动弹出
+    // setTimeout(() => {
+    //   this.$store.dispatch('dashord/setWarnOne', true)
+    //   console.log(this.$store.state.dashord.warnOne)
+    // }, 5000)
   },
   methods: {
     async getmessage() {
       var that = this
-      const param1 = {
-        state: [1],
-        pageSize: 10,
-        pageNumber: 1,
-        isPerson: 1,
-        sortColumn: 'publish_time',
-        isRead: 0
-      }
+      // const param1 = {
+      //   state: [1],
+      //   pageSize: 10,
+      //   pageNumber: 1,
+      //   sortColumn: 'publish_time',
+      //   isRead: 0
+      // }
       const param2 = {
         state: [1],
         pageSize: 10,
         pageNumber: 1,
-        isPerson: 0,
         sortColumn: 'publish_time',
         isRead: 0
       }
-      await getPersonAllList(param1).then(res => {
-        that.$nextTick(() => {
-          that.messageCenter = res.data.list
-        })
-      }).catch(res => {
-        that.$message.error(res.msg)
-      })
+      // await getPersonAllList(param1).then(res => {
+      //   that.$nextTick(() => {
+      //     that.messageCenter = res.data.list
+      //   })
+      // }).catch(res => {
+      //   that.$message.error(res.msg)
+      // })
       await getPersonAllList(param2).then(res => {
         that.$nextTick(() => {
           that.sysCenter = res.data.list
@@ -178,9 +186,19 @@ export default {
       // console.log(e, v)
     },
     MsgClickTo(e) {
-      const query = { id: this.sysCenter[e].msId }
-      this.changeStatus(query.id)
-      this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
+      // const query = { id: this.sysCenter[e].msId }
+      // this.changeStatus(query.id)
+      // this.$router.push({ path: '/systemManagement/SystemSet/noticeMore/' + query.id, query: query })
+    },
+    show() {
+      this.visible = !this.visible
+      if (this.visible) {
+        setTimeout(() => {
+          if (this.visible) {
+            this.visible = false
+          }
+        }, 5000)
+      }
     },
     NoticeClickTo(e) {
       const query = { id: this.sysCenter[e].msId }
@@ -303,6 +321,7 @@ export default {
         transform: translateY(-50%);
         font-weight: 100;
         margin: 0;
+        outline: none;
       }
       .point::after {
         content: '';
