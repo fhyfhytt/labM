@@ -16,7 +16,12 @@
 .el-upload__input {
   display: none;
 }
-
+.el-button--small{
+  border-radius: 4px;
+}
+.el-select.el-select--small{
+  width: 100%;
+}
 .cell {
   .el-tag {
     margin-right: 0px;
