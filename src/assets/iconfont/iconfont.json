@@ -6,6 +6,20 @@
   "description": "实验室管理系统",
   "glyphs": [
     {
+      "icon_id": "13825172",
+      "name": "班组",
+      "font_class": "banzu",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    },
+    {
+      "icon_id": "13822924",
+      "name": "物资管理",
+      "font_class": "wuzi",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
       "icon_id": "13786388",
       "name": "系统日志按钮刷新",
       "font_class": "shuaxin",
