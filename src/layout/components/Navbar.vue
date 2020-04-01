@@ -110,7 +110,9 @@ export default {
   },
   watch: {
     '$store.state.dashord.warnOne': function(oldval, newval) {
-      this.show()
+      if (newval) {
+        this.show()
+      }
     }
   },
   created() {
