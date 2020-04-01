@@ -60,9 +60,18 @@
     font-weight: 900;
   }
 }
-// .vue-treeselect__multi-value-item{
-//   background: #F1F2F6;
-// }
+.vue-treeselect__multi-value-item-container{
+  padding: 0 !important;
+}
+.vue-treeselect__limit-tip{
+  padding: 0 !important;
+}
+.vue-treeselect__multi-value-item{
+  padding: 0 !important;
+}
+.vue-treeselect__limit-tip-text{
+  margin:0;
+}
 .vue-treeselect__control {
   height: 30px;
   border-radius: 4px;

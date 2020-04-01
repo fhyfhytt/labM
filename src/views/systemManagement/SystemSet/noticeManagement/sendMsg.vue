@@ -170,7 +170,7 @@ export default {
         ]
       },
       limitText: count => `以及 ${count} 个组织部门`,
-      limit: 3,
+      limit: 1,
       tip: true,
       msId: '',
       iconclass: 'el-icon-upload',
