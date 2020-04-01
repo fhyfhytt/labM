@@ -131,8 +131,8 @@ const actions = {
         commit('SET_ROLES', [])
         removeToken()
         resetRouter()
-        console.log(location)
-        location.reload()
+        console.log(state)
+        // location.reload()
         resolve()
       }).catch(error => {
         commit('SET_TOKEN', '')

@@ -22,6 +22,28 @@ export function getAllList(param) {
     }
   })
 }
+// 个人消息列表查询
+export function getPersonAllList(param) {
+  return request({
+    url: '/msg/queryPersonMsgSys',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: {
+      'msId': param.msId,
+      'pageNumber': param.pageNumber,
+      'pageSize': param.pageSize,
+      'state': param.status,
+      'sortColumn': 'publish_time',
+      'sortOrder': 'desc',
+      'startDate': param.startDate,
+      'endDate': param.endDate,
+      'typeL': param.typeL,
+      'typeS': param.typeS,
+      'isDelete': '0',
+      'isPerson': param.isPerson
+    }
+  })
+}
 // 更改已读未读
 export function checkStatus(id) {
   return request({

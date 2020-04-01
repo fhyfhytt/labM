@@ -3,12 +3,12 @@
     <div class="page-title">
       <el-form ref="form1" :model="formUser" size="small" label-width="110px">
         <el-row>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:4}">
             <el-form-item label="关键字：">
               <el-input v-model="formUser.name" placeholder="请输入工号或姓名" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:4}">
             <el-form-item label="在职状态：">
               <el-select v-model="formUser.active" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option label="在职" value="1" />
@@ -16,7 +16,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:4}">
             <el-form-item label="账号状态：">
               <el-select v-model="formUser.available" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option label="启用" value="1" />
@@ -24,7 +24,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:4}">
 
             <el-button v-permission="'personSearch'" size="small" class="button-sub" style="margin-left:24px" @click="searchUser">查询</el-button>
 
@@ -41,13 +41,12 @@
             <el-button v-permission="'personAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
             <el-button v-permission="'personDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleEditAll">批量删除</el-button>
           </div>
-
         </div>
         <el-table v-loading="loading" :data="tableData" style="width: 100%" height="568" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" />
           <el-table-column prop="userCode" label="工号" />
-          <el-table-column prop="name" label="姓名" />
+          <el-table-column prop="personName" label="姓名" />
           <el-table-column prop="sex" label="性别" :formatter="formSex" />
           <el-table-column prop="active" label="在职状态" :formatter="formActive" />
           <el-table-column prop="available" label="账号状态" :formatter="formAvailable" />
@@ -272,6 +271,7 @@ export default {
     confireMsg(flag) {
       this.moveShow = flag
     },
+    // 选择
     handleSelectionChange(val) {
       this.selections = val
     },

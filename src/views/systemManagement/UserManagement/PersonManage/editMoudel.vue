@@ -17,8 +17,8 @@
                 <el-form-item label="用户名:" prop="name">
                   <el-input v-model="editForm.name" placeholder="请输入用户名" />
                 </el-form-item>
-                <el-form-item label="岗位:" prop="job">
-                  <el-input v-model="editForm.job" auto-complete="off" placeholder="请输入岗位" />
+                <el-form-item label="姓名:" prop="personName">
+                  <el-input v-model="editForm.personName" placeholder="请输入姓名" />
                 </el-form-item>
                 <el-form-item label="工号:" prop="userCode">
                   <el-input v-model="editForm.userCode" placeholder="请输入工号" />
@@ -72,9 +72,11 @@
                     <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2">删除</div> -->
                   </el-upload>
                 </el-form-item>
-                <el-form-item label="生日:" prop="birthday" class="birdate">
-
+                <!-- <el-form-item label="生日:" prop="birthday" class="birdate">
                   <el-date-picker v-model="editForm.birthday" value-format="yyyy-MM-dd" type="date" placeholder="请选择日期" align="right" prefix-icon="iconfont iconrili" />
+                </el-form-item> -->
+                <el-form-item label="岗位:" prop="job">
+                  <el-input v-model="editForm.job" auto-complete="off" placeholder="请输入岗位" />
                 </el-form-item>
                 <el-form-item label="联系方式:" prop="mobile">
                   <el-input v-model="editForm.mobile" autocomplete="off" placeholder="请输入联系方式" />
@@ -269,14 +271,30 @@ export default {
         callback()
       }
     }
+    const personName = (rule, value, callback) => {
+      var pattern = new RegExp("[`~!@#$^&*()=|{}'-:;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？ ]")
+      var myreg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,8}$/
+      // value = value.replace(, '')
+      console.log(pattern.test(value))
+      if (value === '') {
+        callback(new Error('请输入姓名'))
+      } else if (pattern.test(value)) {
+        callback(new Error('不允许有数字、空格以及出·以外的符号'))
+      } else if (!myreg.test(value)) {
+        callback(new Error('姓名为2个到8个以上中文字符'))
+      } else {
+        callback()
+      }
+    }
     return {
       disabled: true, // tabs是否禁用
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
       header: header,
-      editForm: { name: '', userCode: '', avatar: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', groupId: [], deptId: [] },
+      editForm: { name: '', personName: '', userCode: '', avatar: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', groupId: [], deptId: [] },
       editFormRules: {
         name: [{ validator: validatePass2, trigger: 'change', required: true }],
+        personName: [{ required: true, validator: personName, trigger: 'change' }],
         userCode: [{ required: true, message: '请输入工号', trigger: 'change' }],
         birthday: [{ required: true, message: '请选择生日', trigger: ['blur', 'change'] }],
         mobile: [{ required: true, validator: validatePass1, trigger: 'change' }],
@@ -432,7 +450,7 @@ export default {
           const paramUser = {
             flag: '0'
           }
-          paramUser.sysUser = { name: this.editForm.name, userCode: this.editForm.userCode, mobile: this.editForm.mobile, email: this.editForm.email, sex: this.editForm.sex,
+          paramUser.sysUser = { name: this.editForm.name, personName: this.editForm.personName, userCode: this.editForm.userCode, mobile: this.editForm.mobile, email: this.editForm.email, sex: this.editForm.sex,
             available: this.editForm.available, active: this.editForm.active, remark: this.editForm.remark, birthday: this.editForm.birthday, job: this.editForm.job, userPosition: this.editForm.userPosition, id: this.row.id, avatar: this.editForm.avatar, groupId: this.editForm.groupId, deptId: this.editForm.deptId }
           if (this.editForm.password !== '') {
             paramUser.sysUser.password = this.editForm.password

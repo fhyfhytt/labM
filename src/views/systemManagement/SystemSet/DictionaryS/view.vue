@@ -27,7 +27,7 @@
         <el-table ref="multipleDel" v-loading="loading" :data="tableData" style="width: 100%" empty-text="无数据" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="60" />
           <el-table-column type="index" label="序号" />
-          <el-table-column prop="dictCode" label="字典编号" />
+          <el-table-column prop="code" label="字典编号" />
           <el-table-column prop="name" label="字典名称" />
           <el-table-column prop="description" label="字典描述" />
           <el-table-column prop="remark" label="备注" />
@@ -143,7 +143,7 @@ export default {
     sureMsg(flag) {
       this.moveShow = flag
       const param = {
-        ids: this.ids,
+        ids: this.ids.join(','),
         flag: '1'
       }
       dictConnDel(param).then(response => {
@@ -160,7 +160,7 @@ export default {
     },
     // 批量删除
     handleSelectDel() {
-      if (this.ids.length === 0) {
+      if (this.multipleDel.length === 0) {
         this.$message.error('请至少选择一条数据')
       } else {
         this.moveShow = true

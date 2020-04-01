@@ -146,6 +146,8 @@ export default {
               this.$refs.tree.setCurrentKey(this.currentNodekey)
             })
             this.getTableData()
+          } else {
+            this.tableloading = false
           }
         }
       }).catch(response => {

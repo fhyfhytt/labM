@@ -138,7 +138,6 @@ export default {
               }
               removeFJ(param).then(res => {
                 if (res.success) {
-                  console.log(1)
                   // return
                 }
               }).catch(res => {

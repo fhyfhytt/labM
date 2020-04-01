@@ -135,7 +135,6 @@ export default {
       }
     },
     againTos() {
-      console.log(this.nowPages)
       if (this.pagation === true) {
         this.navigatePositionBlock = []
         this.pagation = false

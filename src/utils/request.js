@@ -13,6 +13,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
+    // console.log(store.getters.logs)
     if (!store.getters.token) {
       config.headers.Authorization = 'none'
     } else {
@@ -39,34 +40,38 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    const res = response.data
-    if (res.code !== undefined) {
-      // const resJson = JSON.parse(res)
-      if (res.code === 0) {
-        return Promise.resolve(res)
-      } else {
-        if (res.code === 10003) { // 过期处理
-          Message({
-            message: res.msg,
-            type: 'error',
-            duration: 3 * 1000
-          })
-          store.state.user.token = null
-          store.dispatch('tagsView/delAllVisitedViews', '')
-          store.dispatch('user/logout')
-        } else if (res.code === 10010 || res.code === 10017) {
-          Message({
-            message: res.msg,
-            type: 'warning',
-            duration: 3 * 1000
-          })
-          return res
+    if (response.status === 200) {
+      const res = response.data
+      if (res.code !== undefined) {
+        // const resJson = JSON.parse(res)
+        if (res.code === 0) {
+          return Promise.resolve(res)
         } else {
-          return Promise.reject(res)
+          if (res.code === 10003) { // 过期处理
+            Message({
+              message: res.msg,
+              type: 'error',
+              duration: 3 * 1000
+            })
+            store.state.user.token = null
+            store.dispatch('tagsView/delAllVisitedViews', '')
+            store.dispatch('user/logout')
+          } else if (res.code === 10010 || res.code === 10017) {
+            Message({
+              message: res.msg,
+              type: 'warning',
+              duration: 3 * 1000
+            })
+            return res
+          } else {
+            return Promise.reject(res)
+          }
         }
+      } else {
+        return Promise.reject(res)
       }
     } else {
-      return Promise.reject(res)
+      return Promise.reject(response)
     }
   },
   error => {

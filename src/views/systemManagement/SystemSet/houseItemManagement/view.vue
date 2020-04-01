@@ -34,7 +34,7 @@
               <img :src="item.defaultImg">
             </div>
             <!-- 库房点击详情弹框 -->
-            <ItemBounced v-if="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
+            <ItemBounced v-show="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
             <el-checkbox-group v-model="checkHourseItem" class="checkbox">
               <el-checkbox :key="item.id" v-model="item.id" :checked="item.checked" :label="item.id" :disabled="item.disabled">编号:{{ item.code }}</el-checkbox>
             </el-checkbox-group>
