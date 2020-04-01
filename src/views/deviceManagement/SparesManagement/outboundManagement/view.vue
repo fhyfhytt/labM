@@ -5,19 +5,19 @@
         <el-row style="margin-bottom:15px;margin-right:10px;">
           <el-col :xl="{span:5}" :lg="{span:6}">
             <el-form-item label="关键字：">
-              <el-input v-model="filters.note" placeholder="请输入角色名称" />
+              <el-input v-model="filters.no" placeholder="请输入角色名称" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:5, offset:1}" :lg="{span:6}">
             <el-form-item label="出库类型：">
-              <el-select v-model="filters.type" popper-class="select-option" multiple clearable placeholder="-请选择-">
+              <el-select v-model="filters.type" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option v-for="item in outboundTypeList" :key="item.code" :label="item.name" :value="item.code" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :xl="{span:5, offset:1}" :lg="{span:6}">
             <el-form-item label="出库状态：">
-              <el-select v-model="filters.status" popper-class="select-option" multiple clearable placeholder="-请选择-">
+              <el-select v-model="filters.status" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option v-for="item in outboundStatusList" :key="item.code" :label="item.name" :value="item.code" />
               </el-select>
             </el-form-item>
@@ -38,7 +38,9 @@
                 style="display: inline-block;"
                 type="date"
                 placeholder="选择开始日期"
-                format="yyyy - MM - dd"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                :default-value="defaultStartTime"
               />
               <span class="timeText">至</span>
               <el-date-picker
@@ -46,7 +48,9 @@
                 style="display: inline-block;"
                 type="date"
                 placeholder="选择结束日期"
-                format="yyyy - MM - dd"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                :default-value="defaultEndTime"
               />
             </el-form-item>
           </el-col>
@@ -71,16 +75,16 @@
           <el-table-column type="index" label="编号" />
           <el-table-column label="出库单编号">
             <template slot-scope="scope">
-              <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.assetInfo.assetNo }}</a>
+              <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.no }}</a>
             </template>
           </el-table-column>
-          <el-table-column prop="assetInfo.assetName" label="出库类型" />
-          <el-table-column prop="assetInfo.itemType" label="交付人" />
-          <el-table-column prop="statusS" label="所属库房" />
-          <el-table-column prop="house" label="设备总数" />
-          <el-table-column prop="num" label="出库状态" />
-          <el-table-column prop="num" label="操作人" />
-          <el-table-column prop="num" label="出库时间" />
+          <el-table-column prop="type" label="出库类型" />
+          <el-table-column prop="deliverer" label="交付人" />
+          <el-table-column prop="house" label="所属库房" />
+          <el-table-column prop="num" label="设备总数" />
+          <el-table-column prop="status" label="出库状态" />
+          <el-table-column prop="operator" label="操作人" />
+          <el-table-column prop="createTime" label="出库时间" />
         </el-table>
         <div class="numListJup margin-jump">
           <el-pagination
@@ -109,7 +113,7 @@
   </div>
 </template>
 <script>
-import { getAllWarehouse, queryByWarehouseAsset, deleteById } from '@/api/asstesManagement'
+import { getAllWarehouse, selectOuthouse, deleteOuthouse } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import confirmDialog from '@/views/baseComponents/baseConfirm'
 import addMoudel from './components/addMoudel'
@@ -118,7 +122,7 @@ export default {
   data() {
     return {
       addFiltersVisible: false,
-      filters: {},
+      filters: { startTime: '', endTime: '' },
       houseList: [], // 所属库房
       outboundStatusList: [], // 出库状态
       outboundTypeList: [], // 出库类型
@@ -138,7 +142,9 @@ export default {
       dialogName: '',
       confirmAllVisible: false,
       addFlag: false, // 新增完成标识
-      multipleSelection: [] // 选择的table数据的对象组成的数组
+      multipleSelection: [], // 选择的table数据的对象组成的数组
+      defaultStartTime: '',
+      defaultEndTime: ''
     }
   },
   computed: {
@@ -195,9 +201,19 @@ export default {
     this.getList()
   },
   mounted() {
-
+    this.getNowMonthDate()
   },
   methods: {
+    getNowMonthDate() {
+      var date = new Date()
+      var year = date.getFullYear() + ''
+      var month = (date.getMonth() + 1) + ''
+      // 本月第一天日期
+      this.filters.startTime = year + '-' + month + '-01 00:00:00'
+      // 本月最后一天日期
+      var lastDateOfCurrentMonth = new Date(year, month, 0)
+      this.filters.endTime = year + '-' + month + '-' + lastDateOfCurrentMonth.getDate() + ' 59:59:59'
+    },
     // 新增成功返回
     addSuccess(res) {
       this.addFormVisible = false
@@ -225,23 +241,19 @@ export default {
     },
     // 查询
     getList() {
-      const param = {
-        pageNum: this.pageNumber,
-        pageSize: this.pageSize,
-        assetName: this.filters.assetNo,
-        assetItemType: this.itemTypesArr,
-        checkStatus: '1',
-        houseIds: this.filters.houseIds
+      if (this.filters.hasOwnProperty('houseIds') && this.filters['houseIds'].length === 0) {
+        this.filters.houseIds = ''
       }
+      const param = Object.assign({}, this.filters)
+      param.pageNumber = this.pageNumber
+      param.pageSize = this.pageSize
+      param.itsmUserid = localStorage.getItem('login-id')
       this.loading = true
-      queryByWarehouseAsset(param).then(response => {
+      selectOuthouse(param).then(response => {
         this.loading = false
         if (response.success === true) {
-          this.tableData = response.data.assetList.map(item => {
-            if (item.assetInfo === undefined) item.assetInfo = {}
-            return item
-          }) || []
-          this.totalCount = Number(response.data.count)
+          this.tableData = response.data.list
+          this.totalCount = Number(response.data.totalNum)
         } else {
           this.$message.error(response.msg)
         }
@@ -271,9 +283,9 @@ export default {
         idList.push(item.id)
       })
       const params = {
-        ids: idList.join(',')
+        ids: idList
       }
-      deleteById(params).then(res => {
+      deleteOuthouse(params).then(res => {
         if (res.success === true) {
           this.$message.success('删除成功')
           this.getList()

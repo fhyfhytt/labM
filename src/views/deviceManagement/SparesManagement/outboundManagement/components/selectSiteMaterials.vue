@@ -4,12 +4,12 @@
       <el-row style="margin-right:10px;">
         <el-col :span="8">
           <el-form-item label="关键字">
-            <el-input v-model="assetNo" />
+            <el-input v-model="assetNo" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="资产分类">
-            <el-input v-model="itemTypes" placeholder="-请选择-" @focus="showAddFiltersType"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
+            <el-input v-model="itemTypes" placeholder="-请选择-" clearable @focus="showAddFiltersType" />
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -20,14 +20,16 @@
       </el-row>
     </el-form>
     <el-table ref="houseMaterials" v-loading="loading" :data="tableDate" empty-text="无数据" max-height="360" @row-click="selectRow" @selection-change="handleSelectRow">
-      <el-table-column type="selection" width="50" />
-      <el-table-column type="index" label="编号" />
-      <el-table-column prop="assetNo" label="物资编码" />
-      <el-table-column prop="assetName" label="物资名称" />
-      <el-table-column prop="itemType" label="物资分类" />
-      <el-table-column prop="unitType" label="物资型号" />
-      <el-table-column prop="factory" label="厂商" />
-      <el-table-column prop="num" label="数量" />
+      <el-table-column type="selection" width="60" />
+      <!-- <el-table-column type="index" label="编号" /> -->
+      <el-table-column prop="no" label="资产代码" width="150" />
+      <el-table-column prop="assetName" label="资产名称" />
+      <el-table-column prop="itemTypes" label="资产分类" />
+      <el-table-column prop="status" label="资产状态" />
+      <el-table-column prop="factory" label="生产厂商" />
+      <el-table-column prop="unitType" label="设备型号" />
+      <el-table-column prop="area" label="所属区域" />
+      <el-table-column prop="price" label="采购价(元)" />
     </el-table>
     <div class="numListJup margin-jump">
       <el-pagination
@@ -49,7 +51,7 @@
   </div>
 </template>
 <script>
-import { queryByWarehouseAsset } from '@/api/asstesManagement'
+import { getAssetsList } from '@/api/asstesManagement'
 import addFilters from '../../components/addFiltersType'
 export default {
 
@@ -79,6 +81,9 @@ export default {
     this.getList()
   },
   methods: {
+    clearMultipleSelection() {
+      this.$refs.houseMaterials.clearSelection()
+    },
     // 选择筛选条件
     showAddFiltersType() {
       this.dialogName = '资产分类选择'
@@ -103,22 +108,17 @@ export default {
     getList() {
       const params = {
         pageSize: this.pageSize,
-        pageNum: this.pageNumber,
-        assetNo: this.assetNo,
-        itemTypes: this.itemTypes
+        pageNumber: this.pageNumber,
+        no: this.assetNo,
+        itemTypes: this.itemTypesArr,
+        itsmUserid: localStorage.getItem('login-id'),
+        checkStatus: '审核通过'
       }
-      queryByWarehouseAsset(params).then(response => {
+      getAssetsList(params).then(response => {
         if (response.code === 0) {
           this.loading = false
-          this.tableDate = response.data.assetList.map(item => {
-            item.assetNo = item.assetInfo.assetNo || ''
-            item.assetName = item.assetInfo.assetName || ''
-            item.itemType = item.assetInfo.itemType || ''
-            item.unitType = item.assetInfo.unitType || ''
-            item.factory = item.assetInfo.factory || ''
-            return item
-          }) || []
-          this.total = Number(response.data.count)
+          this.tableDate = response.data.list
+          this.total = Number(response.data.totalNum)
         } else {
           this.$message.error(response.msg)
         }
@@ -145,7 +145,7 @@ export default {
       this.multipleSelection = val
     },
     handleChoose() {
-      this.$emit('houseMaterial', this.multipleSelection)
+      this.$emit('siteMaterials', this.multipleSelection)
     }
   }
 }

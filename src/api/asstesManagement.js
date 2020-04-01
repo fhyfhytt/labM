@@ -136,3 +136,31 @@ export function getAllWarehouse(data) {
     data
   })
 }
+
+// 出库查询
+export function selectOuthouse(data) {
+  return request({
+    url: '/warehouseRecord/selectOuthouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 完成出库
+export function insertOuthouse(data) {
+  return request({
+    url: '/warehouseRecord/insertOuthouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 删除出库
+export function deleteOuthouse(data) {
+  return request({
+    url: '/warehouseRecord/deleteOuthouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}

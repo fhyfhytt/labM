@@ -19,29 +19,19 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-table ref="houseMaterials" v-loading="loading" :data="tableDate" empty-text="无数据" max-height="360" @row-click="selectRow" @selection-change="handleSelectRow">
-      <el-table-column type="selection" width="50" />
-      <el-table-column type="index" label="编号" />
+    <el-table ref="houseMaterials" v-loading="loading" :data="tableDate" empty-text="无数据" max-height="360">
       <el-table-column prop="assetNo" label="物资编码" />
       <el-table-column prop="assetName" label="物资名称" />
       <el-table-column prop="itemType" label="物资分类" />
       <el-table-column prop="unitType" label="物资型号" />
       <el-table-column prop="factory" label="厂商" />
       <el-table-column prop="num" label="数量" />
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <a style="cursor:pointer;color: #01AAED;font-size:25px;}" @click="ensureSelect(scope.row)"><i class="el-icon-plus" /></a>
+        </template>
+      </el-table-column>
     </el-table>
-    <div class="numListJup margin-jump">
-      <el-pagination
-        :page-size="pageSize"
-        layout="total,sizes,prev, pager, next, jumper"
-        :total="total"
-        :pager-count="5"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-    <div class="dialog-footer">
-      <el-button v-preventReClick="1000" size="small" class="button-sub" @click="handleChoose">确定</el-button>
-    </div>
     <!-- 树 -->
     <el-dialog :title="dialogName" :close-on-click-modal="false" :append-to-body="true" :visible.sync="addFiltersVisible" width="300px">
       <addFilters ref="addFilters" :component-name="dialogName" @filterRes="filterRes" />
@@ -52,8 +42,17 @@
 import { queryByWarehouseAsset } from '@/api/asstesManagement'
 import addFilters from '../../components/addFiltersType'
 export default {
-
   components: { addFilters },
+  props: {
+    assetId: {
+      type: String,
+      default: ''
+    },
+    houseId: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       pageSize: 10,
@@ -62,7 +61,6 @@ export default {
       tableDate: [],
       row: {}, // 编辑初始化内容
       loading: true,
-      multipleSelection: [],
       assetNo: '',
       itemTypes: '',
       dialogName: '',
@@ -101,24 +99,29 @@ export default {
       }
     },
     getList() {
+      console.log('assetId:', this.assetId, 'houseId:', this.houseId)
       const params = {
         pageSize: this.pageSize,
         pageNum: this.pageNumber,
-        assetNo: this.assetNo,
-        itemTypes: this.itemTypes
+        assetId: this.assetId,
+        houseId: this.houseId
       }
       queryByWarehouseAsset(params).then(response => {
         if (response.code === 0) {
           this.loading = false
-          this.tableDate = response.data.assetList.map(item => {
-            item.assetNo = item.assetInfo.assetNo || ''
-            item.assetName = item.assetInfo.assetName || ''
-            item.itemType = item.assetInfo.itemType || ''
-            item.unitType = item.assetInfo.unitType || ''
-            item.factory = item.assetInfo.factory || ''
-            return item
-          }) || []
-          this.total = Number(response.data.count)
+          if (response.data === '') {
+            this.tableDate = []
+          } else {
+            this.tableDate = response.data.assetList.map(item => {
+              item.assetNo = item.assetInfo.assetNo || ''
+              item.assetName = item.assetInfo.assetName || ''
+              item.itemType = item.assetInfo.itemType || ''
+              item.unitType = item.assetInfo.unitType || ''
+              item.factory = item.assetInfo.factory || ''
+              return item
+            }) || []
+            this.total = Number(response.data.count)
+          }
         } else {
           this.$message.error(response.msg)
         }
@@ -137,15 +140,8 @@ export default {
       this.pageNumber = val
       this.getList()
     },
-    // 点击行选中
-    selectRow(row) {
-      this.$refs.houseMaterials.toggleRowSelection(row)
-    },
-    handleSelectRow(val) {
-      this.multipleSelection = val
-    },
-    handleChoose() {
-      this.$emit('houseMaterial', this.multipleSelection)
+    ensureSelect(row) {
+      this.$emit('replaceMaterials', row)
     }
   }
 }

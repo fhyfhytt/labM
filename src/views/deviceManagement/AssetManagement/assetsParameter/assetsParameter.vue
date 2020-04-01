@@ -59,7 +59,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="assetName" label="资产名称" />
-          <el-table-column prop="itemType" label="资产分类" />
+          <el-table-column prop="itemTypes" label="资产分类" />
           <el-table-column prop="status" label="资产状态" />
           <el-table-column prop="factory" label="生产厂商" />
           <el-table-column prop="unitType" label="设备型号" />
@@ -85,7 +85,7 @@
     <el-table v-show="false" id="exportExcelTable" :data="tableExport">
       <el-table-column prop="no" label="资产代码" />
       <el-table-column prop="assetName" label="资产名称" />
-      <el-table-column prop="itemType" label="资产分类" />
+      <el-table-column prop="itemTypes" label="资产分类" />
       <el-table-column prop="status" label="资产状态" />
       <el-table-column prop="factory" label="生产厂商" />
       <el-table-column prop="unitType" label="设备型号" />
@@ -97,7 +97,7 @@
     <el-table v-show="false" id="exportExcelMould" :data="tableExport">
       <el-table-column prop="code" label="操作编码" />
       <el-table-column prop="assetName" label="资产名称" />
-      <el-table-column prop="itemType" label="资产分类" />
+      <el-table-column prop="itemTypes" label="资产分类" />
       <el-table-column prop="unitType" label="设备型号" />
       <el-table-column prop="factory" label="设备厂商" />
       <el-table-column prop="status" label="资产状态" />

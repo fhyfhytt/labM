@@ -49,13 +49,13 @@
           <el-table-column type="index" label="编号" />
           <el-table-column label="备件编码">
             <template slot-scope="scope">
-              <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.assetInfo.assetNo }}</a>
+              <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.code }}</a>
             </template>
           </el-table-column>
           <el-table-column prop="assetInfo.assetName" label="备件名称" />
           <el-table-column prop="assetInfo.itemType" label="备件分类" />
           <el-table-column prop="statusS" label="所属状态" />
-          <el-table-column prop="house" label="所属库房" />
+          <el-table-column prop="houseInfo.name" label="所属库房" />
           <el-table-column prop="num" label="数量" />
         </el-table>
         <div class="numListJup margin-jump">

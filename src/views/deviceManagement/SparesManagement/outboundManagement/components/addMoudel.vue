@@ -12,21 +12,21 @@
             <el-row>
               <el-col :span="11">
                 <el-form-item label="出库类型" prop="outboundType">
-                  <el-select v-model="baseInfo.outboundType" popper-class="select-option" clearable placeholder="-请选择-" default-first-option>
+                  <el-select v-model="baseInfo.type" popper-class="select-option" clearable placeholder="-请选择-" default-first-option>
                     <el-option v-for="item in outboundTypeList" :key="item.code" :label="item.name" :value="item.name" />
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="11" :offset="2">
-                <el-form-item label="备件去处" prop="sparesGo">
-                  <el-select v-model="baseInfo.sparesGo" popper-class="select-option" clearable placeholder="-请选择-">
+                <el-form-item label="备件去处" prop="fromorgo">
+                  <el-select v-model="baseInfo.fromorgo" popper-class="select-option" clearable placeholder="-请选择-">
                     <el-option v-for="item in sparesGoWhereList" :key="item.code" :label="item.name" :value="item.name" />
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="11">
-                <el-form-item label="操作人" prop="operatePerson">
-                  <el-input v-model="baseInfo.operatePerson" disabled />
+                <el-form-item label="操作人" prop="operator">
+                  <el-input v-model="baseInfo.operator" disabled />
                 </el-form-item>
               </el-col>
               <el-col :span="11" :offset="2">
@@ -43,7 +43,7 @@
               </el-col>
               <el-col :span="11" :offset="2">
                 <el-form-item label="接收人">
-                  <el-input v-model="baseInfo.receivedBy" placeholder="-请选择-" :disabled="disabledFlg" @focus="showSelectPerson"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
+                  <el-input v-model="baseInfo.eliverer" placeholder="-请选择-" :disabled="disabledFlg" @focus="showSelectPerson"><i slot="suffix" class="el-input__icon el-icon-more" /></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
@@ -61,44 +61,49 @@
       <!-- 添加设备 -->
       <el-tab-pane label="添加设备" name="1" :disabled="disabled">
         <div>
-          <div v-show="baseInfo.outboundType==='替换'" class="tableStyle">
+          <div v-show="baseInfo.type==='替换'" class="tableStyle">
             <div style="text-align:right;margin-bottom:10px;">
-              <el-button icon="iconfont icontianjia1" size="small"> 选择现场物资</el-button>
-              <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">删除</el-button>
+              <el-button icon="iconfont icontianjia1" size="small" @click="selectSiteMaterials"> 选择现场物资</el-button>
+              <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleDelREplace">删除</el-button>
             </div>
-            <el-table v-loading="loading" border :data="tableData" max-height="500">
+            <el-table ref="equipmentTableR" v-loading="loading" border :data="tableDataReplace" max-height="500" @row-click="selectRowR" @selection-change="handleSelectRowR">
               <el-table-column label="替换资产信息">
-                <el-table-column prop="assetNo" label="资产编号" />
+                <el-table-column type="selection" width="60" />
+                <el-table-column prop="no" label="资产编号" />
                 <el-table-column prop="assetName" label="资产名称" />
-                <el-table-column prop="itemType" label="资产型号" />
-                <el-table-column prop="itemType" label="替换数量" />
-                <el-table-column prop="itemType" label="资产状态" />
+                <el-table-column prop="unitType" label="资产型号" />
+                <el-table-column prop="num" label="替换数量" />
+                <el-table-column prop="status" label="资产状态" />
               </el-table-column>
               <el-table-column label="替换备件信息">
-                <el-table-column prop="statusS" label="替换备件状态" />
-                <el-table-column prop="house" label="备件名称" />
-                <el-table-column prop="num" label="备件状态" />
+                <el-table-column prop="replaceAssetNo" label="替换备件编号" />
+                <el-table-column prop="replaceAssetName" label="备件名称" />
+                <el-table-column prop="replaceStatus" label="备件状态" />
               </el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <span v-permission="'assetsEdite'" class="iconfont iconbianji1 scope-caozuo" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.assetNo }}</span>
+                  <span class="iconfont iconbianji1 scope-caozuo" style="color:#38a4ed;" @click.stop="selectReplaceMaterials(scope.$index, scope.row)" />
                 </template>
               </el-table-column>
             </el-table>
           </div>
-          <div v-show="baseInfo.outboundType !== '替换'">
+          <div v-show="baseInfo.type !== '替换'">
             <div style="text-align:right;margin-bottom:10px;">
               <el-button icon="iconfont icontianjia1" size="small" @click="selectHouseMaterials"> 选择在库物资</el-button>
-              <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">删除</el-button>
+              <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleDelOther">删除</el-button>
             </div>
-            <el-table v-loading="loading" :data="tableData" max-height="500">
+            <el-table ref="equipmentTableO" v-loading="loading" :data="tableDataOther" max-height="500" @row-click="selectRowO" @selection-change="handleSelectRowO">
               <el-table-column type="selection" width="50" />
               <el-table-column type="index" label="编号" />
               <el-table-column prop="assetNo" label="资产编号" />
               <el-table-column prop="assetName" label="资产名称" />
               <el-table-column prop="itemType" label="资产分类" />
-              <el-table-column prop="statusS" label="资产型号" />
-              <el-table-column prop="num" label="设备总数(需编辑)" width="140" />
+              <el-table-column prop="unitType" label="资产型号" />
+              <el-table-column prop="num" label="设备总数(需编辑)" width="140">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.num" />
+                </template>
+              </el-table-column>
               <el-table-column prop="statusS" label="资产状态" />
             </el-table>
             <div class="numListJup margin-jump">
@@ -117,7 +122,7 @@
           <div class="dialog-footer nextfooter">
             <el-button v-preventReClick="3000" size="small" class="button-cancel" @click.native="prev(0)">上一步</el-button>
             <el-button v-preventReClick="1000" size="small" class="button-sub">保存</el-button>
-            <el-button v-preventReClick="1000" size="small" class="button-sub">完成入库</el-button>
+            <el-button v-preventReClick="1000" size="small" class="button-sub" @click="completeWarehous('已出库')">完成入库</el-button>
           </div>
         </div>
       </el-tab-pane>
@@ -132,26 +137,37 @@
     </el-dialog>
     <!-- 选择在库物资 -->
     <el-dialog title="选择在库物资" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showHouseMaterials" width="900px">
-      <selectHouseMaterials @houseMaterial="houseMaterialRes" />
+      <selectHouseMaterials @houseMaterial="houseMaterialsRes" />
+    </el-dialog>
+    <!-- 选择现场物资 -->
+    <el-dialog title="选择现场物资" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showSiteMaterials" width="1000px">
+      <selectSiteMaterials ref="siteMaterials" @siteMaterials="siteMaterialsRes" />
+    </el-dialog>
+    <!-- 选择替换物资（在库物资） -->
+    <el-dialog title="选择替换物资" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showReplaceMaterials" width="900px">
+      <selectReplaceMaterials :asset-id="editRow.assetId" :house-id="baseInfo.houseId" @replaceMaterials="replaceMaterialsRes" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAllWarehouse, addOrUpdateWarehouseAsset } from '@/api/asstesManagement'
+import { getAllWarehouse, insertOuthouse, addOrUpdateWarehouseAsset } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import selectPerson from './selectPerson'
 import addFilters from '../../components/addFiltersType'
 import selectHouseMaterials from './selectHouseMaterials'
+import selectSiteMaterials from './selectSiteMaterials'
+import selectReplaceMaterials from './selectReplaceMaterials'
 export default {
   name: 'AddAssetsPage',
-  components: { addFilters, selectPerson, selectHouseMaterials },
+  components: { addFilters, selectPerson, selectHouseMaterials, selectSiteMaterials, selectReplaceMaterials },
   data() {
     return {
       disabled: true, // tabs是否禁用
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
-      tableData: [],
+      tableDataReplace: [],
+      tableDataOther: [],
       totalCount: 0,
       pageNumber: 1,
       pageSize: 10,
@@ -161,9 +177,9 @@ export default {
       componentName: '所属区域选择',
       baseInfo: {}, // 基本信息
       baseInfoRule: {
-        outboundType: [{ required: true, message: '请选择出库类型', trigger: 'change' }]
-        // sparesGo: [{ required: true, message: '请选择物备件去处', trigger: 'change' }],
-        // operatePerson: [{ required: true, message: '操作人必填', trigger: 'change' }],
+        type: [{ required: true, message: '请选择出库类型', trigger: 'change' }]
+        // fromorgo: [{ required: true, message: '请选择物备件去处', trigger: 'change' }],
+        // operator: [{ required: true, message: '操作人必填', trigger: 'change' }],
         // houseId: [{ required: true, message: '请选择库房名称', trigger: 'change' }]
       },
       houseList: [], // 所属库房
@@ -173,7 +189,13 @@ export default {
       disabledFlg: false,
       addArea: false,
       showReceivedBy: false,
-      showHouseMaterials: false // 显示选在库物资组件
+      showHouseMaterials: false, // 显示选在库物资组件
+      showSiteMaterials: false, // 显示选现场物资组件
+      showReplaceMaterials: false, // 显示替换的物资
+      editIndex: '',
+      editRow: {},
+      multipleSelectionR: [],
+      multipleSelectionO: []
 
     }
   },
@@ -232,7 +254,7 @@ export default {
     getHousrPerson(val) {
       this.houseList.forEach((item) => {
         if (item.id === val) {
-          this.baseInfo.receivedBy = item.person
+          this.baseInfo.eliverer = item.person
         }
       })
     },
@@ -252,6 +274,37 @@ export default {
     prev(e) {
       this.activeName = e + ''
       this.active = e
+    },
+    // 完成入库
+    completeWarehous(status) {
+      const that = this
+      console.log('subminC:', that.tableDataOther)
+      const ids = []
+      const assetIds = []
+      const nums = []
+      that.tableDataOther.forEach(item => {
+        ids.push(item.id)
+        assetIds.push(item.replaceId)
+        nums.push(item.num)
+      })
+      const params = Object.assign({}, this.baseInfo)
+      params.ids = ids
+      params.nums = nums
+      params.status = status
+      insertOuthouse(params).then(response => {
+        that.loading = false
+        if (response.success === true) {
+          that.$message.success('出库成功')
+          that.$emit('addSuccess')
+          that.activeName = '0'
+          that.tableDataReplace = []
+          that.tableDataOther = []
+        } else {
+          that.$message.error(response.msg)
+        }
+      }).catch(response => {
+        that.$message.error(response.msg)
+      })
     },
     saveBaseInfo() {
       const that = this
@@ -330,7 +383,7 @@ export default {
         this.$refs['baseInfo'].resetFields()
         this.disabledFlg = false
         this.baseInfo = {
-          operatePerson: localStorage.getItem('login-user')
+          operator: localStorage.getItem('login-user')
         }
       }
     },
@@ -342,24 +395,73 @@ export default {
     resPerson(res) {
       if (res) {
         this.showReceivedBy = false
-        this.baseInfo.receivedBy = res.name
+        this.baseInfo.eliverer = res.name
       }
     },
     // 显示选在库物资
     selectHouseMaterials() {
       this.showHouseMaterials = true
     },
-    // 返回选物资
-    houseMaterialRes(res) {
+    // 返回选在库物资
+    houseMaterialsRes(res) {
       if (res && res.length > 0) {
         this.showHouseMaterials = false
-        const valueArr = []
-        for (const value of res) {
-          valueArr.push(value.name)
-        }
-        // this.baseInfo.area = valueArr.join(',')
+        this.tableDataOther = JSON.parse(JSON.stringify(res))
       }
-      console.log('--------:', res)
+      console.log('--------house:', res)
+    },
+    // 显示选现场物资
+    selectSiteMaterials() {
+      this.showSiteMaterials = true
+      this.$nextTick(() => {
+        this.$refs.siteMaterials.clearMultipleSelection()
+      })
+    },
+    // 返回选现场物资
+    siteMaterialsRes(res) {
+      if (res && res.length > 0) {
+        const repetitionNo = []
+        const newArr = []
+        if (this.tableDataReplace.length === 0) {
+          this.tableDataReplace = res
+        } else {
+          for (let i = 0; i < res.length; i++) {
+            for (let j = 0; j < this.tableDataReplace.length; j++) {
+              if (res[i].no === this.tableDataReplace[j].no) {
+                repetitionNo.push(res[i].no)
+                break
+              } else if (j === this.tableDataReplace.length - 1 && res[i].no !== this.tableDataReplace[j].no) {
+                newArr.push(res[i])
+              }
+            }
+          }
+        }
+        this.$nextTick(() => {
+          this.showSiteMaterials = false
+          this.tableDataReplace = this.tableDataReplace.concat(newArr)
+          if (repetitionNo.length > 0) {
+            this.$message.info('资产编号为' + repetitionNo.join(',') + '已添加')
+          }
+        })
+      }
+    },
+    // 显示选替换物资
+    selectReplaceMaterials(index, row) {
+      this.editIndex = index
+      this.editRow = row
+      this.$nextTick(() => {
+        this.showReplaceMaterials = true
+      })
+    },
+    // 返回选替换物资
+    replaceMaterialsRes(res) {
+      console.log('--------replace:', res)
+      this.showReplaceMaterials = false
+      this.editRow.replaceAssetNo = res.assetNo
+      this.editRow.replaceAssetName = res.assetName
+      this.editRow.replaceStatus = res.statusS
+      this.editRow.replaceId = res.id
+      this.tableDataReplace.splice(this.editIndex, 1, this.editRow)
     },
     // 选择区域
     showAddArea() {
@@ -382,13 +484,44 @@ export default {
         this.baseInfo.area = valueArr.join(',')
       }
     },
-
-    // 批量删除
-    handleDelAll() {
-      if (this.multipleSelection.length === 0) {
+    // 删除替换
+    selectRowR(row) {
+      this.$refs.equipmentTableR.toggleRowSelection(row)
+    },
+    handleSelectRowR(val) {
+      this.multipleSelectionR = val
+    },
+    handleDelREplace() {
+      if (this.multipleSelectionR.length === 0) {
         this.$message.error('请至少选择一条数据')
       } else {
-        this.confirmAllVisible = true
+        for (let i = this.multipleSelectionR.length - 1; i >= 0; i--) {
+          for (let k = this.tableDataReplace.length - 1; k >= 0; k--) {
+            if (this.multipleSelectionR[i].no === this.tableDataReplace[k].no) {
+              this.tableDataReplace.splice(k, 1)
+            }
+          }
+        }
+      }
+    },
+    // 删除其他
+    selectRowO(row) {
+      this.$refs.equipmentTableO.toggleRowSelection(row)
+    },
+    handleSelectRowO(val) {
+      this.multipleSelectionO = val
+    },
+    handleDelOther() {
+      if (this.multipleSelectionO.length === 0) {
+        this.$message.error('请至少选择一条数据')
+      } else {
+        for (let i = this.multipleSelectionO.length - 1; i >= 0; i--) {
+          for (let k = this.tableDataOther.length - 1; k >= 0; k--) {
+            if (this.multipleSelectionO[i].id === this.tableDataOther[k].id) {
+              this.tableDataOther.splice(k, 1)
+            }
+          }
+        }
       }
     },
     // 分页
