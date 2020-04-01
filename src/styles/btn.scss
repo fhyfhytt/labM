@@ -61,13 +61,13 @@
   }
 }
 .vue-treeselect__multi-value-item-container{
-  padding: 0 !important;
+  padding: 0 ;
 }
 .vue-treeselect__limit-tip{
-  padding: 0 !important;
+  padding: 0 ;
 }
 .vue-treeselect__multi-value-item{
-  padding: 0 !important;
+  padding: 0 ;
 }
 .vue-treeselect__limit-tip-text{
   margin:0;
@@ -76,10 +76,10 @@
   height: 30px;
   border-radius: 4px;
 }
-vue-treeselect__control {
-  height: 30px;
+.vue-treeselect--has-value .vue-treeselect__multi-value{
+  margin-bottom: 0 ;
+  height: 32px;
 }
-
 
 .vue-treeselect__control-arrow{
   display: none;

@@ -4,6 +4,10 @@ import Cookies from 'js-cookie'
 import permission from '@/directive/permission/index.js'
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import Element from 'element-ui'
+// import the component
+import Treeselect from '@riophae/vue-treeselect'
+// import the styles
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 // import ElTabPaneExt from 'el-tab-pane-ext'
 import './styles/element-variables.scss'
 import 'element-ui/lib/theme-chalk/display.css'
@@ -14,6 +18,8 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import treetransfer from 'el-tree-transfer' // fhy引入穿梭框
 Vue.component('treetransfer', treetransfer)
+import './assets/iconfont/iconfont.css' // 引入iconfont
+import './assets/iconfont/iconfont.js' // 引入iconfont
 import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
@@ -155,10 +161,6 @@ const EditorOptions = {
 
 Vue.use(VueHtml5Editor, EditorOptions)
 
-// import the component
-import Treeselect from '@riophae/vue-treeselect'
-// import the styles
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 Vue.component('Treeselect', Treeselect)
 import './icons' // icon
 import './permission' // permission control
@@ -180,8 +182,6 @@ Vue.prototype.GLOBAL = global_// 全局数据
  * Currently MockJs will be used in the production environment,
  * please remove it before going online! ! !
  */
-import './assets/iconfont/iconfont.css' // 引入iconfont
-import './assets/iconfont/iconfont.js' // 引入iconfont
 
 import './api/base.js' // 防重复点击
 import md5 from 'js-md5'
