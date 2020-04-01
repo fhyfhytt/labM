@@ -39,3 +39,13 @@ export function getSparesList(param) {
     data: param
   })
 }
+
+// 备件审核 审核/批量审核接口
+export function sparesCheck(param) {
+  return request({
+    url: '/warehouseAssetC/examineWarehouseAsset',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: param
+  })
+}

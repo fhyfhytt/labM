@@ -1,27 +1,34 @@
 <template>
   <div class="dialgAddform1">
-    <p class="bkb" />
-    <div class="tree-div">
-      <el-tree
-        ref="tree"
-        v-loading="treeloading"
-        show-checkbox
-        :data="treedata"
-        node-key="id"
-        default-expand-all
-        :props="defaultProps"
-        :highlight-current="true"
-        :expand-on-click-node="false"
-      >
-        <span slot-scope="{ node, data }" class="custom-tree-node span-ellipsis">
-          <span v-if="data.children" :title="data.name">
-            <i class="iconfont iconzuzhi" />{{ data.name }}
-          </span>
-          <span v-else style="paddingLeft:16px;" :title="data.name">
-            <i class="iconfont iconbumen" />{{ data.name }}
-          </span>
-        </span>
-      </el-tree>
+    <div class="pageRow">
+      <el-row>
+        <el-col>
+          <div class="tree-div">
+            <div class="inline-div">
+              <el-tree
+                ref="tree"
+                v-loading="treeloading"
+                show-checkbox
+                :data="treedata"
+                node-key="id"
+                default-expand-all
+                :props="defaultProps"
+                :highlight-current="true"
+                :expand-on-click-node="false"
+              >
+                <span slot-scope="{ node, data }" class="custom-tree-node span-ellipsis">
+                  <span v-if="data.children" :title="data.name">
+                    <i class="iconfont iconzuzhi" />{{ data.name }}
+                  </span>
+                  <span v-else style="paddingLeft:16px;" :title="data.name">
+                    <i class="iconfont iconbumen" />{{ data.name }}
+                  </span>
+                </span>
+              </el-tree>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
     </div>
     <div class="dialog-footer">
       <el-button size="medium " class="button-sub" @click="getCheckedNodes">确定</el-button>
@@ -64,6 +71,7 @@ export default {
         this.treeloading = false
         if (response.code === 0) {
           this.treedata = setTreeData(response.data)
+          console.log(setTreeData(response.data))
           if (response.data.length > 0) {
             if (this.treeId === '') {
               this.treeId = this.treedata[0].id// 当前的Id
@@ -107,8 +115,7 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  .tree-div{
+  .pageRow{
     height:400px;
-    overflow:auto;
   }
 </style>

@@ -3,15 +3,15 @@
     <div class="page-title">
       <el-form ref="form1" :model="formSpare" size="small" label-width="110px">
         <el-row>
+          <input v-model="formSpare.assetItemType" hidden>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件名称：">
-              <el-input v-model="formSpare.assetName" placeholder="请输入备件名称" />
+              <el-input v-model="formSpare.assetName" placeholder="请输入备件名称" clearable />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="备件分类：" @click.native="handleAdd">
-              <el-input v-model="typeNames" :title="typeNames" placeholder="请选择备件分类" />
-              <input v-model="formSpare.assetItemType" hidden>
+              <el-input v-model="typeNames" :title="typeNames" placeholder="请选择备件分类" clearable />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
@@ -22,7 +22,7 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
-            <el-button v-permission="'houseSearch'" size="small" class="button-sub" style="margin-left:24px;" @click="searchSpares">查询</el-button>
+            <el-button v-permission="'sparesSearch'" size="small" class="button-sub" style="margin-left:24px;" @click.native="searchSpares">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -32,7 +32,7 @@
       <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
     </div>
     <!--备件分类界面-->
-    <el-dialog v-if="sparesTypeVisible" v-model="sparesTypeVisible" title="备件分类" :close-on-click-modal="false" :visible.sync="sparesTypeVisible" class="deviceAdd addmanage">
+    <el-dialog v-if="sparesTypeVisible" v-model="sparesTypeVisible" title="备件分类" :close-on-click-modal="false" :visible.sync="sparesTypeVisible" class="deviceAdd addmanage sparesTypeDialog">
       <sparesType ref="sparesType" :tree-id="id" @getData="getData" @handelsparesTypeVisible="handelsparesTypeVisible" />
     </el-dialog>
   </div>
@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      formSpare: { assetName: '', assetItemType: {}, dataFrom: '' },
+      formSpare: { assetName: '', assetItemType: '', dataFrom: '' },
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -75,40 +75,23 @@ export default {
       totalNum: 0,
       currentPage: 1,
       param: {
-        pageSize: 10,
-        pageNum: 1
-        // sortColumn: 'create_time',
-        // sortOrder: 'desc'
+        // assetItemType: '',
+        checkStatus: 0,
+        // houseIds: '',
+        pageNum: 1,
+        pageSize: 10
       },
       input: '',
       tableloading: true,
-      // selectData: {} // 点击tree树获取整个节点对象
-      // isDel: true // 最初默认标识可以删除
       sparesTypeVisible: false, // 备件分类页面是否显示
       id: '',
       typeData: [], // 备件分类数据
       typeNames: '', // 备件分类名称
-      typeIds: '',
       dataFrom: [] // 来源
     }
   },
 
   created() {
-    // common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.houseClass = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.message)
-    // })
   },
   mounted() {
     this.getTableData()
@@ -123,6 +106,7 @@ export default {
           if (response.code === 0) {
             this.tableDate = response.data.assetList
             this.totalNum = Number(response.data.count)
+            // this.formSpare.assetItemType =''
           } else {
             this.$message.error(response.msg)
           }
@@ -133,7 +117,7 @@ export default {
         })
     },
     searchSpares() {
-      this.param.pageNumber = 1
+      this.param.pageNum = 1
       this.param.pageSize = 10
       this.currentPage = 1
       this.param = Object.assign(this.param, this.formSpare)
@@ -143,7 +127,7 @@ export default {
     handleGetTableData(value) {
       if (value) {
         this.param.pageSize = value.pageSize
-        this.param.pageNumber = value.pageNumber
+        this.param.pageNum = value.pageNum
         this.currentPage = value.currentPage
       }
       this.getTableData()
@@ -162,10 +146,9 @@ export default {
       this.typeNames = this.typeData.map(item => {
         return item.name
       }).join(',')
-      this.typeIds = this.typeData.map(item => {
+      this.formSpare.assetItemType = this.typeData.map(item => {
         return item.id
       }).join(',')
-      // console.log('this.typeIds:', this.typeIds)
     }
   }
 }
@@ -177,7 +160,7 @@ export default {
 
 </style>
 <style lang="scss" scoped>
-  .deviceAdd /deep/.el-dialog {
+  .sparesTypeDialog /deep/.el-dialog {
     width: 350px!important;
   }
 </style>

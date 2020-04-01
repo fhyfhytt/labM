@@ -5,7 +5,17 @@
       <el-col :xl="{span:3}" :lg="{span:5}">
         <div class="tree-div">
           <div class="inline-div">
-            <el-tree ref="tree" v-loading="treeloading" :data="treedata" node-key="id" default-expand-all :props="defaultProps" :highlight-current="true" :expand-on-click-node="false" @node-click="handleNodeClick">
+            <el-tree
+              ref="tree"
+              v-loading="treeloading"
+              :data="treedata"
+              node-key="id"
+              default-expand-all
+              :props="defaultProps"
+              :highlight-current="true"
+              :expand-on-click-node="false"
+              @node-click="handleNodeClick"
+            >
               <span slot-scope="{ node, data }" class="custom-tree-node span-ellipsis">
                 <span v-if="data.children" :title="data.name">
                   <i class="iconfont iconzuzhi" />{{ data.name }}
@@ -29,7 +39,7 @@
                     <el-input v-model="formSupplies.assetName" style="background:transparent;width:150px;" placeholder="请输入物资名称" />
                   </el-form-item>
                   <el-form-item>
-                    <el-button v-permission="'regionSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
+                    <el-button v-permission="'suppliesSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
                   </el-form-item>
                 </el-row>
               </el-form>

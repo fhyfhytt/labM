@@ -6,9 +6,11 @@
         <span slot="icon" class="icontext">1</span>
       </el-step>
       <el-step title="组织选择"><span slot="icon" class="icontext">2</span></el-step>
-      <el-step title="人员选择"><span slot="icon" class="icontext">3</span></el-step>
-      <el-step title="库房选择"><span slot="icon" class="icontext">4</span></el-step>
-      <el-step title="分类选择"><span slot="icon" class="icontext">5</span></el-step>
+      <el-step title="区域选择"><span slot="icon" class="icontext">3</span></el-step>
+      <!-- 分类暂不显示 -->
+      <!-- <el-step title="人员选择"><span slot="icon" class="icontext">3</span></el-step> -->
+      <el-step title="分类选择"><span slot="icon" class="icontext">4</span></el-step>
+      <el-step title="人员选择"><span slot="icon" class="icontext">5</span></el-step>
     </el-steps>
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <!-- 第一步，基本信息 -->
@@ -58,34 +60,12 @@
         </el-row>
         <div style="position:absolute;bottom:0;right:0">
           <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(0)">上一步</el-button>
-          <el-button v-preventReClick="1000" class="button-sub" @click="addUserInfo">下一步</el-button>
+          <el-button v-preventReClick="1000" class="button-sub" @click="addOrgInfo">下一步</el-button>
         </div>
       </el-tab-pane>
-      <!-- 第三步，人员选择 -->
-      <el-tab-pane label="人员选择" name="2" :disabled="pane3">
-        <el-row style="margin-bottom:10px">
-          <div style="display:inline-block">
-            <el-button class="button-sub btn" icon="iconfont icontianjia1" @click="addNewUser">新增</el-button>
-            <el-button class="button-sub btn" icon="iconfont iconxingzhuang1 " style="margin-right:5px" @click="delUsers">批量删除</el-button>
-          </div>
-        </el-row>
-        <el-table ref="userTable" :data="userInfo" tooltip-effect="dark" height="380" style="width: 100%;height:300px" @row-click="selectUserRow" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="60" />
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="id" label="用户ID" />
-          <el-table-column prop="name" label="用户名" />
-          <el-table-column prop="mobile" label="手机" />
-          <el-table-column prop="email" label="邮箱" />
-        </el-table>
-        <div style="text-align:right;margin-top:40px;">
-          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(1)">上一步</el-button>
-          <el-button v-preventReClick="1000" class="button-sub" @click="addHouseInfo">下一步</el-button>
-        </div>
-      </el-tab-pane>
-      <!-- 第四步，库房选择 -->
-      <el-tab-pane label="库房选择" name="3" :disabled="pane4">
+      <!-- 第三步，区域选择 -->
+      <el-tab-pane label="区域选择" name="2" :disabled="pane3">
         <el-row style="height:540px">
-          <!-- <addHouseMoudel ref="addHouseMoudel" /> -->
           <treetransfer
             ref="houseTreeTransfer"
             :title="houseTitle"
@@ -95,25 +75,24 @@
             :default-transfer="true"
             :default-checked-keys="houseRoleData"
             :default-props="defaultProps"
-            :array-to-tree="false"
+            :array-to-tree="true"
             pid="parentId"
             height="490px"
-            placeholder="请输入库房关键词"
+            placeholder="请输入区域关键词"
             filter
             open-all
             @addBtn="add2"
             @removeBtn="remove2"
           />
         </el-row>
-        <div style="position:absolute;bottom:0;right:0">
-          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(2)">上一步</el-button>
-          <el-button v-preventReClick="1000" class="button-sub" @click="addClassifyInfo">下一步</el-button>
+        <div style="text-align:right;margin-top:40px;">
+          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(1)">上一步</el-button>
+          <el-button v-preventReClick="1000" class="button-sub" @click="addHouseInfo">下一步</el-button>
         </div>
       </el-tab-pane>
-      <!-- 第五步，分类选择 -->
-      <el-tab-pane label="分类选择" name="4" :disabled="pane5">
+      <!-- 第四步，分类选择 -->
+      <el-tab-pane label="分类选择" name="3" :disabled="pane4">
         <el-row style="height:540px">
-          <!-- <addClassMoudel ref="addClassMoudel" /> -->
           <treetransfer
             ref="classTreeTransfer"
             :title="classTitle"
@@ -133,6 +112,27 @@
             @removeBtn="remove3"
           />
         </el-row>
+        <div style="position:absolute;bottom:0;right:0">
+          <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(2)">上一步</el-button>
+          <el-button v-preventReClick="1000" class="button-sub" @click="addClassifyInfo">下一步</el-button>
+        </div>
+      </el-tab-pane>
+      <!-- 第五步，人员选择 -->
+      <el-tab-pane label="人员选择" name="4" :disabled="pane5">
+        <el-row>
+          <div style="display:inline-block">
+            <el-button class="button-sub btn" icon="iconfont icontianjia1" @click="addNewUser">新增</el-button>
+            <el-button class="button-sub btn" icon="iconfont iconxingzhuang1 " style="margin-right:5px" @click="delUsers">批量删除</el-button>
+          </div>
+        </el-row>
+        <el-table ref="userTable" :data="userInfo" tooltip-effect="dark" height="380" style="width: 100%;height:300px" @row-click="selectUserRow" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="60" />
+          <el-table-column type="index" label="序号" width="60" />
+          <el-table-column prop="id" label="用户ID" />
+          <el-table-column prop="name" label="用户名" />
+          <el-table-column prop="mobile" label="手机" />
+          <el-table-column prop="email" label="邮箱" />
+        </el-table>
         <div style="position:absolute;bottom:0;right:0">
           <el-button v-if="isPrev" v-preventReClick="1000" size="small" class="button-cancel" @click.native="prev(3)">上一步</el-button>
           <el-button v-preventReClick="2000" class="button-sub" @click="saveUserInfo">完 成</el-button>
@@ -165,7 +165,8 @@
 </template>
 
 <script>
-import { addRegion, editRegion, getDeptByRegionId, searchRegion, getUserByRegionId, getUserList, getClassifyByRegionId, getHouseByRegionId } from '@/api/userManagement.js'
+// getHouseByRegionId
+import { addRegion, editRegion, getAreaByRegionId, getDeptByRegionId, searchRegion, getUserByRegionId, getUserList, getClassifyByRegionId } from '@/api/userManagement.js'
 import { tree2Array, setTreeData, checked } from '@/utils/utils'
 export default {
   name: 'AddRolePage',
@@ -222,11 +223,11 @@ export default {
       classToData: [],
       classRoleData: [], // 分类参数
       classTitle: ['全部分类', '已选分类'],
-      houseIds: [], // 选中库房ids
+      houseIds: [], // 选中区域ids
       houseFromData: [],
       houseToData: [],
-      houseRoleData: [], // 库房参数
-      houseTitle: ['全部库房', '已选库房'],
+      houseRoleData: [], // 区域参数
+      houseTitle: ['全部区域', '已选区域'],
       isPrev: true // 上一步按钮提示
     }
   },
@@ -260,6 +261,7 @@ export default {
             checked(item, setTreeData(res.data), newArr)
           })
           this.roleData = newArr
+          this.ids = newArr // 初始查询，选中组织的id
         } else {
           this.$message.error(res.msg)
         }
@@ -290,16 +292,20 @@ export default {
       })
     },
 
-    // 获取库房数据
+    // 获取区域数据
     async getHouseMenu() {
-      await getHouseByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
+      await getAreaByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
         if (res.success === true) {
           this.houseFromData = res.data
-          this.houseRoleData = res.data.filter(item => {
+          var newArr2 = []
+          res.data.filter(item => {
             return item.checked === '1'
           }).map(item => {
             return item.id
+          }).forEach(item => {
+            checked(item, setTreeData(res.data), newArr2)
           })
+          this.houseRoleData = newArr2
         } else {
           this.$message.error(res.msg)
         }
@@ -308,10 +314,29 @@ export default {
       })
     },
 
+    // // 获取库房数据
+    // async getHouseMenu() {
+    //   await getHouseByRegionId({ regionId: this.addFlag === false ? this.baseInfo.id : '' }).then(res => {
+    //     if (res.success === true) {
+    //       this.houseFromData = res.data
+    //       this.houseRoleData = res.data.filter(item => {
+    //         return item.checked === '1'
+    //       }).map(item => {
+    //         return item.id
+    //       })
+    //     } else {
+    //       this.$message.error(res.msg)
+    //     }
+    //   }).catch(e => {
+    //     this.$message.error(e.msg)
+    //   })
+    // },
+
     // 判断编辑还是新增弹框
     addEditRoleDialog(data) {
       this.activeName = '0'
       this.active = 0
+      this.loading = false
       if (data) {
         this.addFlag = false // edit
         this.baseInfo = data
@@ -439,6 +464,8 @@ export default {
               } else {
                 this.$message.error(res.msg)
               }
+            }).catch(res => {
+              this.$message.error(res.msg)
             })
           }
         } else {
@@ -447,7 +474,7 @@ export default {
       })
     },
     // 保存或修改数据域组织信息--第二步
-    addUserInfo() {
+    addOrgInfo() {
       if (this.ids.length === 0) {
         this.$message.error('组织不能为空！')
         return
@@ -460,7 +487,7 @@ export default {
             this.active = 2
             this.$message.success('保存成功')
             this.$emit('getTableData')
-            this.handleGetRoleUsers()
+            this.getHouseMenu()
             this.$emit('reset-save-flag', false)
             this.$emit('refresh')
             this.isPrev = false
@@ -473,46 +500,17 @@ export default {
       } else {
         this.activeName = '2'
         this.active = 2
-      }
-    },
-    //  保存或修改数据域用户信息--第三步
-    addHouseInfo() {
-      if (this.addFlag === false) { // edit
-        var userIdList = []
-        if (this.userInfo) {
-          this.userInfo.map(user => {
-            userIdList.push(user.id)
-          })
-        }
-        editRegion({ flag: '2', sysRegion: { id: this.baseInfo.id }, userIdList }).then(res => {
-          if (res.success === true) {
-            this.activeName = '3'
-            this.active = 3
-            this.$message.success('保存成功')
-            this.$emit('getTableData')
-            this.getHouseMenu()
-            this.$emit('reset-save-flag', false)
-            this.$emit('refresh')
-            this.isPrev = false
-          } else {
-            this.$message.error(res.msg)
-          }
-        }).catch(e => { })
-      } else {
-        this.activeName = '3'
-        this.active = 3
-        // 根据数据获取库房
         this.getHouseMenu()
       }
     },
-    //  保存或修改数据域库房信息--第四步
-    addClassifyInfo() {
-      if (this.addFlag === false) {
-        var warehouseIdList = this.houseIds
-        editRegion({ flag: '3', sysRegion: { id: this.baseInfo.id }, warehouseIdList }).then(res => {
+    // 保存或修改数据域区域信息--第三步
+    addHouseInfo() {
+      if (this.addFlag === false) { // edit
+        var areaIdList = this.houseIds
+        editRegion({ flag: '3', sysRegion: { id: this.baseInfo.id }, areaIdList }).then(res => {
           if (res.success === true) {
-            this.activeName = '4'
-            this.active = 4
+            this.activeName = '3'
+            this.active = 3
             this.$message.success('保存成功')
             this.$emit('getTableData')
             this.getClassifyMenu()
@@ -524,21 +522,47 @@ export default {
           }
         }).catch(e => { })
       } else {
-        this.activeName = '4'
-        this.active = 4
+        this.activeName = '3'
+        this.active = 3
         // 根据数据获取分类
         this.getClassifyMenu()
       }
     },
-
-    // 关闭弹窗 -- 第五步
+    // 保存或修改数据域分类信息--第四步
+    addClassifyInfo() {
+      if (this.addFlag === false) {
+        var classificationIdList = this.classIds
+        editRegion({ flag: '4', sysRegion: { id: this.baseInfo.id }, classificationIdList }).then(res => {
+          this.loading = false
+          if (res.success === true) {
+            this.activeName = '4'
+            this.active = 4
+            this.$emit('getTableData')
+            this.$emit('reset-save-flag', false)
+            this.$emit('refresh')
+            this.handleGetRoleUsers()
+            this.isPrev = false
+          } else {
+            this.$message.error(res.msg)
+          }
+        }).catch(e => { })
+      } else {
+        this.activeName = '4'
+        this.active = 4
+      }
+    },
+    // 保存人员信息，并关闭弹窗 -- 第五步
     saveUserInfo() {
       var param = {}
       this.loading = true
       if (this.addFlag === false) { // edit
-        var classificationIdList = this.classIds
-        editRegion({ flag: '4', sysRegion: { id: this.baseInfo.id }, classificationIdList }).then(res => {
-          this.loading = false
+        var userIdList = []
+        if (this.userInfo) {
+          this.userInfo.map(user => {
+            userIdList.push(user.id)
+          })
+        }
+        editRegion({ flag: '2', sysRegion: { id: this.baseInfo.id }, userIdList }).then(res => {
           if (res.success === true) {
             this.$message.success('保存成功')
             this.closeAddRole()
@@ -550,8 +574,8 @@ export default {
         }).catch(e => { })
       } else {
         var deptIdList = this.ids
-        var warehouseIdList = this.houseIds
-        classificationIdList = this.classIds
+        var areaIdList = this.houseIds
+        var classificationIdList = this.classIds
         param.sysRegion = { // -- 基本信息
           name: this.baseInfo.name,
           description: this.baseInfo.description || '',
@@ -565,7 +589,7 @@ export default {
           })
         }
         param.deptIdList = deptIdList
-        param.warehouseIdList = warehouseIdList
+        param.areaIdList = areaIdList
         param.classificationIdList = classificationIdList
         addRegion(param).then(res => {
           this.loading = false
@@ -696,29 +720,36 @@ export default {
     },
     // 监听穿梭框组件添加
     add2(houseFromData, houseToData, obj) {
-      // if (houseToData.length === 0) {
-      //   houseToData[0] = []
-      // }
-      // this.houseIds = tree2Array(houseToData[0], '0').map(item => {
-      //   if (item) {
-      //     return item.id
-      //   } else {
-      //     return
-      //   }
-      // })
-      this.houseIds = houseToData.map(item => {
-        return item.id
+      if (houseToData.length === 0) {
+        houseToData[0] = []
+      }
+      this.houseIds = tree2Array(houseToData[houseToData.length - 1], '0').map(item => {
+        if (item) {
+          return item.id
+        } else {
+          return
+        }
       })
     },
     // 监听穿梭框组件移除
     remove2(houseFromData, houseToData, obj) {
-      this.houseIds = houseToData.map(item => {
-        return item.id
+      if (houseToData.length === 0) {
+        houseToData[0] = []
+      }
+      this.houseIds = tree2Array(houseToData[houseToData.length - 1], '0').map(item => {
+        if (item) {
+          return item.id
+        } else {
+          return
+        }
       })
     },
     // 监听穿梭框组件添加
     add3(classFromData, classToData, obj) {
-      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
+      if (classToData.length === 0) {
+        classToData[0] = []
+      }
+      this.classIds = tree2Array(classToData[classToData.length - 1], '0').map(item => {
         if (item) {
           return item.id
         } else {
@@ -728,7 +759,10 @@ export default {
     },
     // 监听穿梭框组件移除
     remove3(classFromData, classToData, obj) {
-      this.classIds = tree2Array(classToData.length > 0 ? classToData[classToData.length - 1] : [], '0').map(item => {
+      if (classToData.length === 0) {
+        classToData[0] = []
+      }
+      this.classIds = tree2Array(classToData[classToData.length - 1], '0').map(item => {
         if (item) {
           return item.id
         } else {

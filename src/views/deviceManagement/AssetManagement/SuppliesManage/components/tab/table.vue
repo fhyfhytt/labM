@@ -2,8 +2,8 @@
   <div class="page-table-content">
     <div v-show="show" class="button-tool">
       <div class="button-tool-right fr">
-        <el-button v-permission="'orgAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-        <el-button v-permission="'orgDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+        <el-button v-permission="'suppliesAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+        <el-button v-permission="'suppliesDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
       </div>
     </div>
     <el-table :data="tableDate" height="605" @selection-change="handleSelectionChange">
@@ -18,8 +18,8 @@
       <el-table-column prop="price" label="物资价格" width="" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
-          <i v-permission="'orgEdit'" class="iconfont iconbianji1 scope-caozuo" title="编辑" @click="handleEdit(scope.$index, scope.row)" />
-          <i v-permission="'orgSingleDelete'" class="iconfont iconxingzhuang1  scope-caozuo" title="删除" @click="handleDel(scope.$index, scope.row)" />
+          <i v-permission="'suppliesEdit'" class="iconfont iconbianji1 scope-caozuo" title="编辑" @click="handleEdit(scope.$index, scope.row)" />
+          <i v-permission="'suppliesSingleDelete'" class="iconfont iconxingzhuang1  scope-caozuo" title="删除" @click="handleDel(scope.$index, scope.row)" />
         </template>
       </el-table-column>
     </el-table>
@@ -94,6 +94,9 @@ export default {
     },
     tableLoading: function() {
       this.loading = this.tableLoading
+    },
+    totalNum: function() {
+      this.total = this.totalNum || 0
     },
     suppliesType: function() {
 

@@ -29,6 +29,9 @@
           <el-form-item label="资产分类:" prop="suppliesType">
             <el-input v-model="suppliesType" placeholder="请输入物资分类" disabled />
           </el-form-item>
+          <el-form-item label="体积:" prop="size">
+            <el-input v-model="editForm.size" placeholder="请输入体积" />
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -66,7 +69,7 @@ export default {
   },
   data() {
     return {
-      editForm: { id: '', assetName: '', factory: '', price: '', code: '', unitType: '', note: '', itemType: this.treeId },
+      editForm: { id: '', assetName: '', factory: '', price: '', code: '', unitType: '', note: '', size: '', itemType: this.treeId },
       editFormRules: {
         code: [{ required: true, message: '请输入操作编号', trigger: 'blur' }],
         assetName: [{ required: true, message: '请输入设备名称', trigger: 'blur' }]

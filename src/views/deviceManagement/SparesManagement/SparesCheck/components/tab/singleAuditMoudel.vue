@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" class="dialgEditform1">
-    <el-form ref="AuditForm" :model="AuditForm" label-width="80px" class="formAdd">
+    <el-form ref="AuditForm" :model="AuditForm" :rules="batchFormRules" label-width="120px" class="formAdd">
       <h3 class="title">基本信息</h3>
       <el-row class="addtop">
         <el-col :span="8">
@@ -8,15 +8,14 @@
             <el-input v-model="AuditForm.assetInfo.assetNo" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="设备型号:" prop="unitType">
-            <el-input v-model="AuditForm.unitType" autocomplete="off" readonly />
+            <el-input v-model="AuditForm.assetInfo.unitType" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="资产分类:" prop="itemType">
-            <el-input v-model="AuditForm.itemType" autocomplete="off" readonly />
+            <el-input v-model="AuditForm.assetInfo.itemType" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="维保状态:" prop="maintranStatusS">
             <el-input v-model="AuditForm.maintranStatusS" autocomplete="off" readonly />
           </el-form-item>
-
         </el-col>
         <el-col :span="8">
           <el-form-item label="资产名称:" prop="assetName">
@@ -28,13 +27,13 @@
           <el-form-item label="数量:" prop="num">
             <el-input v-model="AuditForm.num" autocomplete="off" readonly />
           </el-form-item>
-          <el-form-item label="维保时间:" prop="maintranDate">
-            <el-input v-model="AuditForm.maintranDate" autocomplete="off" readonly />
+          <el-form-item label="维保时间:" prop="modifyTime">
+            <el-input v-model="AuditForm.modifyTime" autocomplete="off" readonly />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="资产状态:" prop="status">
-            <el-input v-model="AuditForm.status" autocomplete="off" readonly />
+          <el-form-item label="资产状态:" prop="statusS">
+            <el-input v-model="AuditForm.statusS" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="所属库房:" prop="house">
             <el-input v-model="AuditForm.house" autocomplete="off" readonly />
@@ -43,16 +42,17 @@
             <el-input v-model="AuditForm.price" autocomplete="off" readonly />
           </el-form-item>
           <el-form-item label="存放位置:" prop="location">
-            <el-input v-model="AuditForm.location" autocomplete="off" readonly />
+            <el-input v-model="AuditForm.houseInfo.location" autocomplete="off" readonly />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <h3 class="title" style="">审核备注</h3>
-        <el-col :span="24">
+        <el-col :span="8">
           <el-form-item label="审核状态:">
-            <el-select v-model="AuditForm.checkStatus" value-key="checkStatus" popper-class="select-option" placeholder="-请选择-">
-              <el-option v-for="item in selectAuditState" :key="item.checkStatus" :label="item.checkStatusS" :value="item.checkStatusS" />
+            <el-select v-model="checkStatus" placeholder="-请选择-">
+              <el-option label="审核通过" value="1" />
+              <el-option label="审核未通过" value="2" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { dictUpdate } from '@/api/house.js'
+import { sparesCheck } from '@/api/deviceManage.js'
 // import common from '@/utils/common'
 export default {
   props: {
@@ -83,81 +83,50 @@ export default {
   },
   data() {
     return {
-      AuditForm: { assetInfo: '', itemType: '', dataFrom: '', house: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
+      AuditForm: { id: '', assetInfo: '', itemType: '', dataFrom: '', statusS: '', house: '', checkNote: '', maintranStatusS: '', maintranDate: '', num: '', area: '', price: '' },
       singleAuditVisible: false,
-      // dataFrom: [],
-      selectAuditState: [
-        {
-          checkStatus: 0,
-          checkStatusS: '审核未通过'
-        },
-        {
-          checkStatus: 1,
-          checkStatusS: '审核通过'
-        }
-      ], // 审核状态
       loading: false,
       addUserVisible: false,
-      primaryKey: '' // 查询参数
+      batchFormRules: {
+        checkStatus: [{ required: true, message: '请选择状态', trigger: 'blur' }]
+      },
+      AuditStatus: [{
+        name: '审核通过',
+        code: 1
+      }, {
+        name: '审核未通过',
+        code: 2
+      }],
+      checkStatus: '' // 审核状态值
+      // primaryKey: '' // 查询参数
     }
   },
 
   created() {
-    // common.getDictNameList({ dictName: '库房状态', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.selectAuditState = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.msg)
-    // })
-    // common.getDictNameList({ dictName: '库房类型', dictNameIsLike: 0 }).then(res => {
-    //   if (res.success === true) {
-    //     this.$nextTick(() => {
-    //       this.selecthouseType = res.data
-    //     })
-    //   } else {
-    //     if (res.data !== '') {
-    //       this.$message.error(res.data)
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }
-    // }).catch(res => {
-    //   this.$message.error(res.msg)
-    // })
   },
   mounted() {
     this.AuditForm = Object.assign({}, this.row)
-    this.AuditForm.personMobile = this.AuditForm.personMobile
-    this.AuditForm.type = { name: this.row.type }// 传入对象
-    this.AuditForm.state = { name: this.row.state }// 传入对象
   },
   methods: {
-    // 取消新增
+    // 取消审核
     handelsingleAuditVisible(singleAuditVisible) {
       this.$emit('handelsingleAuditVisible', this.singleAuditVisible)
       this.AuditForm = {}
     },
-    // 提交新增
+    // 提交审核
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          const param = Object.assign({}, this.AuditForm)
-          param.type = this.AuditForm.type.code
-          param.state = this.AuditForm.state.code
-          dictUpdate(param).then(response => {
+          const param = {}
+          param.checkStatus = this.checkStatus
+          param.checkNote = this.AuditForm.checkNote
+          param.ids = this.AuditForm.id
+
+          sparesCheck(param).then(response => {
             this.loading = false
             if (response.success === true) {
-              this.$message.success('修改成功')
+              this.$message.success(response.msg)
               this.$emit('handleGetTree1')
               this.handelsingleAuditVisible()
             } else {
@@ -171,12 +140,6 @@ export default {
           return false
         }
       })
-    },
-    selectUserInfoRow(row) {
-      this.AuditForm.person = row.name
-      this.AuditForm.personMobile = row.personMobile
-      this.AuditForm.personId = row.id
-      this.addUserVisible = false
     }
   }
 }
@@ -194,13 +157,14 @@ export default {
   }
   /deep/.addtop .el-input__inner {
     border: none!important;
+    font-size: 14px;
   }
   .dialgEditform1 .title {
     border-bottom: 2px solid #c7cbd6;color:#1890ff;height:30px;
   }
-  .el-form-item__content {
-    margin-left:80px;
-  }
+  // .el-form-item__content {
+  //   margin-left:80px;
+  // }
   .dialgEditform1 /deep/.el-form-item__label{
     color:#292929 !important;
   }
