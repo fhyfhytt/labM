@@ -4,11 +4,12 @@
       <el-button type="primary" icon="el-icon-edit" class="btn" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-edit" class="btn" @click="exportLog">导出</el-button>
     </el-row>
-    <el-row v-infinite-scroll="load" class="content page-table infinite-list">
+    <el-row ref="content" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" class="content page-table infinite-list">
       <el-timeline :reverse="reverse">
         <el-timeline-item v-for="(activity, index) in activities" :key="index" :color="activity.color">
-          <div v-if="activity.timestamp" class="date">{{ activity.timestamp }}</div>
-          <div class="time">{{ activity.time }}</div>
+          <div v-if="activity.operateDate" class="date">{{ activity.operateDate }}</div>
+          <div class="time">{{ activity.operateTime }}</div>
+          <div calss="content">{{ "报错类："+activity.eClass+"     后台报错方法："+activity.eMethod+"    后台报错名称："+activity.eName+"    后台报错参数："+activity.eParam+"    后台报错操作名："+activity.operatorName }}</div>
         </el-timeline-item>
       </el-timeline>
     </el-row>
@@ -24,37 +25,22 @@ export default {
   },
   data() {
     return {
-      reverse: true,
-      activities: [{
-        content: '活动按期开始',
-        timestamp: '2018-04-15',
-        time: '19:28:36'
-
-      }, {
-        content: '活动按期开始',
-        timestamp: '',
-        time: '19:28:36'
-
-      }, {
-        content: '通过审核',
-        timestamp: '2018-04-13',
-        time: '19:28:36'
-      }, {
-        content: '创建成功',
-        timestamp: '2018-04-11',
-        color: '#379EFC',
-        time: '19:28:36'
-      }],
+      reverse: false,
+      activities: [],
       loading: false,
       pageSize: 10,
-      pageNumber: 0
+      pageNumber: 1,
+      disabled: false
+      // maxHeight: 100
     }
   },
   computed: {
 
   },
   mounted() {
-    // this.getData()
+    this.$nextTick(() => { // 页面渲染完成后的回调
+      console.log(this.$refs.content.offsetHeight)
+    })
   },
   methods: {
     getData() {
@@ -66,9 +52,29 @@ export default {
       }
       systemLogList(params).then((res) => {
         if (res.code === 0) {
-          this.$nextTick(() => {
-            this.activities = res.data.list
-          })
+          if (Object.keys(res.data.list).length !== 0) {
+            this.$nextTick(() => {
+              const listobj = res.data.list
+              var activities = []
+              for (const key in listobj) {
+                const arr = listobj[key].map((item, index) => {
+                  if (index === 0) {
+                    return item
+                  } else {
+                    item.operateDate = ''
+                    return item
+                  }
+                })
+                activities = activities.concat(arr)
+              }
+              const newActivities = this.activities.concat(activities)
+              newActivities[0].color = '#379EFC'
+              this.activities = newActivities
+            })
+          } else {
+            this.disabled = true
+            this.$message.success('没有更多了')
+          }
         }
       }).catch((res) => {
         this.loading = false
@@ -76,11 +82,18 @@ export default {
       })
     },
     load() {
+      if (this.pageNumber === 1) {
+        this.getData()
+      }
+
       this.pageNumber += 1
-      this.getData()
     },
     refresh() {
-
+      this.disabled = false
+      this.activities = []
+      this.pageSize = 10
+      this.pageNumber = 1
+      this.load()
     },
     exportLog() {
 

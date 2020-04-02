@@ -272,7 +272,6 @@ export default {
       var pattern = new RegExp("[`~!@#$^&*()=|{}'-:;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？ ]")
       var myreg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,8}$/
       // value = value.replace(, '')
-      console.log(pattern.test(value))
       if (value === '') {
         callback(new Error('请输入姓名'))
       } else if (pattern.test(value)) {
@@ -289,7 +288,7 @@ export default {
       active: 0,
       header: header,
       loading: false,
-      addForm: { name: '', personName: '', userCode: '', avatar: '', avatarId: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', deptId: null },
+      addForm: { name: '', personName: '', userCode: '', avatar: '', avatarId: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', deptId: null, groupId: null },
       addFormRules: {
         name: [{ validator: validatePass2, required: true, trigger: 'change' }],
         personName: [{ validator: personName, required: true, trigger: 'change' }],
@@ -675,7 +674,7 @@ export default {
     }, deleteAvatar() {
       common.removeFJ(this.avatar).then(res => {
         if (res.code === 0) {
-          this.$message.success('删除成功')
+          this.$message.success('头像删除成功')
           this.avatardisabled = false
           this.addForm.avatar = ''
           this.avatar.id = ''

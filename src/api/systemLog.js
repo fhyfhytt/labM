@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 系统异常日志查询
 export function systemLogList(param) {
   return request({
-    url: '/sysLogInfo/queryList',
+    url: '/sysErrorLog/queryList',
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: param
@@ -12,7 +12,7 @@ export function systemLogList(param) {
 // 系统异常日志新增
 export function systemLogAdd(param) {
   return request({
-    url: '/sysLogInfo/insert',
+    url: '/sysErrorLog/insert',
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: param

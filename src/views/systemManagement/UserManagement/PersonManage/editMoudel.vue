@@ -275,7 +275,6 @@ export default {
       var pattern = new RegExp("[`~!@#$^&*()=|{}'-:;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？ ]")
       var myreg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,8}$/
       // value = value.replace(, '')
-      console.log(pattern.test(value))
       if (value === '') {
         callback(new Error('请输入姓名'))
       } else if (pattern.test(value)) {
@@ -291,7 +290,7 @@ export default {
       activeName: 0, // tabs默认显示第一个用户基本信息
       active: 0,
       header: header,
-      editForm: { name: '', personName: '', userCode: '', avatar: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', groupId: [], deptId: [] },
+      editForm: { name: '', personName: '', userCode: '', avatar: '', birthday: '', mobile: '', email: '', password: '', sex: '', available: '', active: '', remark: '', job: '', userPosition: '', groupId: null, deptId: null },
       editFormRules: {
         name: [{ validator: validatePass2, trigger: 'change', required: true }],
         personName: [{ required: true, validator: personName, trigger: 'change' }],
@@ -304,7 +303,7 @@ export default {
         available: [{ required: true, message: '请选择账号状态', trigger: ['blur', 'change'] }],
         active: [{ required: true, message: '请选择在职状态', trigger: ['blur', 'change'] }],
         avatar: [{ required: true, message: '请上传头像', trigger: ['change'] }],
-        organ: [{ required: true, message: '请选择组织', trigger: ['blur'] }]
+        deptId: [{ required: true, message: '请选择组织', trigger: ['blur'] }]
       },
       noResultsText: '无数据', // 无搜索数据
       groupTree: [], // 班组树
@@ -451,7 +450,7 @@ export default {
             flag: '0'
           }
           paramUser.sysUser = { name: this.editForm.name, personName: this.editForm.personName, userCode: this.editForm.userCode, mobile: this.editForm.mobile, email: this.editForm.email, sex: this.editForm.sex,
-            available: this.editForm.available, active: this.editForm.active, remark: this.editForm.remark, birthday: this.editForm.birthday, job: this.editForm.job, userPosition: this.editForm.userPosition, id: this.row.id, avatar: this.editForm.avatar, groupId: this.editForm.groupId, deptId: this.editForm.deptId }
+            available: this.editForm.available, active: this.editForm.active, remark: this.editForm.remark, birthday: this.editForm.birthday, job: this.editForm.job, userPosition: this.editForm.userPosition, id: this.row.id, avatar: this.editForm.avatar, groupId: this.editForm.groupId || '', deptId: this.editForm.deptId }
           if (this.editForm.password !== '') {
             paramUser.sysUser.password = this.editForm.password
           }
