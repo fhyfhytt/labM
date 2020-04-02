@@ -3,12 +3,12 @@
     <div class="page-title">
       <el-form ref="form1" :model="formDiction" size="small" label-width="110px">
         <el-row>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="字典名称：">
               <el-input v-model="formDiction.name" placeholder="请输入字典名称" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-button v-permission="'dictionarySearch'" size="small" class="button-sub" style="margin-left:24px;" @click="getDiction">查询</el-button>
           </el-col>
         </el-row>

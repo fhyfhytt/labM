@@ -3,12 +3,12 @@
     <div class="page-title">
       <el-form ref="form1" :model="formRole" size="small" label-width="110px">
         <el-row>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="角色名称：">
               <el-input v-model="formRole.name" style="background:transparent" placeholder="请输入角色名称" />
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-form-item label="状态：">
               <el-select v-model="formRole.status" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option label="启用" value="1" />
@@ -16,7 +16,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :xl="{span:4}" :lg="{span:6}">
+          <el-col :xl="{span:4}" :lg="{span:5}">
             <el-button v-permission="'roleSearch'" size="small" class="button-sub" style="margin-left:24px" @click="searchData">查询</el-button>
           </el-col>
         </el-row>
