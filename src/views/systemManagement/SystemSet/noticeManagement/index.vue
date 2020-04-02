@@ -325,8 +325,7 @@ export default {
   .page-title {
     flex-direction: column;
     justify-content: center;
-    flex-shrink: 0;
-    height: 100px;
+    flex-shrink: 4;
     .el-row {
       width: 100%;
       padding: 10px 30px;

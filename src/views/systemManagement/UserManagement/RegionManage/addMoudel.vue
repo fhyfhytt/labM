@@ -793,8 +793,8 @@ export default {
 <style lang="scss" scoped>
 .roleManage-addRole {
   .el-steps--simple {
-    padding: 17px 60px;
-    margin-bottom: 30px;
+    padding: 17px 35px;
+    margin: 0 0 30px 0;
     >>> .is-wait {
       .icontext {
         color: #c0c4cc;

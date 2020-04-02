@@ -13,7 +13,7 @@
         <div>
           <el-form ref="editForm" :model="editForm" label-width="90px" :rules="editFormRules" class="edituser">
             <el-row>
-              <el-col :span="12">
+              <el-col :span="10">
                 <el-form-item label="用户名:" prop="name">
                   <el-input v-model="editForm.name" placeholder="请输入用户名" />
                 </el-form-item>
@@ -48,7 +48,7 @@
                   <treeselect v-model="editForm.deptId" :open-direction="'top'" :default-expand-level="1" :multiple="false" :no-results-text="noResultsText" :options="organTree" placeholder="点击选择组织" :normalizer="normalizer" />
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="9" :offset="4">
                 <el-form-item label="头像:" prop="avatar">
                   <el-upload
                     class="avatar-uploader"
@@ -93,7 +93,7 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="24">
+              <el-col :span="23">
                 <el-form-item label="描述:" prop="remark">
                   <el-input v-model="editForm.remark" type="textarea" placeholder="请输入用户描述" />
                 </el-form-item>
@@ -107,8 +107,8 @@
       </el-tab-pane>
       <!--角色信息-->
       <el-tab-pane label="角色分配" name="1" :disabled="disabled">
-        <div>
-          <div class="button-tool" style="margin-top:5px;margin-bottom:5px;float:left">
+        <div style="padding: 0 37px;">
+          <div class="button-tool" style="margin-top:5px;margin-bottom:5px;float:right">
             <el-button icon="iconfont icontianjia1" size="small" @click="AddtwoRole">新增</el-button>
             <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handletwoDelRole">批量删除</el-button>
           </div>
@@ -128,8 +128,8 @@
       </el-tab-pane>
       <!--所属数据域-->
       <el-tab-pane label="所属数据域" name="2" :disabled="disabled">
-        <div>
-          <div class="button-tool" style="margin-top:5px;margin-bottom:5px;float:left">
+        <div style="padding: 0 37px;">
+          <div class="button-tool" style="margin-top:5px;margin-bottom:5px;float:right">
             <el-button icon="iconfont icontianjia1" size="small" @click="AddtwoRegion">新增</el-button>
             <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handletwoDelRegion">批量删除</el-button>
           </div>
@@ -817,12 +817,10 @@ export default {
 .el-select {
   width: 100%;
 }
-.el-col {
-  padding: 0 60px;
-}
+
 .UserManage-edit {
-   .firstFoot {
-    padding: 0 60px !important;
+   .firstFoot{
+    padding: 0 37px;
   }
   .avatar-uploader:hover .mask {
     display: flex;
@@ -900,7 +898,7 @@ export default {
   }
   .el-steps--simple {
     padding: 17px 60px;
-    margin-bottom: 30px;
+    margin: 0 30px 30px 30px;
     >>> .is-wait {
       .icontext {
         color: #c0c4cc;
