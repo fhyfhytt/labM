@@ -236,7 +236,7 @@
 <script>
 import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData } from '@/utils/utils'
-// import common from '@/utils/common'
+import common from '@/utils/common'
 import { selectRoleByUserId, selectRegionByUserId, getRegionList, getRoleList, editUserAll } from '@/api/userManagement.js'
 import header from '@/assets/img/header.png'
 export default {
@@ -765,21 +765,20 @@ export default {
       this.iconclass = 'el-icon-loading avatar-uploader-icon'
       return isImage && isLt2M
     }, deleteAvatar() {
-      this.$message.success('头像删除成功')
-      this.avatardisabled = false
-      this.editForm.avatar = ''
-      this.avatar.id = ''
-      this.tip = true
-      // common.removeFJ(this.avatar).then(res => {
-      //   if (res.code === 0) {
-      //     this.$message.success(res.msg)
-
-      //   } else {
-      //     throw res
-      //   }
-      // }).catch(res => {
-      //   this.$message.error(res.msg)
-      // })
+      // this.$message.success('头像删除成功')
+      common.removeFJ(this.avatar).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.msg)
+          this.avatardisabled = false
+          this.editForm.avatar = ''
+          this.avatar.id = ''
+          this.tip = true
+        } else {
+          throw res
+        }
+      }).catch(res => {
+        this.$message.error(res.msg)
+      })
     },
     getBase64(file) {
       return new Promise(function(resolve, reject) {
@@ -819,7 +818,7 @@ export default {
 }
 
 .UserManage-edit {
-   .firstFoot{
+  .firstFoot {
     padding: 0 37px;
   }
   .avatar-uploader:hover .mask {

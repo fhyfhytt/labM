@@ -1,15 +1,15 @@
 <template>
   <div class="systemLog pageRow">
     <el-row class="btnGroup">
-      <el-button type="primary" icon="el-icon-edit" class="btn" @click="refresh">刷新</el-button>
-      <el-button type="primary" icon="el-icon-edit" class="btn" @click="exportLog">导出</el-button>
+      <el-button type="primary" icon="iconfont iconshuaxin" class="btn" @click="refresh">刷新</el-button>
+      <el-button type="primary" icon="iconfont iconshuaxinbeifen" class="btn" @click="exportLog">导出</el-button>
     </el-row>
     <el-row ref="content" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" class="content page-table infinite-list">
       <el-timeline :reverse="reverse">
         <el-timeline-item v-for="(activity, index) in activities" :key="index" :color="activity.color">
           <div v-if="activity.operateDate" class="date">{{ activity.operateDate }}</div>
           <div class="time">{{ activity.operateTime }}</div>
-          <div calss="content">{{ "报错类："+activity.eClass+"     后台报错方法："+activity.eMethod+"    后台报错名称："+activity.eName+"    后台报错参数："+activity.eParam+"    后台报错操作名："+activity.operatorName }}</div>
+          <div calss="contentMsg">{{ "报错类："+activity.eClass+"     后台报错方法："+activity.eMethod+"    后台报错名称："+activity.eName+"    后台报错参数："+activity.eParam+"    后台报错操作名："+activity.operatorName }}</div>
         </el-timeline-item>
       </el-timeline>
     </el-row>
@@ -117,19 +117,59 @@ export default {
       // line-height: 32px;
       box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.06);
       border-radius: 32px;
+      >>>.iconfont{
+        font-size: 12px;
+        margin-right:8px;
+        line-height: 32px;
+      }
     }
   }
   .content {
+    &::-webkit-scrollbar {
+      width: 5px;
+      background-color: transparent;
+    }
+    /* 滚动条中能上下移动的小块 */
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 5px;
+    }
+    /* scroll轨道背景 */
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background-color: transparent;
+    }
+    &:hover {
+      overflow-y: auto;
+    }
     padding: 32px 200px 32px 232px;
-    overflow-y: auto;
+
     .el-timeline-item {
       height: 50px;
-      font-weight: bold;
+      // font-weight: bold;
       >>> .el-timeline-item__timestamp.is-bottom {
         margin-top: 0;
       }
+      >>> .el-timeline-item__content {
+        color: #909399;
+      }
     }
+    .el-timeline > .el-timeline-item:first-child {
+      >>> .el-timeline-item__content {
+        color: #292929 !important;
+      }
 
+      .date {
+        color: #379efc;
+        border: 1px solid #379efc;
+      }
+      .time {
+        color: #292929 !important;
+      }
+      .contentMsg {
+        color: #292929 !important;
+      }
+    }
     .date {
       position: absolute;
       left: -240px;
@@ -138,15 +178,22 @@ export default {
       font-weight: 900;
       height: 40px;
       border-radius: 4px;
-      border: 1px solid #379efc;
+      border: 1px solid #c1cee0;
       line-height: 24px;
       padding: 8px;
-      color: #379efc;
+      color: #c1cee0;
       top: -11px;
     }
+
     .time {
       position: absolute;
       left: -80px;
+    }
+    .contentMsg {
+      color: #909399;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      font-size: 14px;
     }
   }
 }
