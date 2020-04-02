@@ -5,7 +5,7 @@
         <el-row>
           <el-col :xl="{span:4}" :lg="{span:6}">
             <el-form-item label="关键字：">
-              <el-input v-model="filters.assetNo" style="background:transparent" placeholder="请输入角色名称" />
+              <el-input v-model="filters.code" style="background:transparent" placeholder="请输入备件编码" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:6}">
@@ -261,7 +261,7 @@ export default {
       const param = {
         pageNum: this.pageNumber,
         pageSize: this.pageSize,
-        assetName: this.filters.assetNo,
+        code: this.filters.code,
         assetItemType: this.itemTypesArr,
         checkStatus: '1',
         houseIds: this.filters.houseIds
@@ -272,13 +272,14 @@ export default {
         if (response.code === 0) {
           if (response.data === '') {
             this.tableData = []
+            this.totalCount = 0
           } else {
             this.tableData = response.data.assetList.map(item => {
               if (item.assetInfo === undefined) item.assetInfo = {}
               return item
             }) || []
+            this.totalCount = Number(response.data.count)
           }
-          this.totalCount = Number(response.data.count)
         } else {
           this.$message.error(response.msg)
         }
@@ -296,7 +297,7 @@ export default {
         houseIds: this.filters.houseIds
       }
       queryByWarehouseAsset(param2).then(response => {
-        if (response.success === true) {
+        if (response.code === 0) {
           this.tableDataExport = response.data.assetList.map(item => {
             if (item.assetInfo === undefined) item.assetInfo = {}
             return item

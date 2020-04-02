@@ -106,12 +106,17 @@ export default {
         sortColumn: 'create_time',
         sortOrder: 'desc'
       }
+      // console.log('--------', this.$store.state.assetsData.assetsId)
+      // if (this.$store.state.assetsData.assetsId !== '') {
+      //   param.ids = this.$store.state.assetsData.assetsId
+      // }
       this.tableloading = true
       getAssetsList(param).then(response => {
         this.tableloading = false
         if (response.code === 0) {
           this.tableDate = response.data.list instanceof Array ? response.data.list : []
           this.totalNum = Number(response.data.totalNum)
+          this.$store.commit('changeAssetId', '')
         } else {
           this.$message.error(response.msg)
         }

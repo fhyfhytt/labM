@@ -52,13 +52,18 @@
 import { queryByWarehouseAsset } from '@/api/asstesManagement'
 import addFilters from '../../components/addFiltersType'
 export default {
-
   components: { addFilters },
+  props: {
+    houseId: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       pageSize: 10,
       pageNumber: 1,
-      total: 1,
+      total: 0,
       tableDate: [],
       row: {}, // 编辑初始化内容
       loading: true,
@@ -76,7 +81,6 @@ export default {
     }
   },
   mounted() {
-    this.getList()
   },
   methods: {
     // 选择筛选条件
@@ -104,21 +108,26 @@ export default {
       const params = {
         pageSize: this.pageSize,
         pageNum: this.pageNumber,
-        assetNo: this.assetNo,
-        itemTypes: this.itemTypes
+        houseId: this.houseId,
+        checkStatus: '1'
       }
       queryByWarehouseAsset(params).then(response => {
         if (response.code === 0) {
           this.loading = false
-          this.tableDate = response.data.assetList.map(item => {
-            item.assetNo = item.assetInfo.assetNo || ''
-            item.assetName = item.assetInfo.assetName || ''
-            item.itemType = item.assetInfo.itemType || ''
-            item.unitType = item.assetInfo.unitType || ''
-            item.factory = item.assetInfo.factory || ''
-            return item
-          }) || []
-          this.total = Number(response.data.count)
+          if (response.data === '') {
+            this.tableDate = []
+            this.total = 0
+          } else {
+            this.tableDate = response.data.assetList.map(item => {
+              item.assetNo = item.assetInfo.assetNo || ''
+              item.assetName = item.assetInfo.assetName || ''
+              item.itemType = item.assetInfo.itemType || ''
+              item.unitType = item.assetInfo.unitType || ''
+              item.factory = item.assetInfo.factory || ''
+              return item
+            }) || []
+            this.total = Number(response.data.count)
+          }
         } else {
           this.$message.error(response.msg)
         }

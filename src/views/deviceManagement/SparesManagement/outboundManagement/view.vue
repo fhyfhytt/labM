@@ -5,7 +5,7 @@
         <el-row style="margin-bottom:15px;margin-right:10px;">
           <el-col :xl="{span:5}" :lg="{span:6}">
             <el-form-item label="关键字：">
-              <el-input v-model="filters.no" placeholder="请输入角色名称" />
+              <el-input v-model="filters.no" placeholder="请输入关键字" />
             </el-form-item>
           </el-col>
           <el-col :xl="{span:5, offset:1}" :lg="{span:6}">
@@ -18,7 +18,7 @@
           <el-col :xl="{span:5, offset:1}" :lg="{span:6}">
             <el-form-item label="出库状态：">
               <el-select v-model="filters.status" popper-class="select-option" clearable placeholder="-请选择-">
-                <el-option v-for="item in outboundStatusList" :key="item.code" :label="item.name" :value="item.code" />
+                <el-option v-for="item in outboundStatusList" :key="item.code" :label="item.name" :value="item.name" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -28,6 +28,21 @@
                 <el-option v-for="item in houseList" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </el-form-item>
+            <!-- <el-form-item label="所属库房：" class="selfStyle">
+              <el-select ref="selectReport" v-model="welcomeReport.reportName" placeholder="请选择报表路径">
+                <el-option :value="welcomeReport.reportId" :label="welcomeReport.reportName" style="height:200px;overflow: auto;background-color:#fff">
+                  <el-tree
+                    :data="data"
+                    :props="defaultProps"
+                    show-checkbox
+                    default-expand-all
+                    node-key="id"
+                    highlight-current
+                    @node-click="handleNodeClick"
+                  />
+                </el-option>
+              </el-select>
+            </el-form-item> -->
           </el-col>
         </el-row>
         <el-row>
@@ -75,7 +90,8 @@
           <el-table-column type="index" label="编号" />
           <el-table-column label="出库单编号">
             <template slot-scope="scope">
-              <a style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.no }}</a>
+              <a v-if="scope.row.status === '已出库'" style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleDetail(scope.$index, scope.row)">{{ scope.row.no }}</a>
+              <a v-if="scope.row.status === '待出库'" style="cursor:pointer;color: #01AAED;text-decoration: underline;}" @click.stop="handleEdit(scope.$index, scope.row)">{{ scope.row.no }}</a>
             </template>
           </el-table-column>
           <el-table-column prop="type" label="出库类型" />
@@ -121,8 +137,9 @@ export default {
   components: { addMoudel, confirmDialog },
   data() {
     return {
+      welcomeReport: {},
       addFiltersVisible: false,
-      filters: { startTime: '', endTime: '' },
+      filters: { startTime: '', endTime: '', status },
       houseList: [], // 所属库房
       outboundStatusList: [], // 出库状态
       outboundTypeList: [], // 出库类型
@@ -144,7 +161,46 @@ export default {
       addFlag: false, // 新增完成标识
       multipleSelection: [], // 选择的table数据的对象组成的数组
       defaultStartTime: '',
-      defaultEndTime: ''
+      defaultEndTime: '',
+      data: [{
+        id: 1,
+        label: '一级 1',
+        children: [{
+          id: 4,
+          label: '二级 1-1',
+          children: [{
+            id: 9,
+            label: '三级 1-1-1'
+          }, {
+            id: 10,
+            label: '三级 1-1-2'
+          }]
+        }]
+      }, {
+        id: 2,
+        label: '一级 2',
+        children: [{
+          id: 5,
+          label: '二级 2-1'
+        }, {
+          id: 6,
+          label: '二级 2-2'
+        }]
+      }, {
+        id: 3,
+        label: '一级 3',
+        children: [{
+          id: 7,
+          label: '二级 3-1'
+        }, {
+          id: 8,
+          label: '二级 3-2'
+        }]
+      }],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      }
     }
   },
   computed: {
@@ -204,6 +260,17 @@ export default {
     this.getNowMonthDate()
   },
   methods: {
+    // handleNodeClick: function(node) {
+    //   console.log(node, 'node')
+    //   if (node.children) {
+
+    //   } else {
+    //     this.welcomeReport.reportId = node.url
+    //     this.welcomeReport.reportName = node.label
+    //     this.$refs.selectReport.blur()
+    //     console.log(this.welcomeReport.reportName, 'this.welcomeReport.reportName')
+    //   }
+    // },
     getNowMonthDate() {
       var date = new Date()
       var year = date.getFullYear() + ''
@@ -248,6 +315,7 @@ export default {
       param.pageNumber = this.pageNumber
       param.pageSize = this.pageSize
       param.itsmUserid = localStorage.getItem('login-id')
+      if (param.status === '') this.$delete(param, 'status')
       this.loading = true
       selectOuthouse(param).then(response => {
         this.loading = false
@@ -297,13 +365,23 @@ export default {
     cancelAllBtn() {
       this.confirmAllVisible = false
     },
+    // 出库单详情
+    handleDetail(index, row) {
+      this.$router.push({
+        path: '/deviceManagement/sparesManagement/outboundDetail',
+        query: {
+          type: row.type,
+          no: row.no
+        }
+      })
+    },
     // 编辑弹出编辑页面moudel框
     handleEdit(index, row) {
       var data = JSON.parse(JSON.stringify(row))
-      this.dialogName = '资产详情'
+      this.dialogName = '出库单编辑'
       this.addFormVisible = true
       this.addFlag = true
-      this.$nextTick(() => {
+      this.$nextTick(function() {
         this.$refs.addEditRole.addEditRoleDialog(data)
       })
     },

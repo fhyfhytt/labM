@@ -117,6 +117,16 @@ const deviceControlRouter = {
         roles: ['OutboundManagement']
       },
       name: 'OutboundManagement'
+    }, {
+      path: 'outboundDetail',
+      component: () => import('@/views/deviceManagement/SparesManagement/outboundManagement/components/detail.vue'),
+      meta: {
+        title: '出库单详情',
+        icon: 'icon111',
+        roles: ['OutboundManagement']
+      },
+      name: 'outboundDetail',
+      hidden: true
     }]
   }]
 

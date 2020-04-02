@@ -17,7 +17,7 @@
     <el-table v-loading="loading" :data="tableDate" empty-text="无数据">
       <el-table-column prop="userCode" label="工号" />
       <el-table-column prop="name" label="责任人" />
-      <el-table-column prop="deptId" label="责任组织" />
+      <el-table-column prop="deptName" label="责任组织" />
       <el-table-column label="操作">
         <template slot-scope="scope">
           <a style="cursor:pointer;color: #01AAED;font-size:25px;}" @click="handleChoose(scope.row)"><i class="el-icon-plus" /></a>
