@@ -9,7 +9,7 @@
             仓库
           </div>
           <div class="search-hourse">
-            <input v-model="inputContent" type="text" name="" class="search-input">
+            <input v-model.trim="inputContent" type="text" name="" class="search-input" @focus="focus" @blur="blur">
             <i class="iconfont iconsousuo1 hoursesousuo" @click="searchWarehourse()" />
           </div>
           <div class="kufanglist">
@@ -22,21 +22,23 @@
       </el-col>
       <el-col :xl="{span:21}" :lg="{span:19}" class="right-page">
         <div class="rightTop">
-          <input v-model="searchHourseItem" type="text" name="" class="rightInput" style="border: none">
+          <input v-model.trim="searchHourseItem" type="text" name="" class="rightInput" style="border: none" @focus="focus1" @blur="blur1">
           <i class="iconfont iconsousuo1 posisousuo" @click="searchHourse()" />
           <i class="iconfont iconxinzeng iconStyle" @click="showAddBounced()" />
           <i class="iconfont iconStyle" @click="importHourse()">&#xe6b2;</i>
           <i class="iconfont iconxingzhuang1 iconStyleDel" @click="deleteWareHourse(checkHourseItem)" />
         </div>
         <div class="content">
-          <div v-for="(item,index) in hourseInfo" :key="index" class="contentItem">
-            <div class="face" @mouseover="ShowBounced(index)">
-              <img :src="item.defaultImg">
+          <div v-for="(item,index) in hourseInfo" :key="index" class="flip-container">
+            <div class="flipper">
+              <div class="front" @mouseover="ShowBounced(index)">
+                <img :src="item.defaultImg">
+              </div>
+              <!-- 库房点击详情弹框 -->
+              <ItemBounced v-if="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
             </div>
-            <!-- 库房点击详情弹框 -->
-            <ItemBounced v-show="index===showbouncedItx" class="back" :hourseitem="showNowhourse" @deleteWare="deleteWareHourse" />
             <el-checkbox-group v-model="checkHourseItem" class="checkbox">
-              <el-checkbox :key="item.id" v-model="item.id" :checked="item.checked" :label="item.id" :disabled="item.disabled">编号:{{ item.code }}</el-checkbox>
+              <el-checkbox :key="item.id" v-model="item.id" :checked="item.checked" class="checkscolor" :class="{checkcolor: index === showbouncedItx}" :label="'编号：'+item.code" :disabled="item.disabled" />
             </el-checkbox-group>
           </div>
         </div>
@@ -47,7 +49,6 @@
             :page-size="100"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
-            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
         </footer>
@@ -64,8 +65,8 @@ import { editWarehourse, deleteWarehourse, getWarehouseList, getAllWarehouse } f
 import allware from '@/assets/img/warehourse/allware.png'
 import fullware from '@/assets/img/warehourse/fullware.png'
 import halfware from '@/assets/img/warehourse/halfware.png'
-import addMoudel from './addMoudel.vue'
-import ItemBounced from './itemBounced'
+import addMoudel from './components/addMoudel.vue'
+import ItemBounced from './components/itemBounced'
 export default {
   components: {
     addMoudel,
@@ -156,27 +157,36 @@ export default {
     },
     // 删除库房
     deleteWareHourse(id) {
-      this.$confirm('是否确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const param = {
-          ids: id.toString()
-        }
-        deleteWarehourse(param).then(response => {
-          if (response.code === 0) {
-            this.$message({
-              type: 'success',
-              message: '删除成功'
-            })
-            this.getList()
-          }
-        }).catch((e) => {
-          console.log(e)
+      if (!id.toString()) {
+        this.$confirm('请选择要删除的库位', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-      }).catch(() => {
-      })
+        return
+      } else {
+        this.$confirm('是否确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const param = {
+            ids: id.toString()
+          }
+          deleteWarehourse(param).then(response => {
+            if (response.code === 0) {
+              this.$message({
+                type: 'success',
+                message: '删除成功'
+              })
+              this.getList()
+            }
+          }).catch((e) => {
+            console.log(e)
+          })
+        }).catch(() => {
+        })
+      }
     },
     // 新增/修改
     updateWarehourse(param) {
@@ -209,20 +219,44 @@ export default {
     importHourse() {},
     // 搜索库房
     searchWarehourse() {
-      this.wareHourseParam.name = this.inputContent
-      this.getwarehouseList()
+      if (!this.inputContent) {
+        this.$alert('请输入要查询的仓库名称', '提示', {
+          confirmButtonText: '确定'
+        })
+      } else {
+        this.wareHourseParam.name = this.inputContent
+        this.getwarehouseList()
+      }
     },
     // 搜索库位
     searchHourse() {
-      this.listParam.name = this.searchHourseItem
-      this.getList()
+      if (!this.searchHourseItem) {
+        this.$alert('请输入要查询的库位名称', '提示', {
+          confirmButtonText: '确定'
+        })
+      } else {
+        this.listParam.name = this.searchHourseItem
+        this.getList()
+      }
     },
     handleCurrentChange(val) {
       this.listParam.pageNumber = val
       this.getList()
     },
-    handleSizeChange(val) {
-      console.log(val)
+    // 聚焦时修改输入框按钮样式
+    focus() {
+      $('.hoursesousuo').css('color', '#379EFC')
+    },
+    blur() {
+      $('.hoursesousuo').css('color', '#C8C9D2')
+    },
+    focus1() {
+      $('.posisousuo').css('color', '#fff')
+      $('.posisousuo').css('background', '#389DFA')
+    },
+    blur1() {
+      $('.posisousuo').css('color', '#5D99D9')
+      $('.posisousuo').css('background', '#E7F3FF')
     },
     // 点击左侧list
     changeList(index) {
@@ -250,10 +284,10 @@ export default {
       position: relative;
       padding: 10px 0;
       display: inline-block;
-      width: 200px;
+      width: 100%;
       .search-input{
         height: 30px;
-        width: 170px;
+        width: 85%;
         border-radius: 20px;
         padding: 10px;
         padding-right: 30px;
@@ -265,16 +299,12 @@ export default {
         color: #C1CEE0;
         position: absolute;
         right: 20px;
-        top: 17px;
+        top: 16px;
         cursor: pointer;
         &:hover{
-          color: #379EFC;
+          color: #379EFC!important;
         }
       }
-    }
-    .kufanglist::-webkit-scrollbar{
-      width: 4px;
-      background: #8C8B8E;
     }
     .kufanglist{
       overflow: hidden;
@@ -290,6 +320,10 @@ export default {
           border-right: 4px solid #379EFC;
         }
       }
+      &::-webkit-scrollbar{
+        width: 4px;
+        background: #8C8B8E;
+      }
     }
   }
   .rightTop{
@@ -297,7 +331,7 @@ export default {
     right: 0;
     .rightInput{
       width: 324px;
-      height: 30px;
+      height: 40px;
       border-radius: 20px;
       padding: 0 30px 0 10px;
       outline: none;
@@ -329,18 +363,18 @@ export default {
     .posisousuo{
       position: absolute;
       right: 100px;
-      top: 1px;
+      top: 4px;
       color: #5D99D9;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: #E7F3FF;
       text-align: center;
-      padding: 5px;
+      padding: 7px;
       cursor: pointer;
       &:hover{
-        background: #389DFA;
-        color: #fff;
+        background: #389DFA!important;
+        color: #fff!important;
       }
     }
   }
@@ -348,40 +382,51 @@ export default {
     margin: 30px 0;
     overflow: hidden;
     overflow-y: scroll;
-    .contentItem{
-      display: inline-block;
-      margin: 10px;
-      position: relative;
-      width: 200px;
-      height: 200px;
-      .face,.back{
-        width: 180px;
-        height: 170px;
-        display: inline-block;
-        backface-visibility: hidden;
-        transform-style: preserve-3d;
-        transition: all 2s;
-        img{
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .face{transform: rotateY(0deg);}
-      .back{transform: perspective(200px) rotateY(-180deg);}
-      .checkbox{
-        margin-top: 17px;
-      }
-      &:hover .face{
-        transform: rotateY(180deg);
-      }
-      &:hover .back{
-        transform: rotateY(0deg);
-      }
-    }
+    width: 100%;
+    height: 100%;
   }
   .footer{
     bottom: 0;
     right: 0;
     position: absolute;
   }
+.flip-container {
+  display: inline-block;
+  margin: 10px 0 0 20px;
+  position: relative;
+  width: 23%;
+  height: 28%;
+  .checkbox{
+    margin-top: 17px;
+    .checkscolor{
+      color: #B8B9BD;
+    }
+    .checkcolor{
+      color: #2A2A2C;
+    }
+  }
+}
+.flip-container:hover .flipper, .flip-container.hover .flipper {
+	transform: rotateY(-180deg);
+}
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+	position: relative;
+  height: 100%;
+  .front, .back {
+    backface-visibility: hidden;
+    width: 75%;
+    height: 95%;
+    display: inline-block;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .back {
+    transform: rotateY(-180deg);
+  }
+}
+
 </style>

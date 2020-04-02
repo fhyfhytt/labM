@@ -5,7 +5,6 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-// import WarehourseManage from './modules/WarehourseManage'
 // import tunnelControlRouter from './modules/tunnelControl'
 // import projectManageControl from './modules/projectManageControl'
 // import eventMonitoring from './modules/eventMonitoring'
@@ -113,7 +112,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  // WarehourseManage,
   manageControlRouter,
   deviceControlRouter,
   { path: '*', redirect: '/404', hidden: true }
