@@ -18,9 +18,13 @@
       </el-form>
     </div>
     <div class="tablediction">
-      <div class="button-tool" style="float:left">
-        <el-button icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-        <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+      <div class="button-tool">
+        <div class="button-tool-left fl" />
+        <div class="button-tool-right fr">
+          <el-button icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+          <el-button icon="iconfont iconxingzhuang1 " size="small" @click="handleSelectDel">批量删除</el-button>
+        </div>
+
       </div>
       <div class="Look-tale">
         <el-table ref="multipleDel" v-loading="loading" :data="SontableData" style="width: 100%" height="332" @selection-change="handleSelectionChange">
@@ -46,11 +50,11 @@
       <baseConfirm @sureMsg="sureMsg" @confireMsg="confireMsg" />
     </el-dialog>
     <!--新增界面-->
-    <el-dialog v-if="SonaddFormVisible" v-model="SonaddFormVisible" append-to-body title="新建字典子项" :close-on-click-modal="false" :visible.sync="SonaddFormVisible" class="deviceAdd newLookadd" width="550px">
+    <el-dialog v-if="SonaddFormVisible" v-model="SonaddFormVisible" append-to-body title="新建字典子项" :close-on-click-modal="false" :visible.sync="SonaddFormVisible" class="deviceAdd newLookadd" style="margin-top:15vh;" width="550px">
       <SonAddMoudel :dict-id="dictId" @Sonaddclose="Sonaddclose" @resGetSontable="resGetSontable" />
     </el-dialog>
     <!--编辑界面-->
-    <el-dialog v-if="SoneditFormVisible" v-model="SoneditFormVisible" append-to-body title="编辑字典子项" :close-on-click-modal="false" :visible.sync="SoneditFormVisible" class="deviceAdd newLookadd" width="550px">
+    <el-dialog v-if="SoneditFormVisible" v-model="SoneditFormVisible" append-to-body title="编辑字典子项" :close-on-click-modal="false" :visible.sync="SoneditFormVisible" class="deviceAdd newLookadd" style="margin-top:15vh;" width="550px">
       <SoneditMoudel :dict-id="dictId" :parent-name="parentName" :looklist="Looklist" @Soneditclose="Soneditclose" @resGetSontable="resGetSontable" />
     </el-dialog>
   </div>
@@ -102,10 +106,10 @@ export default {
       dictConnSelect(param).then(response => {
         this.loading = false
         if (response.success === true) {
-        //   this.SontableData = response.data.sysDictItems
+          //   this.SontableData = response.data.sysDictItems
           this.formDiction = response.data.sysDict
           this.SontableData = response.data.sysDictItems
-        //   this.SontableData.unshift(response.data.sysDict)
+          //   this.SontableData.unshift(response.data.sysDict)
         } else {
           this.$message.error(response.data)
         }
@@ -204,89 +208,84 @@ export default {
 </script>
 
 <style lang="scss">
-.DictionarysLook{
-   .lookTop{
+.DictionarysLook {
+  .lookTop {
     //   height: 100px;
-      padding-top:18px;
-      margin-left:-4px;
-      margin-bottom: -4px;
-      .el-input__inner {
-          height: 32px;
-          width: 166px;
-        }
-        .el-form-item__label{
-          color: #292929;
-          font-family:"微软雅黑";
-          font-weight:400;
-        }
-        .el-input--small .el-input__inner {
-        background-color: transparent;
-        font-family:"微软雅黑";
-        font-weight:400;
-        border:1px solid #D8DCE6;
-        &:focus {
-          border:1px solid #379EFC;
-        }
-      }
-       .el-input--small.is-focus .el-input__inner {
-        background-color: transparent;
-        font-family:'微软雅黑';
-        font-weight:400;
-        border:1px solid rgba(80,220,245,1);
-      }
-      input::-webkit-input-placeholder {
-        opacity: 0.5;
-        font-size: 12px;
-      }
-      .el-textarea.is-disabled .el-textarea__inner {
-          background-color: transparent;
-          border:1px solid #D8DCE6;
-          font-weight:400;
-          height: 60px;
-      }
-   }
-   .tablediction{
-       .Look-tale{
-           margin: 5px 20px;
-       }
-       .el-table{
-            border-radius: 5px;
-            border: 1px solid #379EFC;
-            .cell{
-                border-bottom:1px solid #379EFC
-            }
-            .el-table th>.cell{
-                border: none
-            }
-       }
-       .button-tool{
-         margin-left: 20px;
-         margin-top:-5px;
-         margin-bottom: 5px
-        // margin: -5px auto 5px auto
-       }
-       .scope-caozuo{
-          margin-left: 12px;
-          margin-right:8px;
-          cursor: pointer;
-       }
-   }
-   .dialog-footer{
-       text-align: right;
-       margin-top: 9px !important;
-   }
-   input::-webkit-input-placeholder {
-      opacity: 0.5;
-   }
-   .el-textarea.el-input--medium .el-textarea__inner {
-      height: 80px;
-   }
-   textarea::-webkit-input-placeholder {
-      opacity: 0.5;
+    padding-top: 18px;
+    margin-left: -4px;
+    margin-bottom: -4px;
+    .el-input__inner {
+      height: 32px;
+      width: 166px;
     }
+    .el-form-item__label {
+      color: #292929;
+      font-family: '微软雅黑';
+      font-weight: 400;
+    }
+    .el-input--small .el-input__inner {
+      background-color: transparent;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      border: 1px solid #d8dce6;
+      &:focus {
+        border: 1px solid #379efc;
+      }
+    }
+    .el-input--small.is-focus .el-input__inner {
+      background-color: transparent;
+      font-family: '微软雅黑';
+      font-weight: 400;
+      // border:1px solid rgba(80,220,245,1);
+    }
+    input::-webkit-input-placeholder {
+      opacity: 0.5;
+      font-size: 12px;
+    }
+    .el-textarea.is-disabled .el-textarea__inner {
+      background-color: transparent;
+      border: 1px solid #d8dce6;
+      font-weight: 400;
+      height: 60px;
+    }
+  }
+  .tablediction {
+    .Look-tale {
+      margin: 5px 20px;
+    }
+    .el-table {
+      border-radius: 5px;
+      // border: 1px solid #379EFC;
 
-}
-    .newLookadd.el-dialog__wrapper .el-dialog{
-        height: 325px!important;
+      .el-table th > .cell {
+        border: none;
+      }
     }
+    .button-tool {
+      overflow: auto;
+      width: 100%;
+    }
+    .scope-caozuo {
+      margin-left: 12px;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+  }
+  .dialog-footer {
+    text-align: right;
+    margin-top: 9px !important;
+  }
+  input::-webkit-input-placeholder {
+    opacity: 0.5;
+  }
+  .el-textarea.el-input--medium .el-textarea__inner {
+    height: 80px;
+  }
+  textarea::-webkit-input-placeholder {
+    opacity: 0.5;
+  }
+}
+.newLookadd.el-dialog__wrapper .el-dialog {
+  height: 325px !important;
+}
 </style>

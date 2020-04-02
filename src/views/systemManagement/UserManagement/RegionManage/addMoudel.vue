@@ -25,7 +25,7 @@
                 <el-input v-model="baseInfo.name" placeholder="请输入数据域名称" />
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col :span="20">
               <el-form-item label="描述 :" prop="description">
                 <el-input v-model="baseInfo.description" type="textarea" autocomplete="off" placeholder="请输入角色备注" />
               </el-form-item>
@@ -793,7 +793,7 @@ export default {
 <style lang="scss" scoped>
 .roleManage-addRole {
   .el-steps--simple {
-    padding: 17px 20px;
+    padding: 17px 60px;
     margin-bottom: 30px;
     >>> .is-wait {
       .icontext {

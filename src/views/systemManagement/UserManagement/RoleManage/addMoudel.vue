@@ -523,7 +523,7 @@ export default {
 <style lang="scss" scoped>
 .roleManage-addRole {
   .el-steps--simple {
-    padding: 17px 20px;
+    padding: 17px 60px;
     margin-bottom: 30px;
     >>> .is-wait {
       .icontext {

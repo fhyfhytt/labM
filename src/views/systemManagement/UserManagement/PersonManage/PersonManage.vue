@@ -299,13 +299,9 @@ export default {
 }
 </script>
 <style lang="scss">
-// .typeInfoAdd .el-dialog__title{
-//         color:#379EFC
-//       }
+
 .UserManage {
-  .typeInfoAdd .el-dialog__title {
-    color: #379EFC;
-  }
+
   .UserManage-title {
     margin: 1%;
     // padding-left:20px;
@@ -356,11 +352,6 @@ export default {
     //     border: none
     //   }
   }
-  .childrenlog {
-    .dialog-footer {
-      text-align: center;
-    }
-  }
   .el-table .cell {
     height: 43px;
     line-height: 43px;
@@ -374,7 +365,6 @@ export default {
   }
 }
 .userAdd {
-
   .el-dialog {
     margin-top: 10vh !important;
     .el-dialog__body {

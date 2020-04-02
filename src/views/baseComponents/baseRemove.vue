@@ -38,6 +38,7 @@ export default {
   .el-dialog__title{
     color: #5B92FF;
     font-size: 16px;
+    font-weight: bold;
     line-height: 34px;
   }
     .bkb{

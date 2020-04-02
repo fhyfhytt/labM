@@ -102,7 +102,7 @@
               </el-col>
             </el-row>
           </el-form>
-          <div class="dialog-footer">
+          <div class="dialog-footer firstFoot">
             <el-button v-preventReClick="1000" size="small" class="button-sub" @click.native="submitUserForm('addForm')">下一步</el-button>
           </div>
         </div>
@@ -725,6 +725,9 @@ export default {
   width: 100%;
 }
 .UserManage-add {
+  .firstFoot{
+    padding: 0 60px !important;
+  }
   //树形选择框
   .avatar-uploader:hover .mask {
     display: flex;
@@ -805,7 +808,7 @@ export default {
   }
 
   .el-steps--simple {
-    padding: 17px 20px;
+    padding: 17px 60px;
     margin-bottom: 30px;
     >>> .is-wait {
       .icontext {
@@ -857,7 +860,7 @@ export default {
     }
     .el-upload__tip {
       font-size: 12px;
-      color: #606266;
+      color: #b1b1b1;
       margin-top: 7px;
       position: absolute;
       white-space: nowrap;
@@ -868,7 +871,7 @@ export default {
     }
     .el-upload__tip2 {
       font-size: 12px;
-      color: #606266;
+      color: #b1b1b1;
       margin-top: 7px;
       position: absolute;
       white-space: nowrap;

@@ -67,7 +67,11 @@
   padding: 0 ;
 }
 .vue-treeselect__multi-value-item{
+  color:#379EFC;
   padding: 0 ;
+}
+.vue-treeselect__value-remove{
+  color:#379EFC;
 }
 .vue-treeselect__limit-tip-text{
   margin:0;
@@ -83,6 +87,10 @@
 
 .vue-treeselect__control-arrow{
   display: none;
+}
+.vue-treeselect__checkbox--checked{
+  border-color: #379EFC;
+  background: #379EFC;
 }
 .pan-btn {
   font-size: 14px;
@@ -350,6 +358,8 @@
     }
     .el-dialog__title {
       line-height: 50px;
+      font-size: 16px;
+      font-weight: bold;
       color: #fff;
     }
 
@@ -359,6 +369,7 @@
     padding: 30px 20px;
     .dialog-footer {
       margin-top: 20px;
+      
       text-align: right;
     }
   }
@@ -369,6 +380,9 @@
   color: #292929;
   height: 32px;
   line-height: 32px;
+}
+.el-input.is-disabled .el-input__inner{
+  color:#292929;
 }
 .el-input--medium .el-input__inner::-webkit-input-placeholder,
 .el-textarea__inner::-webkit-input-placeholder {

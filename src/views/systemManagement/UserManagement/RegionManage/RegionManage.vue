@@ -32,7 +32,7 @@
                     <el-input v-model="formRegion.name" style="background:transparent;width:150px;" placeholder="请输入数据域名称" />
                   </el-form-item>
                   <el-form-item>
-                    <el-button v-permission="'regionSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
+                    <el-button v-permission="'regionSearch'" style="margin-left:11px;" size="small" class="button-sub" @click="searchData">查询</el-button>
                   </el-form-item>
                 </el-row>
               </el-form>
@@ -521,7 +521,7 @@ export default {
         line-height: 34px;
         .el-dialog__title{
           color: #379EFC;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: bold;
           line-height: 34px;
         }

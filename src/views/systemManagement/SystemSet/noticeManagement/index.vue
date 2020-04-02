@@ -13,7 +13,7 @@
           <el-date-picker v-model="startMsgTime" type="date" placeholder="选择开始日期时间" prefix-icon="iconfont iconrili" />
         </div>
         <span class="toGo">至</span>
-        <div class="inb" style="margin-right:24px;">
+        <div class="inb" style="margin-right:21px;">
           <el-date-picker v-model="endMsgTime" type="date" placeholder="选择结束日期时间" prefix-icon="iconfont iconrili" />
         </div>
         <el-button v-permission="'noticeSearch'" size="small" class="button-sub searchs" @click="searchMsg">查询</el-button>
@@ -325,6 +325,8 @@ export default {
   .page-title {
     flex-direction: column;
     justify-content: center;
+    flex-shrink: 0;
+    height: 100px;
     .el-row {
       width: 100%;
       padding: 10px 30px;

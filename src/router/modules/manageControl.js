@@ -42,6 +42,20 @@ const manageControlRouter = {
       name: 'customerManage'
     },
     {
+      path: 'areaManage',
+      component: () =>
+        import(
+          '@/views/systemManagement/UserManagement/areaManage/view.vue'
+        ),
+      meta: {
+        title: '区域管理',
+        icon: 'icon111',
+        roles: ['areaManage']
+      },
+      name: 'areaManage'
+    },
+
+    {
       path: 'roleManage',
       component: () =>
         import(

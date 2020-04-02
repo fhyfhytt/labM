@@ -14,7 +14,7 @@
           <el-date-picker v-model="startMsgTime" type="date" placeholder="选择开始日期时间" prefix-icon="iconfont iconrili" />
         </div>
         <span class="toGo">至</span>
-        <div class="inb" style="margin-right:24px;">
+        <div class="inb" style="margin-right:21px;">
           <el-date-picker v-model="endMsgTime" type="date" placeholder="选择结束日期时间" prefix-icon="iconfont iconrili" />
         </div>
         <el-button size="small" class="button-sub searchs" @click="searchMsg">查询</el-button>

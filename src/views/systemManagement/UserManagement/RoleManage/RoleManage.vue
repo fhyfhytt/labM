@@ -419,7 +419,7 @@ export default {
       line-height: 34px;
       .el-dialog__title {
         color: #379efc;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
         line-height: 34px;
       }

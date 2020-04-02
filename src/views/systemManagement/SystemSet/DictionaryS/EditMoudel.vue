@@ -120,7 +120,7 @@ export default {
     width: 166px;
    }
    .el-form-item__label{
-     color:#379EFC;
+     color:#292929;
    }
    //input框间隔
    .el-form-item {

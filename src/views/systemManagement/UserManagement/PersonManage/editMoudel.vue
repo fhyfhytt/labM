@@ -66,7 +66,7 @@
                   >
                     <img v-if="editForm.avatar" :src="avatar.url" class="avatar">
                     <img v-else :src="header" class="avatar" alt="">
-                    <div v-if="tip" class="mask"><i :class="iconcass" /></div>
+                    <div v-if="tip" class="mask"><i :class="iconclass" /></div>
                     <div v-if="!tip" class="mask" @click.stop="deleteAvatar"><i class="iconfont iconxingzhuang1" /></div>
                     <div v-if="tip" slot="tip" class="el-upload__tip">可拖拽上传jpg/png文件，且不超过500kb</div>
                     <!-- <div v-if="!tip" slot="tip" class="el-upload__tip2">删除</div> -->
@@ -100,7 +100,7 @@
               </el-col>
             </el-row>
           </el-form>
-          <div class="dialog-footer">
+          <div class="dialog-footer firstFoot">
             <el-button v-preventReClick="1000" size="small" class="button-sub" @click.native="submitUserForm('editForm')">下一步</el-button>
           </div>
         </div>
@@ -236,7 +236,7 @@
 <script>
 import { getOrgTreeNew } from '@/api/userManagement'
 import { setTreeData } from '@/utils/utils'
-import common from '@/utils/common'
+// import common from '@/utils/common'
 import { selectRoleByUserId, selectRegionByUserId, getRegionList, getRoleList, editUserAll } from '@/api/userManagement.js'
 import header from '@/assets/img/header.png'
 export default {
@@ -765,19 +765,21 @@ export default {
       this.iconclass = 'el-icon-loading avatar-uploader-icon'
       return isImage && isLt2M
     }, deleteAvatar() {
-      common.removeFJ(this.avatar).then(res => {
-        if (res.code === 0) {
-          this.$message.success(res.msg)
-          this.avatardisabled = false
-          this.editForm.avatar = ''
-          this.avatar.id = ''
-          this.tip = true
-        } else {
-          throw res
-        }
-      }).catch(res => {
-        this.$message.error(res.msg)
-      })
+      this.$message.success('头像删除成功')
+      this.avatardisabled = false
+      this.editForm.avatar = ''
+      this.avatar.id = ''
+      this.tip = true
+      // common.removeFJ(this.avatar).then(res => {
+      //   if (res.code === 0) {
+      //     this.$message.success(res.msg)
+
+      //   } else {
+      //     throw res
+      //   }
+      // }).catch(res => {
+      //   this.$message.error(res.msg)
+      // })
     },
     getBase64(file) {
       return new Promise(function(resolve, reject) {
@@ -819,6 +821,9 @@ export default {
   padding: 0 60px;
 }
 .UserManage-edit {
+   .firstFoot {
+    padding: 0 60px !important;
+  }
   .avatar-uploader:hover .mask {
     display: flex;
   }
@@ -894,7 +899,7 @@ export default {
     display: none;
   }
   .el-steps--simple {
-    padding: 17px 20px;
+    padding: 17px 60px;
     margin-bottom: 30px;
     >>> .is-wait {
       .icontext {
@@ -946,7 +951,7 @@ export default {
     }
     .el-upload__tip {
       font-size: 12px;
-      color: #606266;
+      color: #b1b1b1;
       margin-top: 7px;
       position: absolute;
       white-space: nowrap;
@@ -957,7 +962,7 @@ export default {
     }
     .el-upload__tip2 {
       font-size: 12px;
-      color: #606266;
+      color: #b1b1b1;
       margin-top: 7px;
       position: absolute;
       white-space: nowrap;

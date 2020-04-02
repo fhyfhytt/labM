@@ -27,7 +27,7 @@
         <el-row>
           <el-col :span="24">
             <div class="right-page-title">
-              <span style="margin-left:40px;margin-right:60px;"><span style="padding-right:10px;">组织编号:</span>{{ selectedCode }}</span>
+              <span style="margin-left:16px;margin-right:60px;"><span style="padding-right:10px;">组织编号:</span>{{ selectedCode }}</span>
               <span style="margin-right:100px;margin-left:40px;"><span style="padding-right:10px;">组织名称:</span>{{ selectedName }}</span>
               <span><span style="padding-right:10px;">描述:</span>{{ selectedDescription }}</span>
             </div>
