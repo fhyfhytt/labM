@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="dialgAddform1">
+  <div class="dialgAddform1">
     <el-form ref="addForm" :model="addForm" label-width="120px" :rules="addFormRules" class="formAdd">
       <el-row class="addtop">
         <el-col :span="12">
@@ -11,8 +11,8 @@
           <el-form-item label="实际位置" prop="position">
             <el-input v-model="addForm.position" autocomplete="off" placeholder="请输入实际位置" />
           </el-form-item>
-          <el-form-item label="库位重量" prop="weight">
-            <el-input v-model="addForm.weight" autocomplete="off" placeholder="请输入库位重量" />
+          <el-form-item label="库位承重" prop="weight">
+            <el-input v-model="addForm.weight" autocomplete="off" placeholder="请输入库位承重" />
           </el-form-item>
         </el-col>
         <el-col :span="12">

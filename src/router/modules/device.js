@@ -163,6 +163,7 @@ const deviceControlRouter = {
       },
       name: 'SparesCheck'
     }, {
+
       path: 'sparesAllocation',
       component: () => import('@/views/deviceManagement/SparesManagement/SparesAllocation/view.vue'),
       meta: {
@@ -171,9 +172,20 @@ const deviceControlRouter = {
         roles: ['SparesAllocation']
       },
       name: 'SparesAllocation'
+    },
+    {
+      path: 'WareHourseManage',
+      component: () => import('@/views/deviceManagement/SparesManagement/WareHourseManage/view.vue'),
+      meta: {
+        title: '入库管理',
+        icon: 'icon111',
+        roles: ['wareHourseManage']
+      },
+      name: 'WareHourseManage'
     }
     ]
   }]
 
 }
+
 export default deviceControlRouter

@@ -31,11 +31,25 @@ export function getWarehouseList(param) {
 }
 
 // 库房列表
-export function getAllWarehouse(param) {
+function getAllWarehouse(param) {
   return request({
     url: '/sysWarehouse/getAllWarehouse',
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     data: param
   })
+}
+
+// 根据id查询库位
+function getWarehouseById(param) {
+  return request({
+    url: '/sysWarehouseLocation/getWarehouseLocationListByWarehouseId',
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: param
+  })
+}
+export {
+  getAllWarehouse,
+  getWarehouseById
 }
