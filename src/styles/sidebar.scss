@@ -86,10 +86,7 @@ padding: 0 10px !important;
       height: 40px;
       line-height: 40px
     }
-    .el-scrollbar__bar.is-vertical {
-      right: 0px;
-      
-    }
+
 
     .el-scrollbar {
       height: 100%;
@@ -98,7 +95,7 @@ padding: 0 10px !important;
 
     &.has-logo {
       .el-scrollbar {
-        height: calc(100% - 64px);
+        height: 100% ;
       }
     }
 
