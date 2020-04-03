@@ -99,6 +99,15 @@ const deviceControlRouter = {
         // roles: ['sparesCheck']
       },
       name: 'SparesCheck'
+    }, {
+      path: 'WareHourseManage',
+      component: () => import('@/views/deviceManagement/SparesManagement/WareHourseManage/view.vue'),
+      meta: {
+        title: '入库管理',
+        icon: 'icon111',
+        roles: ['wareHourseManage']
+      },
+      name: 'WareHourseManage'
     }]
   }]
 

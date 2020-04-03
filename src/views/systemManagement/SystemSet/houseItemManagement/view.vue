@@ -49,6 +49,7 @@
             :page-size="100"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
+            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
         </footer>
@@ -239,6 +240,12 @@ export default {
         this.getList()
       }
     },
+    // 分页
+    handleSizeChange(val) {
+      this.listParam.pageSize = val
+      this.listParam.pageNumber = 1
+      this.getList()
+    },
     handleCurrentChange(val) {
       this.listParam.pageNumber = val
       this.getList()
@@ -276,6 +283,8 @@ export default {
     height: 100%;
     text-align: center;
     padding-top: 10px;
+    box-shadow:0px 3px 20px 0px rgba(0,0,0,0.06);
+    border-radius:8px;
     .cangku{
       float: left;
       padding-left: 20px;
@@ -298,7 +307,7 @@ export default {
       .hoursesousuo{
         color: #C1CEE0;
         position: absolute;
-        right: 20px;
+        right: 26px;
         top: 16px;
         cursor: pointer;
         &:hover{
@@ -309,7 +318,7 @@ export default {
     .kufanglist{
       overflow: hidden;
       overflow-y: auto;
-      height: 100%;
+      height: 90%;
       .hourser-list{
         text-align: left;
         padding-left: 20px;

@@ -1,4 +1,6 @@
+/* jshint esversion: 6 */
 import request from '@/utils/request'
+const querystring = require('querystring')
 
 // 资产台账查询
 export function getAssetsList(data) {
@@ -116,5 +118,65 @@ export function deleteById(data) {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data
+  })
+}
+
+// 备件管理--入库管理
+// 入库信息查询
+export function getGohousePage(data) {
+  return request({
+    url: '/sysWarehouse/getGohousePage',
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: querystring.stringify(data)
+  })
+}
+
+// 交付人查询
+export function getUserList(data) {
+  return request({
+    url: '/user/getUserListCommon',
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: querystring.stringify(data)
+  })
+}
+
+// 保存
+export function saveWarehourse(data) {
+  return request({
+    url: '/sysWarehouse/saveBjXZ',
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: querystring.stringify(data)
+  })
+}
+// 完成入库
+export function complateWare(data) {
+  return request({
+    url: '/sysWarehouse/inBjXZ',
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: querystring.stringify(data)
+  })
+}
+
+// 删除入库信息
+export function deleteWarehouse(data) {
+  return request({
+    url: '/sysWarehouse/deletehouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: querystring.stringify(data)
+  })
+}
+
+// 入库备件查询
+export function getWarehourseByNo(data) {
+  return request({
+    url: '/sysWarehouse/selectByWarehouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: querystring.stringify(data)
   })
 }
