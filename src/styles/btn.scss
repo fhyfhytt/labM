@@ -691,7 +691,10 @@
     }
   }
 }
-.el-scrollbar__bar.is-vertical {
-  right: 0px;
-  width:0px;
+// .el-scrollbar__bar.is-vertical {
+//   right: 0px;
+//   width:0px;
+// }
+.el-input--mini .el-input__icon{
+  line-height: 32px;
 }

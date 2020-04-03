@@ -130,6 +130,16 @@ const manageControlRouter = {
       name: 'houseManagement'
     },
     {
+      path: 'houseItemManagement',
+      component: () => import('@/views/systemManagement/SystemSet/houseItemManagement/view.vue'),
+      meta: {
+        title: '库位管理',
+        icon: 'icon111',
+        roles: ['houseItemManagement']
+      },
+      name: 'houseItemManagement'
+    },
+    {
       path: 'classifyManagement',
       component: () => import('@/views/systemManagement/SystemSet/classifyManagement/view.vue'),
       meta: {

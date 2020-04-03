@@ -227,7 +227,6 @@ export default {
   .tags-view-wrapper {
     >>> .el-scrollbar__view {
       background: #fff !important;
-      // overflow-x: hidden;
     }
     .tags-view-item {
       display: inline-block;

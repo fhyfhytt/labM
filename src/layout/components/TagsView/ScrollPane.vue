@@ -72,8 +72,8 @@ export default {
   white-space: nowrap;
   position: relative;
   overflow: hidden;
-  width: calc(100% );
-  margin: 0 auto;
+  width: 100%;
+  // margin: 0 auto;
   // border-bottom: 1px solid rgb(80,220,245);
   /deep/ {
     .el-scrollbar__bar {
