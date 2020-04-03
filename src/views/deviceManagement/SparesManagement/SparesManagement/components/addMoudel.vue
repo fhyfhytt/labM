@@ -50,9 +50,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="所属库房" prop="area">
+          <el-form-item label="所属库房" prop="houseId">
             <el-select v-model="baseInfo.houseId" popper-class="select-option" clearable placeholder="-请选择-">
-              <el-option v-for="item in houseList" :key="item.code" :label="item.name" :value="item.code" />
+              <el-option v-for="item in houseList" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -71,7 +71,7 @@
         <el-col :span="8">
           <el-form-item label="维保日期">
             <el-date-picker
-              v-model="baseInfo.maintran_date"
+              v-model="baseInfo.maintranDate"
               type="date"
               placeholder="选择日期"
             />
@@ -91,7 +91,7 @@
     </div>
 
     <!-- 操作编码选择 -->
-    <el-dialog title="操作编码选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showCode" :before-close="codeClose" width="40%">
+    <el-dialog title="操作编码选择" :append-to-body="true" :close-on-click-modal="false" :visible.sync="showCode" :before-close="codeClose" width="800px">
       <addCode @resCode="resCode" />
     </el-dialog>
     <!-- 所属区域 -->
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { addOrUpdateWarehouseAsset } from '@/api/asstesManagement'
+import { addOrUpdateWarehouseAsset, getAllWarehouse } from '@/api/asstesManagement'
 import common from '@/utils/common'
 import addCode from './codeList'
 import addFilters from '../../components/addFiltersType'
@@ -122,13 +122,12 @@ export default {
       isRadio: true,
       baseInfo: {}, // 基本信息
       baseInfoRule: {
-        // num: [{ required: true, message: '请输入数量', trigger: ['blur'] }],
-        // assetName: [{ required: true, message: '请输入物资名称', trigger: ['blur'] }],
         status: [{ required: true, message: '请选择物资状态', trigger: ['blur'] }],
+        assetName: [{ required: true, message: '请选择物资名称', trigger: ['blur'] }],
         code: [
           { required: true, validator: checkNull, trigger: 'change' }
         ],
-        area: [
+        houseId: [
           { required: true, validator: checkNull, trigger: 'change' }
         ]
       },
@@ -138,21 +137,11 @@ export default {
         { name: '已过保', value: '2' }
       ], // 维保状态
       goodsStatusList: [], // 物资状态
-
       disabledFlg: false,
       filtersTypeId: [],
       addArea: false,
-
       showCode: false
 
-    }
-  },
-  computed: {
-    houseId: function() {
-      const that = this
-      return this.houseList.filter((item) => {
-        item.name === that.baseInfo.house
-      }).code
     }
   },
   created() {
@@ -169,9 +158,9 @@ export default {
         }
       }
     }).catch(res => {
-      this.$message.error(res.message)
+      this.$message.error(res.msg)
     })
-    common.getDictNameList({ dictName: '所属库房', dictNameIsLike: 0 }).then(res => {
+    getAllWarehouse({}).then(res => {
       if (res.success === true) {
         this.$nextTick(() => {
           this.houseList = res.data
@@ -184,7 +173,7 @@ export default {
         }
       }
     }).catch(res => {
-      this.$message.error(res.message)
+      this.$message.error(res.msg)
     })
   },
   mounted() {
@@ -199,7 +188,6 @@ export default {
           if (valid) {
             const param = that.baseInfo
             param.checkStatus = '0'
-            console.log('param:', param)
             addOrUpdateWarehouseAsset(param).then(response => {
               that.loading = false
               if (response.success === true) {
@@ -241,7 +229,30 @@ export default {
     addEditRoleDialog(data) {
       if (data) {
         this.disabledFlg = true
-        this.baseInfo = data
+        this.baseInfo = {
+          id: data.id,
+          assetId: data.assetId,
+          code: data.code,
+          num: data.num,
+          status: data.status,
+          houseId: data.houseId,
+          house: data.house,
+          note: data.assetInfo.note,
+          dataFrom: data.dataFrom,
+          checkStatus: data.checkStatus,
+          checkNote: data.checkNote,
+          maintranDate: data.maintranDate,
+          maintranStatus: data.maintranStatus,
+          areaId: data.areaId,
+          area: data.area,
+          location: data.location,
+          price: data.price,
+          itemType: data.assetInfo.itemType,
+          assetName: data.assetInfo.assetName,
+          assetNo: data.assetInfo.assetNo,
+          unitType: data.assetInfo.unitType,
+          factory: data.assetInfo.factory
+        }
       } else {
         this.$refs['baseInfo'].resetFields()
         this.disabledFlg = false

@@ -26,7 +26,7 @@
     </div>
 
     <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+      <addFilters ref="addFilters" :component-name="dialogName" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
       itemTypes: '',
       filtersTypeId: [],
       addFiltersVisible: false,
-      dialogName: '',
+      dialogName: '资产分类选择',
       tableDate: [],
       totalNum: 0,
       currentPage: 1,
@@ -106,12 +106,17 @@ export default {
         sortColumn: 'create_time',
         sortOrder: 'desc'
       }
+      // console.log('--------', this.$store.state.assetsData.assetsId)
+      // if (this.$store.state.assetsData.assetsId !== '') {
+      //   param.ids = this.$store.state.assetsData.assetsId
+      // }
       this.tableloading = true
       getAssetsList(param).then(response => {
         this.tableloading = false
         if (response.code === 0) {
           this.tableDate = response.data.list instanceof Array ? response.data.list : []
           this.totalNum = Number(response.data.totalNum)
+          this.$store.commit('changeAssetId', '')
         } else {
           this.$message.error(response.msg)
         }

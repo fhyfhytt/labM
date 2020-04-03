@@ -12,7 +12,18 @@
         :check-strictly="isRadio"
         :props="defaultProps"
         @check-change="handleClick"
-      />
+      >
+        <span slot-scope="{ node, data }" class="custom-tree-node span-ellipsis">
+          <span :title="data.name">
+            <svg class="icon" aria-hidden="true">
+              <use v-if="data.children" xlink:href="#iconzuzhi" />
+              <use v-else-if="componentName==='资产分类选择'" xlink:href="#iconkufang" />
+              <use v-else-if="componentName==='所属区域选择'" xlink:href="#iconquyu" />
+            </svg>
+            {{ data.name }}
+          </span>
+        </span>
+      </el-tree>
     </el-row>
     <div style="text-align:right;margin-top:20px;">
       <el-button v-preventReClick="1000" class="button-sub" @click="getCheckedNodes">确定</el-button>
@@ -32,7 +43,12 @@ export default {
     isRadio: {
       type: Boolean,
       default: false
+    },
+    componentName: {
+      type: String,
+      default: ''
     }
+
   },
   data() {
     return {
@@ -58,9 +74,6 @@ export default {
       }
     },
     getCheckedNodes() {
-      // if (this.$refs.tree.getCheckedNodes().length === 0) {
-      //   this.$message.warning('所属区域不能为空')
-      // }
       this.$emit('filterRes', this.$refs.tree.getCheckedNodes())
     },
     // 获取资产分类tree树数据
@@ -98,5 +111,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  .span-ellipsis {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 </style>

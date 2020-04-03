@@ -162,16 +162,6 @@ const deviceControlRouter = {
         roles: ['SparesCheck']
       },
       name: 'SparesCheck'
-    }, {
-
-      path: 'sparesAllocation',
-      component: () => import('@/views/deviceManagement/SparesManagement/SparesAllocation/view.vue'),
-      meta: {
-        title: '调拨管理',
-        icon: 'icon111',
-        roles: ['SparesAllocation']
-      },
-      name: 'SparesAllocation'
     },
     {
       path: 'WareHourseManage',
@@ -182,8 +172,36 @@ const deviceControlRouter = {
         roles: ['wareHourseManage']
       },
       name: 'WareHourseManage'
+    }, { path: 'outboundManagement',
+      component: () => import('@/views/deviceManagement/SparesManagement/outboundManagement/view.vue'),
+      meta: {
+        title: '出库管理',
+        icon: 'icon111',
+        roles: ['OutboundManagement']
+      },
+      name: 'OutboundManagement'
+    }, {
+      path: 'outboundDetail',
+      component: () => import('@/views/deviceManagement/SparesManagement/outboundManagement/components/detail.vue'),
+      meta: {
+        title: '出库单详情',
+        icon: 'icon111',
+        roles: ['OutboundManagement']
+      },
+      name: 'outboundDetail',
+      hidden: true
+    }, {
+      path: 'sparesAllocation',
+      component: () => import('@/views/deviceManagement/SparesManagement/SparesAllocation/view.vue'),
+      meta: {
+        title: '调拨管理',
+        icon: 'icon111',
+        roles: ['SparesAllocation']
+      },
+      name: 'SparesAllocation'
     }
     ]
+
   }]
 
 }

@@ -3,7 +3,7 @@
     <div class="button-tool">
       <div class="button-tool-left fl" />
       <div class="button-tool-right fr">
-        <el-button v-permission="'assetsAuditDeleteMore'" @click="handleSelectCheck">批量审核</el-button>
+        <el-button v-permission="'assetsAuditMore'" class="iconfont iconshenpi" @click="handleSelectCheck"> 批量审核</el-button>
       </div>
     </div>
     <el-table ref="assetsAudit" v-loading="tableload" :data="tableDate" empty-text="无数据" @row-click="selectRow" @selection-change="handleSelectionChange">
@@ -19,7 +19,7 @@
       <el-table-column prop="createTime" label="新建时间" />
       <el-table-column label="操作" width="115">
         <template slot-scope="scope">
-          <i v-permission="'assetsAuditEdit'" class="iconfont iconwenjian scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
+          <i v-permission="'assetsAuditMore'" class="iconfont iconwenjian scope-caozuo" title="审核" @click="handleEdit(scope.$index, scope.row)" />
         </template>
       </el-table-column>
     </el-table>

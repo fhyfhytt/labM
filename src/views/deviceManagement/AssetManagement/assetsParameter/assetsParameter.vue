@@ -14,7 +14,7 @@
             </el-form-item>
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:5}">
-            <el-form-item label="状态：">
+            <el-form-item label="资产状态：">
               <el-select v-model="filters.name" popper-class="select-option" clearable placeholder="-请选择-">
                 <el-option v-for="item in statuesList" :key="item.code" :label="item.name" :value="item.name" />
               </el-select>
@@ -27,7 +27,7 @@
           </el-col>
           <el-col :xl="{span:4}" :lg="{span:4}">
             <el-form-item label-width="30px">
-              <el-button v-permission="'assetsParameterSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
+              <el-button v-permission="'arameterSearch'" size="small" class="button-sub" @click="searchData">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -38,14 +38,16 @@
         <div class="button-tool">
           <span class="fl">
             <input v-show="false" id="toLeadId" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" @change="importFile(this)">
-            <el-button v-permission="'assetsParameterImport'" icon="iconfont " size="small" @click="toLead">导入</el-button>
-            <el-button v-permission="'assetsParameterExport'" icon="iconfont " size="small" @click="exportExcel('1')">导出</el-button>
-            <el-button v-permission="'assetsParameterMoudle'" icon="iconfont " size="small" @click="exportExcel('2')">模板</el-button>
+            <el-button-group class="buttonGroup">
+              <el-button v-permission="'arameterImport'" icon="iconfont icondaoru" size="small" @click="toLead" />
+              <el-button v-permission="'arameterExport'" icon="iconfont icondaochu" size="small" class="export-btn" @click="exportExcel('1')" />
+              <el-button v-permission="'arameterMoudle'" icon="iconfont iconbaocunbeifen" size="small" @click="exportExcel('2')" />
+            </el-button-group>
           </span>
           <span class="fr">
-            <el-button v-permission="'QRcodeAdd'" icon="iconfont icontianjia1" size="small" @click="handleQRCode">二维码</el-button>
-            <el-button v-permission="'assetsParameterAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
-            <el-button v-permission="'assetsParameterDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
+            <el-button v-permission="'QRcodeAdd'" icon="iconfont iconbaocunbeifen1" size="small" @click="handleQRCode">二维码</el-button>
+            <el-button v-permission="'arameterAdd'" icon="iconfont icontianjia1" size="small" @click="handleAdd">新增</el-button>
+            <el-button v-permission="'arameterDeleteMore'" icon="iconfont iconxingzhuang1 " size="small" @click="handleDelAll">批量删除</el-button>
           </span>
         </div>
         <el-table ref="assetsParameter" v-loading="loading" :data="tableData" height="568" @row-click="selectRow" @selection-change="handleSelectRow">
@@ -57,7 +59,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="assetName" label="资产名称" />
-          <el-table-column prop="itemType" label="资产分类" />
+          <el-table-column prop="itemTypes" label="资产分类" />
           <el-table-column prop="status" label="资产状态" />
           <el-table-column prop="factory" label="生产厂商" />
           <el-table-column prop="unitType" label="设备型号" />
@@ -83,7 +85,7 @@
     <el-table v-show="false" id="exportExcelTable" :data="tableExport">
       <el-table-column prop="no" label="资产代码" />
       <el-table-column prop="assetName" label="资产名称" />
-      <el-table-column prop="itemType" label="资产分类" />
+      <el-table-column prop="itemTypes" label="资产分类" />
       <el-table-column prop="status" label="资产状态" />
       <el-table-column prop="factory" label="生产厂商" />
       <el-table-column prop="unitType" label="设备型号" />
@@ -95,7 +97,7 @@
     <el-table v-show="false" id="exportExcelMould" :data="tableExport">
       <el-table-column prop="code" label="操作编码" />
       <el-table-column prop="assetName" label="资产名称" />
-      <el-table-column prop="itemType" label="资产分类" />
+      <el-table-column prop="itemTypes" label="资产分类" />
       <el-table-column prop="unitType" label="设备型号" />
       <el-table-column prop="factory" label="设备厂商" />
       <el-table-column prop="status" label="资产状态" />
@@ -121,7 +123,7 @@
     </div>
     <!-- 树 -->
     <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+      <addFilters ref="addFilters" :component-name="dialogName" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
     <!-- 二维码 -->
     <el-dialog title="二维码" :close-on-click-modal="false" :visible.sync="showQRcode" width="800px">
@@ -154,7 +156,6 @@ export default {
       addFiltersVisible: false,
       filters: {},
       filtersTypeId: [],
-      componentName: '所属区域',
       tableExport: [], // 存放模板或导出数据
       tableDataExport: [], // 导出数据
       showQRcode: false, // 二维码显示
@@ -172,7 +173,7 @@ export default {
       saveShow: false, // 未保存提示
       saveShowFlag: true, // 子组件标识
       flag: true,
-      dialogName: '新建角色',
+      dialogName: '',
       confirmVisible: false,
       confirmAllVisible: false,
       alertText: '是否删除 ?',
@@ -251,7 +252,9 @@ export default {
     // 新增成功返回
     addSuccess(res) {
       this.addFormVisible = false
-      this.getList()
+      if (res !== '新增') {
+        this.getList()
+      }
     },
     // 未保存弹出框
     sureMsg() {
@@ -430,11 +433,11 @@ export default {
         this.$message.error('请选择导入文件')
       } else {
         importExcel(formData).then(res => {
-          console.log('导入：', res)
           if (res.code === 0) {
             that.visibleImportRole = false
-            this.$message.success('导入成功')
-            this.getList()
+            this.$message.success('导入成功，请到资产审核中查看')
+            formData.delete('file')
+            return false
           } else {
             this.$message.error(res.msg)
           }
@@ -506,5 +509,9 @@ export default {
       p {text-align: center;color: #38a4ed;font-size: 16px;margin-top: 5px;}
     }
   }
+  .buttonGroup .el-button {margin-left: 0;}
+</style>
+<style lang="scss">
+  .button-tool .buttonGroup .el-button i.icondaochu {font-size: 16px;position: relative;top: -1px;}
 </style>
 

@@ -114,7 +114,89 @@ export function addOrUpdateWarehouseAsset(data) {
 // 备件管理删除
 export function deleteById(data) {
   return request({
-    url: '/assetC/deleteById',
+    url: '/warehouseAssetC/deleteById',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 备件导入
+export function importWarehouseAsset(data) {
+  return request({
+    url: '/warehouseAssetC/importWarehouseAsset',
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+    data
+  })
+}
+// 获取所有库房
+export function getAllWarehouse(data) {
+  return request({
+    url: '/sysWarehouse/getAllWarehouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+
+// 出库查询
+export function selectOuthouse(data) {
+  return request({
+    url: '/warehouseRecord/selectOuthouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 完成出库
+export function insertOuthouse(data) {
+  return request({
+    url: '/warehouseRecord/insertOuthouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 删除出库
+export function deleteOuthouse(data) {
+  return request({
+    url: '/warehouseRecord/deleteOuthouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+
+// 根据出库单号（no）查询出库单基本信息
+export function selectByNo(data) {
+  return request({
+    url: '/warehouseRecord/selectByNo?no=' + data,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' }
+  })
+}
+// 根据出库单号（no）查询资产列表 (出库类型为非替换类型)
+export function selectByWarehouse(data) {
+  return request({
+    url: '/warehouseAssetC/selectByWarehouse',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 根据出入库单号（no）查询替换操作的资产列表
+export function selectTHAsset(data) {
+  return request({
+    url: '/warehouseRecord/selectTHAsset',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data
+  })
+}
+// 查看领用出库产生的资产
+export function selectByWarehouseAssetId(data) {
+  return request({
+    url: '/usedAsset/selectByWarehouseAssetId',
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data

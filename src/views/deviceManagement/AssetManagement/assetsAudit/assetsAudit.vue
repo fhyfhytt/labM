@@ -32,7 +32,7 @@
       <tableManageParent :table-loading="tableloading" :table-date="tableDate" :current-page="currentPage" :total-num="totalNum" @handleGetTableData="handleGetTableData" />
     </div>
     <el-dialog :title="dialogName" :close-on-click-modal="false" :visible.sync="addFiltersVisible" :before-close="filterClose" width="300px">
-      <addFilters ref="addFilters" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
+      <addFilters ref="addFilters" :component-name="dialogName" :filters-type-id="filtersTypeId" @filterRes="filterRes" />
     </el-dialog>
 
   </div>
